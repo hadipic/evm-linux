@@ -222,7 +222,7 @@ HEADERS += \
 
 LIBS += -lpthread
 LIBS += -lrt
-INCLUDEPATH += $$PWD/../../../include
+INCLUDEPATH += $$PWD/../../../engines/mujs
 INCLUDEPATH += $$PWD/../../../components/webclient/inc
 INCLUDEPATH += $$PWD/../../../components/micropython
 INCLUDEPATH += $$PWD/../../../modules/mpy

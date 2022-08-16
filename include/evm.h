@@ -1,27 +1,24 @@
 /****************************************************************************
 **
-** Copyright (C) 2021 @武汉市字节码科技有限公司
+** Copyright (C) 2022 @武汉市凡迈科技有限公司
 **
 **  EVM是一款通用化设计的虚拟机引擎，拥有语法解析前端接口、编译器、虚拟机和虚拟机扩展接口框架。
-**  支持语言类型：JavaScript, Python, QML, EVUE, JSON, XML, HTML, CSS
-**  Version	: 3.0
+**  Version	: 3.2
 **  Email	: scriptiot@aliyun.com
-**  Website	: https://github.com/scriptiot
+**  Website	: https://gitee.com/scriptiot
 **  Licence: 个人免费，企业授权
 ****************************************************************************/
 #ifndef EVM_H
 #define EVM_H
 
-#include "evm_type.h"
+#include <string.h>
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <ctype.h>
 
-/*** 字符串常量操作函数 ***/
-EVM_API evm_hash_t evm_str_lookup(evm_t *e, const char *str, evm_err_t *ok);
-EVM_API evm_hash_t evm_str_insert(evm_t *e, const char *str, int alloc);
-EVM_API const char *evm_string_get(evm_t * e, evm_hash_t key);
-
-/*** 数字常量操作函数 ***/
-EVM_API evm_hash_t evm_number_insert(evm_t *e, double num);
-EVM_API double evm_number_get(evm_t *e, uint16_t key);
+#define EVM_API     extern
 
 /*** 字符串对象操作函数 ***/
 EVM_API evm_val_t *evm_heap_string_create(evm_t *e, const char *str, uint32_t len);

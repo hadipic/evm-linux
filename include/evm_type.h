@@ -1,12 +1,11 @@
 /****************************************************************************
 **
-** Copyright (C) 2021 @武汉市字节码科技有限公司
+** Copyright (C) 2022 @武汉市凡迈科技有限公司
 **
 **  EVM是一款通用化设计的虚拟机引擎，拥有语法解析前端接口、编译器、虚拟机和虚拟机扩展接口框架。
-**  支持语言类型：JavaScript, Python, QML, EVUE, JSON, XML, HTML, CSS
-**  Version	: 3.0
+**  Version	: 3.2
 **  Email	: scriptiot@aliyun.com
-**  Website	: https://github.com/scriptiot
+**  Website	: https://gitee.com/scriptiot
 **  Licence: 个人免费，企业授权
 ****************************************************************************/
 #ifndef EVM_TYPE_H
@@ -19,12 +18,8 @@
 #include <stdint.h>
 #include <ctype.h>
 
-typedef uint64_t evm_val_t;
+#define EVM_API     extern
 typedef uint32_t evm_err_t;
-
-typedef intptr_t evm_hash_t;
-typedef uint32_t evm_type_t;
-typedef int32_t  evm_int_t;
 
 /**
  * EVM虚拟机语言种类支持
@@ -39,81 +34,6 @@ typedef int32_t  evm_int_t;
 #define EVM_LANG_CSS    8   /** CSS语法*/
 #define EVM_LANG_HTML   9   /** HTML语法*/
 #define EVM_LANG_WAST   10   /** WAST语法*/
-
-#define EVM_VER                   300  /** 虚拟机版本号*/
-#define EVM_VAR_NAME_MAX_LEN      255  /** 虚拟机解析文件变量名称最大长度*/
-#define EVM_FILE_NAME_LEN         255  /** 文件名称长度*/
-#define EVM_LOAD_MODULE      0      /** 虚拟机加载模块*/
-#define EVM_LOAD_MAIN        1      /** 虚拟机加载main*/
-#define EVM_UNUSED(x) ((void) (x))
-#define EVM_GC_TYPE_MASK(v)  (v & 0xff)
-#define EVM_HEAP_BLOCK_SIZE  32
-#define EVM_DO_NOT_REFRESH_MODULE   0
-#define EVM_REFRESH_MODULE          1
-#define EVM_INVALID_HASH           -1
-
-#define EVM_RUN_AS_MODULE           0
-#define EVM_RUN_WITH_RETURN         1
-
-enum OP_TYPE {
-    EVM_OP_ADD = 0,
-    EVM_OP_EQ,
-    EVM_OP_NEQ,
-    EVM_OP_TEQ,
-    EVM_OP_TNE,
-    EVM_OP_IN,
-    EVM_OP_NIN,
-};
-
-enum GC_TYPE
-{
-    GC_NONE,
-    GC_TOKEN,
-    GC_ROOT,
-    GC_OBJECT,
-    GC_NATIVE_OBJECT,
-    GC_DICT,
-    GC_CLASS,
-    GC_SET,
-    GC_FUNC,
-    GC_CLOSURE_FUNC,
-    GC_STATIC_FUNC,
-    GC_LIST,
-    GC_BUFFER,
-    GC_BUFFER16,
-    GC_BUFFER32,
-    GC_BUFFER64,
-    GC_BUFFER_FLOAT,
-    GC_BUFFER_DOUBLE,
-    GC_BUFFER_OBJECT,
-    GC_STRING,
-    GC_NUMBER,
-    GC_BOOLEAN,
-    GC_TUPLE,
-    GC_MEMBER,
-    GC_MEMBER_KEYS,
-    GC_MEMBER_VALS,
-};
-
-enum EVM_TYPE
-{
-    TYPE_NUMBER = 0,
-    TYPE_HEAP_STRING,
-    TYPE_FOREIGN_STRING,
-    TYPE_BOOLEAN,
-    TYPE_FUNCTION,
-    TYPE_NATIVE,
-    TYPE_NULL,
-    TYPE_UNDEFINED,
-    TYPE_NAN,
-    TYPE_LIST,
-    TYPE_BUFFER,
-    TYPE_OBJECT,
-    TYPE_CLASS,
-    TYPE_FRAME,
-    TYPE_FOREIGN,
-    TYPE_INVOKE,
-};
 
 enum Errcode
 {
