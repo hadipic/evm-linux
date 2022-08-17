@@ -11,6 +11,10 @@
 #ifndef EVM_H
 #define EVM_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
@@ -18,141 +22,109 @@
 #include <stdint.h>
 #include <ctype.h>
 
+#include "evm_type.h"
+
+#define EVM_UNUSED(a)   (void)a
+#define EVM_UNUSED2(a, b)   (void)a;(void)b;
+#define EVM_UNUSED3(a, b, c)   (void)a;(void)b;(void)c;
+#define EVM_UNUSED4(a, b, c, d)   (void)a;(void)b;(void)c;(void)d;
+
+enum Errcode
+{
+    ec_ok = 0,
+    ec_err,
+    ec_no_file,
+    ec_file_name_len,
+    ec_name,
+    ec_type,
+    ec_memory,
+    ec_zero_division,
+    ec_syntax,
+    ec_index,
+    ec_import,
+    ec_attribute,
+    ec_key,
+    ec_value,
+    ec_system,
+    ec_assertion,
+    ec_overflow,
+    ec_arithmetic,
+    ec_indent,
+    ec_gc,
+    ec_exit,
+};
+
 #define EVM_API     extern
+typedef int     evm_err_t;
+typedef evm_val_t (*evm_native_t)(evm_t *e, evm_val_t pthis, int argc, evm_val_t *v);
 
 /*** 字符串对象操作函数 ***/
-EVM_API evm_val_t *evm_heap_string_create(evm_t *e, const char *str, uint32_t len);
-EVM_API char *evm_heap_string_addr(evm_val_t * v);
-EVM_API uint32_t evm_string_len(evm_val_t * o);
-EVM_API evm_err_t evm_heap_string_set(evm_t *e, evm_val_t *o, uint8_t *buffer, uint32_t index, uint32_t len);
+EVM_API evm_val_t evm_string_create(evm_t *e, const char *str);
+EVM_API int evm_string_len(evm_t *e, evm_val_t o);
 
 /*** 字节数组对象操作函数 ***/
-EVM_API evm_val_t *evm_buffer_create(evm_t *e, uint32_t len);
-EVM_API evm_val_t *evm_buffer_create_ex(evm_t *e, evm_type_t gc_type, uint32_t len);
-EVM_API uint32_t evm_buffer_get_count(evm_t *e, evm_val_t *o);
-EVM_API evm_err_t evm_buffer_set_count(evm_t *e, evm_val_t *o, uint32_t count);
-EVM_API uint8_t *evm_buffer_addr(evm_val_t *o);
-EVM_API uint32_t evm_buffer_len(evm_val_t *o);
-EVM_API evm_err_t evm_buffer_set(evm_t *e, evm_val_t *o, uint8_t * buffer, uint32_t index, uint32_t len);
+EVM_API evm_val_t evm_buffer_create(evm_t *e, uint8_t *buf, int len);
+EVM_API uint8_t *evm_buffer_addr(evm_t *e, evm_val_t o);
+EVM_API int evm_buffer_len(evm_t *e, evm_val_t o);
 
 /*** 列表对象操作函数 ***/
-EVM_API evm_val_t *evm_list_create(evm_t *e, evm_type_t type, uint32_t len);
-EVM_API evm_err_t evm_list_push(evm_t *e, evm_val_t *o, uint32_t len, evm_val_t *v);
-EVM_API evm_val_t *evm_list_pop(evm_t *e, evm_val_t *o);
-EVM_API uint32_t evm_list_len(evm_val_t *o);
-EVM_API evm_err_t evm_list_set(evm_t *e, evm_val_t *o, uint32_t index, evm_val_t v);
-EVM_API evm_val_t *evm_list_get(evm_t *e, evm_val_t *o, uint32_t index);
-EVM_API void evm_list_set_len(evm_val_t *v, uint32_t len);
-EVM_API void evm_list_set_count(evm_val_t *v, uint32_t count);
-EVM_API uint32_t evm_list_get_count(evm_val_t *v);
-EVM_API evm_err_t evm_list_append(evm_t * e, evm_val_t * obj, evm_val_t v);
-EVM_API evm_val_t *evm_list_duplicate(evm_t * e, evm_val_t *o);
+EVM_API evm_val_t evm_list_create(evm_t *e);
+EVM_API int evm_list_len(evm_t *e, evm_val_t o);
+EVM_API evm_err_t evm_list_set(evm_t *e, evm_val_t o, int index, evm_val_t v);
+EVM_API evm_val_t evm_list_get(evm_t *e, evm_val_t o, int index);
 
 /*** 对象操作函数 ***/
-EVM_API evm_val_t *evm_object_create(evm_t *e, evm_type_t type, uint32_t prop_len, uint32_t attr_len);
-EVM_API evm_val_t *evm_object_create_ext_data(evm_t *e, evm_type_t type, intptr_t ext_data);
-EVM_API evm_val_t *evm_native_function_create(evm_t *e, evm_object_native_t *native, uint32_t attr_len);
-EVM_API evm_val_t *evm_object_duplicate(evm_t *e, evm_type_t type, evm_val_t *o);
-EVM_API evm_hash_t evm_object_get_hash(evm_val_t *o);
-EVM_API void evm_object_set_native(evm_val_t *o, evm_object_native_t *native);
-EVM_API evm_object_native_t *evm_object_get_native(evm_val_t *o);
-EVM_API void evm_object_set_count(evm_val_t *v, uint32_t count);
-EVM_API uint32_t evm_object_get_count(evm_val_t *v);
-EVM_API intptr_t evm_object_get_ext_data(evm_val_t *o);
-EVM_API void evm_object_set_ext_data(evm_val_t *o, intptr_t v);
+EVM_API evm_val_t evm_object_create(evm_t *e);
+EVM_API evm_val_t evm_global_get(evm_t *e, const char* key);
+EVM_API evm_err_t evm_global_set(evm_t *e, const char *key, evm_val_t v);
 
 /*** 成员操作函数 ***/
-EVM_API evm_val_t *evm_prop_get(evm_t *e, evm_val_t *o, const char* key, int depth);
-EVM_API evm_val_t *evm_prop_get_by_key(evm_t *e, evm_val_t *obj, evm_hash_t key, int depth);
-EVM_API evm_val_t *evm_prop_get_by_index(evm_t *e, evm_val_t *o, uint32_t index);
-EVM_API evm_err_t evm_prop_set(evm_t *e, evm_val_t *o, uint32_t index, const char *key, evm_val_t v);
-EVM_API evm_err_t evm_prop_set_key_value(evm_t *e, evm_val_t *o, uint32_t index, evm_hash_t key, evm_val_t v);
-EVM_API evm_err_t evm_prop_set_value(evm_t *e, evm_val_t *o, const char* key, evm_val_t v);
-EVM_API evm_err_t evm_prop_append(evm_t *e, evm_val_t *o, const char *key, evm_val_t v);
-EVM_API evm_err_t evm_prop_append_with_key(evm_t *e, evm_val_t * o, evm_hash_t key, evm_val_t v);
-EVM_API evm_err_t evm_prop_set_value_by_index(evm_t *e, evm_val_t *o, uint32_t index, evm_val_t v);
-EVM_API evm_hash_t evm_prop_get_key_by_index(evm_t *e, evm_val_t *o, uint32_t index);
-EVM_API void evm_prop_set_key_by_index(evm_t *e, evm_val_t *o, uint32_t index, evm_hash_t key);
-EVM_API uint32_t evm_prop_len(evm_val_t * o);
-
-/*** 属性成员操作函数 ***/
-EVM_API evm_err_t evm_attr_create(evm_t *e, evm_val_t *o, uint32_t len);
-EVM_API evm_err_t evm_attr_set(evm_t *e, evm_val_t *o, uint32_t index, const char *name, evm_val_t v);
-EVM_API evm_err_t evm_attr_set_key_value(evm_t *e, evm_val_t *o, uint32_t index, evm_hash_t key, evm_val_t v);
-EVM_API evm_err_t evm_attr_set_by_index(evm_t *e, evm_val_t *o, uint32_t index, evm_val_t v);
-EVM_API evm_val_t *evm_attr_get(evm_t *e, evm_val_t *o, const char *name);
-EVM_API evm_hash_t evm_attr_get_key_by_index(evm_t *e, evm_val_t *o, uint32_t index);
-EVM_API evm_val_t *evm_attr_get_by_index(evm_t *e, evm_val_t *o, uint32_t index);
-EVM_API evm_val_t *evm_attr_get_by_key(evm_t *e, evm_val_t *obj, evm_hash_t key);
-EVM_API evm_err_t evm_attr_append(evm_t *e, evm_val_t *o, const char *name, evm_val_t v);
-EVM_API evm_err_t evm_attr_append_with_key(evm_t *e, evm_val_t *obj, evm_hash_t key, evm_val_t v);
-EVM_API uint32_t evm_attr_len(evm_val_t *o);
+EVM_API evm_val_t evm_prop_get(evm_t *e, evm_val_t o, const char* key);
+EVM_API evm_err_t evm_prop_set(evm_t *e, evm_val_t o, const char *key, evm_val_t v);
 
 /*** 模块操作函数 ***/
-EVM_API evm_val_t evm_module_create(evm_t *e, const char* name, evm_builtin_t *n);
-EVM_API evm_err_t evm_module_add(evm_t *e, const char* name, evm_val_t *v);
-EVM_API evm_val_t *evm_module_get(evm_t *e, const char* name);
+EVM_API evm_err_t evm_module_add(evm_t *e, const char* name, evm_val_t v);
+EVM_API evm_val_t evm_module_get(evm_t *e, const char* name);
 
 /*** 其它操作函数 ***/
-EVM_API evm_err_t evm_is_prop_key_valid(evm_t *e, evm_val_t *o, uint32_t index);
-EVM_API evm_err_t evm_is_attr_key_valid(evm_t *e, evm_val_t *o, uint32_t index);
-EVM_API evm_err_t evm_native_add(evm_t * e, evm_builtin_t * n);
-EVM_API int evm_heap_gc(evm_t *e);
-EVM_API evm_err_t evm_set_err(evm_t * e, evm_err_t err, const char *arg);
-EVM_API evm_type_t evm_get_gc_type(evm_t *e, evm_val_t * o);
-EVM_API evm_err_t evm_set_gc_type(evm_t *e, evm_val_t *o, evm_type_t type);
-EVM_API void evm_class_set_native(evm_val_t *o, evm_native_fn fn);
-EVM_API void evm_object_set_scope(evm_val_t *o, evm_val_t *s);
-EVM_API evm_val_t evm_object_get_scope(evm_val_t *o);
+EVM_API void evm_heap_gc(evm_t *e);
+EVM_API void evm_throw(evm_t *e, evm_val_t v);
 
 /*** 虚拟机相关函数 ***/
-EVM_API evm_err_t evm_start(evm_t * e);
-EVM_API evm_val_t evm_run_callback(evm_t * e, evm_val_t * scope, evm_val_t *p_this, evm_val_t *args, int argc);
-EVM_API evm_err_t evm_boot(evm_t *e, char *path);
-EVM_API evm_err_t evm_init(evm_t * e, uint32_t heap_size, uint32_t stack_size, uint32_t var_name_len, uint32_t file_name_len);
-EVM_API void evm_deinit(evm_t * e);
-EVM_API void evm_errcode_print(evm_t *e);
-EVM_API evm_err_t evm_executable_load(evm_t *e, uint8_t * buf);
-EVM_API evm_err_t evm_executable_run(evm_t *e);
-EVM_API evm_err_t evm_executable_write(evm_t *e, char * path, uint8_t * buf, uint32_t * buf_len, int lang_type);
-EVM_API evm_err_t evm_repl_run(evm_t * e, uint16_t number_of_variables, int language);
-EVM_API evm_val_t evm_run_script(evm_t * e, const char * full_path);
-EVM_API evm_val_t evm_run_eval(evm_t * e,  evm_val_t *object, char * string,int lang_type);
-EVM_API evm_val_t evm_module_load(evm_t * e, const char * full_path, int8_t refresh_needed);
-EVM_API evm_val_t evm_run_string(evm_t * e, const char * content, int lang_type, int mode);
+EVM_API evm_t *evm_init(void);
+EVM_API void evm_deinit(evm_t *e);
+EVM_API evm_val_t evm_run_file(evm_t *e, const char *path);
+EVM_API evm_val_t evm_run_string(evm_t *e, const char *source);
+EVM_API evm_val_t evm_call(evm_t *e, evm_val_t obj, evm_val_t pthis, int argc, evm_val_t *v);
+EVM_API evm_val_t evm_call_free(evm_t *e, evm_val_t obj, evm_val_t pthis, int argc, evm_val_t *v);
 
-/*** 外部实现接口 ***/
-EVM_API void evm_register_print(intptr_t fn);
-EVM_API void evm_register_free(intptr_t fn);
-EVM_API void evm_register_malloc(intptr_t fn);
-EVM_API void evm_register_file_load(intptr_t fn);
-EVM_API void evm_register_lock(void (*fn)(evm_t *e));
-EVM_API void evm_register_unlock(void (*fn)(evm_t *e));
-EVM_API char evm_repl_tty_read(evm_t * e);
-EVM_API int (*evm_print)(const char *fmt, ...);
-EVM_API void *(*evm_malloc)(size_t size);
-EVM_API void (*evm_free)(void * mem);
-EVM_API void (*evm_lock)(evm_t *e);
-EVM_API void (*evm_unlock)(evm_t *e);
+/*** value操作 ***/
+EVM_API double evm_2_double(evm_t *e, evm_val_t v);
+EVM_API int32_t evm_2_integer(evm_t *e, evm_val_t v);
+EVM_API int evm_2_boolean(evm_t *e, evm_val_t v);
+EVM_API const char *evm_2_string(evm_t *e, evm_val_t v);
 
-/*** 虚拟机栈操作 ***/
-EVM_API void evm_push_null(evm_t * e);
-EVM_API void evm_push_undefined(evm_t * e);
-EVM_API void evm_push_number(evm_t * e, double v);
-EVM_API void evm_push_integer(evm_t * e, int32_t v);
-EVM_API void evm_push_boolean(evm_t * e, int v);
-EVM_API evm_val_t *evm_push_buffer(evm_t * e, uint8_t * buf, uint32_t len);
-EVM_API evm_val_t *evm_push_foreign_string(evm_t * e, const char * s);
-EVM_API evm_val_t *evm_push_heap_string(evm_t * e, const char * s);
-EVM_API evm_val_t *evm_push_value(evm_t *e, evm_val_t v);
-EVM_API void evm_pop(evm_t *e);
-EVM_API evm_val_t *evm_prop_push_with_key(evm_t * e, evm_val_t *obj, evm_hash_t key, evm_val_t *v);
-EVM_API evm_val_t *evm_prop_push(evm_t * e, evm_val_t *o, const char *key, evm_val_t *v);
-EVM_API evm_val_t *evm_list_pushvalue(evm_t * e, evm_val_t * obj, uint32_t index, evm_val_t *v);
+EVM_API int evm_is_number(evm_t *e, evm_val_t v);
+EVM_API int evm_is_integer(evm_t *e, evm_val_t v);
+EVM_API int evm_is_string(evm_t *e, evm_val_t v);
+EVM_API int evm_is_boolean(evm_t *e, evm_val_t v);
+EVM_API int evm_is_buffer(evm_t *e, evm_val_t v);
+EVM_API int evm_is_native(evm_t *e, evm_val_t v);
+EVM_API int evm_is_callable(evm_t *e, evm_val_t v);
+EVM_API int evm_is_list(evm_t *e, evm_val_t v);
+EVM_API int evm_is_undefined(evm_t *e, evm_val_t v);
+EVM_API int evm_is_null(evm_t *e, evm_val_t v);
+EVM_API int evm_is_object(evm_t *e, evm_val_t v);
+EVM_API evm_val_t evm_mk_number(evm_t *e, double d);
+EVM_API evm_val_t evm_mk_string(evm_t *e, const char *s);
+EVM_API evm_val_t evm_mk_boolean(evm_t *e, int v);
+EVM_API evm_val_t evm_mk_native(evm_t *e, evm_native_t v, const char *name, int len);
+EVM_API evm_val_t evm_mk_null(evm_t *e);
+EVM_API evm_val_t evm_mk_undefined(evm_t *e);
+EVM_API void evm_val_free(evm_t *e, evm_val_t v);
+EVM_API evm_val_t evm_val_duplicate(evm_t *e, evm_val_t v);
 
-EVM_API void evm_exception_set_path(evm_t *e, const char *path);
-
-static inline void evm_assert_fail (const char *assertion, const char *file, const char *function, const uint32_t line){
+static inline void evm_assert_fail (const char *assertion, const char *file, const char *function, const int line){
     evm_print ("AssertionError: '%s' failed at %s(%s):%lu.\n",
                        assertion,
                        file,
@@ -171,7 +143,8 @@ static inline void evm_assert_fail (const char *assertion, const char *file, con
     } \
   } while (0)
 
+#ifdef __cplusplus
+} /* extern "C" */
 #endif
 
-#define likely(x)       __builtin_expect(!!(x), 1)
-#define unlikely(x)     __builtin_expect(!!(x), 0)
+#endif

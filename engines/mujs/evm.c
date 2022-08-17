@@ -12,16 +12,19 @@ int evm_string_len(evm_t *e, evm_val_t o) {
 }
 
 /*** 字节数组对象操作函数 ***/
-evm_val_t evm_buffer_create(evm_t *e, int len) {
-
+evm_val_t evm_buffer_create(evm_t *e, uint8_t *buf, int len) {
+    EVM_UNUSED2(buf, len);
+    return evm_mk_undefined(e);
 }
 
 uint8_t *evm_buffer_addr(evm_t *e, evm_val_t o) {
-
+    EVM_UNUSED2(e, o);
+    return NULL;
 }
 
 int evm_buffer_len(evm_t *e, evm_val_t o) {
-
+    EVM_UNUSED2(e, o);
+    return 0;
 }
 
 /*** 列表对象操作函数 ***/
@@ -31,16 +34,17 @@ evm_val_t evm_list_create(evm_t *e) {
 }
 
 int evm_list_len(evm_t *e, evm_val_t o) {
-    int len;
-	js_Value *res = jsV_getproperty(e, &o, "length");
-	len = jsV_tointeger(e, res);
+    int len = 0;
+    js_Property *prop = jsV_getproperty(e, jsV_toobject(e, &o), "length");
+    if( prop ) {
+        len = (int)jsV_tointeger(e, &prop->value);
+    }
 	return len;
 }
 
 evm_err_t evm_list_set(evm_t *e, evm_val_t o, int i, evm_val_t v) {
     char buf[32];
-    jsV_setproperty(e, jsV_toobject(e, &o), js_itoa(buf, i));
-    return ec_ok;
+    return evm_prop_set(e, o, js_itoa(buf, i), v);
 }
 
 evm_val_t evm_list_get(evm_t *e, evm_val_t o, int i) {
@@ -66,26 +70,13 @@ evm_val_t evm_object_create(evm_t *e) {
     return *js_tovalue(e, -1);
 }
 
-evm_val_t evm_object_create_user_data(evm_t *e, void *user_data) {
-    js_newuserdata(e, "user", user_data, NULL);
-    return *js_tovalue(e, -1); 
-}
-
-void *evm_object_get_user_data(evm_t *e, evm_val_t o) {
-    (void)e;
-    evm_val_t *v = &o;
-    if (v->type == JS_TOBJECT && v->u.object->type == JS_CUSERDATA)
-        return v->u.object->u.user.data;
-    return NULL;
-}
-
 evm_val_t evm_global_get(evm_t *e, const char* key) {
     js_getglobal(e, key);
     return *js_tovalue(e, -1);
 }
 
 evm_err_t evm_global_set(evm_t *e, const char *key, evm_val_t v) {
-    js_pushvalue(e, v);
+    EVM_UNUSED(v);
     js_setglobal(e, key);
     return ec_ok;
 }
@@ -121,38 +112,24 @@ evm_err_t evm_prop_set(evm_t *e, evm_val_t o, const char *key, evm_val_t v) {
         ref = jsV_setproperty(e, jsV_toobject(e, &o), key);
     }
     ref->value = v;
+    evm_val_free(e, v);
     return ec_ok;
 }
 
 
 /*** 模块操作函数 ***/
 evm_err_t evm_module_add(evm_t *e, const char* name, evm_val_t v) {
-    js_Property *ref;
-    ref = jsV_getproperty(e, e->G, "@system");
-    if (ref) {
-        js_Property *local_ref = jsV_getproperty(e, jsV_toobject(e, &ref->value), name);
-        if( local_ref ) {
-            local_ref->value = v;
-            return ec_ok;
-        }
-        local_ref = jsV_setproperty(e, jsV_toobject(e, &ref->value), name);
-        local_ref->value = v;
-    }
-    return ec_err;
+    evm_val_t system = evm_global_get(e, "@system");
+    evm_prop_set(e, system, name, v);
+    evm_val_free(e, system);
+    return ec_ok;
 }
 
 evm_val_t evm_module_get(evm_t *e, const char* name) {
-    js_Property *ref;
-    ref = jsV_getproperty(e, e->G, "@system");
-    if (ref) {
-        ref = jsV_getproperty(e, jsV_toobject(e, &ref->value), name);
-        if( ref ) {
-            js_pushvalue(e, ref->value);
-            return ref->value;
-        }
-    }
-    js_pushundefined(e);
-    return *js_tovalue(e, -1);
+    evm_val_t system = evm_global_get(e, "@system");
+    evm_val_t res = evm_prop_get(e, system, name);
+    evm_val_free(e, system);
+    return res;
 }
 
 /*** 其它操作函数 ***/
@@ -177,15 +154,17 @@ void evm_deinit(evm_t *e) {
     js_freestate(e);
 }
 
-evm_val_t evm_load_file(evm_t *e, const char *path) {
+evm_val_t evm_run_file(evm_t *e, const char *path) {
     js_loadfile(e, path);
     js_pushundefined(e);
     js_call(e, 0);
     return *js_tovalue(e, -1);
 }
 
-evm_val_t evm_load_string(evm_t *e, const char *source) {
+evm_val_t evm_run_string(evm_t *e, const char *source) {
     js_loadstring(e, "[string]", source);
+    js_pushundefined(e);
+    js_call(e, 0);
     return *js_tovalue(e, -1);
 }
 
@@ -247,7 +226,8 @@ int evm_is_boolean(evm_t *e, evm_val_t v) {
 }
 
 int evm_is_buffer(evm_t *e, evm_val_t v) {
-
+    EVM_UNUSED2(e, v);
+    return 0;
 }
 
 int evm_is_native(evm_t *e, evm_val_t v) {
@@ -317,5 +297,11 @@ evm_val_t evm_mk_undefined(evm_t *e){
 }
 
 void evm_val_free(evm_t *e, evm_val_t v) {
+    EVM_UNUSED(v);
     js_pop(e, 1);
+}
+
+evm_val_t evm_val_duplicate(evm_t *e, evm_val_t v) {
+    js_pushvalue(e, v);
+    return v;
 }

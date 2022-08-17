@@ -17,26 +17,17 @@ int main()
         printf("Could not initialize EVM.\r\n");
         return 0;
     }
-
     //添加require内置函数
     evm_val_t val = evm_mk_native(e, native_require, "require", 0);
     evm_global_set(e, "require", val);
-    evm_val_free(e, val);
-
     //创建模块
     evm_val_t module = evm_object_create(e);
     //模块添加内置函数
     val = evm_mk_native(e, native_print_helloworld, "print_helloworld", 0);
     evm_prop_set(e, module, "print_helloworld", val);
-    evm_val_free(e, val);
     //注册模块
     evm_module_add(e, "TestModule", module);
-
     //运行代码
-    val = evm_load_string(e, "require('TestModule').print_helloworld();");
-    evm_val_t pthis = evm_mk_undefined(e);
-    evm_call_free(e, val, pthis, 0, NULL);
-    evm_val_free(e, val);
-    evm_val_free(e, pthis);
+    val = evm_run_string(e, "require('TestModule').print_helloworld();");
     evm_deinit(e);
 }
