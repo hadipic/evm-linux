@@ -309,6 +309,11 @@ evm_val_t evm_mk_string(evm_t *e, const char *s){
     return *js_tovalue(e, -1);
 }
 
+evm_val_t evm_mk_lstring(evm_t *e, const char *s, int len) {
+    js_pushlstring(e, s, len);
+    return *js_tovalue(e, -1);
+}
+
 evm_val_t evm_mk_boolean(evm_t *e, int v){
     js_pushboolean(e, v);
     return *js_tovalue(e, -1);
