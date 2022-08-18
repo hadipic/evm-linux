@@ -25,7 +25,7 @@
 #endif
 
 /* support both enable and disable "SAL_USING_POSIX" */
-#if defined(LINUX)
+#if defined(linux)
 #include <netdb.h>
 #include <sys/socket.h>
 #else

@@ -1,13 +1,12 @@
 /****************************************************************************
 **
-** Copyright (C) 2021 @武汉市字节码科技有限公司
+** Copyright (C) 2022 @武汉市凡迈科技有限公司
 **
 **  EVM是一款通用化设计的虚拟机引擎，拥有语法解析前端接口、编译器、虚拟机和虚拟机扩展接口框架。
-**  支持语言类型：JavaScript, Python, QML, EVUE, JSON, XML, HTML, CSS
-**  Version	: 3.0
+**  Version	: 1.0
 **  Email	: scriptiot@aliyun.com
-**  Website	: https://gitee.com/scriptiot/evm
-**          : https://github.com/scriptiot/evm
+**  Website	: https://gitee.com/scriptiot
+**  Licence: 个人免费，企业授权
 ****************************************************************************/
 #ifndef EVM_MODULE_H
 #define EVM_MODULE_H
@@ -85,7 +84,7 @@ extern evm_err_t evm_module_net(evm_t *e);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_PROCESS
-extern evm_val_t evm_module_process_nextTick(evm_t *e, evm_val_t *p, int argc, evm_val_t *v);
+extern evm_val_t evm_module_process_nextTick(evm_t *e, evm_val_t p, int argc, evm_val_t *v);
 extern void evm_module_process_poll(evm_t *e);
 extern evm_err_t evm_module_process(evm_t *e);
 #endif
@@ -110,14 +109,13 @@ extern evm_err_t evm_module_assert(evm_t *e);
 extern evm_err_t compat_mp_module(evm_t * e);
 #endif
 
-extern void evm_module_registry_init(evm_t *e, int size);
-extern int evm_module_registry_add(evm_t *e, evm_val_t *v);
-extern evm_val_t *evm_module_registry_get(evm_t *e, int id);
+extern int evm_module_registry_add(evm_t *e, evm_val_t v);
+extern evm_val_t evm_module_registry_get(evm_t *e, int id);
 extern void evm_module_registry_remove(evm_t *e, int id);
 extern void evm_module_next_tick(evm_t *e, int argc, evm_val_t *v);
-extern evm_err_t evm_module_event_add_listener(evm_t *e, evm_val_t *pthis, const char *type, evm_val_t *listener);
-extern void evm_module_event_remove_listener(evm_t *e, evm_val_t *pthis, const char *type);
-extern void evm_module_event_emit (evm_t *e, evm_val_t *pthis, const char *type, int argc, evm_val_t *v);
+extern evm_err_t evm_module_event_add_listener(evm_t *e, evm_val_t pthis, const char *type, evm_val_t listener);
+extern void evm_module_event_remove_listener(evm_t *e, evm_val_t pthis, const char *type);
+extern void evm_module_event_emit (evm_t *e, evm_val_t pthis, const char *type, int argc, evm_val_t *v);
 const char * evm_module_get_cwd();
 void evm_module_set_cwd(const char *cwd);
 evm_err_t evm_module_init(evm_t *env);

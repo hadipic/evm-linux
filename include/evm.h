@@ -3,7 +3,7 @@
 ** Copyright (C) 2022 @武汉市凡迈科技有限公司
 **
 **  EVM是一款通用化设计的虚拟机引擎，拥有语法解析前端接口、编译器、虚拟机和虚拟机扩展接口框架。
-**  Version	: 3.2
+**  Version	: 1.0
 **  Email	: scriptiot@aliyun.com
 **  Website	: https://gitee.com/scriptiot
 **  Licence: 个人免费，企业授权
@@ -75,12 +75,17 @@ EVM_API evm_val_t evm_list_get(evm_t *e, evm_val_t o, int index);
 
 /*** 对象操作函数 ***/
 EVM_API evm_val_t evm_object_create(evm_t *e);
+EVM_API evm_val_t evm_object_create_user_data(evm_t *e, void *data);
+EVM_API void evm_object_set_user_data(evm_t *e, evm_val_t o, void *data);
+EVM_API void *evm_object_get_user_data(evm_t *e, evm_val_t o);
 EVM_API evm_val_t evm_global_get(evm_t *e, const char* key);
 EVM_API evm_err_t evm_global_set(evm_t *e, const char *key, evm_val_t v);
+EVM_API void evm_global_delete(evm_t *e, const char *key);
 
 /*** 成员操作函数 ***/
 EVM_API evm_val_t evm_prop_get(evm_t *e, evm_val_t o, const char* key);
 EVM_API evm_err_t evm_prop_set(evm_t *e, evm_val_t o, const char *key, evm_val_t v);
+EVM_API void evm_prop_delete(evm_t *e, evm_val_t o, const char *key);
 
 /*** 模块操作函数 ***/
 EVM_API evm_err_t evm_module_add(evm_t *e, const char* name, evm_val_t v);
@@ -89,6 +94,7 @@ EVM_API evm_val_t evm_module_get(evm_t *e, const char* name);
 /*** 其它操作函数 ***/
 EVM_API void evm_heap_gc(evm_t *e);
 EVM_API void evm_throw(evm_t *e, evm_val_t v);
+EVM_API evm_val_t evm_mk_global(evm_t *e);
 
 /*** 虚拟机相关函数 ***/
 EVM_API evm_t *evm_init(void);
@@ -103,7 +109,6 @@ EVM_API double evm_2_double(evm_t *e, evm_val_t v);
 EVM_API int32_t evm_2_integer(evm_t *e, evm_val_t v);
 EVM_API int evm_2_boolean(evm_t *e, evm_val_t v);
 EVM_API const char *evm_2_string(evm_t *e, evm_val_t v);
-
 EVM_API int evm_is_number(evm_t *e, evm_val_t v);
 EVM_API int evm_is_integer(evm_t *e, evm_val_t v);
 EVM_API int evm_is_string(evm_t *e, evm_val_t v);
@@ -125,7 +130,7 @@ EVM_API void evm_val_free(evm_t *e, evm_val_t v);
 EVM_API evm_val_t evm_val_duplicate(evm_t *e, evm_val_t v);
 
 static inline void evm_assert_fail (const char *assertion, const char *file, const char *function, const int line){
-    evm_print ("AssertionError: '%s' failed at %s(%s):%lu.\n",
+    printf ("AssertionError: '%s' failed at %s(%s):%lu.\n",
                        assertion,
                        file,
                        function,

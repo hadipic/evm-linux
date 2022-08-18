@@ -1,80 +1,72 @@
 #ifdef CONFIG_EVM_MODULE_EVENTS
 #include "evm_module.h"
 
-static evm_hash_t _hashname_events;
-
 //emitter.addListener(event, listener)
-static evm_val_t evm_module_events_emitter_addListener(evm_t *e, evm_val_t *p, int argc, evm_val_t *v) {
-    if( argc < 2 || !evm_is_string(v) || !evm_is_script(v + 1) )
-        return EVM_VAL_UNDEFINED;
-    evm_val_t *events = evm_prop_get_by_key(e, p, _hashname_events, 0);
-    if( events ) {
-        evm_prop_append(e, events, evm_2_string(v), *(v + 1));
+static evm_val_t evm_module_events_emitter_addListener(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+    if( argc < 2 || !evm_is_string(e, v[0]) || !evm_is_callable(e, v[1]) )
+        return evm_mk_undefined(e);
+    evm_val_t events = evm_prop_get(e, p, "events");
+    evm_val_free(e, events);
+    if( !evm_is_undefined(e, events) ) {
+        evm_val_t listener = evm_val_duplicate(e, v[1]);
+        evm_prop_set(e, events, evm_2_string(e, v[0]), listener);
     }
-    return EVM_VAL_UNDEFINED;
+    return evm_mk_undefined(e);
 }
 
 //emitter.on(event, listener)
-static evm_val_t evm_module_events_emitter_on(evm_t *e, evm_val_t *p, int argc, evm_val_t *v) {
+static evm_val_t evm_module_events_emitter_on(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
     return evm_module_events_emitter_addListener(e, p, argc, v);
 }
 
 //emitter.emit(event[, args..])
-static evm_val_t evm_module_events_emitter_emit(evm_t *e, evm_val_t *p, int argc, evm_val_t *v) {
-    if( argc < 1 || !evm_is_string(v) )
-        return EVM_VAL_UNDEFINED;
-    evm_module_event_emit(e, p, evm_2_string(v), argc - 1, v + 1);
-    return EVM_VAL_UNDEFINED;
+static evm_val_t evm_module_events_emitter_emit(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+    if( argc < 1 || !evm_is_string(e, v[0]) )
+        return evm_mk_undefined(e);
+    evm_module_event_emit(e, p, evm_2_string(e, v[0]), argc - 1, v + 1);
+    return evm_mk_undefined(e);
 }
 
 //emitter.once(event, listener)
-static evm_val_t evm_module_events_emitter_once(evm_t *e, evm_val_t *p, int argc, evm_val_t *v) {
+static evm_val_t evm_module_events_emitter_once(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
     return evm_module_events_emitter_addListener(e, p, argc, v);
 }
 
 //emitter.removeListener(event, listener)
-static evm_val_t evm_module_events_emitter_removeListener(evm_t *e, evm_val_t *p, int argc, evm_val_t *v) {
-    evm_val_t *events = evm_prop_get_by_key(e, p, _hashname_events, 0);
-    if( events ) {
-        evm_prop_append(e, events, evm_2_string(v), EVM_VAL_UNDEFINED);
+static evm_val_t evm_module_events_emitter_removeListener(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+    evm_val_t events = evm_prop_get(e, p, "events");
+    evm_val_free(e, events);
+    if( !evm_is_undefined(e, events) ) {
+        evm_prop_delete(e, events, evm_2_string(e, v[0]));
     }
-    return EVM_VAL_UNDEFINED;
+    return evm_mk_undefined(e);
 }
 
 //emitter.removeAllListeners([event])
-static evm_val_t evm_module_events_emitter_removeAllListeners(evm_t *e, evm_val_t *p, int argc, evm_val_t *v) {
-    evm_val_t *events = evm_object_create(e, GC_OBJECT, 0, 0);
-    if( events )
-        evm_prop_push_with_key(e, p, _hashname_events, events);
-    return EVM_VAL_UNDEFINED;
+static evm_val_t evm_module_events_emitter_removeAllListeners(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+    evm_val_t events = evm_object_create(e);
+    evm_prop_set(e, p, "events", events);
+    return evm_mk_undefined(e);
 }
 
 //emitter.EventEmitter
-static evm_val_t evm_module_events_emitter_EventEmitter(evm_t *e, evm_val_t *p, int argc, evm_val_t *v) {
-    evm_val_t *obj = evm_object_create(e, GC_OBJECT, 7, 0);
-    if( obj ) {
-        evm_prop_append(e, obj, "addListener", evm_mk_native((intptr_t)evm_module_events_emitter_addListener));
-        evm_prop_append(e, obj, "on", evm_mk_native((intptr_t)evm_module_events_emitter_on));
-        evm_prop_append(e, obj, "emit", evm_mk_native((intptr_t)evm_module_events_emitter_emit));
-        evm_prop_append(e, obj, "once", evm_mk_native((intptr_t)evm_module_events_emitter_once));
-        evm_prop_append(e, obj, "removeListener", evm_mk_native((intptr_t)evm_module_events_emitter_removeListener));
-        evm_prop_append(e, obj, "removeAllListeners", evm_mk_native((intptr_t)evm_module_events_emitter_removeAllListeners));
-        evm_val_t *events = evm_object_create(e, GC_OBJECT, 0, 0);
-        if( events )
-            evm_prop_push_with_key(e, obj, _hashname_events, events);
-        return *obj;
-    }
-    return EVM_VAL_UNDEFINED;
+static evm_val_t evm_module_events_emitter_EventEmitter(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+    evm_val_t obj = evm_object_create(e);
+    evm_prop_set(e, obj, "addListener", evm_mk_native(e, evm_module_events_emitter_addListener, "addListener", 2));
+    evm_prop_set(e, obj, "on", evm_mk_native(e, evm_module_events_emitter_on, "on", 2));
+    evm_prop_set(e, obj, "emit", evm_mk_native(e, evm_module_events_emitter_emit, "emit", 2));
+    evm_prop_set(e, obj, "once", evm_mk_native(e, evm_module_events_emitter_once, "once", 2));
+    evm_prop_set(e, obj, "removeListener", evm_mk_native(e, evm_module_events_emitter_removeListener, "removeListener", 1));
+    evm_prop_set(e, obj, "removeAllListeners", evm_mk_native(e, evm_module_events_emitter_removeAllListeners, "removeAllListeners", 0));
+    evm_prop_set(e, obj, "events", evm_object_create(e));
+    return obj;
 }
 
 evm_err_t evm_module_events(evm_t *e) {
-    _hashname_events = evm_str_insert(e, "_events", 0);
-    evm_builtin_t builtin[] = {
-        {"EventEmitter", evm_mk_native((intptr_t)evm_module_events_emitter_EventEmitter)},
-        {NULL, EVM_VAL_UNDEFINED}
-    };
-    evm_module_create(e, "events", builtin);
-    return e->err;
+    evm_val_t obj = evm_object_create(e);
+    evm_prop_set(e, obj, "EventEmitter", evm_mk_native(e, evm_module_events_emitter_EventEmitter, "EventEmitter", 0));
+    evm_module_add(e, "events", obj);
+    return ec_ok;
 }
 
 #endif

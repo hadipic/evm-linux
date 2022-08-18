@@ -12,164 +12,150 @@ enum
 };
 
 //assert(value[, message])
-static evm_val_t evm_module_assert_assert(evm_t *e, evm_val_t *p, int argc, evm_val_t *v)
+static evm_val_t evm_module_assert_assert(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
     if (argc < 1)
-        return EVM_VAL_UNDEFINED;
+        return evm_mk_undefined(e);
 
     const char *message = NULL;
 
-    if (argc > 1 && evm_is_string(v + 1))
-        message = evm_2_string(v + 1);
+    if (argc > 1 && evm_is_string(e, v[1]))
+        message = evm_2_string(e, v[1]);
 
-    if (evm_is_boolean(v))
+    if (evm_is_boolean(e, v[0]))
     {
-        if (evm_2_boolean(v))
-            return EVM_VAL_TRUE;
-        evm_set_err(e, ec_type, message);
-        return NULL;
+        if (evm_2_boolean(e, v[0]))
+            return evm_mk_boolean(e, 1);
+        evm_throw(e, evm_mk_string(e, message));
     }
-    else if (evm_is_number(v))
+    else if (evm_is_number(e, v[0]))
     {
-        if (evm_2_integer(v))
-            return EVM_VAL_TRUE;
-        evm_set_err(e, ec_type, message);
-        return NULL;
+        if (evm_2_integer(e, v[0]))
+            return evm_mk_boolean(e, 1);
+        evm_throw(e, evm_mk_string(e, message));
     }
-    return EVM_VAL_UNDEFINED;
+    return evm_mk_undefined(e);
 }
 
 //doesNotThrow(block[, message])
-static evm_val_t evm_module_assert_doesNotThrow(evm_t *e, evm_val_t *p, int argc, evm_val_t *v)
+static evm_val_t evm_module_assert_doesNotThrow(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
-    if (argc < 1 || !evm_is_script(v))
-        return EVM_VAL_UNDEFINED;
+    if (argc < 1 || !evm_is_callable(e, v[0]))
+        return evm_mk_undefined(e);
 
     const char *message = NULL;
-    if (argc > 1 && evm_is_string(v + 1))
-        message = evm_2_string(v + 1);
-
-    if (evm_run_callback(e, v, NULL, NULL, 0) == EVM_VAL_TRUE) {
-        return EVM_VAL_TRUE;
+    if (argc > 1 && evm_is_string(e, v[1]))
+        message = evm_2_string(e, v[1]);
+    evm_val_t res = evm_call_free(e, v[0], evm_mk_undefined(e), 0, NULL);
+    if ( evm_2_boolean(e, res) ) {
+        return evm_mk_boolean(e, 1);
     } else {
-        evm_set_err(e, ec_type, message);
-        return NULL;
+        evm_throw(e, evm_mk_string(e, message));
     }
 }
 
-static evm_val_t compare(evm_val_t *l, evm_val_t *r) {
-    if (evm_is_integer(l)) {
-        if (evm_is_integer(r)) {
-            if (evm_2_integer(l) == evm_2_integer(r)) {
-                return EVM_VAL_TRUE;
+static evm_val_t compare(evm_t *e, evm_val_t l, evm_val_t r) {
+    if (evm_is_integer(e, l)) {
+        if (evm_is_integer(e, r)) {
+            if (evm_2_integer(e, l) == evm_2_integer(e, r)) {
+                return evm_mk_boolean(e, 1);
             } else {
-                return EVM_VAL_FALSE;
+                return evm_mk_boolean(e, 0);
             }
         } else {
-            return EVM_VAL_FALSE;
+            return evm_mk_boolean(e, 0);
         }
-    } else if (evm_is_boolean(l)) {
-        if (evm_2_boolean(r)) {
-            if (evm_2_boolean(l) == evm_2_boolean(r)) {
-                return EVM_VAL_TRUE;
+    } else if (evm_is_boolean(e, l)) {
+        if (evm_2_boolean(e, r)) {
+            if (evm_2_boolean(e, l) == evm_2_boolean(e, r)) {
+                return evm_mk_boolean(e, 1);
             } else {
-                return EVM_VAL_FALSE;
+                return evm_mk_boolean(e, 0);
             }
         } else {
-            return EVM_VAL_FALSE;
+            return evm_mk_boolean(e, 0);
         }
-    } else if (evm_is_string(l)) {
-        if (evm_is_string(r)) {
-            if (strcmp(evm_2_string(l), evm_2_string(r)) == 0) {
-                return EVM_VAL_TRUE;
+    } else if (evm_is_string(e, l)) {
+        if (evm_is_string(e, r)) {
+            if (strcmp(evm_2_string(e, l), evm_2_string(e, r)) == 0) {
+                return evm_mk_boolean(e, 1);
             } else {
-                return EVM_VAL_FALSE;
+                return evm_mk_boolean(e, 0);
             }
         } else {
-            return EVM_VAL_FALSE;
-        }
-    } else if (evm_is_object(l)) {
-        if (evm_is_object(r)) {
-            if (evm_object_get_hash(l) != evm_object_get_hash(r)) {
-                return EVM_VAL_FALSE;
-            } else {
-                return EVM_VAL_TRUE;
-            }
-        }
-        else {
-            return EVM_VAL_FALSE;
+            return evm_mk_boolean(e, 0);
         }
     } else {
-        return EVM_VAL_FALSE;
+        return evm_mk_boolean(e, 0);
     }
 }
 
 //equal(actual, expected[, message])
-static evm_val_t evm_module_assert_equal(evm_t *e, evm_val_t *p, int argc, evm_val_t *v)
+static evm_val_t evm_module_assert_equal(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
     if (argc <= 1)
-        return EVM_VAL_UNDEFINED;
+        return evm_mk_undefined(e);
 
     const char *message = NULL;
-    if (argc > 1 && evm_is_string(v + 1))
-        message = evm_2_string(v + 1);
+    if (argc > 1 && evm_is_string(e, v[1]))
+        message = evm_2_string(e, v[1]);
 
-    evm_val_t result = compare(v, v + 1);
-    if (result == EVM_VAL_TRUE) return result;
+    evm_val_t result = compare(e, v[0], v[1]);
+    if ( evm_2_boolean(e, result) )
+        return result;
     else {
-        evm_set_err(e, ec_type, message);
-        return NULL;
+        evm_throw(e, evm_mk_string(e, message));
     }
 }
 
-static evm_val_t compare_by_value(evm_val_t *l, evm_val_t *r, int _operator) {
+static evm_val_t compare_by_value(evm_t *e, evm_val_t l, evm_val_t r, int _operator) {
     evm_val_t result;
     switch (_operator) {
     case NOT_EQUAL: {
-        if (evm_2_integer(l) != evm_2_integer(r)) {
-            result = EVM_VAL_FALSE;
+        if (evm_2_integer(e, l) != evm_2_integer(e, r)) {
+            result = evm_mk_boolean(e, 0);
         } else {
-            result = EVM_VAL_TRUE;
+            result = evm_mk_boolean(e, 1);
         }
         break;
     }
     case EQUAL: {
-        if (evm_2_integer(l) == evm_2_integer(r)) {
-            result = EVM_VAL_FALSE;
+        if (evm_2_integer(e, l) == evm_2_integer(e, r)) {
+            result = evm_mk_boolean(e, 0);
         } else {
-            result = EVM_VAL_TRUE;
+            result = evm_mk_boolean(e, 1);
         }
         break;
     }
     case GREATER: {
-        if (evm_2_integer(l) > evm_2_integer(r)) {
-            result = EVM_VAL_FALSE;
+        if (evm_2_integer(e, l) > evm_2_integer(e, r)) {
+            result = evm_mk_boolean(e, 0);
         } else {
-            result = EVM_VAL_TRUE;
+            result = evm_mk_boolean(e, 1);
         }
         break;
     }
     case GREATER_THAN: {
-        if (evm_2_integer(l) >= evm_2_integer(r)) {
-            result = EVM_VAL_FALSE;
+        if (evm_2_integer(e, l) >= evm_2_integer(e, r)) {
+            result = evm_mk_boolean(e, 0);
         } else {
-            result = EVM_VAL_TRUE;
+            result = evm_mk_boolean(e, 1);
         }
         break;
     }
     case LESS_THAN: {
-        if (evm_2_integer(l) <= evm_2_integer(r)) {
-            result = EVM_VAL_FALSE;
+        if (evm_2_integer(e, l) <= evm_2_integer(e, r)) {
+            result = evm_mk_boolean(e, 0);
         } else {
-            result = EVM_VAL_TRUE;
+            result = evm_mk_boolean(e, 1);
         }
         break;
     }
     case LESS: {
-        if (evm_2_integer(l) < evm_2_integer(r)) {
-            result = EVM_VAL_FALSE;
+        if (evm_2_integer(e, l) < evm_2_integer(e, r)) {
+            result = evm_mk_boolean(e, 0);
         } else {
-            result = EVM_VAL_TRUE;
+            result = evm_mk_boolean(e, 1);
         }
         break;
     }
@@ -179,99 +165,95 @@ static evm_val_t compare_by_value(evm_val_t *l, evm_val_t *r, int _operator) {
 
 //fail(actual, expected, message, operator)
 //operator: != | == | > | >= | < | <=
-static evm_val_t evm_module_assert_fail(evm_t *e, evm_val_t *p, int argc, evm_val_t *v)
+static evm_val_t evm_module_assert_fail(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
-    if (argc <= 3 || !evm_is_string(v + 3))
-        return EVM_VAL_UNDEFINED;
+    if (argc <= 3 || !evm_is_string(e, v[3]))
+        return evm_mk_undefined(e);
 
-    const char *message = evm_2_string(v + 2);
+    const char *message = evm_2_string(e, v[2]);
 
     evm_val_t result = evm_module_assert_equal(e, p, argc, v);
-    if (result != EVM_VAL_TRUE) {
-        evm_set_err(e, ec_type, message);
-        return EVM_VAL_UNDEFINED;
+    if ( evm_2_boolean(e, result) ) {
+        evm_throw(e, evm_mk_string(e, message));
     }
 
-    const char *_operator= evm_2_string(v + 3);
+    const char *_operator= evm_2_string(e, v[3]);
     if (strcmp(_operator, "!=") == 0) {
-        result = compare_by_value(v, v + 1, NOT_EQUAL);
+        result = compare_by_value(e, v[0], v[1], NOT_EQUAL);
     } else if (strcmp(_operator, "==") == 0) {
-        result = compare_by_value(v, v + 1, EQUAL);
+        result = compare_by_value(e, v[0], v[1], EQUAL);
     } else if (strcmp(_operator, ">") == 0) {
-        result = compare_by_value(v, v + 1, GREATER);
+        result = compare_by_value(e, v[0], v[1], GREATER);
     } else if (strcmp(_operator, ">=") == 0) {
-        result = compare_by_value(v, v + 1, GREATER_THAN);
+        result = compare_by_value(e, v[0], v[1], GREATER_THAN);
     } else if (strcmp(_operator, "<=") == 0) {
-        result = compare_by_value(v, v + 1, LESS_THAN);
+        result = compare_by_value(e, v[0], v[1], LESS_THAN);
     } else if (strcmp(_operator, "<") == 0) {
-        result = compare_by_value(v, v + 1, LESS);
+        result = compare_by_value(e, v[0], v[1], LESS);
     } else {
-        result = EVM_VAL_UNDEFINED;
+        result = evm_mk_undefined(e);
     }
     return result;
 }
 
 //notEqual(actual, expected[, message])
-static evm_val_t evm_module_assert_notEqual(evm_t *e, evm_val_t *p, int argc, evm_val_t *v)
+static evm_val_t evm_module_assert_notEqual(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
     if (argc < 2)
-        return EVM_VAL_UNDEFINED;
+        return evm_mk_undefined(e);
 
     const char *message = NULL;
-    if (argc > 1 && evm_is_string(v + 2))
-        message = evm_2_string(v + 2);
+    if (argc > 1 && evm_is_string(e, v[2]))
+        message = evm_2_string(e, v[2]);
 
-    evm_val_t result = compare(v, v + 1);
-    if (result == EVM_VAL_TRUE) {
-        evm_set_err(e, ec_type, message);
-        return NULL;
+    evm_val_t result = compare(e, v[0], v[1]);
+    if ( evm_2_boolean(e, result) ) {
+        evm_throw(e, evm_mk_string(e, message));
     }
-    return EVM_VAL_TRUE;
+    return evm_mk_boolean(e, 1);
 }
 
 //notStrictEqual(actual, expected[, message])
-static evm_val_t evm_module_assert_notStrictEqual(evm_t *e, evm_val_t *p, int argc, evm_val_t *v)
+static evm_val_t evm_module_assert_notStrictEqual(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
     return evm_module_assert_notEqual(e, p, argc, v);
 }
 
 //strictEqual(actual, expected[, message])
-static evm_val_t evm_module_assert_strictEqual(evm_t *e, evm_val_t *p, int argc, evm_val_t *v)
+static evm_val_t evm_module_assert_strictEqual(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
     return evm_module_assert_equal(e, p, argc, v);
 }
 
 //throws(block[, expected, message])
-static evm_val_t evm_module_assert_throws(evm_t *e, evm_val_t *p, int argc, evm_val_t *v)
+static evm_val_t evm_module_assert_throws(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
-    if (argc < 1 || !evm_is_script(v))
-        return EVM_VAL_UNDEFINED;
+    if (argc < 1 || !evm_is_callable(e, v[0]))
+        return evm_mk_undefined(e);
 
     const char *message = NULL;
-    if (argc > 1 && evm_is_string(v + 1))
-        message = evm_2_string(v + 1);
-
-    if (evm_run_callback(e, v, NULL, NULL, 0) == EVM_VAL_TRUE) {
-        evm_set_err(e, ec_type, message);
-        return NULL;
+    if (argc > 1 && evm_is_string(e, v[1]))
+        message = evm_2_string(e, v[1]);
+    evm_val_t res = evm_call_free(e, v[0], evm_mk_undefined(e), 0, NULL);
+    if ( evm_2_boolean(e, res) ) {
+        evm_throw(e, evm_mk_string(e, message));
     } else {
-        return EVM_VAL_TRUE;
+        return evm_mk_boolean(e, 1);
     }
 }
 
 evm_err_t evm_module_assert(evm_t *e)
 {
-    evm_builtin_t builtin[] = {
-        {"assert", evm_mk_native((intptr_t)evm_module_assert_assert)},
-        {"doesNotThrow", evm_mk_native((intptr_t)evm_module_assert_doesNotThrow)},
-        {"equal", evm_mk_native((intptr_t)evm_module_assert_equal)},
-        {"fail", evm_mk_native((intptr_t)evm_module_assert_fail)},
-        {"notEqual", evm_mk_native((intptr_t)evm_module_assert_notEqual)},
-        {"notStrictEqual", evm_mk_native((intptr_t)evm_module_assert_notStrictEqual)},
-        {"strictEqual", evm_mk_native((intptr_t)evm_module_assert_strictEqual)},
-        {"throws", evm_mk_native((intptr_t)evm_module_assert_throws)},
-        {NULL, NULL}};
-    evm_module_create(e, "assert", builtin);
-    return e->err;
+    evm_val_t obj = evm_object_create(e);
+    evm_prop_set(e, obj, "assert", evm_mk_native(e, evm_module_assert_assert, "assert", 1));
+    evm_prop_set(e, obj, "doesNotThrow", evm_mk_native(e, evm_module_assert_doesNotThrow, "doesNotThrow", 1));
+    evm_prop_set(e, obj, "equal", evm_mk_native(e, evm_module_assert_equal, "equal", 1));
+    evm_prop_set(e, obj, "fail", evm_mk_native(e, evm_module_assert_fail, "fail", 1));
+    evm_prop_set(e, obj, "notEqual", evm_mk_native(e, evm_module_assert_notEqual, "notEqual", 1));
+    evm_prop_set(e, obj, "notStrictEqual", evm_mk_native(e, evm_module_assert_notStrictEqual, "notStrictEqual", 1));
+    evm_prop_set(e, obj, "strictEqual", evm_mk_native(e, evm_module_assert_strictEqual, "strictEqual", 1));
+    evm_prop_set(e, obj, "throws", evm_mk_native(e, evm_module_assert_throws, "throws", 1));
+    evm_module_add(e, "assert", obj);
+    return ec_ok;
 }
 #endif

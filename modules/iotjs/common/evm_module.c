@@ -2,91 +2,91 @@
 
 evm_t *evm_runtime;
 
-static evm_hash_t _hashname_events;
 
-struct _module_registry_t {
-    evm_val_t *start;
-    int size;
-} _module_registry;
-
-void evm_module_registry_init(evm_t *e, int size) {
+void evm_module_registry_init(evm_t *e) {
     evm_runtime = e;
-    e->sp++;
-    _module_registry.start = e->sp;
-    e->sp += size;
-    _module_registry.size = size;
-
-    for(uint32_t i = 0; i < _module_registry.size; i++) {
-        _module_registry.start[i] = EVM_VAL_UNDEFINED;
-    }
-
-    _hashname_events = evm_str_insert(e, "_events", 0);
+    evm_val_t registry = evm_list_create(e);
+    evm_global_set(e, "@registry", registry);
 }
 
-int evm_module_registry_add(evm_t *e, evm_val_t *v) {
-    for(int i = 0; i < _module_registry.size; i++) {
-        if( _module_registry.start[i] == EVM_VAL_UNDEFINED ) {
-            _module_registry.start[i] = *v;
+int evm_module_registry_add(evm_t *e, evm_val_t v) {
+    evm_val_t registry = evm_global_get(e, "@registry");
+    int size = evm_list_len(e, registry);
+    for(int i = 0; i < size; i++) {
+        evm_val_t item = evm_list_get(e, registry, i);
+        if( evm_is_undefined(e, item) ) {
+            evm_val_free(e, item);
+            evm_list_set(e, registry, i, v);
             return i;
         }
+        evm_val_free(e, item);
     }
+    evm_list_set(e, registry, size, v);
     return -1;
 }
 
-evm_val_t *evm_module_registry_get(evm_t *e, int id) {
-    if( id < 0 || id >= _module_registry.size )
-        return NULL;
-    return _module_registry.start + id;
+evm_val_t evm_module_registry_get(evm_t *e, int id) {
+    evm_val_t registry = evm_global_get(e, "@registry");
+    int size = evm_list_len(e, registry);
+    evm_val_free(e, registry);
+    if( id < 0 || id >= size ) {
+        return evm_mk_undefined(e);
+    }
+    return evm_list_get(e, registry, id);
 }
 
 void evm_module_registry_remove(evm_t *e, int id) {
-    if( id < 0 || id >= _module_registry.size )
+    evm_val_t registry = evm_global_get(e, "@registry");
+    int size = evm_list_len(e, registry);
+    evm_val_free(e, registry);
+    if( id < 0 || id >= size )
         return;
-    _module_registry.start[id] = EVM_VAL_UNDEFINED;
+    evm_list_set(e, registry, id, evm_mk_undefined(e));
 }
 
 void evm_module_next_tick(evm_t *e, int argc, evm_val_t *v) {
 #ifdef CONFIG_EVM_MODULE_PROCESS
-    evm_module_process_nextTick(e, NULL, argc, v);
+    evm_val_t undef = evm_mk_undefined(e);
+    evm_val_free(e, undef);
+    evm_module_process_nextTick(e, undef, argc, v);
 #endif
 }
 
-evm_err_t evm_module_event_add_listener(evm_t *e, evm_val_t *pthis, const char *type, evm_val_t *listener) {
-    if( !evm_is_script(listener) ) {
-        return evm_set_err(e, ec_type, "Listener must be a function");
+evm_err_t evm_module_event_add_listener(evm_t *e, evm_val_t pthis, const char *type, evm_val_t listener) {
+    if( !evm_is_callable(e, listener) ) {
+        evm_throw(e, evm_mk_string(e,"Listener must be a function"));
     }
-    evm_val_t *prop = evm_prop_get_by_key(e, pthis, _hashname_events, 0);
-    if( !prop ) {
-        prop = evm_object_create(e, GC_OBJECT, 0, 0);
-        if( prop )
-            evm_prop_push_with_key(e, pthis, _hashname_events, prop);
+    evm_val_t prop = evm_prop_get(e, pthis, "events");
+    if( evm_is_undefined(e, prop) ) {
+        evm_val_free(e, prop);
+        prop = evm_object_create(e);
+        evm_prop_set(e, pthis, "events", prop);
     }
-
-    evm_prop_append(e, prop, type, *listener);
+    evm_prop_set(e, prop, type, listener);
     return ec_ok;
 }
 
-void evm_module_event_remove_listener(evm_t *e, evm_val_t *pthis, const char *type) {
-    evm_val_t *prop = evm_prop_get_by_key(e, pthis, _hashname_events, 0);
-    if( !prop ) {
+void evm_module_event_remove_listener(evm_t *e, evm_val_t pthis, const char *type) {
+    evm_val_t prop = evm_prop_get(e, pthis, "events");
+    if( evm_is_undefined(e, prop) ) {
+        evm_val_free(e, prop);
         return;
     }
-    evm_val_t *listener = evm_prop_get(e, prop, type, 0);
-    if( listener ) {
-        evm_set_undefined(listener);
-    }
+    evm_prop_delete(e, prop, type);
+    evm_val_free(e, prop);
 }
 
-void evm_module_event_emit (evm_t *e, evm_val_t *pthis, const char *type, int argc, evm_val_t *v) {
-    evm_val_t *prop = evm_prop_get_by_key(e, pthis, _hashname_events, 0);
-    if( !prop ) {
+void evm_module_event_emit (evm_t *e, evm_val_t pthis, const char *type, int argc, evm_val_t *v) {
+    evm_val_t prop = evm_prop_get(e, pthis, "events");
+    evm_val_free(e, prop);
+    if( evm_is_undefined(e, prop) ) {
         return;
     }
-
-    evm_val_t *listener = evm_prop_get(e, prop, type, 0);
-    if( listener && evm_is_script(listener)) {
+    evm_val_t listener = evm_prop_get(e, prop, type);
+    evm_val_free(e, listener);
+    if( evm_is_callable(e, listener)) {
         evm_val_t args[argc + 1];
-        args[0] = *listener;
+        args[0] = listener;
         for(int i = 1; i < argc + 1; i++) {
             args[i] = *(v + i - 1);
         }
@@ -94,8 +94,26 @@ void evm_module_event_emit (evm_t *e, evm_val_t *pthis, const char *type, int ar
     }
 }
 
+static evm_val_t native_print(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+    const char *s = evm_2_string(e, v[0]);
+    printf("%s\r\n", s);
+    return evm_mk_undefined(e);
+}
+
+static evm_val_t native_require(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+    return evm_module_get(e, evm_2_string(e, v[0]));
+}
+
+static void evm_native_init(evm_t *e) {
+    evm_global_set(e, "print", evm_mk_native(e, native_print, "print", 1));
+    evm_global_set(e, "require", evm_mk_native(e, native_require, "require", 1));
+}
+
 evm_err_t evm_module_init(evm_t *env)
 {
+    evm_module_registry_init(env);
+    evm_native_init(env);
+
     evm_err_t err;
 #ifdef CONFIG_EVM_MODULE_ADC
     err = evm_module_adc(env);
@@ -128,7 +146,7 @@ evm_err_t evm_module_init(evm_t *env)
     err = evm_module_fs(env);
     if (err != ec_ok)
     {
-        evm_print("Failed to create fs module\r\n");
+        printf("Failed to create fs module\r\n");
         return err;
     }
 #endif
@@ -137,7 +155,7 @@ evm_err_t evm_module_init(evm_t *env)
     err = evm_module_net(env);
     if (err != ec_ok)
     {
-        evm_print("Failed to create net module\r\n");
+        printf("Failed to create net module\r\n");
         return err;
     }
 #endif
@@ -146,7 +164,7 @@ evm_err_t evm_module_init(evm_t *env)
     err = evm_module_http(env);
     if (err != ec_ok)
     {
-        evm_print("Failed to create http module\r\n");
+        printf("Failed to create http module\r\n");
         return err;
     }
 #endif
@@ -155,7 +173,7 @@ evm_err_t evm_module_init(evm_t *env)
     err = evm_module_process(env);
     if (err != ec_ok)
     {
-        evm_print("Failed to create process module\r\n");
+        printf("Failed to create process module\r\n");
         return err;
     }
 #endif
@@ -164,7 +182,7 @@ evm_err_t evm_module_init(evm_t *env)
     err = evm_module_events(env);
     if (err != ec_ok)
     {
-        evm_print("Failed to create events module\r\n");
+        printf("Failed to create events module\r\n");
         return err;
     }
 #endif
@@ -173,7 +191,7 @@ evm_err_t evm_module_init(evm_t *env)
     err = evm_module_dns(env);
     if (err != ec_ok)
     {
-        evm_print("Failed to create dns module\r\n");
+        printf("Failed to create dns module\r\n");
         return err;
     }
 #endif
@@ -182,7 +200,7 @@ evm_err_t evm_module_init(evm_t *env)
     err = evm_module_timers(env);
     if (err != ec_ok)
     {
-        evm_print("Failed to create timers module\r\n");
+        printf("Failed to create timers module\r\n");
         return err;
     }
 #endif
@@ -191,7 +209,7 @@ evm_err_t evm_module_init(evm_t *env)
     err = evm_module_buffer(env);
     if (err != ec_ok)
     {
-        evm_print("Failed to create buffer module\r\n");
+        printf("Failed to create buffer module\r\n");
         return err;
     }
 #endif
@@ -200,7 +218,7 @@ evm_err_t evm_module_init(evm_t *env)
     err = evm_module_assert(env);
     if (err != ec_ok)
     {
-        evm_print("Failed to create assert module\r\n");
+        printf("Failed to create assert module\r\n");
         return err;
     }
 #endif

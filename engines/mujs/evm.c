@@ -30,7 +30,9 @@ int evm_buffer_len(evm_t *e, evm_val_t o) {
 /*** 列表对象操作函数 ***/
 evm_val_t evm_list_create(evm_t *e) {
     js_newarray(e);
-    return *js_tovalue(e, -1);
+    evm_val_t obj = *js_tovalue(e, -1);
+    evm_prop_set(e, obj, "length", evm_mk_number(e, 0));
+    return obj;
 }
 
 int evm_list_len(evm_t *e, evm_val_t o) {
@@ -44,6 +46,10 @@ int evm_list_len(evm_t *e, evm_val_t o) {
 
 evm_err_t evm_list_set(evm_t *e, evm_val_t o, int i, evm_val_t v) {
     char buf[32];
+    int len = evm_list_len(e, o);
+    if( i >= len ) {
+        evm_prop_set(e, o, "length", evm_mk_number(e, i + 1));
+    }
     return evm_prop_set(e, o, js_itoa(buf, i), v);
 }
 
@@ -70,6 +76,23 @@ evm_val_t evm_object_create(evm_t *e) {
     return *js_tovalue(e, -1);
 }
 
+evm_val_t evm_object_create_user_data(evm_t *e, void *data) {
+    js_newuserdata(e, "", data, NULL);
+    return *js_tovalue(e, -1);
+}
+
+void evm_object_set_user_data(evm_t *e, evm_val_t o, void *data) {
+    js_Value *v = &o;
+    if (v->type == JS_TOBJECT && v->u.object->type == JS_CUSERDATA)
+        v->u.object->u.user.data = data;
+}
+void *evm_object_get_user_data(evm_t *e, evm_val_t o) {
+    js_Value *v = &o;
+    if (v->type == JS_TOBJECT && v->u.object->type == JS_CUSERDATA)
+        return v->u.object->u.user.data;
+    return NULL;
+}
+
 evm_val_t evm_global_get(evm_t *e, const char* key) {
     js_getglobal(e, key);
     return *js_tovalue(e, -1);
@@ -79,6 +102,10 @@ evm_err_t evm_global_set(evm_t *e, const char *key, evm_val_t v) {
     EVM_UNUSED(v);
     js_setglobal(e, key);
     return ec_ok;
+}
+
+void evm_global_delete(evm_t *e, const char *key) {
+    js_delglobal(e, key);
 }
 
 
@@ -101,7 +128,7 @@ evm_val_t evm_prop_get(evm_t *e, evm_val_t o, const char* key) {
 
 evm_err_t evm_prop_set(evm_t *e, evm_val_t o, const char *key, evm_val_t v) {
     if( !evm_is_object(e, o) ) {
-        js_pushundefined(e);
+        evm_val_free(e, v);
         return ec_err;
     }
     js_Property *ref;
@@ -114,6 +141,13 @@ evm_err_t evm_prop_set(evm_t *e, evm_val_t o, const char *key, evm_val_t v) {
     ref->value = v;
     evm_val_free(e, v);
     return ec_ok;
+}
+
+void evm_prop_delete(evm_t *e, evm_val_t o, const char *key) {
+    if( !evm_is_object(e, o) ) {
+        return;
+    }
+    jsV_delproperty(e, jsV_toobject(e, &o), key);
 }
 
 
@@ -183,7 +217,6 @@ evm_val_t evm_call(evm_t *e, evm_val_t obj, evm_val_t pthis, int argc, evm_val_t
 
 evm_val_t evm_call_free(evm_t *e, evm_val_t obj, evm_val_t pthis, int argc, evm_val_t *v) {
     evm_val_t res = evm_call(e, obj, pthis, argc, v);
-    evm_val_free(e, res);
     return res;
 }
 
@@ -304,4 +337,9 @@ void evm_val_free(evm_t *e, evm_val_t v) {
 evm_val_t evm_val_duplicate(evm_t *e, evm_val_t v) {
     js_pushvalue(e, v);
     return v;
+}
+
+evm_val_t evm_mk_global(evm_t *e) {
+    js_pushglobal(e);
+    return *js_tovalue(e, -1);
 }
