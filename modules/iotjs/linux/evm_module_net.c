@@ -20,12 +20,12 @@ typedef struct _net_sock_t {
 static void _net_server_thread(_net_sock_t *server_sock) {
     _net_sock_t *client_sock;
     while(client_sock->alive) {
-        client_sock = evm_malloc(sizeof(_net_sock_t));
+        client_sock = malloc(sizeof(_net_sock_t));
         if( client_sock ) {
             client_sock->sockfd = accept(server_sock->sockfd, (struct sockaddr *)&client_sock->addr, sizeof(struct sockaddr_in));
             if (client_sock->sockfd < 0) {
-                evm_print("accept connection failed!\r\n");
-                evm_free(client_sock);
+                printf("accept connection failed!\r\n");
+                free(client_sock);
                 continue;
             }
         }
