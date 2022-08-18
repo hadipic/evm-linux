@@ -222,5 +222,9 @@ evm_err_t evm_module_init(evm_t *env)
         return err;
     }
 #endif
+
+#ifdef CONFIG_EVM_MODULE_CFFI
+    evm_module_cffi(env);
+#endif
     return ec_ok;
 }

@@ -77,6 +77,7 @@ evm_val_t evm_object_create(evm_t *e) {
 }
 
 evm_val_t evm_object_create_user_data(evm_t *e, void *data) {
+    js_newobject(e);
     js_newuserdata(e, "", data, NULL);
     return *js_tovalue(e, -1);
 }
