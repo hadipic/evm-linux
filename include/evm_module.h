@@ -106,7 +106,6 @@ extern evm_err_t evm_module_assert(evm_t *e);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_CFFI
-
 typedef struct evm_module_cffi_t {
     char *funcname;
     uintptr_t funcID;
@@ -115,9 +114,15 @@ typedef struct evm_module_cffi_t {
 
 extern evm_err_t evm_module_cffi(evm_t *e);
 extern void evm_module_cffi_add(evm_t *e, evm_module_cffi_t *cffis);
-
 #endif
 
+#ifdef CONFIG_EVM_MODULE_LIBC
+evm_err_t evm_module_libc(evm_t *e);
+#endif
+
+#ifdef CONFIG_EVM_MODULE_SOCKET
+evm_err_t evm_module_socket(evm_t *e);
+#endif
 
 
 extern int evm_module_registry_add(evm_t *e, evm_val_t v);

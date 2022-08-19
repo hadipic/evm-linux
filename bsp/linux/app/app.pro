@@ -13,10 +13,13 @@ DEFINES += CONFIG_EVM_MODULE_TIMERS
 DEFINES += CONFIG_EVM_MODULE_BUFFER
 DEFINES += CONFIG_EVM_MODULE_ASSERT
 DEFINES += CONFIG_EVM_MODULE_CFFI
+DEFINES += CONFIG_EVM_MODULE_LIBC
+DEFINES += CONFIG_EVM_MODULE_NETWORK
 
 LIBS += -lpthread
 LIBS += -lrt
 INCLUDEPATH += $$PWD/../../../engines/mujs
+INCLUDEPATH += $$PWD/../../../modules/iotjs/common
 INCLUDEPATH += $$PWD/../../../components/webclient/inc
 INCLUDEPATH += $$PWD/../../../include
 
@@ -37,7 +40,9 @@ SOURCES += \
     ../../../modules/iotjs/common/evm_module_events.c \
     ../../../modules/iotjs/common/evm_module_buffer.c \
     ../../../modules/iotjs/common/evm_module_cffi.c \
-    ../../../modules/iotjs/common/evm_module_assert.c
+    ../../../modules/iotjs/common/evm_module_libc.c \
+    ../../../modules/iotjs/common/evm_module_assert.c \
+    ../../../modules/iotjs/common/evm_module_network.c
 
 SOURCES += \
     ../../../modules/iotjs/linux/evm_main.c \

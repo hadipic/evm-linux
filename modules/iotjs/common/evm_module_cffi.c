@@ -282,6 +282,13 @@ static evm_val_t evm_module_cffi_invoke(evm_t *e, evm_val_t p, int argc, evm_val
     return cffi_exec(e, invokable, argc - 2, v + 1, cffi->funcname, cffi->signature, cffi->funcID);
 }
 
+//free(pointer)
+static evm_val_t evm_module_cffi_free(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+    void * pointer = evm_object_get_user_data(e, v[0]);
+    free(pointer);
+    return EVM_UNDEFINED;
+}
+
 void evm_module_cffi_add(evm_t *e, evm_module_cffi_t *cffis) {
     evm_val_t cffi_module = evm_module_get(e, "cffi");
     evm_val_t registry = evm_prop_get(e, cffi_module, "$registry");
@@ -299,6 +306,7 @@ evm_err_t evm_module_cffi(evm_t *e)
     evm_val_t obj = evm_object_create(e);
     evm_val_t registry = evm_object_create(e);
     evm_prop_set(e, obj, "invoke", evm_mk_native(e, evm_module_cffi_invoke, "invoke", 0));
+    evm_prop_set(e, obj, "free", evm_mk_native(e, evm_module_cffi_free, "free", 0));
     evm_prop_set(e, obj, "$registry", registry);
     evm_module_add(e, "cffi", obj);
     return ec_ok;
