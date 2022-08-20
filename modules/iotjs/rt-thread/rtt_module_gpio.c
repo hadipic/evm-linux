@@ -104,7 +104,7 @@ void evm_gpio_write(evm_t *e, void *dev, int value){
 
 int evm_gpio_read(evm_t *e, void *dev){
 	_gpio_dev_t *gpio_dev = dev;
-	return rt_pin_read(gpio_dev->pin)
+	return rt_pin_read(gpio_dev->pin);
 }
 
 void evm_gpio_close(evm_t *e, void *dev){

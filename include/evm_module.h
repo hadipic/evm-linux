@@ -146,8 +146,8 @@ extern void *evm_timer_open(evm_t *e, int tick, int flag);
 extern void evm_timer_destroy(evm_t *e, void *dev);
 
 extern void *evm_uart_open(evm_t *e, evm_val_t obj);
-extern void evm_uart_write(evm_t *e, void *dev, void *buffer, int size);
-extern void evm_uart_read(evm_t *e, void *dev, void *buf, int size);
+extern int evm_uart_write(evm_t *e, void *dev, void *buffer, int size);
+extern int evm_uart_read(evm_t *e, void *dev, void *buf, int size);
 extern void evm_uart_close(evm_t *e, void *dev);
 extern void evm_uart_destroy(evm_t *e, void *dev);
 

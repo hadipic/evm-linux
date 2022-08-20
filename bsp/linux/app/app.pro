@@ -56,6 +56,13 @@ SOURCES += \
     ../../../modules/iotjs/common/evm_module_network.c
 
 SOURCES += \
+    ../../../modules/iotjs/linux/linux_module_adc.c \
+    ../../../modules/iotjs/linux/linux_module_i2c.c \
+    ../../../modules/iotjs/linux/linux_module_gpio.c \
+    ../../../modules/iotjs/linux/linux_module_timers.c \
+    ../../../modules/iotjs/linux/linux_module_uart.c
+
+SOURCES += \
     ../../../modules/iotjs/linux/evm_main.c
 
 
