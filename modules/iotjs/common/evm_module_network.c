@@ -1,4 +1,4 @@
-#ifdef CONFIG_EVM_MODULE_NETWORK
+#ifdef CONFIG_EVM_MODULE_NET
 #include "evm_module.h"
 #include <pthread.h>
 #include <sys/socket.h>
@@ -6,18 +6,12 @@
 #include <fcntl.h>
 #include "netdb.h"
 
-#define _SOCKET_READ_BUF_SIZE   4096
-
 typedef struct net_socket_t {
     struct sockaddr_in addr;
     int sockfd;
-    int obj_id;
-    pthread_t pid;
-    int alive;
-    uint8_t rx_buf[_SOCKET_READ_BUF_SIZE];
 } net_socket_t;
 
-//server.close([closeListener])
+//server.close()
 static evm_val_t evm_module_net_server_close(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
     net_socket_t *server_sock = evm_object_get_user_data(e, p);
@@ -27,8 +21,8 @@ static evm_val_t evm_module_net_server_close(evm_t *e, evm_val_t p, int argc, ev
     return EVM_UNDEFINED;
 }
 
-//server.listen(port[, host][, backlog][, listenListener])
-//server.listen(options[, listenListener])
+//server.listen(port[, host][, backlog])
+//server.listen(options)
 static evm_val_t evm_module_net_server_listen(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
     if( argc < 1 || !evm_is_integer(e, v[0]) ) {
@@ -58,26 +52,8 @@ static evm_val_t evm_module_net_server_listen(evm_t *e, evm_val_t p, int argc, e
     return EVM_UNDEFINED;
 }
 
-//server.on(event, callback)
-static evm_val_t evm_module_net_server_on(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
-{
-    if( argc < 2 || !evm_is_string(e, v[0]) || !evm_is_callable(e, v[1]) ) {
-        return EVM_UNDEFINED;
-    }
-
-    net_socket_t *server_sock = (net_socket_t*)evm_object_get_user_data(e, p);
-    if( !server_sock )
-        return EVM_UNDEFINED;
-    
-    if( server_sock->obj_id == -1 )
-        return EVM_UNDEFINED;
-
-    evm_module_event_add_listener(e, p, evm_2_string(e, v[0]), v[1]);
-    return EVM_UNDEFINED;
-}
-
-//socket.connect(options[, connectListener])
-//socket.connect(port[, host][, connectListener])
+//socket.connect(options)
+//socket.connect(port[, host])
 static evm_val_t evm_module_net_socket_connect(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
     net_socket_t *sock = evm_object_get_user_data(e, p);
@@ -90,26 +66,19 @@ static evm_val_t evm_module_net_socket_connect(evm_t *e, evm_val_t p, int argc, 
         sock->addr.sin_addr.s_addr = inet_addr(evm_2_string(e, v[1]));
         memset(&(sock->addr.sin_zero), 0, sizeof(sock->addr.sin_zero));
     } else {
-        return EVM_UNDEFINED;
+        return evm_mk_boolean(e, 0);
     }
 
     if ((sock->sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        printf("Socket create failed.");
-        return EVM_UNDEFINED;
+        return evm_mk_boolean(e, 0);
     }
 
     if ( connect(sock->sockfd, (struct sockaddr *)&(sock->addr), sizeof(struct sockaddr)) == -1 ) {
-        printf("socket connect failed!");
         close(sock->sockfd);
-        return EVM_UNDEFINED;
+        return evm_mk_boolean(e, 0);
     }
 
-    if( sock->obj_id != -1 ){
-        evm_module_event_add_listener(e, p, "connect", v[2]);
-        evm_module_event_emit(e, p, "connect", 0, NULL);
-    }
-
-    return EVM_UNDEFINED;
+    return evm_mk_boolean(e, 1);
 }
 
 //socket.destroy()
@@ -119,8 +88,7 @@ static evm_val_t evm_module_net_socket_destroy(evm_t *e, evm_val_t p, int argc, 
     if( !sock )
         return EVM_UNDEFINED;
     close(sock->sockfd);
-    sock->alive = 0;
-    evm_module_registry_remove(e, sock->obj_id);
+    free(sock);
     return EVM_UNDEFINED;
 }
 
@@ -164,7 +132,7 @@ static evm_val_t evm_module_net_socket_setKeepAlive(evm_t *e, evm_val_t p, int a
     return EVM_UNDEFINED;
 }
 
-//socket.write(data[, callback])
+//socket.write(data)
 static evm_val_t evm_module_net_socket_write(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
     net_socket_t *sock = evm_object_get_user_data(e, p);
@@ -180,15 +148,17 @@ static evm_val_t evm_module_net_socket_write(evm_t *e, evm_val_t p, int argc, ev
     return EVM_UNDEFINED;
 }
 
-//socket.on(event, callback)
-static evm_val_t evm_module_net_socket_on(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+//socket.read(size)
+static evm_val_t evm_module_net_socket_read(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
     net_socket_t *sock = (net_socket_t *)evm_object_get_user_data(e, p);
     if( !sock )
         return EVM_UNDEFINED;
-
-    evm_module_event_add_listener(e, p, evm_2_string(e, v[0]), v[1]);
-    return EVM_UNDEFINED;
+    int len = evm_2_integer(e, v[0]);
+    evm_val_t buf_obj = evm_buffer_create(e, NULL, len);
+    uint8_t *buf = evm_buffer_addr(e, buf_obj);
+    recv(sock->sockfd, buf, len, 0);
+    return buf_obj;
 }
 
 //net.createConnection(options[, connectListener])
@@ -202,24 +172,22 @@ static evm_val_t evm_module_net_createConnection(evm_t *e, evm_val_t p, int argc
     evm_prop_set(e, obj, "end", evm_mk_native(e, evm_module_net_socket_end, "", 0));
     evm_prop_set(e, obj, "setKeepAlive", evm_mk_native(e, evm_module_net_socket_setKeepAlive, "", 0));
     evm_prop_set(e, obj, "write", evm_mk_native(e, evm_module_net_socket_write, "", 0));
-    evm_prop_set(e, obj, "on", evm_mk_native(e, evm_module_net_socket_on, "", 0));
+    evm_prop_set(e, obj, "read", evm_mk_native(e, evm_module_net_socket_read, "", 0));
     sock = malloc(sizeof(net_socket_t));
     EVM_ASSERT(sock);
     evm_object_set_user_data(e, obj, sock);
-    sock->alive = 1;
-    sock->obj_id = evm_module_registry_add(e, obj);
     evm_module_net_socket_connect(e, obj, argc, v);
     return obj;
 }
 
-//net.connect(options[, connectListener])
-//net.connect(port[, host][, connectListener])
+//net.connect(options)
+//net.connect(port[, host])
 static evm_val_t evm_module_net_connect(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
     return evm_module_net_createConnection(e, p, argc, v);
 }
 
-//net.createServer([options][, connectionListener])
+//net.createServer([options])
 static evm_val_t evm_module_net_createServer(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
     evm_val_t server_obj;
@@ -227,22 +195,17 @@ static evm_val_t evm_module_net_createServer(evm_t *e, evm_val_t p, int argc, ev
 
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if( sockfd < 0 ) {
-        printf("Failed to create socket\r\n");
         return EVM_UNDEFINED;
     }
     
     server_obj = evm_object_create(e);
     evm_prop_set(e, server_obj, "close", evm_mk_native(e, evm_module_net_server_close, "", 0));
     evm_prop_set(e, server_obj, "listen", evm_mk_native(e, evm_module_net_server_listen, "", 0));
-    evm_prop_set(e, server_obj, "on", evm_mk_native(e, evm_module_net_server_on, "", 0));
 
     server_sock = malloc(sizeof(net_socket_t));
     EVM_ASSERT(server_sock);
     server_sock->sockfd = sockfd;
-    server_sock->alive = 1;
     evm_object_set_user_data(e, server_obj, server_sock);
-
-    server_sock->obj_id = evm_module_registry_add(e, server_obj);
     return server_obj;
 }
 
@@ -255,40 +218,20 @@ static evm_val_t evm_module_net_socket(evm_t *e, evm_val_t p, int argc, evm_val_
     evm_prop_set(e, obj, "end", evm_mk_native(e, evm_module_net_socket_end, "", 0));
     evm_prop_set(e, obj, "setKeepAlive", evm_mk_native(e, evm_module_net_socket_setKeepAlive, "", 0));
     evm_prop_set(e, obj, "write", evm_mk_native(e, evm_module_net_socket_write, "", 0));
-    evm_prop_set(e, obj, "on", evm_mk_native(e, evm_module_net_socket_on, "", 0));
+    evm_prop_set(e, obj, "read", evm_mk_native(e, evm_module_net_socket_read, "", 0));
 
     net_socket_t *sock = malloc(sizeof(net_socket_t));
     EVM_ASSERT(sock);
-    sock->alive = 1;
     evm_object_set_user_data(e, obj, sock);
     return obj;
 }
-
-static evm_val_t net_socket_create(evm_t *e) {
-    net_socket_t *sock;
-    evm_val_t obj = evm_object_create(e);
-    evm_prop_set(e, obj, "connect", evm_mk_native(e, evm_module_net_socket_connect, "", 0));
-    evm_prop_set(e, obj, "destroy", evm_mk_native(e, evm_module_net_socket_destroy, "", 0));
-    evm_prop_set(e, obj, "end", evm_mk_native(e, evm_module_net_socket_end, "", 0));
-    evm_prop_set(e, obj, "setKeepAlive", evm_mk_native(e, evm_module_net_socket_setKeepAlive, "", 0));
-    evm_prop_set(e, obj, "write", evm_mk_native(e, evm_module_net_socket_write, "", 0));
-    evm_prop_set(e, obj, "on", evm_mk_native(e, evm_module_net_socket_on, "", 0));
-
-    sock = malloc(sizeof(net_socket_t));
-    EVM_ASSERT(sock);
-
-    evm_object_set_user_data(e, obj, sock);
-    sock->alive = 1;
-    sock->obj_id = evm_module_registry_add(e, obj);
-}
-
 
 evm_err_t evm_module_net(evm_t *e) {
     evm_val_t obj = evm_object_create(e);
     evm_prop_set(e, obj, "connect", evm_mk_native(e, evm_module_net_connect, "connect", 0));
     evm_prop_set(e, obj, "createConnection", evm_mk_native(e, evm_module_net_createConnection, "createConnection", 0));
     evm_prop_set(e, obj, "createServer", evm_mk_native(e, evm_module_net_createServer, "createServer", 0));
-    evm_prop_set(e, obj, "Socket", evm_mk_native(e, evm_module_net_socket, "Socket", 0));
+    evm_prop_set(e, obj, "socket", evm_mk_native(e, evm_module_net_socket, "socket", 0));
     evm_module_add(e, "net", obj);
     return ec_ok;
 }

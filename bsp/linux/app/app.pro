@@ -14,7 +14,7 @@ DEFINES += CONFIG_EVM_MODULE_BUFFER
 DEFINES += CONFIG_EVM_MODULE_ASSERT
 DEFINES += CONFIG_EVM_MODULE_CFFI
 DEFINES += CONFIG_EVM_MODULE_LIBC
-DEFINES += CONFIG_EVM_MODULE_NETWORK
+DEFINES += CONFIG_EVM_MODULE_NET
 
 LIBS += -lpthread
 LIBS += -lrt
@@ -42,13 +42,14 @@ SOURCES += \
     ../../../modules/iotjs/common/evm_module_cffi.c \
     ../../../modules/iotjs/common/evm_module_libc.c \
     ../../../modules/iotjs/common/evm_module_assert.c \
+    ../../../modules/iotjs/common/evm_module_fs.c \
+    ../../../modules/iotjs/common/evm_module_dns.c \
     ../../../modules/iotjs/common/evm_module_network.c
 
 SOURCES += \
     ../../../modules/iotjs/linux/evm_main.c \
-    ../../../modules/iotjs/linux/evm_module_dns.c \
-    ../../../modules/iotjs/linux/evm_module_timers.c \
-    ../../../modules/iotjs/linux/evm_module_fs.c
+    ../../../modules/iotjs/linux/evm_module_timers.c
+
 
 
 SOURCES += \

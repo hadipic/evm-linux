@@ -12,19 +12,41 @@ int evm_string_len(evm_t *e, evm_val_t o) {
 }
 
 /*** 字节数组对象操作函数 ***/
+typedef struct js_buffer_t {
+    uint8_t *buf;
+    int size;
+} js_buffer_t;
+
+static void buffer_Finalize(evm_t *e, void *p) {
+    js_buffer_t *js_buf = p;
+    js_free(e, js_buf->buf);
+    js_free(e, js_buf);
+}
+
 evm_val_t evm_buffer_create(evm_t *e, uint8_t *buf, int len) {
-    EVM_UNUSED2(buf, len);
-    return evm_mk_undefined(e);
+    if( len == 0 )
+        return evm_mk_undefined(e);
+    js_newobject(e);
+    js_buffer_t *js_buf = js_malloc(e, sizeof (js_buffer_t));
+    EVM_ASSERT(js_buf);
+    js_buf->buf = js_malloc(e, len);
+    js_buf->size = len;
+    if( buf != NULL )
+        memcpy(js_buf->buf , buf, len);
+    js_newuserdata(e, "", js_buf, buffer_Finalize);
+    evm_val_t res = *js_tovalue(e, -1);
+    evm_prop_set(e, res, "$isbuffer", evm_mk_boolean(e, 1));
+    return res;
 }
 
 uint8_t *evm_buffer_addr(evm_t *e, evm_val_t o) {
-    EVM_UNUSED2(e, o);
-    return NULL;
+    js_buffer_t *js_buf = evm_object_get_user_data(e, o);
+    return js_buf->buf;
 }
 
 int evm_buffer_len(evm_t *e, evm_val_t o) {
-    EVM_UNUSED2(e, o);
-    return 0;
+    js_buffer_t *js_buf = evm_object_get_user_data(e, o);
+    return js_buf->size;
 }
 
 /*** 列表对象操作函数 ***/
@@ -260,7 +282,12 @@ int evm_is_boolean(evm_t *e, evm_val_t v) {
 }
 
 int evm_is_buffer(evm_t *e, evm_val_t v) {
-    EVM_UNUSED2(e, v);
+    if( v.type == JS_TOBJECT && v.u.object->type == JS_CUSERDATA){
+        evm_val_t res = evm_prop_get(e, v, "$isbuffer");
+        int b = evm_2_boolean(e, res);
+        evm_val_free(e, res);
+        return b;
+    }
     return 0;
 }
 

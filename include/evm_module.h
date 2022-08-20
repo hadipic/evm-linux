@@ -71,10 +71,6 @@ extern evm_err_t evm_module_uart(evm_t *e);
 extern evm_err_t evm_module_fs(evm_t *e);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_HTTP
-extern evm_err_t evm_module_http(evm_t *e);
-#endif
-
 #ifdef CONFIG_EVM_MODULE_UDP
 extern evm_err_t evm_module_udp(evm_t *e);
 #endif
@@ -120,11 +116,6 @@ extern void evm_module_cffi_add(evm_t *e, evm_module_cffi_t *cffis);
 evm_err_t evm_module_libc(evm_t *e);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_SOCKET
-evm_err_t evm_module_socket(evm_t *e);
-#endif
-
-
 extern int evm_module_registry_add(evm_t *e, evm_val_t v);
 extern evm_val_t evm_module_registry_get(evm_t *e, int id);
 extern void evm_module_registry_remove(evm_t *e, int id);
@@ -132,10 +123,11 @@ extern void evm_module_next_tick(evm_t *e, int argc, evm_val_t *v);
 extern evm_err_t evm_module_event_add_listener(evm_t *e, evm_val_t pthis, const char *type, evm_val_t listener);
 extern void evm_module_event_remove_listener(evm_t *e, evm_val_t pthis, const char *type);
 extern void evm_module_event_emit (evm_t *e, evm_val_t pthis, const char *type, int argc, evm_val_t *v);
-const char * evm_module_get_cwd();
-void evm_module_set_cwd(const char *cwd);
 evm_err_t evm_module_init(evm_t *env);
 extern evm_t *evm_runtime;
+
+extern void *evm_malloc(size_t size);
+extern void evm_free(void *p);
 
 #ifdef __cplusplus
 }
