@@ -15,6 +15,10 @@ DEFINES += CONFIG_EVM_MODULE_ASSERT
 DEFINES += CONFIG_EVM_MODULE_CFFI
 DEFINES += CONFIG_EVM_MODULE_LIBC
 DEFINES += CONFIG_EVM_MODULE_NET
+DEFINES += CONFIG_EVM_MODULE_ADC
+DEFINES += CONFIG_EVM_MODULE_GPIO
+DEFINES += CONFIG_EVM_MODULE_I2C
+DEFINES += CONFIG_EVM_MODULE_UART
 
 LIBS += -lpthread
 LIBS += -lrt
@@ -44,11 +48,15 @@ SOURCES += \
     ../../../modules/iotjs/common/evm_module_assert.c \
     ../../../modules/iotjs/common/evm_module_fs.c \
     ../../../modules/iotjs/common/evm_module_dns.c \
+    ../../../modules/iotjs/common/evm_module_adc.c \
+    ../../../modules/iotjs/common/evm_module_gpio.c \
+    ../../../modules/iotjs/common/evm_module_i2c.c \
+    ../../../modules/iotjs/common/evm_module_timers.c \
+    ../../../modules/iotjs/common/evm_module_uart.c \
     ../../../modules/iotjs/common/evm_module_network.c
 
 SOURCES += \
-    ../../../modules/iotjs/linux/evm_main.c \
-    ../../../modules/iotjs/linux/evm_module_timers.c
+    ../../../modules/iotjs/linux/evm_main.c
 
 
 

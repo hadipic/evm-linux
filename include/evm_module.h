@@ -30,6 +30,9 @@ extern "C" {
 #define EVM_GPIO_EDGE_FALLING   2
 #define EVM_GPIO_EDGE_BOTH      3
 
+#define EVM_TIMER_PERIOD        0
+#define EVM_TIMER_ONE_SHOT      1
+
 #ifdef __linux
 #define EVM_HEAP_SIZE (500 * 1024)
 #define EVM_STACK_SIZE (50 * 1024)
@@ -40,31 +43,23 @@ extern "C" {
 #define EVM_MODULE_REGISTRY_SIZE 20
 
 #ifdef CONFIG_EVM_MODULE_ADC
-extern evm_err_t evm_module_adc(evm_t *e);
+extern void evm_module_adc(evm_t *e);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_GPIO
-extern evm_err_t evm_module_gpio(evm_t *e);
-#endif
-
-#ifdef CONFIG_EVM_MODULE_PWM
-extern evm_err_t evm_module_pwm(evm_t *e);
-#endif
-
-#ifdef CONFIG_EVM_MODULE_SPI
-extern evm_err_t evm_module_spi(evm_t *e);
+extern void evm_module_gpio(evm_t *e);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_TIMERS
-extern evm_err_t evm_module_timers(evm_t *e);
+extern void evm_module_timers(evm_t *e);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_I2C
-extern evm_err_t evm_module_i2c(evm_t *e);
+extern void evm_module_i2c(evm_t *e);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_UART
-extern evm_err_t evm_module_uart(evm_t *e);
+extern void evm_module_uart(evm_t *e);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_FS
@@ -123,11 +118,38 @@ extern void evm_module_next_tick(evm_t *e, int argc, evm_val_t *v);
 extern evm_err_t evm_module_event_add_listener(evm_t *e, evm_val_t pthis, const char *type, evm_val_t listener);
 extern void evm_module_event_remove_listener(evm_t *e, evm_val_t pthis, const char *type);
 extern void evm_module_event_emit (evm_t *e, evm_val_t pthis, const char *type, int argc, evm_val_t *v);
-evm_err_t evm_module_init(evm_t *env);
+void evm_module_init(evm_t *env);
 extern evm_t *evm_runtime;
 
 extern void *evm_malloc(size_t size);
 extern void evm_free(void *p);
+
+extern void *evm_adc_open(evm_t *e, evm_val_t obj);
+extern int evm_adc_read(evm_t *e, void *dev);
+extern void evm_adc_close(evm_t *e, void *dev);
+extern void evm_adc_destroy(evm_t *e, void *dev);
+
+extern void *evm_gpio_open(evm_t *e, evm_val_t obj);
+extern void evm_gpio_set_direction(evm_t *e, void *dev, int value);
+extern void evm_gpio_write(evm_t *e, void *dev, int value);
+extern int evm_gpio_read(evm_t *e, void *dev);
+extern void evm_gpio_close(evm_t *e, void *dev);
+extern void evm_gpio_destroy(evm_t *e, void *dev);
+
+extern void *evm_i2c_open(evm_t *e, evm_val_t obj);
+extern void evm_i2c_read(evm_t *e, void *dev, void *buf, int size);
+extern void evm_i2c_write(evm_t *e, void *dev, void *buf, int size);
+extern void evm_i2c_close(evm_t *e, void *dev);
+extern void evm_i2c_destroy(evm_t *e, void *dev);
+
+extern void *evm_timer_open(evm_t *e, int tick, int flag);
+extern void evm_timer_destroy(evm_t *e, void *dev);
+
+extern void *evm_uart_open(evm_t *e, evm_val_t obj);
+extern void evm_uart_write(evm_t *e, void *dev, void *buffer, int size);
+extern void evm_uart_read(evm_t *e, void *dev, void *buf, int size);
+extern void evm_uart_close(evm_t *e, void *dev);
+extern void evm_uart_destroy(evm_t *e, void *dev);
 
 #ifdef __cplusplus
 }

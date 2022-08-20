@@ -109,113 +109,56 @@ static void evm_native_init(evm_t *e) {
     evm_global_set(e, "require", evm_mk_native(e, native_require, "require", 1));
 }
 
-evm_err_t evm_module_init(evm_t *env)
+void evm_module_init(evm_t *env)
 {
     evm_module_registry_init(env);
     evm_native_init(env);
 
-    evm_err_t err;
 #ifdef CONFIG_EVM_MODULE_ADC
-    err = evm_module_adc(env);
-    if (err != ec_ok)
-    {
-        evm_print("Failed to create adc module\r\n");
-        return err;
-    }
+    evm_module_adc(env);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_UART
-    err = evm_module_uart(env);
-    if (err != ec_ok)
-    {
-        evm_print("Failed to create uart module\r\n");
-        return err;
-    }
+    evm_module_uart(env);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_GPIO
-    err = evm_module_gpio(env);
-    if (err != ec_ok)
-    {
-        evm_print("Failed to create gpio module\r\n");
-        return err;
-    }
+    evm_module_gpio(env);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_FS
-    err = evm_module_fs(env);
-    if (err != ec_ok)
-    {
-        printf("Failed to create fs module\r\n");
-        return err;
-    }
+    evm_module_fs(env);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_NET
-    err = evm_module_net(env);
-    if (err != ec_ok)
-    {
-        printf("Failed to create net module\r\n");
-        return err;
-    }
+    evm_module_net(env);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_PROCESS
-    err = evm_module_process(env);
-    if (err != ec_ok)
-    {
-        printf("Failed to create process module\r\n");
-        return err;
-    }
+    evm_module_process(env);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_EVENTS
-    err = evm_module_events(env);
-    if (err != ec_ok)
-    {
-        printf("Failed to create events module\r\n");
-        return err;
-    }
+    evm_module_events(env);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_DNS
-    err = evm_module_dns(env);
-    if (err != ec_ok)
-    {
-        printf("Failed to create dns module\r\n");
-        return err;
-    }
+    evm_module_dns(env);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_TIMERS
-    err = evm_module_timers(env);
-    if (err != ec_ok)
-    {
-        printf("Failed to create timers module\r\n");
-        return err;
-    }
+    evm_module_timers(env);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_BUFFER
-    err = evm_module_buffer(env);
-    if (err != ec_ok)
-    {
-        printf("Failed to create buffer module\r\n");
-        return err;
-    }
+    evm_module_buffer(env);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_ASSERT
-    err = evm_module_assert(env);
-    if (err != ec_ok)
-    {
-        printf("Failed to create assert module\r\n");
-        return err;
-    }
+    evm_module_assert(env);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_CFFI
     evm_module_cffi(env);
 #endif
-    return ec_ok;
 }

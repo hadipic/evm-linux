@@ -172,12 +172,11 @@ static evm_val_t evm_module_timers_clearInterval(evm_t *e, evm_val_t p, int argc
     return evm_mk_undefined(e);
 }
 
-evm_err_t evm_module_timers(evm_t *e) {
+void evm_module_timers(evm_t *e) {
     timer_init(e);
     evm_global_set(e, "setTimeout", evm_mk_native(e, evm_module_timers_setTimeout, "setTimeout", 3));
     evm_global_set(e, "clearTimeout", evm_mk_native(e, evm_module_timers_clearTimeout, "setTimeout", 1));
     evm_global_set(e, "setInterval", evm_mk_native(e, evm_module_timers_setInterval, "setInterval", 3));
     evm_global_set(e, "clearInterval", evm_mk_native(e, evm_module_timers_clearInterval, "clearInterval", 1));
-    return ec_ok;
 }
 #endif
