@@ -1,0 +1,20 @@
+# for module compiling
+import os
+Import('RTT_ROOT')
+Import('rtconfig')
+from building import *
+
+cwd = GetCurrentDir()
+evm_dir = cwd + '/../../../../../'
+src = Split('''
+''')
+
+if rtconfig.CROSS_TOOL == 'gcc':
+    CPPPATH = [evm_dir + '/include']
+    CPPDEFINES = ['CONFIG_EVM_MODULE_UART', 'CONFIG_EVM_MODULE_GPIO']
+
+AddDepend('EVM_USE_MUJS')
+
+group = DefineGroup('EVM', src, depend = [''], LIBS = [''], CCFLAGS = '', CPPPATH = CPPPATH, LIBPATH=[''], CPPDEFINES = CPPDEFINES)
+
+Return('group')

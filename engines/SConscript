@@ -1,0 +1,16 @@
+Import('RTT_ROOT')
+Import('rtconfig')
+from building import *
+
+cwd = GetCurrentDir()
+src	= []
+
+if GetDepend(['EVM_USE_MUJS']):
+    CPPPATH = [cwd + "/mujs", cwd + "/mujs/mujs"]
+    src += [cwd + "/mujs/evm.c"]
+    src += [cwd + "/mujs/mujs/one.c"]
+
+group = DefineGroup('engines', src, depend = [''], CPPPATH = CPPPATH)
+
+Return('group')
+

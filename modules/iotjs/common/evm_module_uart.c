@@ -29,7 +29,7 @@ static evm_val_t evm_module_uart_class_write(evm_t *e, evm_val_t p, int argc, ev
     void *buffer;
     int size;
     if( evm_is_string(e, v[0]) ) {
-        buffer = evm_2_string(e, v[0]);
+        buffer = (void*)evm_2_string(e, v[0]);
         size = evm_string_len(e, v[0]);
     } else {
         buffer = evm_buffer_addr(e, v[0]);

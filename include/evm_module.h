@@ -111,6 +111,8 @@ extern void evm_module_cffi_add(evm_t *e, evm_module_cffi_t *cffis);
 evm_err_t evm_module_libc(evm_t *e);
 #endif
 
+extern void evm_main(void);
+
 extern int evm_module_registry_add(evm_t *e, evm_val_t v);
 extern evm_val_t evm_module_registry_get(evm_t *e, int id);
 extern void evm_module_registry_remove(evm_t *e, int id);

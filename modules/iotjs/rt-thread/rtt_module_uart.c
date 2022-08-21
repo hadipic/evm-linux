@@ -17,7 +17,7 @@ void *evm_uart_open(evm_t *e, evm_val_t obj){
 	EVM_ASSERT(dev);
 
 	val = evm_prop_get(e, obj, "device");
-	if( !evm_is_string(val) ) {
+	if( !evm_is_string(e, val) ) {
 		evm_free(dev);
 		evm_throw(e, evm_mk_string(e, "Configuration has no 'device' member"));
 	}
@@ -62,18 +62,18 @@ int evm_uart_write(evm_t *e, void *dev, void *buffer, int size){
     return rt_device_write(uart_dev->dev, 0, buffer, size);
 }
 
-void evm_uart_read(evm_t *e, void *dev, void *buf, int size){
-	
+int evm_uart_read(evm_t *e, void *dev, void *buf, int size){
+	return 0;
 }
 
 void evm_uart_close(evm_t *e, void *dev){
 	_uart_dev_t *uart_dev = dev;
-	rt_device_close(dev->dev);
+	rt_device_close(uart_dev->dev);
 }
 
 void evm_uart_destroy(evm_t *e, void *dev){
 	_uart_dev_t *uart_dev = dev;
-	rt_device_close(dev->dev);
+	rt_device_close(uart_dev->dev);
 	evm_free(dev);
 }
 
