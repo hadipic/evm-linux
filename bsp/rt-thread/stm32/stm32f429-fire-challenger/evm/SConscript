@@ -9,9 +9,8 @@ evm_dir = cwd + '/../../../../../'
 src = Split('''
 ''')
 
-if rtconfig.CROSS_TOOL == 'gcc':
-    CPPPATH = [evm_dir + '/include']
-    CPPDEFINES = ['CONFIG_EVM_MODULE_UART', 'CONFIG_EVM_MODULE_GPIO']
+CPPPATH = [evm_dir + '/include']
+CPPDEFINES = ['CONFIG_EVM_MODULE_UART', 'CONFIG_EVM_MODULE_GPIO']
 
 AddDepend('EVM_USE_MUJS')
 

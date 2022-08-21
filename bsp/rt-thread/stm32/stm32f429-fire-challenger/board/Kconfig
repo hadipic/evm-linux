@@ -241,7 +241,7 @@ menu "On-chip Peripheral Drivers"
     config BSP_USING_LTDC
         bool
         default n
-    source "../libraries/HAL_Drivers/Kconfig"
+    source "$RTT_DIR/bsp/stm32/libraries/HAL_Drivers/Kconfig"
     
 endmenu
 
