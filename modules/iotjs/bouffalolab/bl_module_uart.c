@@ -11,7 +11,7 @@
 
 
 typedef struct _uart_dev_t {
-    char *dev;
+    const char *dev;
     int baudrate;
     int databits;
     int fd;
@@ -50,21 +50,21 @@ void *evm_uart_open(evm_t *e, evm_val_t v){
 	val = evm_prop_get(e, v, "device");
 	if( !evm_is_string(e, val) ) {
         evm_free(dev);
-        evm_throw(e, evm_mk_string("Configuration has no 'device' member"));
+        evm_throw(e, evm_mk_string(e, "Configuration has no 'device' member"));
 	}
-    dev->dev = evm_2_string(val);
+    dev->dev = evm_2_string(e, val);
 
     val = evm_prop_get(e, v, "baudRate");
 	if( !evm_is_integer(e, val) ) {
         evm_free(dev);
-        evm_throw(e, evm_mk_string("Configuration has no 'baudRate' member"));
+        evm_throw(e, evm_mk_string(e, "Configuration has no 'baudRate' member"));
 	}
 	dev->baudrate = evm_2_integer(e, val);
 
     val = evm_prop_get(e, v, "dataBits");
-	if( !evm_is_integer(val) ) {
+	if( !evm_is_integer(e, val) ) {
         evm_free(dev);
-        evm_throw(e, evm_mk_string("Configuration has no 'dataBits' member"));
+        evm_throw(e, evm_mk_string(e, "Configuration has no 'dataBits' member"));
 	}
 	dev->databits = evm_2_integer(e, val);
 
@@ -79,11 +79,10 @@ void *evm_uart_open(evm_t *e, evm_val_t v){
     if (dev->fd < 0)
     {
         evm_free(dev);
-        evm_set_err(e, ec_type, "Failed to open uart");
-		return EVM_VAL_UNDEFINED;
+        evm_throw(e, evm_mk_string(e, "Failed to open uart"));
     }
     aos_ioctl(dev->fd, IOCTL_UART_IOC_BAUD_MODE, dev->databits);
-    aos_ioctl(dev->fd, IOCTL_UART_IOC_READ_NONBLOCK, 0); 
+    aos_ioctl(dev->fd, IOCTL_UART_IOC_READ_NOBLOCK, 0); 
     return dev;
 }
 

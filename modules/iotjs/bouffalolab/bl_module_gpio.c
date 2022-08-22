@@ -20,7 +20,7 @@ void *evm_gpio_open(evm_t *e, evm_val_t v){
     if (!evm_is_integer(e, val))
     {
         evm_free(dev);
-        evm_throw(e, evm_mk_string("Configuration has no 'pin' member"));
+        evm_throw(e, evm_mk_string(e, "Configuration has no 'pin' member"));
     }
     dev->pin = evm_2_integer(e, val);
 
@@ -28,7 +28,7 @@ void *evm_gpio_open(evm_t *e, evm_val_t v){
     if (!evm_is_integer(e, val))
     {
         evm_free(dev);
-        evm_throw(e, evm_mk_string("Configuration has no 'direction' member"));
+        evm_throw(e, evm_mk_string(e, "Configuration has no 'direction' member"));
     }
     dev->direction = evm_2_integer(e, val);
 
@@ -36,7 +36,7 @@ void *evm_gpio_open(evm_t *e, evm_val_t v){
     if (!evm_is_integer(e, val))
     {
         evm_free(dev);
-        evm_throw(e, evm_mk_string("Configuration has no 'mode' member"));
+        evm_throw(e, evm_mk_string(e, "Configuration has no 'mode' member"));
     }
     dev->mode = evm_2_integer(e, val);
 

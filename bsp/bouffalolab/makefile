@@ -18,6 +18,8 @@ EXTRA_COMPONENT_DIRS += $(BL60X_SDK_PATH)/../evm/engines
 COMPONENT_INCLUDES += $(BL60X_SDK_PATH)/../evm/modules/iotjs
 
 CFLAGS += -DFREERTOS
+CFLAGS += -DCONFIG_EVM_MODULE_GPIO
+CFLAGS += -DCONFIG_EVM_MODULE_UART
 
 COMPONENTS_NETWORK := sntp dns_server
 COMPONENTS_BLSYS   := bltime blfdt blmtd bloop loopadc looprt loopset
