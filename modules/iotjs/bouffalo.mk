@@ -24,6 +24,7 @@ COMPONENT_SRCS += \
 	common/evm_module_timers.c \
 	common/evm_module_uart.c \
 	bouffalolab/evm_main.c \
+	bouffalolab/bl_module_event.c \
 	bouffalolab/bl_module_gpio.c \
 	bouffalolab/bl_module_timers.c \
 	bouffalolab/bl_module_uart.c

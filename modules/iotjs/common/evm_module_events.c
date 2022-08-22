@@ -1,4 +1,4 @@
-#ifdef CONFIG_EVM_MODULE_EVENTS
+#ifdef CONFIG_EVM_MODULE_EVENT
 #include "evm_module.h"
 
 //emitter.addListener(event, listener)

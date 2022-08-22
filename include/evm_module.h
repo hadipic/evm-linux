@@ -80,8 +80,16 @@ extern void evm_module_process_poll(evm_t *e);
 extern evm_err_t evm_module_process(evm_t *e);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_EVENTS
+#ifdef CONFIG_EVM_MODULE_EVENT
+typedef void (*event_handler) (evm_t *e, void* ptr);
+typedef struct evm_eventbus_t{
+    event_handler handler;
+    void* ptr;
+} evm_eventbus_t;
 extern evm_err_t evm_module_events(evm_t *e);
+extern void evm_eventbus_init(void);
+extern int evm_eventbus_set(evm_eventbus_t *msg);
+extern int evm_eventbus_get(evm_eventbus_t *msg);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_DNS
