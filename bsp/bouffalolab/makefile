@@ -13,9 +13,9 @@ $(info ****** Please SET BL60X_SDK_PATH ******)
 $(info ****** Trying SDK PATH [$(BL60X_SDK_PATH)])
 endif
 
-EXTRA_COMPONENT_DIRS += $(BL60X_SDK_PATH)/../../modules
-EXTRA_COMPONENT_DIRS += $(BL60X_SDK_PATH)/../../lib/riscv/bouffalolab
-COMPONENT_INCLUDES += $(BL60X_SDK_PATH)/../../modules/eluaos/bouffalolab
+EXTRA_COMPONENT_DIRS += $(BL60X_SDK_PATH)/../evm/modules
+EXTRA_COMPONENT_DIRS += $(BL60X_SDK_PATH)/../evm/engines
+COMPONENT_INCLUDES += $(BL60X_SDK_PATH)/../evm/modules/iotjs
 
 CFLAGS += -DFREERTOS
 
@@ -25,8 +25,8 @@ COMPONENTS_VFS     := romfs
 
 INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std bl602_wifi bl602_wifidrv hal_drv lwip lwip_dhcpd lwip_mdns vfs yloop utils netutils cli blog blog_testc
 INCLUDE_COMPONENTS += easyflash4
-INCLUDE_COMPONENTS += elua
-INCLUDE_COMPONENTS += eluaos
+INCLUDE_COMPONENTS += mujs
+INCLUDE_COMPONENTS += iotjs
 INCLUDE_COMPONENTS += $(COMPONENTS_NETWORK)
 INCLUDE_COMPONENTS += $(COMPONENTS_BLSYS)
 INCLUDE_COMPONENTS += $(COMPONENTS_VFS)

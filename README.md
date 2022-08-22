@@ -42,13 +42,9 @@
 | **components**| 第三方组件目录 |
 | **docs**| 图片文档资源目录 |
 | **include**|   头文件目录  | 
-| **lib**|   静态库  |
+| **engines**|   脚本引擎  |
 | **modules**|  模块目录  |
-| **os**|  操作系统支持 |
-| **sdk**|  第三方工具链 |
 | **test**|   测试代码 |
-| **tools**|  工具 |
-| **tools/evue-simulator**|  EVUE模拟器，可克隆仓库到本地运行模拟器本地体验EVUE |
 
 ## 2. EVUE模拟器
 

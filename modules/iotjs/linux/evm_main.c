@@ -3,11 +3,11 @@
 #include <unistd.h>
 
 
-void evm_main (const char *file) {
+void evm_main (void) {
     evm_t *env = evm_init();
     evm_module_init(env);
 
-    evm_val_t res = evm_run_file(env, file);
+    evm_val_t res = evm_run_file(env, "./main.js");
     evm_val_free(env, res);
 
     while(1){

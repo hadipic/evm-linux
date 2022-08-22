@@ -35,8 +35,7 @@
 #include <fdt.h>
 #include <libfdt.h>
 #include <blog.h>
-#include "luat_log.h"
-#include "luat_base.h"
+#include "evm_module.h"
 
 extern void ble_stack_start(void);
 volatile uint32_t uxTopUsedPriority __attribute__((used)) = configMAX_PRIORITIES - 1;
@@ -168,9 +167,7 @@ static void evm_task_proc(void *pvParameters)
         vfs_uart_init(fdt, offset);
     }
 
-    printf("=================================================================evm main starts\r\n");
-    luat_log_set_uart_port(0);
-    luat_main();
+    evm_main();
 
     while (1)
     {
