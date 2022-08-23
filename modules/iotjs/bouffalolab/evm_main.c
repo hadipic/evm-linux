@@ -35,8 +35,16 @@ void evm_free(void * p)
         vPortFree(p);
 }
 
+evm_val_t native_print(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+    for( int i = 0; i < argc; i++)
+        printf("%s ", evm_2_string(e, v[i]));
+    printf("\r\n");
+    return EVM_UNDEFINED;
+}
+
 void evm_main (void) {
     evm_t *env = evm_init();
+    evm_global_set(env, "print", evm_mk_native(env, native_print, "print", 0));
     evm_module_init(env);
     evm_val_t res = evm_run_file(env, "main.js");
     evm_val_free(env, res);
