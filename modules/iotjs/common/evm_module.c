@@ -161,4 +161,8 @@ void evm_module_init(evm_t *env)
 #ifdef CONFIG_EVM_MODULE_CFFI
     evm_module_cffi(env);
 #endif
+
+#ifdef CONFIG_EVM_MODULE_WLAN
+    evm_module_wlan(env);
+#endif
 }
