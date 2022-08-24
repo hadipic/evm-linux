@@ -35,6 +35,10 @@ char mygetch(void)
 
 #endif
 
+void evm_repl_init(evm_t *e) {
+
+}
+
 char evm_repl_tty_read(evm_t *e)
 {
     EVM_UNUSED(e);

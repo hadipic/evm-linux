@@ -64,7 +64,7 @@ static char _repl_buffer[REPL_BUF_SIZE];
 
 static int repl_input_insert(int len, char *s);
 static void repl_puts(char *s);
-static int repl_putc(int c);
+static void repl_putc(int c);
 static int repl_input_char(int ch);
 
 static void repl_input_delete(void)
@@ -257,13 +257,18 @@ static int repl_input_char(int ch)
 
 static int repl_input_insert(int len, char *s)
 {
+    if( _repl_buffer_index >= REPL_BUF_SIZE ) {
+        _repl_buffer_index = 0;
+        _repl_buffer[_repl_buffer_index++] = *s;
+        return _repl_buffer_index;
+    }
     _repl_buffer[_repl_buffer_index] = *s;
     repl_putc(*s);
     _repl_buffer_index++;
     return _repl_buffer_index;
 }
 
-static int repl_putc(int c)
+static void repl_putc(int c)
 {
     char ch = c;
     evm_repl_tty_write(1, &ch);
@@ -276,6 +281,7 @@ static void repl_puts(char *s)
 }
 
 void evm_run_repl(evm_t *e) {
+    evm_repl_init(e);
     repl_init();
     repl_puts((char*)LOGO);
     char input;

@@ -131,6 +131,10 @@ EVM_API evm_val_t evm_mk_undefined(evm_t *e);
 EVM_API void evm_val_free(evm_t *e, evm_val_t v);
 EVM_API evm_val_t evm_val_duplicate(evm_t *e, evm_val_t v);
 
+EVM_API void *evm_malloc(size_t size);
+EVM_API void *evm_realloc(void *p, size_t size);
+EVM_API void evm_free(void *p);
+
 static inline void evm_assert_fail (const char *assertion, const char *file, const char *function, const int line){
     printf ("AssertionError: '%s' failed at %s(%s):%lu.\n",
                        assertion,

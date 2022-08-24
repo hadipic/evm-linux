@@ -35,6 +35,11 @@ void evm_free(void * p)
         vPortFree(p);
 }
 
+void *evm_realloc(void * p, size_t size)
+{
+    return pvPortMalloc(size);
+}
+
 evm_val_t native_print(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
     for( int i = 0; i < argc; i++)
         printf("%s ", evm_2_string(e, v[i]));
@@ -44,10 +49,15 @@ evm_val_t native_print(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
 
 void evm_main (void) {
     evm_t *env = evm_init();
+    printf("module init\r\n");
     evm_global_set(env, "print", evm_mk_native(env, native_print, "print", 0));
     evm_module_init(env);
-    evm_val_t res = evm_run_file(env, "main.js");
-    evm_val_free(env, res);
+    printf("repl______________-\r\n");
+#ifdef CONFIG_EVM_MODULE_REPL
+    evm_run_repl(env);
+#else
+    evm_run_file(env, "main.js");
+#endif
 
     while(1){
     #ifdef CONFIG_EVM_MODULE_PROCESS

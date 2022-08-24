@@ -200,8 +200,17 @@ void evm_throw(evm_t *e, evm_val_t v) {
 }
 
 /*** 虚拟机相关函数 ***/
+static void *js_defaultalloc(void *actx, void *ptr, int size)
+{
+    if (size == 0) {
+        evm_free(ptr);
+        return NULL;
+    }
+    return evm_realloc(ptr, (size_t)size);
+}
+
 evm_t *evm_init(void) {
-    evm_t *e = js_newstate(NULL, NULL, 0);
+    evm_t *e = js_newstate(js_defaultalloc, NULL, 0);
     js_newobject(e);
 	js_setglobal(e, "@system");
     return e;

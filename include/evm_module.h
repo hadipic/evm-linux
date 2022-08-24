@@ -139,9 +139,6 @@ extern void evm_module_event_emit (evm_t *e, evm_val_t pthis, const char *type, 
 void evm_module_init(evm_t *env);
 extern evm_t *evm_runtime;
 
-extern void *evm_malloc(size_t size);
-extern void evm_free(void *p);
-
 extern void *evm_adc_open(evm_t *e, evm_val_t obj);
 extern int evm_adc_read(evm_t *e, void *dev);
 extern void evm_adc_close(evm_t *e, void *dev);
@@ -175,8 +172,9 @@ extern evm_val_t evm_wlan_scan(evm_t *e);
 extern int evm_wlan_is_connectd(evm_t *e);
 extern void evm_wlan_init(evm_t *e);
 
+extern void evm_repl_init(evm_t *e);
 extern void evm_repl_tty_write(int n, char *c);
-extern char evm_repl_tty_read(evm_t * e);
+extern char evm_repl_tty_read(evm_t *e);
 
 #ifdef __cplusplus
 }
