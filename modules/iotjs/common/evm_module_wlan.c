@@ -6,7 +6,7 @@
 static evm_val_t evm_module_wlan_connect(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
     if( argc > 1 )
-        evm_wlan_connect(e, evm_2_string(e, v[0]), evm_2_string(e, v[1]));
+        evm_wlan_connect(e, (char*)evm_2_string(e, v[0]), (char*)evm_2_string(e, v[1]));
     return EVM_UNDEFINED;
 }
 
@@ -24,15 +24,6 @@ static evm_val_t evm_module_wlan_isConnected(evm_t *e, evm_val_t p, int argc, ev
         return evm_mk_boolean(e, 1);
     }
     return evm_mk_boolean(e, 0);
-}
-
-static evm_val_t evm_module_adc_class_instantiate(evm_t *e)
-{
-	evm_val_t obj = evm_object_create(e);
-	evm_prop_set(e, obj, "connect", evm_mk_native(e, evm_module_wlan_connect, "connect", 0));
-	evm_prop_set(e, obj, "close", evm_mk_native(e, evm_module_wlan_disconnect, "close", 0));
-	evm_prop_set(e, obj, "isConnected", evm_mk_native(e, evm_module_wlan_isConnected, "isConnected", 0));
-	return obj;
 }
 
 void evm_module_wlan(evm_t *e) {

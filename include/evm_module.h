@@ -123,6 +123,10 @@ evm_err_t evm_module_libc(evm_t *e);
 void evm_module_wlan(evm_t *e);
 #endif
 
+#ifdef CONFIG_EVM_MODULE_REPL
+void evm_run_repl(evm_t *e);
+#endif
+
 extern void evm_main(void);
 
 extern int evm_module_registry_add(evm_t *e, evm_val_t v);
@@ -170,6 +174,9 @@ extern void evm_wlan_disconnect(evm_t *e);
 extern evm_val_t evm_wlan_scan(evm_t *e);
 extern int evm_wlan_is_connectd(evm_t *e);
 extern void evm_wlan_init(evm_t *e);
+
+extern void evm_repl_tty_write(int n, char *c);
+extern char evm_repl_tty_read(evm_t * e);
 
 #ifdef __cplusplus
 }

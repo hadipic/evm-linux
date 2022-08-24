@@ -24,6 +24,7 @@ COMPONENT_SRCS += \
 	common/evm_module_timers.c \
 	common/evm_module_uart.c \
 	common/evm_module_wlan.c \
+	common/evm_module_repl.c \
 	bouffalolab/evm_main.c \
 	bouffalolab/bl_module_event.c \
 	bouffalolab/bl_module_wlan.c \

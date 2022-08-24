@@ -7,8 +7,11 @@ void evm_main (void) {
     evm_t *env = evm_init();
     evm_module_init(env);
 
-    evm_val_t res = evm_run_file(env, "./main.js");
-    evm_val_free(env, res);
+#ifdef CONFIG_EVM_MODULE_REPL
+    evm_run_repl(env);
+#endif
+
+    evm_run_file(env, "./main.js");
 
     while(1){
     #ifdef CONFIG_EVM_MODULE_PROCESS

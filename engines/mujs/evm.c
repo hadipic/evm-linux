@@ -211,17 +211,28 @@ void evm_deinit(evm_t *e) {
     js_freestate(e);
 }
 
-evm_val_t evm_run_file(evm_t *e, const char *path) {
+void evm_run_file(evm_t *e, const char *path) {
+    if (js_try(e)) {
+        js_report(e, js_trystring(e, -1, "Error"));
+        js_pop(e, 1);
+        return;
+    }
     js_loadfile(e, path);
     js_pushundefined(e);
     js_call(e, 0);
-    return *js_tovalue(e, -1);
+    js_endtry(e);
 }
 
 evm_val_t evm_run_string(evm_t *e, const char *source) {
+    if (js_try(e)) {
+        js_report(e, js_trystring(e, -1, "Error"));
+        js_pop(e, 1);
+        return evm_mk_undefined(e);
+    }
     js_loadstring(e, "[string]", source);
     js_pushundefined(e);
     js_call(e, 0);
+    js_endtry(e);
     return *js_tovalue(e, -1);
 }
 

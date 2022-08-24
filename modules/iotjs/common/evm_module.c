@@ -138,7 +138,7 @@ void evm_module_init(evm_t *env)
     evm_module_process(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_EVENTS
+#ifdef CONFIG_EVM_MODULE_EVENT
     evm_module_events(env);
 #endif
 
