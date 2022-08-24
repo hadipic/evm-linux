@@ -209,8 +209,14 @@ static void *js_defaultalloc(void *actx, void *ptr, int size)
     return evm_realloc(ptr, (size_t)size);
 }
 
+static void js_defaultreport(js_State *J, const char *message)
+{
+    printf("%s\r\n", message);
+}
+
 evm_t *evm_init(void) {
     evm_t *e = js_newstate(js_defaultalloc, NULL, 0);
+    js_setreport(e, js_defaultreport);
     js_newobject(e);
 	js_setglobal(e, "@system");
     return e;

@@ -17,9 +17,9 @@ void evm_repl_init(evm_t *e) {
 char evm_repl_tty_read(evm_t *e)
 {
     EVM_UNUSED(e);
-    char buffer = 0;
-    if( aos_read(fd_console, &buffer, 1) ) 
-        return buffer;
+    char buffer[16];
+    if( aos_read(fd_console, buffer, 1) ) 
+        return buffer[0];
     else {
         vTaskDelay(10);
         return 0;

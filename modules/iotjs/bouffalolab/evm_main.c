@@ -49,16 +49,16 @@ evm_val_t native_print(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
 
 void evm_main (void) {
     evm_t *env = evm_init();
-    printf("module init\r\n");
+    
     evm_global_set(env, "print", evm_mk_native(env, native_print, "print", 0));
     evm_module_init(env);
-    printf("repl______________-\r\n");
 #ifdef CONFIG_EVM_MODULE_REPL
     evm_run_repl(env);
+    printf("quit repl mode\r\n");
 #else
     evm_run_file(env, "main.js");
 #endif
-
+    
     while(1){
     #ifdef CONFIG_EVM_MODULE_PROCESS
         evm_module_process_poll(env);
