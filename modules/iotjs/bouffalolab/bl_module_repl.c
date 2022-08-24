@@ -5,6 +5,8 @@
 #include <aos/yloop.h>
 #include <event_device.h>
 #include <cli.h>
+#include <FreeRTOS.h>
+#include <task.h>
 
 static int fd_console;
 
@@ -16,8 +18,12 @@ char evm_repl_tty_read(evm_t *e)
 {
     EVM_UNUSED(e);
     char buffer = 0;
-    aos_read(fd_console, &buffer, 1);
-    return buffer;
+    if( aos_read(fd_console, &buffer, 1) ) 
+        return buffer;
+    else {
+        vTaskDelay(10);
+        return 0;
+    }
 }
 
 void evm_repl_tty_write(int n, char *s)
