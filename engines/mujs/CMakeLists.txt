@@ -1,4 +1,4 @@
-set(MUJS_DIR ./common)
+set(MUJS_DIR ./mujs)
 
 set(mujs_src
     ${MUJS_DIR}/one.c

@@ -1,7 +1,6 @@
 #ifdef CONFIG_EVM_MODULE_GPIO
 #include "evm_module.h"
-#include "bl_gpio.h"
-#include <bl602_gpio.h>
+#include "driver/gpio.h"
 
 typedef struct _gpio_dev_t
 {
@@ -40,14 +39,11 @@ void *evm_gpio_open(evm_t *e, evm_val_t v){
     }
     dev->mode = evm_2_integer(e, val);
 
-    if (dev->mode)
-    {
-        bl_gpio_enable_input(dev->pin, dev->direction ? 1 : 0, dev->direction ? 0 : 1);
-    }
+    gpio_intr_disable(dev->pin);
+    if( dev->direction == EVM_GPIO_DIRECTION_IN ) 
+        gpio_set_direction(dev->pin, GPIO_MODE_INPUT);
     else
-    {
-        bl_gpio_enable_output(dev->pin, dev->direction ? 1 : 0, dev->direction ? 0 : 1);
-    }
+        gpio_set_direction(dev->pin, GPIO_MODE_OUTPUT);
 
     return dev;
 }
@@ -59,14 +55,12 @@ void evm_gpio_set_direction(evm_t *e, void *dev, int value){
 
 void evm_gpio_write(evm_t *e, void *dev, int value){
 	_gpio_dev_t *gpio_dev = dev;
-	bl_gpio_output_set(gpio_dev->pin, value);
+	gpio_set_level(gpio_dev->pin, value);
 }
 
 int evm_gpio_read(evm_t *e, void *dev){
 	_gpio_dev_t *gpio_dev = dev;
-    uint8_t status;
-    int ret = bl_gpio_input_get(gpio_dev->pin, &status);
-    return ret == 0 ? 0:1;
+    return gpio_get_level(gpio_dev->pin);
 }
 
 void evm_gpio_close(evm_t *e, void *dev){

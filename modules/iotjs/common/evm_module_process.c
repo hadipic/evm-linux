@@ -1,3 +1,4 @@
+#ifdef CONFIG_EVM_MODULE_PROCESS
 #include "evm_module.h"
 
 static void process_handler(evm_t *e, void* ptr) {
@@ -84,3 +85,4 @@ evm_err_t evm_module_process(evm_t *e) {
     evm_module_add(e, "process", obj);
     return ec_ok;
 }
+#endif

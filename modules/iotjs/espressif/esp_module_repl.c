@@ -1,25 +1,25 @@
 #ifdef CONFIG_EVM_MODULE_REPL
 #include "evm_module.h"
-#include <vfs.h>
-#include <aos/kernel.h>
-#include <aos/yloop.h>
-#include <event_device.h>
-#include <cli.h>
-#include <FreeRTOS.h>
-#include <task.h>
+#include <stdio.h>
+#include <sys/fcntl.h>
+#include <sys/errno.h>
+#include <sys/unistd.h>
+#include <sys/select.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 static int fd_console;
 
 void evm_repl_init(evm_t *e) {
-    fd_console = aos_open("/dev/ttyS0", 0);
+    fd_console = open("/dev/uart/0", O_RDWR);
 }
 
 char evm_repl_tty_read(evm_t *e)
 {
     EVM_UNUSED(e);
-    char buffer[16];
-    if( aos_read(fd_console, buffer, 1) ) 
-        return buffer[0];
+    char buffer;
+    if( read(fd_console, &buffer, 1) ) 
+        return buffer;
     else {
         vTaskDelay(10);
         return 0;
@@ -28,7 +28,7 @@ char evm_repl_tty_read(evm_t *e)
 
 void evm_repl_tty_write(int n, char *s)
 {
-    aos_write(fd_console, s, n);
+    write(fd_console, s, n);
 }
 
 

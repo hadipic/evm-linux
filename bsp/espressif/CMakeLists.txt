@@ -4,7 +4,19 @@ cmake_minimum_required(VERSION 3.5)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
-set(EXTRA_COMPONENT_DIRS ../../engines)
-set(EXTRA_COMPONENT_DIRS ../../modules)
+option(EVM_USE_MUSJ "use mujs as main script engine" ON)
+
+add_definitions(-DCONFIG_EVM_MODULE_GPIO 
+                -DCONFIG_EVM_MODULE_UART 
+                -DCONFIG_EVM_MODULE_PROCESS 
+                -DCONFIG_EVM_MODULE_EVENT
+                -DCONFIG_EVM_MODULE_WLAN
+                -DCONFIG_EVM_MODULE_REPL)
+
+set(EXTRA_COMPONENT_DIRS 
+    ../../engines 
+    ../../modules)
 
 project(app)
+
+

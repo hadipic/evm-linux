@@ -32,6 +32,14 @@ set(esp_src
     ${ESP_DIR}/evm_main.c
 )
 
+if (EVM_USE_MUJS)
+    message(STATUS "use mujs")
+    set(ENGINE mujs)
+else()
+    message(STATUS "use default")
+    set(ENGINE mujs)
+endif()
+
 idf_component_register(SRCS
                        ${module_src}
                        ${esp_src}
@@ -39,6 +47,7 @@ idf_component_register(SRCS
                        .
                        ../../include
                        REQUIRES
+                       ${ENGINE}
                        freertos
                        mbedtls
                        lwip)

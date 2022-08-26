@@ -1,29 +1,12 @@
 #include "evm_module.h"
 
-#include <FreeRTOS.h>
-#include <vfs.h>
-#include <aos/kernel.h>
-#include <aos/yloop.h>
-#include <event_device.h>
-#include <cli.h>
-#include <bl_uart.h>
-#include <bl_chip.h>
-#include <bl_sec.h>
-#include <bl_irq.h>
-#include <bl_dma.h>
-#include <hal_uart.h>
-#include <hal_sys.h>
-#include <hal_boot2.h>
-#include <hal_board.h>
-#include <bl_sys_time.h>
-#include <fdt.h>
-#include <libfdt.h>
-#include <blog.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 
 void *evm_malloc(size_t size)
 {
-    void * m = pvPortMalloc(size);
+    void * m = malloc(size);
     if( m ) 
         memset(m, 0 ,size);
     return m;
@@ -32,12 +15,12 @@ void *evm_malloc(size_t size)
 void evm_free(void * p)
 {
     if(p) 
-        vPortFree(p);
+        free(p);
 }
 
 void *evm_realloc(void * p, size_t size)
 {
-    return pvPortMalloc(size);
+    return realloc(p, size);
 }
 
 evm_val_t native_print(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {

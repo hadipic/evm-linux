@@ -1,8 +1,9 @@
 #ifdef CONFIG_EVM_MODULE_EVENT
 #include "evm_module.h"
 
-#include "FreeRTOS.h"
-#include "queue.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "freertos/queue.h"
 
 #define QUEUE_LENGTH 0xFF
 #define ITEM_SIZE sizeof(evm_eventbus_t)
