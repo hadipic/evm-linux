@@ -1,7 +1,7 @@
 #ifndef EVM_CONFIG_H
 #define EVM_CONFIG_H
 
-#define CONFIG_EVM_REPL_DEV_NAME    "uart0"
+#define CONFIG_EVM_REPL_DEV_NAME    "uart1"
 #define CONFIG_EVM_MODULE_UART
 #define CONFIG_EVM_MODULE_GPIO
 #define CONFIG_EVM_MODULE_ADC

@@ -63,7 +63,7 @@ static size_t _repl_buffer_index = 0;
 static char _repl_buffer[REPL_BUF_SIZE];
 
 static int repl_input_insert(int len, char *s);
-static void repl_puts(char *s);
+static void repl_puts(const char *s);
 static void repl_putc(int c);
 static int repl_input_char(int ch);
 
@@ -175,8 +175,9 @@ static int repl_input_parse(const char *input, int end, int *ppos, int *pch)
 
 void repl_exec(evm_t *e, const char *code){
     evm_val_t res = evm_run_string(e, code);
-    if( !evm_is_undefined(e, res))
-        printf("%s", evm_2_string(e, res));
+    if( !evm_is_undefined(e, res)) {
+        repl_puts(evm_2_string(e, res));
+	}
     evm_val_free(e, res);
 }
 
@@ -274,10 +275,12 @@ static void repl_putc(int c)
     evm_repl_tty_write(1, &ch);
 }
 
-static void repl_puts(char *s)
+static void repl_puts(const char *s)
 {
-    int len = strlen(s);
-    evm_repl_tty_write(len, s);
+    while(*s != 0 ) {
+		evm_repl_tty_write(1, (char*)s);
+		s++;
+	}
 }
 
 void evm_run_repl(evm_t *e) {

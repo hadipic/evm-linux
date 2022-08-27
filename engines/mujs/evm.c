@@ -283,7 +283,14 @@ int evm_2_boolean(evm_t *e, evm_val_t v) {
 }
 
 const char *evm_2_string(evm_t *e, evm_val_t v) {
-    return jsV_tostring(e, &v);
+    const char *s = jsV_tostring(e, &v);
+    if( v.type == JS_TSHRSTR ) {
+        static char buf[8];
+        memcpy(buf, v.u.shrstr, 8);
+        return buf;
+    } else {
+        return s;
+    } 
 }
 
 int evm_is_number(evm_t *e, evm_val_t v) {
