@@ -1,5 +1,5 @@
-#ifdef CONFIG_EVM_MODULE_GPIO
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_GPIO
 #include "bl_gpio.h"
 #include <bl602_gpio.h>
 

@@ -1,5 +1,6 @@
-#ifdef CONFIG_EVM_MODULE_WLAN
+
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_WLAN
 
 
 //wlan.connect(ssid, password)

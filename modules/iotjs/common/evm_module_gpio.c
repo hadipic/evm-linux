@@ -1,5 +1,5 @@
-//#ifdef CONFIG_EVM_MODULE_GPIO
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_GPIO
 
 static evm_val_t evm_module_gpio_class_instantiate(evm_t *e);
 
@@ -109,4 +109,4 @@ void evm_module_gpio(evm_t *e) {
 
 	evm_module_add(e, "gpio", builtin);
 }
-//#endif
+#endif

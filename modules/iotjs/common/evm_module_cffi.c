@@ -1,5 +1,5 @@
-#ifdef CONFIG_EVM_MODULE_CFFI
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_CFFI
 
 enum
 {

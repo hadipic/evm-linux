@@ -12,6 +12,7 @@
 #define EVM_MODULE_H
 
 #include "evm.h"
+#include "evm_config.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -50,7 +51,7 @@ extern void evm_module_adc(evm_t *e);
 extern void evm_module_gpio(evm_t *e);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_TIMERS
+#ifdef CONFIG_EVM_MODULE_TIMER
 extern void evm_module_timers(evm_t *e);
 #endif
 

@@ -1,10 +1,11 @@
-#ifdef CONFIG_EVM_MODULE_TIMERS
+
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_TIMER
 #include <rtthread.h>
 
 static evm_t *timer_e;
 
-static void *callback_handler(void *parameter)
+static void callback_handler(void *parameter)
 {
     
 }
@@ -16,7 +17,7 @@ void *evm_timer_open(evm_t *e, int tick, int flag) {
                                        tick,
                                        flag == EVM_TIMER_ONE_SHOT ? RT_TIMER_FLAG_ONE_SHOT:RT_TIMER_FLAG_PERIODIC);
 
-    rt_err_t rt_timer_start(timer);
+    rt_timer_start(timer);
     return timer;
 }
 

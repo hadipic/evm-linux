@@ -1,5 +1,6 @@
-#ifdef CONFIG_EVM_MODULE_GPIO
+
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_GPIO
 #include <rtthread.h>
 #include <rtdevice.h>
 

@@ -1,5 +1,5 @@
-#ifdef CONFIG_EVM_MODULE_NET
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_NET
 #include <pthread.h>
 #include <sys/socket.h>
 #include <unistd.h>

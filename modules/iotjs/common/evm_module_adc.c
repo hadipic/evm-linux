@@ -1,5 +1,5 @@
-#ifdef CONFIG_EVM_MODULE_ADC
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_ADC
 
 static evm_val_t evm_module_adc_class_instantiate(evm_t *e);
 

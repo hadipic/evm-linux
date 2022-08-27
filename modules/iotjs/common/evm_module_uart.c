@@ -1,5 +1,6 @@
-#ifdef CONFIG_EVM_MODULE_UART
+
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_UART
 
 
 static evm_val_t evm_module_uart_class_instantiate(evm_t *e);

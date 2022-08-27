@@ -146,7 +146,7 @@ void evm_module_init(evm_t *env)
     evm_module_dns(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_TIMERS
+#ifdef CONFIG_EVM_MODULE_TIMER
     evm_module_timers(env);
 #endif
 

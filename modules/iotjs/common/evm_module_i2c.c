@@ -1,5 +1,5 @@
-#ifdef CONFIG_EVM_MODULE_I2C
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_I2C
 
 static evm_val_t evm_module_i2c_class_read(evm_t *e, evm_val_t p, int argc, evm_val_t *v);
 static evm_val_t evm_module_i2c_class_write(evm_t *e, evm_val_t p, int argc, evm_val_t *v);

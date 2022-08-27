@@ -1,5 +1,5 @@
-#ifdef CONFIG_EVM_MODULE_FS
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_FS
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>

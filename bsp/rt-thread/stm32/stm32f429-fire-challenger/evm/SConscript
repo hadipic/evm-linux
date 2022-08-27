@@ -9,11 +9,10 @@ evm_dir = cwd + '/../../../../../'
 src = Split('''
 ''')
 
-CPPPATH = [evm_dir + '/include']
-CPPDEFINES = ['CONFIG_EVM_MODULE_UART', 'CONFIG_EVM_MODULE_GPIO', 'CONFIG_EVM_MODULE_REPL']
+CPPPATH = [evm_dir + '/include', '../']
 
 AddDepend('EVM_USE_MUJS')
 
-group = DefineGroup('EVM', src, depend = [''], LIBS = [''], CCFLAGS = '', CPPPATH = CPPPATH, LIBPATH=[''], CPPDEFINES = CPPDEFINES)
+group = DefineGroup('EVM', src, depend = [''], LIBS = [''], CCFLAGS = '', CPPPATH = CPPPATH, LIBPATH=[''])
 
 Return('group')

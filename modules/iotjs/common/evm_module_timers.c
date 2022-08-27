@@ -1,5 +1,5 @@
-#ifdef CONFIG_EVM_MODULE_TIMERS
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_TIMER
 
 //setTimeout(callback, delay[, args..])
 static evm_val_t evm_module_timers_setTimeout(evm_t *e, evm_val_t p, int argc, evm_val_t *v)

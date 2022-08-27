@@ -1,5 +1,5 @@
-#ifdef CONFIG_EVM_MODULE_REPL
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_REPL
 
 #include <stdio.h>
 #include <stdint.h>

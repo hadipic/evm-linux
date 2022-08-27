@@ -1,5 +1,6 @@
-#ifdef CONFIG_EVM_MODULE_I2C
+
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_I2C
 #include <rtthread.h>
 #include <rtdevice.h>
 

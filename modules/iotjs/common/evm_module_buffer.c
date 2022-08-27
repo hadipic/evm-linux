@@ -1,5 +1,5 @@
-#ifdef CONFIG_EVM_MODULE_BUFFER
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_BUFFER
 
 evm_val_t evm_module_buffer_class_instantiate(evm_t *e, int size);
 

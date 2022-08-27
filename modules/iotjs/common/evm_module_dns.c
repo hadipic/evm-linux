@@ -1,5 +1,5 @@
-#ifdef CONFIG_EVM_MODULE_DNS
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_DNS
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>

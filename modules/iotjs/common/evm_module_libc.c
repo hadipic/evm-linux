@@ -1,5 +1,5 @@
-#ifdef CONFIG_EVM_MODULE_LIBC
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_LIBC
 
 static evm_module_cffi_t cffi_file[] = {
     {"fopen", fopen, "pss"},

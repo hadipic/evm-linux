@@ -1,5 +1,5 @@
-#ifdef CONFIG_EVM_MODULE_PROCESS
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_PROCESS
 
 static void process_handler(evm_t *e, void* ptr) {
     evm_val_t queue = evm_global_get(e, "@processQueue");

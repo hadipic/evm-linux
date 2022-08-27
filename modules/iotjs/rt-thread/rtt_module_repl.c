@@ -1,11 +1,12 @@
-#ifdef CONFIG_EVM_MODULE_REPL
+
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_REPL
 #include <rtthread.h>
 
 static rt_device_t fd_console;
 
 void evm_repl_init(evm_t *e) {
-    fd_console = rt_device_find("uart0");
+    fd_console = rt_device_find(CONFIG_EVM_REPL_DEV_NAME);
     rt_device_open(fd_console, RT_DEVICE_FLAG_STREAM);
 }
 

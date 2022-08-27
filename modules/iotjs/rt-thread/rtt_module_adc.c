@@ -1,5 +1,6 @@
-#ifdef CONFIG_EVM_MODULE_ADC
+
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_ADC
 #include <rtthread.h>
 #include <rtdevice.h>
 
@@ -33,7 +34,7 @@ void *evm_adc_open(evm_t *e, evm_val_t v) {
 		evm_throw(e, evm_mk_string(e, "Configuration has no 'channel' member"));
 	}
 
-	adc_dev->channel = evm_2_integer(val);
+	adc_dev->channel = evm_2_integer(e, val);
 	rt_adc_enable(adc_dev->dev, adc_dev->channel);
 	return adc_dev;
 }

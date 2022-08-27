@@ -1,5 +1,5 @@
-#ifdef CONFIG_EVM_MODULE_ASSERT
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_ASSERT
 
 enum
 {

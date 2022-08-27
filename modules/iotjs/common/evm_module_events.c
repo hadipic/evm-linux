@@ -1,5 +1,5 @@
-#ifdef CONFIG_EVM_MODULE_EVENT
 #include "evm_module.h"
+#ifdef CONFIG_EVM_MODULE_EVENT
 
 //emitter.addListener(event, listener)
 static evm_val_t evm_module_events_emitter_addListener(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
