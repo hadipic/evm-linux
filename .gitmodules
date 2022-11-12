@@ -1,1 +1,4 @@
 
+[submodule "engines/pikascript/pikascript"]
+	path = engines/pikascript/pikascript
+	url = https://gitee.com/Lyon1998/pikascript.git

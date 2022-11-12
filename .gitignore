@@ -40,3 +40,4 @@ build/
 *.pro.user
 vm.pro.user
 vm.pro.user.*
+*.uvguix.*
