@@ -7,6 +7,7 @@
 #include "PikaVM.h"
 #include "pikaScript.h"
 
+
 evm_val_t evm_string_create(evm_t *e, const char *str) {
 
 }
@@ -30,18 +31,15 @@ int evm_buffer_len(evm_t *e, evm_val_t o) {
 
 /*** 列表对象操作函数 ***/
 evm_val_t evm_list_create(evm_t *e) {
-    PikaObj* list = newNormalObj(New_PikaStdData_List);
-    __vm_List___init__(list);
-    return arg_newObj(list);
+
 }
 
 int evm_list_len(evm_t *e, evm_val_t o) {
-    return PikaStdLib_SysObj_len(e, o);
+
 }
 
 evm_err_t evm_list_set(evm_t *e, evm_val_t o, int i, evm_val_t v) {
-    PikaStdData_List_set(o, v, i);
-    return ec_ok;
+
 }
 
 evm_val_t evm_list_get(evm_t *e, evm_val_t o, int i) {
@@ -50,9 +48,18 @@ evm_val_t evm_list_get(evm_t *e, evm_val_t o, int i) {
 
 /*** 对象操作函数 ***/
 evm_val_t evm_object_create(evm_t *e) {
-    PikaObj* dict = newNormalObj(New_PikaStdData_Dict);
-    __vm_Dict___init__(dict);
-    return arg_newObj(dict);
+
+}
+
+evm_val_t evm_object_create_user_data(evm_t *e, void *data) {
+
+}
+
+void evm_object_set_user_data(evm_t *e, evm_val_t o, void *data) {
+
+}
+void *evm_object_get_user_data(evm_t *e, evm_val_t o) {
+
 }
 
 evm_val_t evm_global_get(evm_t *e, const char* key) {
@@ -63,30 +70,43 @@ evm_err_t evm_global_set(evm_t *e, const char *key, evm_val_t v) {
 
 }
 
+void evm_global_delete(evm_t *e, const char *key) {
+
+}
+
 
 /*** 成员操作函数 ***/
 evm_val_t evm_prop_get(evm_t *e, evm_val_t o, const char* key) {
-    return PikaStdData_Dict_get(o, key);
+
 }
 
 evm_err_t evm_prop_set(evm_t *e, evm_val_t o, const char *key, evm_val_t v) {
-    PikaStdData_Dict_set(o, v, key);
     return ec_ok;
+}
+
+void evm_prop_delete(evm_t *e, evm_val_t o, const char *key) {
+
 }
 
 
 /*** 模块操作函数 ***/
 evm_err_t evm_module_add(evm_t *e, const char* name, evm_val_t v) {
-
+    evm_val_t system = evm_global_get(e, "@system");
+    evm_prop_set(e, system, name, v);
+    evm_val_free(e, system);
+    return ec_ok;
 }
 
 evm_val_t evm_module_get(evm_t *e, const char* name) {
-
+    evm_val_t system = evm_global_get(e, "@system");
+    evm_val_t res = evm_prop_get(e, system, name);
+    evm_val_free(e, system);
+    return res;
 }
 
 /*** 其它操作函数 ***/
 void evm_heap_gc(evm_t *e) {
-    
+
 }
 
 void evm_throw(evm_t *e, evm_val_t v) {
@@ -107,7 +127,7 @@ void evm_run_file(evm_t *e, const char *path) {
 }
 
 evm_val_t evm_run_string(evm_t *e, const char *source) {
-    
+
 }
 
 void evm_run_shell(evm_t *e) {
@@ -191,6 +211,10 @@ evm_val_t evm_mk_string(evm_t *e, const char *s){
 
 }
 
+evm_val_t evm_mk_lstring(evm_t *e, const char *s, int len) {
+
+}
+
 evm_val_t evm_mk_boolean(evm_t *e, int v){
 
 }
@@ -214,3 +238,8 @@ void evm_val_free(evm_t *e, evm_val_t v) {
 evm_val_t evm_val_duplicate(evm_t *e, evm_val_t v) {
 
 }
+
+evm_val_t evm_mk_global(evm_t *e) {
+
+}
+

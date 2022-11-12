@@ -21,6 +21,10 @@ extern "C" {
 typedef PikaObj evm_t;
 typedef Arg* evm_val_t;
 
+Arg _evm_pika_undefined;
+
+#define EVM_UNDEFINED   &_evm_pika_undefined
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

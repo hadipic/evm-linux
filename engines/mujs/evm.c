@@ -251,6 +251,13 @@ evm_val_t evm_run_string(evm_t *e, const char *source) {
     return *js_tovalue(e, -1);
 }
 
+void evm_run_shell(evm_t *e) {
+#ifdef CONFIG_EVM_MODULE_REPL
+#include "evm_module.h"
+    evm_run_repl(e);
+#endif
+}
+
 evm_val_t evm_call(evm_t *e, evm_val_t obj, evm_val_t pthis, int argc, evm_val_t *v) {
     js_pushvalue(e, obj);
     js_pushvalue(e, pthis);

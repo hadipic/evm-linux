@@ -12,7 +12,6 @@
 #define EVM_MODULE_H
 
 #include "evm.h"
-#include "evm_config.h"
 
 #ifdef __cplusplus
 extern "C" {

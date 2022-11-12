@@ -15,12 +15,15 @@
 extern "C" {
 #endif
 
+#include <stdarg.h>
 #include "quickjs-opcode.h"
 #include "quickjs-atom.h"
 #include "quickjs.h"
 
 typedef JSContext evm_t;
 typedef JSValue evm_val_t;
+
+#define EVM_UNDEFINED JS_UNDEFINED
 
 #ifdef __cplusplus
 } /* extern "C" */

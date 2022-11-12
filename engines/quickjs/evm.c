@@ -57,6 +57,20 @@ evm_val_t evm_object_create(evm_t *e) {
     return JS_NewObject(e);
 }
 
+evm_val_t evm_object_create_user_data(evm_t *e, void *data) {
+    evm_val_t res = evm_object_create(e);
+    JS_SetOpaque(res, data);
+    return res;
+}
+
+void evm_object_set_user_data(evm_t *e, evm_val_t o, void *data) {
+    JS_SetOpaque(o, data);
+}
+
+void *evm_object_get_user_data(evm_t *e, evm_val_t o) {
+    return JS_GetOpaque(o, 1);
+}
+
 evm_val_t evm_global_get(evm_t *e, const char* key) {
     JSContext *ctx = e;
     JSValue global_obj;
@@ -75,6 +89,9 @@ evm_err_t evm_global_set(evm_t *e, const char *key, evm_val_t v) {
     return ec_ok;
 }
 
+void evm_global_delete(evm_t *e, const char *key) {
+
+}
 
 /*** 成员操作函数 ***/
 evm_val_t evm_prop_get(evm_t *e, evm_val_t o, const char* key) {
@@ -86,6 +103,9 @@ evm_err_t evm_prop_set(evm_t *e, evm_val_t o, const char *key, evm_val_t v) {
     return ec_ok;
 }
 
+void evm_prop_delete(evm_t *e, evm_val_t o, const char *key){
+
+}
 
 /*** 模块操作函数 ***/
 evm_err_t evm_module_add(evm_t *e, const char* name, evm_val_t v) {
@@ -257,20 +277,28 @@ void evm_deinit(evm_t *e) {
     }
 }
 
-evm_val_t evm_run_file(evm_t *e, const char *path) {
+void evm_run_file(evm_t *e, const char *path) {
     uint8_t *buf;
     size_t buf_len;
     buf = js_load_file(e, &buf_len, path);
     if (!buf) {
-        return JS_UNDEFINED;
+        return;
     }
     evm_val_t ret = JS_Eval(e, buf, buf_len, path, JS_EVAL_TYPE_MODULE);
     js_free(e, (void *)buf);
-    return ret;
+    JS_FreeValue(e, ret);
+    return;
 }
 
 evm_val_t evm_run_string(evm_t *e, const char *source) {
-    return JS_Eval(e, source, strlen(source), "", JS_EVAL_TYPE_MODULE);
+    return JS_Eval(e, source, strlen(source), "", JS_EVAL_TYPE_GLOBAL);
+}
+
+void evm_run_shell(evm_t *e) {
+#ifdef CONFIG_EVM_MODULE_REPL
+#include "evm_module.h"
+    evm_run_repl(e);
+#endif
 }
 
 evm_val_t evm_call(evm_t *e, evm_val_t obj, evm_val_t pthis, int argc, evm_val_t *v) {
@@ -376,6 +404,12 @@ evm_val_t evm_mk_number(evm_t *e, double d){
 evm_val_t evm_mk_string(evm_t *e, const char *s){
     evm_val_t res;
     res = JS_NewString(e, s);
+    return res;
+}
+
+evm_val_t evm_mk_lstring(evm_t *e, const char *s, int len) {
+    evm_val_t res;
+    res = JS_NewStringLen(e, s, len);
     return res;
 }
 

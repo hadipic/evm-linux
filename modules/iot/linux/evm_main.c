@@ -26,7 +26,7 @@ void evm_main (void) {
     evm_module_init(env);
 
 #ifdef CONFIG_EVM_MODULE_REPL
-    evm_run_repl(env);
+    evm_run_shell(env);
 #else
     evm_run_file(env, "./main.js");
 #endif
