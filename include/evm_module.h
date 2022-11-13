@@ -127,7 +127,7 @@ void evm_module_wlan(evm_t *e);
 void evm_run_repl(evm_t *e);
 #endif
 
-extern void evm_main(void);
+extern void evm_main(char *filename);
 
 extern int evm_module_registry_add(evm_t *e, evm_val_t v);
 extern evm_val_t evm_module_registry_get(evm_t *e, int id);

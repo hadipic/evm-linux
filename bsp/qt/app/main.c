@@ -6,5 +6,5 @@ char __platfrom_getChar(void){
 
 int main(int argc, char **argv)
 {
-    evm_main();
+    evm_main(argv[1]);
 }

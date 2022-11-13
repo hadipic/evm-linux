@@ -123,11 +123,11 @@ void evm_deinit(evm_t *e) {
 }
 
 void evm_run_file(evm_t *e, const char *path) {
-
+    pikaVM_runFile(e, (char*)path);
 }
 
 evm_val_t evm_run_string(evm_t *e, const char *source) {
-
+    pikaVM_run(e, source);
 }
 
 void evm_run_shell(evm_t *e) {
