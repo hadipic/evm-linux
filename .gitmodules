@@ -2,3 +2,9 @@
 [submodule "engines/pikascript/pikascript"]
 	path = engines/pikascript/pikascript
 	url = https://gitee.com/Lyon1998/pikascript.git
+[submodule "components/lvgl/lvgl"]
+	path = components/lvgl/lvgl
+	url = https://gitee.com/scriptiot/lvgl.git
+[submodule "components/lvgl/lv_drivers"]
+	path = components/lvgl/lv_drivers
+	url = https://gitee.com/scriptiot/lv_drivers.git
