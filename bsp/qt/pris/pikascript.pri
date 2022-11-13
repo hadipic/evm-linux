@@ -1,5 +1,6 @@
 INCLUDEPATH += $$PWD/../pikascript/pikascript-core
 INCLUDEPATH += $$PWD/../pikascript/pikascript-api
+INCLUDEPATH += $$PWD/../../../engines/pikascript
 
 SOURCES += \
         $$PWD/../../../engines/pikascript/evm.c
