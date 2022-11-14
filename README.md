@@ -52,9 +52,9 @@
 | **tools**|   开发工具 |
 | **tutorial**|   教程示例 |
 
-## 6. EVM 在线帮助手册
+## 6. 开发手册
 
-
++ <a href="docs/evue_basic_tutorial.md">EVUE使用简介</a>
 + [EVM语雀在线帮助手册](https://www.yuque.com/bytecode/evm)
 + [EVUE语雀在线帮助手册](https://www.yuque.com/bytecode/evue)
 

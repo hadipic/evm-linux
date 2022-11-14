@@ -114,8 +114,13 @@ void evm_throw(evm_t *e, evm_val_t v) {
 }
 
 /*** 虚拟机相关函数 ***/
+volatile PikaObj *__pikaMain;
 evm_t *evm_init(void) {
-    return pikaScriptInit();
+    PikaObj* pikaMain = newRootObj("pikaMain", New_PikaMain);
+    __pikaMain = pikaMain;
+    extern unsigned char pikaModules_py_a[];
+    obj_linkLibrary(pikaMain, pikaModules_py_a);
+    return pikaMain;
 }
 
 void evm_deinit(evm_t *e) {

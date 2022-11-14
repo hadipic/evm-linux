@@ -1,0 +1,22 @@
+<html>
+<div class="container" background-color="red" onclick="onclicked">
+    <text id="text">{{result}}</text>
+</div>
+</html>
+<script>
+data = {
+    'result': 'Hello EVUE'
+}
+
+def onclicked(self):
+    text.value(v='Supported by Pikascript')
+    self.background_color(v='blue')
+</script>
+<style>
+    .container {
+        width: 240px;
+        height: 240px;
+        top: 50px;
+        left: 50px;
+    }
+</style>
