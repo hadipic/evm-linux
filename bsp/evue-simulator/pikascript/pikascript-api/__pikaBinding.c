@@ -1485,19 +1485,6 @@ method_typedef(
     "__setitem__", "obj,key,val"
 );
 
-void PikaStdLib_SysObj___slice__Method(PikaObj *self, Args *args){
-    Arg* obj = args_getArg(args, "obj");
-    Arg* start = args_getArg(args, "start");
-    Arg* end = args_getArg(args, "end");
-    int step = args_getInt(args, "step");
-    Arg* res = PikaStdLib_SysObj___slice__(self, obj, start, end, step);
-    method_returnArg(args, res);
-}
-method_typedef(
-    PikaStdLib_SysObj___slice__,
-    "__slice__", "obj,start,end,step"
-);
-
 void PikaStdLib_SysObj_bytesMethod(PikaObj *self, Args *args){
     Arg* val = args_getArg(args, "val");
     Arg* res = PikaStdLib_SysObj_bytes(self, val);
@@ -1792,9 +1779,6 @@ class_def(PikaStdLib_SysObj){
     method_def(PikaStdLib_SysObj___getitem__, 1535436016),
 #if !PIKA_NANO_ENABLE
     method_def(PikaStdLib_SysObj_getattr, 1886477984),
-#endif
-#if PIKA_BUILTIN_STRUCT_ENABLE
-    method_def(PikaStdLib_SysObj___slice__, 1890777297),
 #endif
 #if PIKA_BUILTIN_STRUCT_ENABLE
     method_def(PikaStdLib_SysObj_dict, 2090185033),

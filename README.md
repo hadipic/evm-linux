@@ -55,6 +55,7 @@
 ## 6. 开发手册
 
 + <a href="docs/evue_basic_tutorial.md">EVUE使用简介</a>
++ <a href="docs/evue_pika_doc/evue_intro.md">基于pikascript的EVUE教程</a>
 + [EVM语雀在线帮助手册](https://www.yuque.com/bytecode/evm)
 + [EVUE语雀在线帮助手册](https://www.yuque.com/bytecode/evue)
 
