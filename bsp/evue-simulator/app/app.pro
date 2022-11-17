@@ -8,6 +8,7 @@ LIBS += -lpthread
 DEFINES += EVM_USE_PIKASCRIPT
 #DEFINES += EVM_USE_QUICKJS
 #DEFINES += EVM_USE_MUJS
+#DEFINES += EVM_USE_UPY
 
 include($$PWD/../pris/common.pri)
 include($$PWD/../pris/lvgl.pri)
@@ -30,6 +31,10 @@ if( contains(DEFINES, EVM_USE_QUICKJS) ) {
 
 if( contains(DEFINES, EVM_USE_MUJS) ) {
     include($$PWD/../pris/mujs.pri)
+}
+
+if( contains(DEFINES, EVM_USE_UPY) ) {
+    include($$PWD/../pris/micropy.pri)
 }
 
 SOURCES += \

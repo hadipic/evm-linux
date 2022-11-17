@@ -26,15 +26,16 @@ PikaObj *pikaScriptInit(void){
     obj_linkLibrary(pikaMain, pikaModules_py_a);
 #if PIKA_INIT_STRING_ENABLE
     obj_run(pikaMain,
-            "import PikaStdLib as std\n"
             "import pika_lvgl as lv\n"
-            "from PikaStdLib import MemChecker\n"
-            "mem = MemChecker()\n"
-            "mem.now()\n"
-            "class DivElement:\n"
-            "    def __init__(self, element = None):\n"
-            "        pass\n"
-            "widget0 = DivElement(element=None)\n"
+            "import PikaStdLib\n"
+            "mem = PikaStdLib.MemChecker()\n"
+            "def event_cb_1(evt):\n"
+            "    print('in evt1')\n"
+            "    print('mem used now: %0.2f kB' % (mem.getNow()))\n"
+            "btn1 = lv.obj(lv.scr_act())\n"
+            "btn1.add_event_cb(event_cb_1, lv.EVENT.CLICKED, 0)\n"
+            "print('mem used max: %0.2f kB' % (mem.getMax()))\n"
+            "print('mem used now: %0.2f kB' % (mem.getNow()))\n"
             "\n");
 #else 
     obj_runModule((PikaObj*)pikaMain, "main");

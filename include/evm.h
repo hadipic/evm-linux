@@ -21,6 +21,7 @@ extern "C" {
 #include <stdlib.h>
 #include <stdint.h>
 #include <ctype.h>
+#include <stdarg.h>
 
 #include "evm_type.h"
 

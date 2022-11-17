@@ -130,17 +130,7 @@ void evm_deinit(evm_t *e) {
 void evm_run_file(evm_t *e, const char *path) {
     size_t len = strlen(path);
     if(path[len - 2] == '.' && path[len - 1] == 'o') {
-        Args buffs = {0};
-        Arg* file_arg = arg_loadFile(NULL, path);
-        pika_assert(NULL != file_arg);
-        if (NULL == file_arg) {
-            return;
-        }
-        uint8_t* lines = (uint8_t*)arg_getBytes(file_arg);
-        /* clear the void line */
-        pikaVM_runByteCode(e, lines);
-        arg_deinit(file_arg);
-        strsDeinit(&buffs);
+        pikaVM_runByteCodeFile(e, path);
     } else {
         pikaVM_runFile(e, (char*)path);
     }
