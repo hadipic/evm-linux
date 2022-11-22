@@ -62,7 +62,7 @@ ARM Macro Assembler    Page 1
    39 00000400         ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
    40 00000400         ; </h>
    41 00000400         
-   42 00000400 00004000 
+   42 00000400 00010000 
 
 
 
@@ -70,21 +70,21 @@ ARM Macro Assembler    Page 2
 
 
                        Heap_Size
-                               EQU              0x4000      ;
+                               EQU              0x10000     ;
    43 00000400         
    44 00000400                 AREA             HEAP, NOINIT, READWRITE, ALIGN=
 3
    45 00000000         __heap_base
    46 00000000         Heap_Mem
                                SPACE            Heap_Size
-   47 00004000         __heap_limit
-   48 00004000         
-   49 00004000                 PRESERVE8
-   50 00004000                 THUMB
-   51 00004000         
-   52 00004000         
-   53 00004000         ; Vector Table Mapped to Address 0 at Reset
-   54 00004000                 AREA             RESET, DATA, READONLY
+   47 00010000         __heap_limit
+   48 00010000         
+   49 00010000                 PRESERVE8
+   50 00010000                 THUMB
+   51 00010000         
+   52 00010000         
+   53 00010000         ; Vector Table Mapped to Address 0 at Reset
+   54 00010000                 AREA             RESET, DATA, READONLY
    55 00000000                 EXPORT           __Vectors
    56 00000000                 EXPORT           __Vectors_End
    57 00000000                 EXPORT           __Vectors_Size
@@ -808,7 +808,7 @@ es\arm\startup_stm32l4r9xx.s
       At line 429 in file ..\..\Drivers\CMSIS\Device\ST\STM32L4xx\Source\Templa
 tes\arm\startup_stm32l4r9xx.s
 Comment: __heap_base used once
-__heap_limit 00004000
+__heap_limit 00010000
 
 Symbol: __heap_limit
    Definitions
@@ -2198,7 +2198,7 @@ tes\arm\startup_stm32l4r9xx.s
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 Absolute symbols
 
-Heap_Size 00004000
+Heap_Size 00010000
 
 Symbol: Heap_Size
    Definitions

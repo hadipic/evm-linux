@@ -107,17 +107,7 @@ int main(void)
 	BSP_LED_Init(LED1);
 	BSP_LED_Init(LED2);
 	BSP_COM_Init(COM1, &usart1);
-	
-	printf("Hello EVM\r\n");
-
-//	if(FATFS_LinkDriver(&SD_Driver, "0:") == 0)
-//	{
-//	/*##-2- Init the SD Card #################################################*/
-
-//	SD_Initialize();
-//	f_mount(&fs, "0:", 1);
-//	}
-  
+	  
 	lv_init();
     lv_port_disp_init();
     lv_port_indev_init();
@@ -126,7 +116,6 @@ int main(void)
 	evm_t *e = evm_init();
     evm_run_shell(e);
 	/* Infinite loop */
-	printf("lvgl loop\r\n");
 	while(1)
 	{
 	  HAL_Delay(1);

@@ -17,8 +17,8 @@ volatile PikaObj *__pikaMain;
 PikaObj *pikaScriptInit(void){
     __platform_printf("======[pikascript packages installed]======\r\n");
     pks_printVersion();
-    __platform_printf("PikaStdLib==latest\r\n");
-    __platform_printf("pika_lvgl==latest\r\n");
+    __platform_printf("PikaStdLib==v1.11.7\r\n");
+    __platform_printf("pika_lvgl==v0.4.1\r\n");
     __platform_printf("===========================================\r\n");
     PikaObj* pikaMain = newRootObj("pikaMain", New_PikaMain);
     __pikaMain = pikaMain;

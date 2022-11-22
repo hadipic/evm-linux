@@ -91,6 +91,26 @@ static void touchpad_init(void)
 	BSP_TS_ITConfig();
 }
 
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  if(GPIO_Pin == MFX_INT_PIN)
+  {
+
+    MfxItOccurred = SET;
+	  
+  }
+  /* Check if interrupt comes Joystick SEL */
+  else if(GPIO_Pin == SEL_JOY_PIN)
+  {
+
+  }
+  else
+  {
+    /* Unexpected case */
+  }
+}
+
 void EXTI1_IRQHandler(void)
 {
 
