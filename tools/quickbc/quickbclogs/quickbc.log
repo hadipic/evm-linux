@@ -102,3 +102,6 @@
 2022-11-15 20:00:50,755     INFO [               quickbc.py             compile    63] start compile......
 2022-11-15 20:00:51,826     INFO [               quickbc.py             compile    68] E:\scriptiot\evm\test\test.evue.py.o
 2022-11-15 20:00:51,851     INFO [               quickbc.py             compile    71] compile [../../test/test.evue]-->[E:\scriptiot\evm\test\test.evue.py.o] successfully!
+2022-11-21 16:31:08,340     INFO [               quickbc.py             compile    63] start compile......
+2022-11-21 16:31:10,003     INFO [               quickbc.py             compile    68] E:\scriptiot\evm\test\test.evue.py.o
+2022-11-21 16:31:10,031     INFO [               quickbc.py             compile    71] compile [../../test/test.evue]-->[E:\scriptiot\evm\test\test.evue.py.o] successfully!

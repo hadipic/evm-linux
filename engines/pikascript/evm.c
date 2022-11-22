@@ -7,6 +7,7 @@
 #include "PikaVM.h"
 #include "pikaScript.h"
 
+Arg _evm_pika_undefined;
 
 evm_val_t evm_string_create(evm_t *e, const char *str) {
 
@@ -130,14 +131,14 @@ void evm_deinit(evm_t *e) {
 void evm_run_file(evm_t *e, const char *path) {
     size_t len = strlen(path);
     if(path[len - 2] == '.' && path[len - 1] == 'o') {
-        pikaVM_runByteCodeFile(e, path);
+        pikaVM_runByteCodeFile(e, (char*)path);
     } else {
         pikaVM_runFile(e, (char*)path);
     }
 }
 
 evm_val_t evm_run_string(evm_t *e, const char *source) {
-    pikaVM_run(e, source);
+    pikaVM_run(e, (char*)source);
 }
 
 void evm_run_shell(evm_t *e) {

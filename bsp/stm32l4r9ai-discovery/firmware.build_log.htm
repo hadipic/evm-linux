@@ -1,0 +1,770 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ¦ÌVision V5.37.0.0
+Copyright (C) 2022 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: wz zhe, wz, LIC=ATTQ1-CH4T2-LQG0Q-NADUC-ZMP3Q-VL90E
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.37.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 3 (build 300)
+Assembler:       Armasm.exe V5.06 update 3 (build 300)
+Linker/Locator:  ArmLink.exe V5.06 update 3 (build 300)
+Library Manager: ArmAr.exe V5.06 update 3 (build 300)
+Hex Converter:   FromElf.exe V5.06 update 3 (build 300)
+CPU DLL:         SARMCM3.DLL V5.37.0.0
+Dialog DLL:      DCM.DLL V1.17.5.0
+Target DLL:      UL2CM3.DLL V1.164.7.0
+Dialog DLL:      TCM.DLL V1.56.1.0
+ 
+<h2>Project:</h2>
+E:\scriptiot\evm\bsp\stm32l4r9ai-discovery\Projects\MDK-ARM\pikascript.uvprojx
+Project File Date:  11/17/2022
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 3 (build 300)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'STM32L4R9I-Discovery'
+Note: source file '..\..\Middlewares\Third_Party\FatFs\src\option\syscall.c' - object file renamed from '..\..\syscall.o' to '..\..\syscall_1.o'.
+compiling stm32l4r9i_discovery_io.c...
+compiling stm32l4r9i_discovery_sd.c...
+compiling stm32l4r9i_discovery.c...
+compiling system_stm32l4xx.c...
+compiling stm32l4r9i_discovery_psram.c...
+..\..\Drivers\BSP\STM32L4R9I-Discovery\stm32l4r9i_discovery_psram.c(434): warning:  #177-D: function "PSRAM_PowerOn" was declared but never referenced
+  static void PSRAM_PowerOn(void)
+..\..\Drivers\BSP\STM32L4R9I-Discovery\stm32l4r9i_discovery_psram.c: 1 warning, 0 errors
+compiling stm32l4r9i_discovery_ts.c...
+compiling stm32l4xx_hal.c...
+compiling stm32l4xx_hal_dma.c...
+compiling stm32l4xx_hal_dma2d.c...
+compiling stm32l4xx_hal_gfxmmu.c...
+compiling stm32l4xx_hal_gpio.c...
+compiling stm32l4xx_hal_dsi.c...
+compiling stm32l4xx_hal_i2c_ex.c...
+compiling stm32l4xx_hal_pwr.c...
+compiling stm32l4xx_hal_i2c.c...
+compiling stm32l4xx_hal_cortex.c...
+compiling stm32l4xx_hal_pwr_ex.c...
+compiling stm32l4xx_hal_rcc_ex.c...
+compiling stm32l4xx_hal_rcc.c...
+compiling stm32l4xx_hal_ltdc.c...
+compiling stm32l4xx_hal_ltdc_ex.c...
+compiling stm32l4xx_hal_flash.c...
+compiling stm32l4xx_hal_flash_ex.c...
+compiling stm32l4xx_hal_sd_ex.c...
+compiling stm32l4xx_ll_sdmmc.c...
+compiling stm32l4xx_hal_sd.c...
+compiling mfxstm32l152.c...
+compiling stm32l4xx_hal_sram.c...
+compiling ft3x67.c...
+compiling stm32l4xx_ll_fmc.c...
+compiling main.c...
+../Src/main.c(29): error:  #5: cannot open source input file "ewebengine.h": No such file or directory
+  #include "ewebengine.h"
+../Src/main.c: 0 warnings, 1 error
+compiling stm32l4xx_it.c...
+compiling stm32l4xx_hal_msp.c...
+compiling syscall.c...
+syscall.c(5): error:  #5: cannot open source input file "_ansi.h": No such file or directory
+  #include <_ansi.h>
+syscall.c: 0 warnings, 1 error
+compiling sd_diskio.c...
+assembling startup_stm32l4r9xx.s...
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(1): error: A1167E: Invalid line start 
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(2): error: A1137E: Unexpected characters at end of line
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(3): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(4): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(5): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(6): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(7): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(8): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(9): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(10): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(11): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(12): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(13): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(14): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(15): error: A1137E: Unexpected characters at end of line
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(16): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(17): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(18): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(19): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(20): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(21): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(22): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(23): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(24): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(25): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(26): error: A1137E: Unexpected characters at end of line
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(27): error: A1137E: Unexpected characters at end of line
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(29): error: A1137E: Unexpected characters at end of line
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(30): error: A1137E: Unexpected characters at end of line
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(31): error: A1137E: Unexpected characters at end of line
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(32): error: A1137E: Unexpected characters at end of line
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(34): error: A1163E: Unknown opcode g_pfnVectors , expecting opcode or Macro
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(35): error: A1163E: Unknown opcode Default_Handler , expecting opcode or Macro
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(37): error: A1163E: Unknown opcode start , expecting opcode or Macro
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(38): error: A1163E: Unknown opcode in , expecting opcode or Macro
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(39): error: A1163E: Unknown opcode _sidata , expecting opcode or Macro
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(40): error: A1163E: Unknown opcode start , expecting opcode or Macro
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(41): error: A1163E: Unknown opcode _sdata , expecting opcode or Macro
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(42): error: A1167E: Invalid line start 
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(43): error: A1163E: Unknown opcode _edata , expecting opcode or Macro
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(44): error: A1163E: Unknown opcode start , expecting opcode or Macro
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(45): error: A1163E: Unknown opcode _sbss , expecting opcode or Macro
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(46): error: A1167E: Invalid line start 
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(47): error: A1163E: Unknown opcode _ebss , expecting opcode or Macro
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(49): error: A1163E: Unknown opcode BootRAM, , expecting opcode or Macro
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(50): error: A1167E: Invalid line start 
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(51): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(52): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(53): error: A1159E: Label missing from line start
+..\..\Drivers\cmsis_device_l4\Source\Templates\gcc\startup_stm32l4r9xx.s(54): error: A1159E: Label missing from line start
+compiling malloc.c...
+compiling diskio.c...
+compiling ff_gen_drv.c...
+compiling syscall.c...
+compiling unicode.c...
+compiling lv_disp.c...
+..\..\..\..\components\lvgl\lvgl\src\core\../hal/../draw/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\core\lv_disp.c: 0 warnings, 1 error
+compiling ff.c...
+compiling lv_event.c...
+..\..\..\..\components\lvgl\lvgl\src\core\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\core\lv_event.c: 0 warnings, 1 error
+compiling lv_group.c...
+..\..\..\..\components\lvgl\lvgl\src\core\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\core\lv_group.c: 0 warnings, 1 error
+compiling lv_indev.c...
+..\..\..\..\components\lvgl\lvgl\src\core\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\core\lv_indev.c: 0 warnings, 1 error
+compiling lv_indev_scroll.c...
+..\..\..\..\components\lvgl\lvgl\src\core\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\core\lv_indev_scroll.c: 0 warnings, 1 error
+compiling lv_obj.c...
+..\..\..\..\components\lvgl\lvgl\src\core\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\core\lv_obj.c: 0 warnings, 1 error
+compiling lv_obj_class.c...
+..\..\..\..\components\lvgl\lvgl\src\core\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\core\lv_obj_class.c: 0 warnings, 1 error
+compiling lv_obj_draw.c...
+..\..\..\..\components\lvgl\lvgl\src\core\../draw/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\core\lv_obj_draw.c: 0 warnings, 1 error
+compiling lv_obj_pos.c...
+..\..\..\..\components\lvgl\lvgl\src\core\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\core\lv_obj_pos.c: 0 warnings, 1 error
+compiling lv_obj_scroll.c...
+..\..\..\..\components\lvgl\lvgl\src\core\../misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\core\lv_obj_scroll.c: 0 warnings, 1 error
+compiling lv_obj_style.c...
+..\..\..\..\components\lvgl\lvgl\src\core\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\core\lv_obj_style.c: 0 warnings, 1 error
+compiling lv_obj_style_gen.c...
+..\..\..\..\components\lvgl\lvgl\src\core\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\core\lv_obj_style_gen.c: 0 warnings, 1 error
+compiling lv_obj_tree.c...
+..\..\..\..\components\lvgl\lvgl\src\core\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\core\lv_obj_tree.c: 0 warnings, 1 error
+compiling lv_refr.c...
+..\..\..\..\components\lvgl\lvgl\src\core\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\core\lv_refr.c: 0 warnings, 1 error
+compiling lv_theme.c...
+..\..\..\..\components\lvgl\lvgl\src\core\../../src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\core\lv_theme.c: 0 warnings, 1 error
+compiling lv_draw.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\lv_draw.c: 0 warnings, 1 error
+compiling lv_draw_arc.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\lv_draw_arc.c: 0 warnings, 1 error
+compiling lv_draw_img.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\lv_draw_img.c: 0 warnings, 1 error
+compiling lv_draw_label.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\lv_draw_label.c: 0 warnings, 1 error
+compiling lv_draw_layer.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\lv_draw_layer.c: 0 warnings, 1 error
+compiling lv_draw_line.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\../core/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\lv_draw_line.c: 0 warnings, 1 error
+compiling lv_draw_mask.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\lv_draw_mask.c: 0 warnings, 1 error
+compiling lv_draw_rect.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\lv_draw_rect.c: 0 warnings, 1 error
+compiling lv_draw_triangle.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\lv_draw_triangle.c: 0 warnings, 1 error
+compiling lv_draw_transform.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\lv_draw_transform.c: 0 warnings, 1 error
+compiling lv_img_buf.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\../misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\lv_img_buf.c: 0 warnings, 1 error
+compiling lv_img_cache.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\../misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\lv_img_cache.c: 0 warnings, 1 error
+compiling lv_img_decoder.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\lv_img_decoder.c: 0 warnings, 1 error
+compiling lv_draw_sw.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\../../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\lv_draw_sw.c: 0 warnings, 1 error
+compiling lv_draw_sw_arc.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\../../misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\lv_draw_sw_arc.c: 0 warnings, 1 error
+compiling lv_draw_sw_dither.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\../../core/../misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\lv_draw_sw_dither.c: 0 warnings, 1 error
+compiling lv_draw_sw_blend.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\../../misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\lv_draw_sw_blend.c: 0 warnings, 1 error
+compiling lv_draw_sw_img.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\../../misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\lv_draw_sw_img.c: 0 warnings, 1 error
+compiling lv_draw_sw_gradient.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\../../misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\lv_draw_sw_gradient.c: 0 warnings, 1 error
+compiling lv_draw_sw_layer.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\../../misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\lv_draw_sw_layer.c: 0 warnings, 1 error
+compiling lv_draw_sw_line.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\../../misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\lv_draw_sw_line.c: 0 warnings, 1 error
+compiling lv_draw_sw_letter.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\../../misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\lv_draw_sw_letter.c: 0 warnings, 1 error
+compiling lv_draw_sw_polygon.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\../../misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\lv_draw_sw_polygon.c: 0 warnings, 1 error
+compiling lv_draw_sw_transform.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\../../misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\lv_draw_sw_transform.c: 0 warnings, 1 error
+compiling lv_flex.c...
+..\..\..\..\components\lvgl\lvgl\src\extra\layouts\flex\../flex/../../../core/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\extra\layouts\flex\lv_flex.c: 0 warnings, 1 error
+compiling lv_draw_sw_rect.c...
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\../../misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\draw\sw\lv_draw_sw_rect.c: 0 warnings, 1 error
+compiling lv_grid.c...
+..\..\..\..\components\lvgl\lvgl\src\extra\layouts\grid\../flex/../../../core/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\extra\layouts\grid\lv_grid.c: 0 warnings, 1 error
+compiling lv_font_dejavu_16_persian_hebrew.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_dejavu_16_persian_hebrew.c: 0 warnings, 1 error
+compiling lv_font_fmt_txt.c...
+..\..\..\..\components\lvgl\lvgl\src\font\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_fmt_txt.c: 0 warnings, 1 error
+compiling lv_font.c...
+..\..\..\..\components\lvgl\lvgl\src\font\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font.c: 0 warnings, 1 error
+compiling lv_font_loader.c...
+..\..\..\..\components\lvgl\lvgl\src\font\../../src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_loader.c: 0 warnings, 1 error
+compiling lv_font_montserrat_8.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_8.c: 0 warnings, 1 error
+compiling lv_font_montserrat_10.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_10.c: 0 warnings, 1 error
+compiling lv_font_montserrat_14.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_14.c: 0 warnings, 1 error
+compiling lv_font_montserrat_12_subpx.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_12_subpx.c: 0 warnings, 1 error
+compiling lv_font_montserrat_12.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_12.c: 0 warnings, 1 error
+compiling lv_font_montserrat_16.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_16.c: 0 warnings, 1 error
+compiling lv_font_montserrat_20.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_20.c: 0 warnings, 1 error
+compiling lv_font_montserrat_18.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_18.c: 0 warnings, 1 error
+compiling lv_font_montserrat_22.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_22.c: 0 warnings, 1 error
+compiling lv_font_montserrat_24.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_24.c: 0 warnings, 1 error
+compiling lv_font_montserrat_26.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_26.c: 0 warnings, 1 error
+compiling lv_font_montserrat_28_compressed.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_28_compressed.c: 0 warnings, 1 error
+compiling lv_font_montserrat_28.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_28.c: 0 warnings, 1 error
+compiling lv_font_montserrat_30.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_30.c: 0 warnings, 1 error
+compiling lv_font_montserrat_32.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_32.c: 0 warnings, 1 error
+compiling lv_font_montserrat_36.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_36.c: 0 warnings, 1 error
+compiling lv_font_montserrat_34.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_34.c: 0 warnings, 1 error
+compiling lv_font_montserrat_40.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_40.c: 0 warnings, 1 error
+compiling lv_font_montserrat_38.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_38.c: 0 warnings, 1 error
+compiling lv_font_montserrat_42.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_42.c: 0 warnings, 1 error
+compiling lv_font_montserrat_44.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_44.c: 0 warnings, 1 error
+compiling lv_font_montserrat_48.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_48.c: 0 warnings, 1 error
+compiling lv_font_montserrat_46.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_montserrat_46.c: 0 warnings, 1 error
+compiling lv_font_simsun_16_cjk.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_simsun_16_cjk.c: 0 warnings, 1 error
+compiling lv_font_unscii_16.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_unscii_16.c: 0 warnings, 1 error
+compiling lv_font_unscii_8.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\font\lv_font_unscii_8.c: 0 warnings, 1 error
+compiling lv_hal_tick.c...
+..\..\..\..\components\lvgl\lvgl\src\hal\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\hal\lv_hal_tick.c: 0 warnings, 1 error
+compiling lv_hal_disp.c...
+..\..\..\..\components\lvgl\lvgl\src\hal\../draw/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\hal\lv_hal_disp.c: 0 warnings, 1 error
+compiling lv_hal_indev.c...
+..\..\..\..\components\lvgl\lvgl\src\hal\../misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\hal\lv_hal_indev.c: 0 warnings, 1 error
+compiling lv_anim.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_anim.c: 0 warnings, 1 error
+compiling lv_anim_timeline.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_anim_timeline.c: 0 warnings, 1 error
+compiling lv_area.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_area.c: 0 warnings, 1 error
+compiling lv_async.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_async.c: 0 warnings, 1 error
+compiling lv_color.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_color.c: 0 warnings, 1 error
+compiling lv_bidi.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_bidi.c: 0 warnings, 1 error
+compiling lv_fs.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_fs.c: 0 warnings, 1 error
+compiling lv_gc.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_gc.c: 0 warnings, 1 error
+compiling lv_ll.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_ll.c: 0 warnings, 1 error
+compiling lv_log.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_log.c: 0 warnings, 1 error
+compiling lv_lru.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_lru.c: 0 warnings, 1 error
+compiling lv_math.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_math.c: 0 warnings, 1 error
+compiling lv_mem.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_mem.c: 0 warnings, 1 error
+compiling lv_printf.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_printf.c: 0 warnings, 1 error
+compiling lv_style.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../font/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_style.c: 0 warnings, 1 error
+compiling lv_style_gen.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../font/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_style_gen.c: 0 warnings, 1 error
+compiling lv_timer.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_timer.c: 0 warnings, 1 error
+compiling lv_templ.c...
+compiling lv_tlsf.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_tlsf.c: 0 warnings, 1 error
+compiling lv_txt_ap.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_txt_ap.c: 0 warnings, 1 error
+compiling lv_txt.c...
+..\..\..\..\components\lvgl\lvgl\src\misc\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\misc\lv_txt.c: 0 warnings, 1 error
+compiling lv_utils.c...
+compiling lv_bar.c...
+..\..\..\..\components\lvgl\lvgl\src\widgets\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\widgets\lv_bar.c: 0 warnings, 1 error
+compiling lv_arc.c...
+..\..\..\..\components\lvgl\lvgl\src\widgets\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\widgets\lv_arc.c: 0 warnings, 1 error
+compiling lv_btn.c...
+..\..\..\..\components\lvgl\lvgl\src\widgets\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\widgets\lv_btn.c: 0 warnings, 1 error
+compiling lv_canvas.c...
+..\..\..\..\components\lvgl\lvgl\src\widgets\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\widgets\lv_canvas.c: 0 warnings, 1 error
+compiling lv_btnmatrix.c...
+..\..\..\..\components\lvgl\lvgl\src\widgets\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\widgets\lv_btnmatrix.c: 0 warnings, 1 error
+compiling lv_checkbox.c...
+..\..\..\..\components\lvgl\lvgl\src\widgets\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\widgets\lv_checkbox.c: 0 warnings, 1 error
+compiling lv_dropdown.c...
+..\..\..\..\components\lvgl\lvgl\src\widgets\../core/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\widgets\lv_dropdown.c: 0 warnings, 1 error
+compiling lv_img.c...
+..\..\..\..\components\lvgl\lvgl\src\widgets\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\widgets\lv_img.c: 0 warnings, 1 error
+compiling lv_label.c...
+..\..\..\..\components\lvgl\lvgl\src\widgets\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\widgets\lv_label.c: 0 warnings, 1 error
+compiling lv_objx_templ.c...
+compiling lv_line.c...
+..\..\..\..\components\lvgl\lvgl\src\widgets\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\widgets\lv_line.c: 0 warnings, 1 error
+compiling lv_roller.c...
+..\..\..\..\components\lvgl\lvgl\src\widgets\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\widgets\lv_roller.c: 0 warnings, 1 error
+compiling lv_slider.c...
+..\..\..\..\components\lvgl\lvgl\src\widgets\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\widgets\lv_slider.c: 0 warnings, 1 error
+compiling lv_switch.c...
+..\..\..\..\components\lvgl\lvgl\src\widgets\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\widgets\lv_switch.c: 0 warnings, 1 error
+compiling lv_table.c...
+..\..\..\..\components\lvgl\lvgl\src\widgets\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\widgets\lv_table.c: 0 warnings, 1 error
+compiling lv_textarea.c...
+..\..\..\..\components\lvgl\lvgl\src\widgets\../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\..\..\components\lvgl\lvgl\src\widgets\lv_textarea.c: 0 warnings, 1 error
+compiling BaseObj.c...
+..\..\pikascript\pikascript-core\./pika_config_valid.h(50): error:  #5: cannot open source input file "pika_config.h": No such file or directory
+          #include "pika_config.h"
+..\..\pikascript\pikascript-core\BaseObj.c: 0 warnings, 1 error
+compiling dataArg.c...
+..\..\pikascript\pikascript-core\./pika_config_valid.h(50): error:  #5: cannot open source input file "pika_config.h": No such file or directory
+          #include "pika_config.h"
+..\..\pikascript\pikascript-core\dataArg.c: 0 warnings, 1 error
+compiling dataArgs.c...
+..\..\pikascript\pikascript-core\./pika_config_valid.h(50): error:  #5: cannot open source input file "pika_config.h": No such file or directory
+          #include "pika_config.h"
+..\..\pikascript\pikascript-core\dataArgs.c: 0 warnings, 1 error
+compiling dataLink.c...
+..\..\pikascript\pikascript-core\./pika_config_valid.h(50): error:  #5: cannot open source input file "pika_config.h": No such file or directory
+          #include "pika_config.h"
+..\..\pikascript\pikascript-core\dataLink.c: 0 warnings, 1 error
+compiling dataLinkNode.c...
+..\..\pikascript\pikascript-core\./pika_config_valid.h(50): error:  #5: cannot open source input file "pika_config.h": No such file or directory
+          #include "pika_config.h"
+..\..\pikascript\pikascript-core\dataLinkNode.c: 0 warnings, 1 error
+compiling dataMemory.c...
+..\..\pikascript\pikascript-core\./pika_config_valid.h(50): error:  #5: cannot open source input file "pika_config.h": No such file or directory
+          #include "pika_config.h"
+..\..\pikascript\pikascript-core\dataMemory.c: 0 warnings, 1 error
+compiling dataQueue.c...
+..\..\pikascript\pikascript-core\./pika_config_valid.h(50): error:  #5: cannot open source input file "pika_config.h": No such file or directory
+          #include "pika_config.h"
+..\..\pikascript\pikascript-core\dataQueue.c: 0 warnings, 1 error
+compiling dataQueueObj.c...
+..\..\pikascript\pikascript-core\./pika_config_valid.h(50): error:  #5: cannot open source input file "pika_config.h": No such file or directory
+          #include "pika_config.h"
+..\..\pikascript\pikascript-core\dataQueueObj.c: 0 warnings, 1 error
+compiling dataStack.c...
+..\..\pikascript\pikascript-core\./pika_config_valid.h(50): error:  #5: cannot open source input file "pika_config.h": No such file or directory
+          #include "pika_config.h"
+..\..\pikascript\pikascript-core\dataStack.c: 0 warnings, 1 error
+compiling dataStrs.c...
+..\..\pikascript\pikascript-core\./pika_config_valid.h(50): error:  #5: cannot open source input file "pika_config.h": No such file or directory
+          #include "pika_config.h"
+..\..\pikascript\pikascript-core\dataStrs.c: 0 warnings, 1 error
+compiling dataString.c...
+..\..\pikascript\pikascript-core\./pika_config_valid.h(50): error:  #5: cannot open source input file "pika_config.h": No such file or directory
+          #include "pika_config.h"
+..\..\pikascript\pikascript-core\dataString.c: 0 warnings, 1 error
+compiling PikaCompiler.c...
+..\..\pikascript\pikascript-core\./pika_config_valid.h(50): error:  #5: cannot open source input file "pika_config.h": No such file or directory
+          #include "pika_config.h"
+..\..\pikascript\pikascript-core\PikaCompiler.c: 0 warnings, 1 error
+compiling PikaObj.c...
+..\..\pikascript\pikascript-core\./pika_config_valid.h(50): error:  #5: cannot open source input file "pika_config.h": No such file or directory
+          #include "pika_config.h"
+..\..\pikascript\pikascript-core\PikaObj.c: 0 warnings, 1 error
+compiling PikaParser.c...
+..\..\pikascript\pikascript-core\./pika_config_valid.h(50): error:  #5: cannot open source input file "pika_config.h": No such file or directory
+          #include "pika_config.h"
+..\..\pikascript\pikascript-core\PikaParser.c: 0 warnings, 1 error
+compiling PikaPlatform.c...
+..\..\pikascript\pikascript-core\./pika_config_valid.h(50): error:  #5: cannot open source input file "pika_config.h": No such file or directory
+          #include "pika_config.h"
+..\..\pikascript\pikascript-core\PikaPlatform.c: 0 warnings, 1 error
+compiling PikaVM.c...
+..\..\pikascript\pikascript-core\./pika_config_valid.h(50): error:  #5: cannot open source input file "pika_config.h": No such file or directory
+          #include "pika_config.h"
+..\..\pikascript\pikascript-core\PikaVM.c: 0 warnings, 1 error
+compiling TinyObj.c...
+..\..\pikascript\pikascript-core\./pika_config_valid.h(50): error:  #5: cannot open source input file "pika_config.h": No such file or directory
+          #include "pika_config.h"
+..\..\pikascript\pikascript-core\TinyObj.c: 0 warnings, 1 error
+compiling __asset_pikaModules_py_a.c...
+..\..\pikascript\pikascript-api\__asset_pikaModules_py_a.c(1): error:  #5: cannot open source input file "PikaPlatform.h": No such file or directory
+  #include "PikaPlatform.h"
+..\..\pikascript\pikascript-api\__asset_pikaModules_py_a.c: 0 warnings, 1 error
+compiling pikaScript.c...
+..\..\pikascript\pikascript-api\PikaMain.h(16): error:  #5: cannot open source input file "PikaObj.h": No such file or directory
+  #include "PikaObj.h"
+..\..\pikascript\pikascript-api\pikaScript.c: 0 warnings, 1 error
+compiling __pikaBinding.c...
+..\..\pikascript\pikascript-api\__pikaBinding.c(14): error:  #5: cannot open source input file "BaseObj.h": No such file or directory
+  #include "BaseObj.h"
+..\..\pikascript\pikascript-api\__pikaBinding.c: 0 warnings, 1 error
+compiling pika_lv_point_t.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\pikascript\pikascript-lib\pika_lvgl\pika_lv_point_t.c: 0 warnings, 1 error
+compiling pika_lv_timer_t.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\pikascript\pikascript-lib\pika_lvgl\pika_lv_timer_t.c: 0 warnings, 1 error
+compiling pika_lv_wegit.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\pikascript\pikascript-lib\pika_lvgl\pika_lv_wegit.c: 0 warnings, 1 error
+compiling pika_lvgl.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\pikascript\pikascript-lib\pika_lvgl\pika_lvgl.c: 0 warnings, 1 error
+compiling pika_lvgl_indev_t.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\pikascript\pikascript-lib\pika_lvgl\pika_lvgl_indev_t.c: 0 warnings, 1 error
+compiling pika_lvgl_lv_event.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\pikascript\pikascript-lib\pika_lvgl\pika_lvgl_lv_event.c: 0 warnings, 1 error
+compiling pika_lvgl_lv_obj.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\pikascript\pikascript-lib\pika_lvgl\pika_lvgl_lv_obj.c: 0 warnings, 1 error
+compiling pika_lvgl_lv_style_t.c...
+..\..\..\..\components\lvgl\lvgl\src/misc/../lv_conf_internal.h(41): error:  #5: cannot open source input file "../../lv_conf.h": No such file or directory
+          #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
+..\..\pikascript\pikascript-lib\pika_lvgl\pika_lvgl_lv_style_t.c: 0 warnings, 1 error
+compiling PikaDebuger_Debuger.c...
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaDebuger_Debuger.c(1): error:  #5: cannot open source input file "PikaVM.h": No such file or directory
+  #include "PikaVM.h"
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaDebuger_Debuger.c: 0 warnings, 1 error
+compiling PikaStdData_ByteArray.c...
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdData_ByteArray.c(1): error:  #5: cannot open source input file "PikaStdData_ByteArray.h": No such file or directory
+  #include "PikaStdData_ByteArray.h"
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdData_ByteArray.c: 0 warnings, 1 error
+compiling PikaStdData_Dict.c...
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdData_Dict.c(1): error:  #5: cannot open source input file "PikaStdData_Dict.h": No such file or directory
+  #include "PikaStdData_Dict.h"
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdData_Dict.c: 0 warnings, 1 error
+compiling PikaStdData_FILEIO.c...
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdData_FILEIO.c(1): error:  #5: cannot open source input file "PikaStdData_FILEIO.h": No such file or directory
+  #include "PikaStdData_FILEIO.h"
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdData_FILEIO.c: 0 warnings, 1 error
+compiling PikaStdData_List.c...
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdData_List.c(1): error:  #5: cannot open source input file "PikaStdData_List.h": No such file or directory
+  #include "PikaStdData_List.h"
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdData_List.c: 0 warnings, 1 error
+compiling PikaStdData_String.c...
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdData_String.c(1): error:  #5: cannot open source input file "PikaStdData_String.h": No such file or directory
+  #include "PikaStdData_String.h"
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdData_String.c: 0 warnings, 1 error
+compiling PikaStdData_Tuple.c...
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdData_Tuple.c(1): error:  #5: cannot open source input file "PikaStdData_Tuple.h": No such file or directory
+  #include "PikaStdData_Tuple.h"
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdData_Tuple.c: 0 warnings, 1 error
+compiling PikaStdData_Utils.c...
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdData_Utils.c(1): error:  #5: cannot open source input file "PikaStdData_Utils.h": No such file or directory
+  #include "PikaStdData_Utils.h"
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdData_Utils.c: 0 warnings, 1 error
+compiling PikaStdLib_MemChecker.c...
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdLib_MemChecker.c(1): error:  #5: cannot open source input file "PikaStdLib_MemChecker.h": No such file or directory
+  #include "PikaStdLib_MemChecker.h"
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdLib_MemChecker.c: 0 warnings, 1 error
+compiling PikaStdLib_RangeObj.c...
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdLib_RangeObj.c(1): error:  #5: cannot open source input file "PikaObj.h": No such file or directory
+  #include "PikaObj.h"
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdLib_RangeObj.c: 0 warnings, 1 error
+compiling PikaStdLib_StringObj.c...
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdLib_StringObj.c(1): error:  #5: cannot open source input file "PikaObj.h": No such file or directory
+  #include "PikaObj.h"
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdLib_StringObj.c: 0 warnings, 1 error
+compiling PikaStdLib_SysObj.c...
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdLib_SysObj.c(1): error:  #5: cannot open source input file "PikaStdLib_SysObj.h": No such file or directory
+  #include "PikaStdLib_SysObj.h"
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdLib_SysObj.c: 0 warnings, 1 error
+compiling PikaStdTask_Task.c...
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdTask_Task.c(1): error:  #5: cannot open source input file "BaseObj.h": No such file or directory
+  #include "BaseObj.h"
+..\..\pikascript\pikascript-lib\PikaStdLib\PikaStdTask_Task.c: 0 warnings, 1 error
+compiling evm.c...
+..\..\..\..\engines\pikascript\evm_type.h(18): error:  #5: cannot open source input file "dataArg.h": No such file or directory
+  #include "dataArg.h"
+..\..\..\..\engines\pikascript\evm.c: 0 warnings, 1 error
+"..\..\firmware.axf" - 204 Error(s), 1 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.9.0.pack
+                ARM.CMSIS.5.9.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.6.0
+
+Package Vendor: Keil
+                https://www.keil.com/pack/Keil.STM32L4xx_DFP.2.5.0.pack
+                Keil.STM32L4xx_DFP.2.5.0
+                STMicroelectronics STM32L4 Series Device Support, Drivers and Examples
+
+<h2>Collection of Component include folders:</h2>
+  ./RTE/_STM32L4R9I-Discovery
+  C:/Keil_v5/ARM/PACK/ARM/CMSIS/5.9.0/CMSIS/Core/Include
+  C:/Keil_v5/ARM/PACK/Keil/STM32L4xx_DFP/2.5.0/Drivers/CMSIS/Device/ST/STM32L4xx/Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.6.0
+Target not created.
+Build Time Elapsed:  00:00:50
+</pre>
+</body>
+</html>

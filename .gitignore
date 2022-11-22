@@ -41,4 +41,4 @@ build/
 vm.pro.user
 vm.pro.user.*
 *.uvguix.*
-tools/quickbc/quickbclogs/quickbc.log
+tools/quickbc/quickbclogs/
