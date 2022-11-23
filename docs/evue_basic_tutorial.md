@@ -17,4 +17,4 @@ quickbc是基于Python构建的一个在线编译工具，可以将EVUE脚本编
 + 安装python开发环境
 + 安装windows git工具
 + 在quickbc目录下打开git bash，终端输入python  quickbc.by  test/test.evue
-+ 编译成功后，会在evue脚本文件目录下生成对应的test.evue.py文件
++ 编译成功后，会在evue脚本文件目录下生成对应的test.evue.py.o文件
