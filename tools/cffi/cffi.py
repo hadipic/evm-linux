@@ -21,6 +21,7 @@ def checkParam(index, signature):
         return 'cffi_args[' + str(index) +'].s'
     elif signature[index] == 'p':
         return 'cffi_args[' + str(index) +'].p'
+    print(signature)
 
 def compile(info):
     global type_count
