@@ -62,7 +62,7 @@ def compile(info):
         if signature[0] != 'v':
             content = content + '  return evm_cffi_exec_ret(e, cffi_args[0], "' + signature + '");\n}\n\n'
         else:
-            content = content + '  EVM_UNDEFINED;\n}\n\n'
+            content = content + '  return EVM_UNDEFINED;\n}\n\n'
 
     content = content + '\nvoid evm_module_' + module_name + '(evm_t *e) {\n'
     content = content + '  evm_val_t obj = evm_object_create(e);\n'
