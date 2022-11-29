@@ -1,0 +1,46 @@
+{
+    "name": "socket",
+    "includes": [
+        "sys/socket.h",
+        "unistd.h",
+        "netdb.h",
+        "arpa/inet.h"
+    ],
+    "const": [
+        {"name": "AF_INET", "value": "AF_INET", "type": "number" },
+        {"name": "SOCK_STREAM", "value": "SOCK_STREAM", "type": "number" }
+    ],
+    "apis":[ 
+        {
+            "name": "socket",
+            "signature": "iiii"
+        },
+        {
+            "name": "listen",
+            "signature": "iii"
+        },
+        {
+            "name": "connect",
+            "signature": "iisi",
+            "how": [
+                "struct sockaddr_in addr;", 
+                "addr.sin_family = AF_INET;", 
+                "addr.sin_port = htons(<3>);", 
+                "addr.sin_addr.s_addr = inet_addr(<2>);", 
+                "<0> = connect(<1>, &addr, sizeof(struct sockaddr));"
+            ]
+        },
+        {
+            "name": "send",
+            "signature": "lipii"
+        },
+        {
+            "name": "recv",
+            "signature": "lipii"
+        },
+        {
+            "name": "close",
+            "signature": "ii"
+        }
+    ]
+}

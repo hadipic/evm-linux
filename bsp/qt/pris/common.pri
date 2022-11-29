@@ -14,7 +14,8 @@ DEFINES += CONFIG_EVM_MODULE_ADC
 DEFINES += CONFIG_EVM_MODULE_GPIO
 DEFINES += CONFIG_EVM_MODULE_I2C
 DEFINES += CONFIG_EVM_MODULE_UART
-DEFINES += CONFIG_EVM_MODULE_REPL
+#DEFINES += CONFIG_EVM_MODULE_REPL
+DEFINES += CONFIG_EVM_MODULE_SOCKET
 
 
 SOURCES += \
@@ -43,6 +44,10 @@ SOURCES += \
     ../../../modules/iot/linux/linux_module_timers.c \
     ../../../modules/iot/linux/linux_module_uart.c \
     ../../../modules/iot/linux/linux_module_repl.c
+
+SOURCES += \
+    ../../../modules/iot/network/socket/linux/evm_module_socket.c
+
 
 SOURCES += \
     ../../../modules/iot/linux/evm_main.c

@@ -6,22 +6,6 @@ typedef = {}
 type_count = 0
 modules = {}
 
-def checkReturn(signature):
-    if signature[0] == 'b':
-        return 'cffi_res.i32'
-    elif signature[0] == 'i':
-        return 'cffi_res.i32'
-    elif signature[0] == 'l':
-        return 'cffi_res.i64'
-    elif signature[0] == 'd':
-        return 'cffi_res.f64'
-    elif signature[0] == 'f':
-        return 'cffi_res.f32'
-    elif signature[0] == 's':
-        return 'cffi_res.s'
-    elif signature[0] == 'p':
-        return 'cffi_res.p'
-
 def checkParam(index, signature):
     if signature[index] == 'b':
         return 'cffi_args[' + str(index) +'].i32'
@@ -53,26 +37,31 @@ def compile(info):
         signature = item['signature']
         name = item['name']
         size = len(signature)
-        param_signature = signature[1:size]
         content = content + 'static evm_val_t evm_module_' + module_name + '_' + name + '(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {\n'
-        if signature[0] != 'v':
-            content = content + '  evm_cffi_val_t cffi_res;\n'
-        content = content + '  evm_cffi_val_t cffi_args[' + str(size - 1) + '];\n'
-        content = content + '  evm_cffi_exec_param(e, cffi_args, "' + param_signature + '", argc, v);\n'
-        if signature[0] != 'v':
-            content = content + '  ' +  checkReturn(signature) + ' = ' + name + '('
+        content = content + '  evm_cffi_val_t cffi_args[' + str(size) + '];\n'
+        content = content + '  evm_cffi_exec_param(e, cffi_args + 1, "' + signature[1:len(signature)] + '", argc, v);\n'
+
+        if 'how' in item:
+            for i in item['how']:
+                for j in range(0, size):
+                    if '<' + str(j) +'>' in i:
+                        i = i.replace('<' + str(j) +'>', checkParam(j, signature)) 
+                content = content + '  ' + i + '\n'
         else:
-            content = content + '  ' + name + '('
-        if size - 1 > 0:
-            for i in range(0, len(param_signature)):
-                content = content + checkParam(i, param_signature) + ', '
-            if len(param_signature) > 0:
-                content = content[0: len(content) - 2]
-        content = content + ');\n'
+            if signature[0] != 'v':
+                content = content + '  ' +  checkParam(0, signature) + ' = ' + name + '('
+            else:
+                content = content + '  ' + name + '('
+            if size - 1 > 0:
+                for i in range(1, len(signature)):
+                    content = content + checkParam(i, signature) + ', '
+                if len(signature) > 1:
+                    content = content[0: len(content) - 2]
+            content = content + ');\n'
         if signature[0] != 'v':
-            content = content + '  return evm_cffi_exec_ret(e, cffi_res, "' + signature + '");\n}\n\n'
+            content = content + '  return evm_cffi_exec_ret(e, cffi_args[0], "' + signature + '");\n}\n\n'
         else:
-            content = content + '  return EVM_UNDEFINED;\n}\n\n'
+            content = content + '  EVM_UNDEFINED;\n}\n\n'
 
     content = content + '\nvoid evm_module_' + module_name + '(evm_t *e) {\n'
     content = content + '  evm_val_t obj = evm_object_create(e);\n'
@@ -82,6 +71,13 @@ def compile(info):
         size = len(signature) - 1
         content = content + '  evm_prop_set(e, obj, "' + name + \
         '", evm_mk_native(e, evm_module_' + module_name + '_' + name + ', "' + name + '", ' + str(size) +'));\n'
+    constants = info['const']
+    for item in constants:
+        name = item['name']
+        value = item['value']
+        vtype = item['type']
+        if vtype == 'number':
+            content = content + '  evm_prop_set(e, obj, "' + name + '", evm_mk_number(e, '+ value +'));\n'
     content = content + '  evm_module_add(e, "'+ module_name+'", obj);\n}\n'
     content = content + "#endif\n"
     modules.update({"name": name, "content": content})

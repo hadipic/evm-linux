@@ -162,6 +162,11 @@ void evm_module_init(evm_t *env)
     evm_module_libc(env);
 #endif
 
+#ifdef CONFIG_EVM_MODULE_SOCKET
+    extern void evm_module_socket(evm_t *e);
+    evm_module_socket(env);
+#endif
+
 #ifdef CONFIG_EVM_MODULE_WLAN
     evm_module_wlan(env);
 #endif

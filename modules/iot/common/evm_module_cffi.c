@@ -25,6 +25,7 @@ evm_val_t evm_cffi_exec_ret(evm_t *e, evm_cffi_val_t cffi_val, const char *signa
         case 'd': return evm_mk_number(e, cffi_val.f64);
         case 'f': return evm_mk_number(e, cffi_val.f32);
         case 's': return evm_mk_string(e, cffi_val.s);
+        case 'v': return EVM_UNDEFINED;
         case 'p': return evm_object_create_user_data(e, cffi_val.p);
         default: 
             evm_throw(e, evm_mk_string(e, "Unsupported cffi type"));
