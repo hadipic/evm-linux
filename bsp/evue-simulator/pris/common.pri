@@ -15,6 +15,12 @@ DEFINES += CONFIG_EVM_MODULE_GPIO
 DEFINES += CONFIG_EVM_MODULE_I2C
 DEFINES += CONFIG_EVM_MODULE_UART
 
+contains(DEFINES, EVM_USE_QUICKJS) {
+DEFINES += CONFIG_EVM_MODULE_LVGL
+SOURCES += \
+    ../../../modules/iot/gui/lvgl/evm_module_lvgl.c
+}
+
 
 SOURCES += \
     ../../../modules/iot/common/evm_module_process.c \

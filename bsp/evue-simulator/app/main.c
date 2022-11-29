@@ -4,7 +4,6 @@
 #define SDL_MAIN_HANDLED /*To fix SDL's "undefined reference to WinMain" \
                             issue*/
 #include <SDL2/SDL.h>
-#include "PikaVM.h"
 #include "lv_drivers/display/monitor.h"
 #include "lv_drivers/indev/keyboard.h"
 #include "lv_drivers/indev/mouse.h"

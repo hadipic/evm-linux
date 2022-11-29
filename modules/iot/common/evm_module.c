@@ -170,4 +170,10 @@ void evm_module_init(evm_t *env)
 #ifdef CONFIG_EVM_MODULE_WLAN
     evm_module_wlan(env);
 #endif
+
+#ifdef CONFIG_EVM_MODULE_LVGL
+    extern void evm_module_lvgl(evm_t *e);
+    evm_module_lvgl(env);
+#endif
+
 }

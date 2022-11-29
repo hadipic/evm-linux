@@ -7,6 +7,8 @@
 
     ],
     "apis":[ 
+        {"name": "lv_scr_act", "signature": "p"},
+
         {"name": "lv_obj_create", "signature": "pp"},
         {"name": "lv_obj_add_flag", "signature": "vpi"},
         {"name": "lv_obj_clear_flag", "signature": "vpi"},
@@ -123,7 +125,7 @@
         {"name": "lv_label_get_text", "signature": "sp"},
 
         {"name": "lv_img_create", "signature": "pp"},
-        {"name": "lv_img_set_src", "signature": "vp"},
+        {"name": "lv_img_set_src", "signature": "vpp"},
 
         {"name": "lv_slider_create", "signature": "pp"},
         {"name": "lv_slider_set_value", "signature": "vpii"},

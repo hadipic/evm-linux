@@ -4,6 +4,13 @@
 #include "lvgl.h"
 #include "evm_module.h"
 
+static evm_val_t evm_module_lvgl_lv_scr_act(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+  evm_cffi_val_t cffi_args[1];
+  evm_cffi_exec_param(e, cffi_args + 1, "", argc, v);
+  cffi_args[0].p = lv_scr_act();
+  return evm_cffi_exec_ret(e, cffi_args[0], "p");
+}
+
 static evm_val_t evm_module_lvgl_lv_obj_create(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
@@ -768,9 +775,9 @@ static evm_val_t evm_module_lvgl_lv_img_create(evm_t *e, evm_val_t p, int argc, 
 }
 
 static evm_val_t evm_module_lvgl_lv_img_set_src(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
-  evm_cffi_val_t cffi_args[2];
-  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
-  lv_img_set_src(cffi_args[1].p);
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pp", argc, v);
+  lv_img_set_src(cffi_args[1].p, cffi_args[2].p);
   EVM_UNDEFINED;
 }
 
@@ -819,6 +826,7 @@ static evm_val_t evm_module_lvgl_lv_slider_get_max_value(evm_t *e, evm_val_t p, 
 
 void evm_module_lvgl(evm_t *e) {
   evm_val_t obj = evm_object_create(e);
+  evm_prop_set(e, obj, "lv_scr_act", evm_mk_native(e, evm_module_lvgl_lv_scr_act, "lv_scr_act", 0));
   evm_prop_set(e, obj, "lv_obj_create", evm_mk_native(e, evm_module_lvgl_lv_obj_create, "lv_obj_create", 1));
   evm_prop_set(e, obj, "lv_obj_add_flag", evm_mk_native(e, evm_module_lvgl_lv_obj_add_flag, "lv_obj_add_flag", 2));
   evm_prop_set(e, obj, "lv_obj_clear_flag", evm_mk_native(e, evm_module_lvgl_lv_obj_clear_flag, "lv_obj_clear_flag", 2));
@@ -928,7 +936,7 @@ void evm_module_lvgl(evm_t *e) {
   evm_prop_set(e, obj, "lv_label_set_long_mode", evm_mk_native(e, evm_module_lvgl_lv_label_set_long_mode, "lv_label_set_long_mode", 2));
   evm_prop_set(e, obj, "lv_label_get_text", evm_mk_native(e, evm_module_lvgl_lv_label_get_text, "lv_label_get_text", 1));
   evm_prop_set(e, obj, "lv_img_create", evm_mk_native(e, evm_module_lvgl_lv_img_create, "lv_img_create", 1));
-  evm_prop_set(e, obj, "lv_img_set_src", evm_mk_native(e, evm_module_lvgl_lv_img_set_src, "lv_img_set_src", 1));
+  evm_prop_set(e, obj, "lv_img_set_src", evm_mk_native(e, evm_module_lvgl_lv_img_set_src, "lv_img_set_src", 2));
   evm_prop_set(e, obj, "lv_slider_create", evm_mk_native(e, evm_module_lvgl_lv_slider_create, "lv_slider_create", 1));
   evm_prop_set(e, obj, "lv_slider_set_value", evm_mk_native(e, evm_module_lvgl_lv_slider_set_value, "lv_slider_set_value", 3));
   evm_prop_set(e, obj, "lv_slider_set_range", evm_mk_native(e, evm_module_lvgl_lv_slider_set_range, "lv_slider_set_range", 3));
