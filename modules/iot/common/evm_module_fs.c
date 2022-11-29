@@ -464,7 +464,7 @@ static evm_val_t evm_module_fs_writeFile(evm_t *e, evm_val_t p, int argc, evm_va
     return EVM_UNDEFINED;
 }
 
-evm_err_t evm_module_fs(evm_t *e) {
+void evm_module_fs(evm_t *e) {
     evm_val_t obj = evm_object_create(e);
     evm_prop_set(e, obj, "close", evm_mk_native(e, evm_module_fs_close, "close", 1));
     evm_prop_set(e, obj, "closeSync", evm_mk_native(e, evm_module_fs_closeSync, "closeSync", 1));
@@ -496,6 +496,5 @@ evm_err_t evm_module_fs(evm_t *e) {
     evm_prop_set(e, obj, "writeSync", evm_mk_native(e, evm_module_fs_writeSync, "writeSync", 1));
     evm_prop_set(e, obj, "writeFile", evm_mk_native(e, evm_module_fs_writeFile, "writeFile", 1));
     evm_prop_set(e, obj, "writeFileSync", evm_mk_native(e, evm_module_fs_writeFileSync, "writeFileSync", 1));
-    return ec_ok;
 }
 #endif

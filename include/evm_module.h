@@ -63,7 +63,7 @@ extern void evm_module_uart(evm_t *e);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_FS
-extern evm_err_t evm_module_fs(evm_t *e);
+extern void evm_module_fs(evm_t *e);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_UDP
@@ -105,18 +105,20 @@ extern evm_err_t evm_module_assert(evm_t *e);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_CFFI
-typedef struct evm_module_cffi_t {
-    char *funcname;
-    uintptr_t funcID;
-    char *signature;
-} evm_module_cffi_t;
-
-extern evm_err_t evm_module_cffi(evm_t *e);
-extern void evm_module_cffi_add(evm_t *e, evm_module_cffi_t *cffis);
+typedef union  {
+    void *p; 
+    char *s; 
+    double f64;
+    float f32; 
+    int32_t i32; 
+    int64_t i64;
+} evm_cffi_val_t;
+extern void evm_cffi_exec_param(evm_t *e, evm_cffi_val_t *cffi_vals, const char *signature, int argc, evm_val_t *v);
+extern evm_val_t evm_cffi_exec_ret(evm_t *e, evm_cffi_val_t cffi_val, const char *signature);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_LIBC
-evm_err_t evm_module_libc(evm_t *e);
+void evm_module_libc(evm_t *e);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_WLAN

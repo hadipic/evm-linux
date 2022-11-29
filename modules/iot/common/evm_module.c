@@ -158,8 +158,8 @@ void evm_module_init(evm_t *env)
     evm_module_assert(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_CFFI
-    evm_module_cffi(env);
+#ifdef CONFIG_EVM_MODULE_LIBC
+    evm_module_libc(env);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_WLAN

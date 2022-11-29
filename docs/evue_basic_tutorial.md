@@ -16,5 +16,5 @@ PikaScript 是一个完全重写的超轻量级 python 引擎，零依赖，零�
 quickbc是基于Python构建的一个在线编译工具，可以将EVUE脚本编译成可执行的pikascript的字节码文件。使用quickbc之前需完成以下步骤：
 + 安装python开发环境
 + 安装windows git工具
-+ 在quickbc目录下打开git bash，终端输入python  quickbc.by  test/test.evue
++ 在quickbc目录下打开git bash，终端输入python  tools/quickbc/quickbc.py  test/test.evue
 + 编译成功后，会在evue脚本文件目录下生成对应的test.evue.py.o文件

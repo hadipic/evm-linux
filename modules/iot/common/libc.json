@@ -1,0 +1,36 @@
+{
+    "name": "libc",
+    "includes": [
+
+    ],
+    "apis":[ 
+        {
+            "name": "fopen",
+            "signature": "pss"
+        },
+        {
+            "name": "fclose",
+            "signature": "vp"
+        },
+        {
+            "name": "fread",
+            "signature": "isiip"
+        },
+        {
+            "name": "fwrite",
+            "signature": "isiip"
+        },
+        {
+            "name": "fseek",
+            "signature": "ipii"
+        },
+        {
+            "name": "ftell",
+            "signature": "ip"
+        },
+        {
+            "name": "fflush",
+            "signature": "ip"
+        }
+    ]
+}
