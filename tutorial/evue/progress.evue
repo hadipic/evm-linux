@@ -1,0 +1,16 @@
+<html>
+<div class="container">
+    <progress width="100" percent="50"></progress>
+</div>
+</html>
+<script>
+data = {}    
+</script>
+<style>
+    .container {
+        width: 240px;
+        height: 240px;
+        top: 50px;
+        left: 50px;
+    }
+</style>

@@ -26,7 +26,7 @@ char* getdir(const char* filepath) {
     int i = len - 1;
     while(i >= 0) {
         char c = filepath[i];
-        if (c == '/') {
+        if (c == '/' || c == '\\') {
             break;
         }
         i--;
@@ -53,7 +53,7 @@ char* getfilename(const char* filepath) {
     int i = len - 1;
     while(i >= 0) {
         char c = filepath[i];
-        if (c == '/') {
+        if (c == '/' || c == '\\') {
             break;
         }
         i--;

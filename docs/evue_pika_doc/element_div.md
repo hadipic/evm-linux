@@ -17,3 +17,7 @@
 | flex-wrap | string | flex容器是单行还是多行显示，该值暂不支持动态修改。可选项有：nowrap：不换行，单行显示。wrap：换行，多行显示。|
 | align-items | string | flex容器当前行的交叉轴对齐格式，可选值为：stretch：弹性元素在交叉轴方向被拉伸到与容器相同的高度或宽度。flex-start：元素向交叉轴起点对齐。flex-end：元素向交叉轴终点对齐。center：元素在交叉轴居中。|
 | display | string | 确定该元素视图框的类型，该值暂不支持动态修改。可选值为：flex：弹性布局。none：不渲染此元素|
+
+
+#### 例子
+<a href="../../tutorial/evue/div.evue">div.evue</a>
