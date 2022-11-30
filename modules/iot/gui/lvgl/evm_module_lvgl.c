@@ -1455,6 +1455,34 @@ void evm_module_lvgl(evm_t *e) {
   evm_prop_set(e, obj, "lv_slider_get_value", evm_mk_native(e, evm_module_lvgl_lv_slider_get_value, "lv_slider_get_value", 1));
   evm_prop_set(e, obj, "lv_slider_get_min_value", evm_mk_native(e, evm_module_lvgl_lv_slider_get_min_value, "lv_slider_get_min_value", 1));
   evm_prop_set(e, obj, "lv_slider_get_max_value", evm_mk_native(e, evm_module_lvgl_lv_slider_get_max_value, "lv_slider_get_max_value", 1));
+  evm_prop_set(e, obj, "LV_ALIGN_DEFAULT", evm_mk_number(e, LV_ALIGN_DEFAULT));
+  evm_prop_set(e, obj, "LV_ALIGN_TOP_LEFT", evm_mk_number(e, LV_ALIGN_TOP_LEFT));
+  evm_prop_set(e, obj, "LV_ALIGN_TOP_MID", evm_mk_number(e, LV_ALIGN_TOP_MID));
+  evm_prop_set(e, obj, "LV_ALIGN_TOP_RIGHT", evm_mk_number(e, LV_ALIGN_TOP_RIGHT));
+  evm_prop_set(e, obj, "LV_ALIGN_BOTTOM_LEFT", evm_mk_number(e, LV_ALIGN_BOTTOM_LEFT));
+  evm_prop_set(e, obj, "LV_ALIGN_BOTTOM_MID", evm_mk_number(e, LV_ALIGN_BOTTOM_MID));
+  evm_prop_set(e, obj, "LV_ALIGN_BOTTOM_RIGHT", evm_mk_number(e, LV_ALIGN_BOTTOM_RIGHT));
+  evm_prop_set(e, obj, "LV_ALIGN_LEFT_MID", evm_mk_number(e, LV_ALIGN_LEFT_MID));
+  evm_prop_set(e, obj, "LV_ALIGN_RIGHT_MID", evm_mk_number(e, LV_ALIGN_RIGHT_MID));
+  evm_prop_set(e, obj, "LV_ALIGN_CENTER", evm_mk_number(e, LV_ALIGN_CENTER));
+  evm_prop_set(e, obj, "LV_ALIGN_OUT_TOP_LEFT", evm_mk_number(e, LV_ALIGN_OUT_TOP_LEFT));
+  evm_prop_set(e, obj, "LV_ALIGN_OUT_TOP_MID", evm_mk_number(e, LV_ALIGN_OUT_TOP_MID));
+  evm_prop_set(e, obj, "LV_ALIGN_OUT_TOP_RIGHT", evm_mk_number(e, LV_ALIGN_OUT_TOP_RIGHT));
+  evm_prop_set(e, obj, "LV_ALIGN_OUT_BOTTOM_LEFT", evm_mk_number(e, LV_ALIGN_OUT_BOTTOM_LEFT));
+  evm_prop_set(e, obj, "LV_ALIGN_OUT_BOTTOM_MID", evm_mk_number(e, LV_ALIGN_OUT_BOTTOM_MID));
+  evm_prop_set(e, obj, "LV_ALIGN_OUT_BOTTOM_RIGHT", evm_mk_number(e, LV_ALIGN_OUT_BOTTOM_RIGHT));
+  evm_prop_set(e, obj, "LV_ALIGN_OUT_LEFT_TOP", evm_mk_number(e, LV_ALIGN_OUT_LEFT_TOP));
+  evm_prop_set(e, obj, "LV_ALIGN_OUT_LEFT_MID", evm_mk_number(e, LV_ALIGN_OUT_LEFT_MID));
+  evm_prop_set(e, obj, "LV_ALIGN_OUT_LEFT_BOTTOM", evm_mk_number(e, LV_ALIGN_OUT_LEFT_BOTTOM));
+  evm_prop_set(e, obj, "LV_ALIGN_OUT_RIGHT_TOP", evm_mk_number(e, LV_ALIGN_OUT_RIGHT_TOP));
+  evm_prop_set(e, obj, "LV_ALIGN_OUT_RIGHT_MID", evm_mk_number(e, LV_ALIGN_OUT_RIGHT_MID));
+  evm_prop_set(e, obj, "LV_ALIGN_OUT_RIGHT_BOTTOM", evm_mk_number(e, LV_ALIGN_OUT_RIGHT_BOTTOM));
+  evm_prop_set(e, obj, "LV_EVENT_ALL", evm_mk_number(e, LV_EVENT_ALL));
+  evm_prop_set(e, obj, "LV_EVENT_PRESSED", evm_mk_number(e, LV_EVENT_PRESSED));
+  evm_prop_set(e, obj, "LV_EVENT_PRESSING", evm_mk_number(e, LV_EVENT_PRESSING));
+  evm_prop_set(e, obj, "LV_EVENT_LONG_PRESSED", evm_mk_number(e, LV_EVENT_LONG_PRESSED));
+  evm_prop_set(e, obj, "LV_EVENT_CLICKED", evm_mk_number(e, LV_EVENT_CLICKED));
+  evm_prop_set(e, obj, "LV_EVENT_RELEASED", evm_mk_number(e, LV_EVENT_RELEASED));
   evm_module_add(e, "lvgl", obj);
 }
 #endif

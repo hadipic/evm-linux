@@ -37,7 +37,17 @@ evm_val_t evm_list_create(evm_t *e) {
 }
 
 int evm_list_len(evm_t *e, evm_val_t o) {
-
+    JSContext *ctx = e;
+    int32_t pres = 0;
+    JSValue len_val;
+    len_val = JS_GetPropertyStr(ctx, o, "length");
+    if (JS_IsException(len_val)) {
+        pres = 0;
+        return -1;
+    }
+    JS_ToInt32(ctx, &pres, len_val);
+    JS_FreeValue(ctx, len_val);
+    return pres;
 }
 
 evm_err_t evm_list_set(evm_t *e, evm_val_t o, int i, evm_val_t v) {
@@ -439,4 +449,9 @@ void evm_val_free(evm_t *e, evm_val_t v) {
 
 evm_val_t evm_val_duplicate(evm_t *e, evm_val_t v) {
     return JS_DupValue(e, v);
+}
+
+evm_val_t evm_mk_global(evm_t *e) {
+    JSContext *ctx = e;
+    return JS_GetGlobalObject(ctx);
 }

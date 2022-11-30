@@ -172,8 +172,10 @@ void evm_module_init(evm_t *env)
 #endif
 
 #ifdef CONFIG_EVM_MODULE_LVGL
+    extern void evm_module_lvgl_event(evm_t *e);
     extern void evm_module_lvgl(evm_t *e);
     evm_module_lvgl(env);
+    evm_module_lvgl_event(env);
 #endif
 
 }
