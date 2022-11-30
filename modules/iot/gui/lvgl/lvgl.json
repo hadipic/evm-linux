@@ -9,6 +9,139 @@
     "apis":[ 
         {"name": "lv_scr_act", "signature": "p"},
 
+        {
+            "name": "lv_style_create", 
+            "signature": "p",
+            "how":[
+                "<0> = lv_mem_alloc(sizeof(lv_style_t));"
+            ]
+        },
+        {"name": "lv_style_set_width", "signature": "vpi"},
+        {"name": "lv_style_set_min_width", "signature": "vpi"},
+        {"name": "lv_style_set_max_width", "signature": "vpi"},
+        {"name": "lv_style_set_height", "signature": "vpi"},
+        {"name": "lv_style_set_min_height", "signature": "vpi"},
+        {"name": "lv_style_set_max_height", "signature": "vpi"},
+        {"name": "lv_style_set_x", "signature": "vpi"},
+        {"name": "lv_style_set_y", "signature": "vpi"},
+        {"name": "lv_style_set_align", "signature": "vpi"},
+        {"name": "lv_style_set_transform_width", "signature": "vpi"},
+        {"name": "lv_style_set_transform_height", "signature": "vpi"},
+        {"name": "lv_style_set_translate_x", "signature": "vpi"},
+        {"name": "lv_style_set_translate_y", "signature": "vpi"},
+        {"name": "lv_style_set_transform_zoom", "signature": "vpi"},
+        {"name": "lv_style_set_transform_pivot_x", "signature": "vpi"},
+        {"name": "lv_style_set_transform_pivot_y", "signature": "vpi"},
+        {"name": "lv_style_set_pad_top", "signature": "vpi"},
+        {"name": "lv_style_set_pad_bottom", "signature": "vpi"},
+        {"name": "lv_style_set_pad_left", "signature": "vpi"},
+        {"name": "lv_style_set_pad_right", "signature": "vpi"},
+        {"name": "lv_style_set_pad_row", "signature": "vpi"},
+        {"name": "lv_style_set_pad_column", "signature": "vpi"},
+        {
+            "name": "lv_style_set_bg_color", 
+            "signature": "vpi",
+            "how":[
+                "lv_color_t color;",
+                "color.full = <2>;",
+                "lv_style_set_bg_color(<1>, color);"
+            ]
+        },
+        {"name": "lv_style_set_bg_opa", "signature": "vpi"},
+        {
+            "name": "lv_style_set_bg_grad_color", 
+            "signature": "vpi",
+            "how":[
+                "lv_color_t color;",
+                "color.full = <2>;",
+                "lv_style_set_bg_grad_color(<1>, color);"
+            ]
+        },
+        {"name": "lv_style_set_bg_grad_dir", "signature": "vpi"},
+        {"name": "lv_style_set_bg_main_stop", "signature": "vpi"},
+        {"name": "lv_style_set_bg_grad_stop", "signature": "vpi"},
+        {"name": "lv_style_set_bg_dither_mode", "signature": "vpi"},
+        {
+            "name": "lv_style_set_border_color", 
+            "signature": "vpi",
+            "how":[
+                "lv_color_t color;",
+                "color.full = <2>;",
+                "lv_style_set_border_color(<1>, color);"
+            ]
+        },
+        {"name": "lv_style_set_border_opa", "signature": "vpi"},
+        {"name": "lv_style_set_border_width", "signature": "vpi"},
+        {"name": "lv_style_set_border_side", "signature": "vpi"},
+        {"name": "lv_style_set_border_post", "signature": "vpb"},
+        {"name": "lv_style_set_outline_width", "signature": "vpi"},
+        {
+            "name": "lv_style_set_outline_color", 
+            "signature": "vpi",
+            "how":[
+                "lv_color_t color;",
+                "color.full = <2>;",
+                "lv_style_set_outline_color(<1>, color);"
+            ]
+        },
+        {"name": "lv_style_set_outline_opa", "signature": "vpi"},
+        {"name": "lv_style_set_outline_pad", "signature": "vpi"},
+        {"name": "lv_style_set_shadow_width", "signature": "vpi"},
+        {"name": "lv_style_set_shadow_ofs_x", "signature": "vpi"},
+        {"name": "lv_style_set_shadow_ofs_y", "signature": "vpi"},
+        {"name": "lv_style_set_shadow_spread", "signature": "vpi"},
+        {
+            "name": "lv_style_set_shadow_color", 
+            "signature": "vpi",
+            "how":[
+                "lv_color_t color;",
+                "color.full = <2>;",
+                "lv_style_set_shadow_color(<1>, color);"
+            ]
+        },
+        {"name": "lv_style_set_shadow_opa", "signature": "vpi"},
+        {"name": "lv_style_set_line_width", "signature": "vpi"},
+        {"name": "lv_style_set_line_dash_width", "signature": "vpi"},
+        {"name": "lv_style_set_line_dash_gap", "signature": "vpi"},
+        {"name": "lv_style_set_line_rounded", "signature": "vpb"},
+        {
+            "name": "lv_style_set_line_color", 
+            "signature": "vpi",
+            "how":[
+                "lv_color_t color;",
+                "color.full = <2>;",
+                "lv_style_set_line_color(<1>, color);"
+            ]
+        },
+        {"name": "lv_style_set_line_opa", "signature": "vpi"},
+        {"name": "lv_style_set_arc_width", "signature": "vpi"},
+        {"name": "lv_style_set_arc_rounded", "signature": "vpb"},
+        {
+            "name": "lv_style_set_arc_color", 
+            "signature": "vpi",
+            "how":[
+                "lv_color_t color;",
+                "color.full = <2>;",
+                "lv_style_set_arc_color(<1>, color);"
+            ]
+        },
+        {"name": "lv_style_set_arc_opa", "signature": "vpi"},
+        {
+            "name": "lv_style_set_text_color", 
+            "signature": "vpi",
+            "how":[
+                "lv_color_t color;",
+                "color.full = <2>;",
+                "lv_style_set_text_color(<1>, color);"
+            ]
+        },
+        {"name": "lv_style_set_text_opa", "signature": "vpi"},
+        {"name": "lv_style_set_text_font", "signature": "vpi"},
+        {"name": "lv_style_set_text_letter_space", "signature": "vpi"},
+        {"name": "lv_style_set_text_line_space", "signature": "vpi"},
+        {"name": "lv_style_set_text_decor", "signature": "vpi"},
+        {"name": "lv_style_set_text_align", "signature": "vpi"},
+
         {"name": "lv_obj_create", "signature": "pp"},
         {"name": "lv_obj_add_flag", "signature": "vpi"},
         {"name": "lv_obj_clear_flag", "signature": "vpi"},
