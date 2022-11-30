@@ -30,7 +30,7 @@ static void event_handler(lv_event_t * e)
 //lv_obj_add_event_cb(obj, function, code)
 static evm_val_t evm_module_lvgl_event_lv_obj_add_event_cb(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
     lv_obj_t *obj = evm_object_get_user_data(e, v[0]);
-    _event_info_t *info = lv_obj_get_user_data(lv_event_get_target(obj));
+    _event_info_t *info = lv_obj_get_user_data(obj);
     if( info == NULL ) {
         info = lv_mem_alloc(sizeof (_event_info_t));
         EVM_ASSERT(info);
