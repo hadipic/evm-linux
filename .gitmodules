@@ -8,3 +8,6 @@
 [submodule "components/lvgl/lv_drivers"]
 	path = components/lvgl/lv_drivers
 	url = https://gitee.com/scriptiot/lv_drivers.git
+[submodule "components/libtuv"]
+	path = components/libtuv
+	url = https://gitee.com/edmund_wz/libtuv.git
