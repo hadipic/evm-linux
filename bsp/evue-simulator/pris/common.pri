@@ -48,6 +48,7 @@ SOURCES += \
     ../../../modules/iot/linux/linux_module_gpio.c \
     ../../../modules/iot/linux/linux_module_timers.c \
     ../../../modules/iot/linux/linux_module_uart.c \
+    ../../../modules/iot/linux/linux_systemio.c \
     ../../../modules/iot/linux/linux_module_repl.c
 
 SOURCES += \

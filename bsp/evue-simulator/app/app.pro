@@ -11,6 +11,7 @@ DEFINES += EVM_USE_QUICKJS
 #DEFINES += EVM_USE_UPY
 
 include($$PWD/../pris/common.pri)
+include($$PWD/../pris/tuv.pri)
 include($$PWD/../pris/lvgl.pri)
 include($$PWD/../pris/lv_png.pri)
 include($$PWD/../pris/lv_drivers.pri)
