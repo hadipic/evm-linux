@@ -1,6 +1,6 @@
 #ifdef CONFIG_EVM_MODULE_GPIO
 #include "evm_module.h"
-#include "linux_systemio.h"
+#include "linux_system.h"
 
 #define GPIO_INTERFACE "/sys/class/gpio/"
 #define GPIO_EXPORT "export"
@@ -36,7 +36,7 @@ static int gpio_set_direction(int pin, int direction) {
 	snprintf(direction_path, GPIO_PATH_BUFFER_SIZE, GPIO_PIN_FORMAT_DIRECTION,
 			pin);
 	const char* buffer = (direction == EVM_GPIO_DIRECTION_IN) ? "in" : "out";
-	return systemio_open_write_close(direction_path, buffer);
+    return system_open_write_close(direction_path, buffer);
 }
 
 static int gpio_set_mode(int pin, int mode) {
@@ -50,7 +50,7 @@ static void gpio_set_value_fd(_gpio_dev_t* gpio, int fd) {
 static int gpio_set_edge(_gpio_dev_t* gpio) {
 	char edge_path[GPIO_PATH_BUFFER_SIZE];
 	snprintf(edge_path, GPIO_PATH_BUFFER_SIZE, GPIO_PIN_FORMAT_EDGE, gpio->pin);
-    systemio_open_write_close(edge_path, gpio_edge_string[gpio->edge]);
+    system_open_write_close(edge_path, gpio_edge_string[gpio->edge]);
 
     if (gpio->direction == EVM_GPIO_DIRECTION_IN && gpio->edge != EVM_GPIO_EDGE_NONE) {
         char value_path[GPIO_PATH_BUFFER_SIZE];
@@ -83,7 +83,7 @@ void *evm_gpio_open(evm_t *e, evm_val_t v){
 	const char* created_files[] = { GPIO_DIRECTION, GPIO_EDGE, GPIO_VALUE };
 	int created_files_length = sizeof(created_files) / sizeof(created_files[0]);
 
-	if (!systemio_device_open(GPIO_PIN_FORMAT_EXPORT, dev->pin,
+    if (!system_device_open(GPIO_PIN_FORMAT_EXPORT, dev->pin,
 									exported_path, created_files,
 									created_files_length)) {
 		evm_throw(e, evm_mk_string(e, "Failed to open gpio"));
@@ -135,7 +135,7 @@ void evm_gpio_write(evm_t *e, void *dev, int value){
     char value_path[GPIO_PATH_BUFFER_SIZE];
     snprintf(value_path, GPIO_PATH_BUFFER_SIZE, GPIO_PIN_FORMAT_VALUE, gpio_dev->pin);
     const char* buffer = value ? "1" : "0";
-    systemio_open_write_close(value_path, buffer);
+    system_open_write_close(value_path, buffer);
 }
 
 int evm_gpio_read(evm_t *e, void *dev){
@@ -144,7 +144,7 @@ int evm_gpio_read(evm_t *e, void *dev){
     char value_path[GPIO_PATH_BUFFER_SIZE];
     snprintf(value_path, GPIO_PATH_BUFFER_SIZE, GPIO_PIN_FORMAT_VALUE, gpio_dev->pin);
 
-    if (!systemio_open_read_close(value_path, buffer,
+    if (!system_open_read_close(value_path, buffer,
                                       GPIO_VALUE_BUFFER_SIZE - 1)) {
         return 0;
     }
@@ -160,7 +160,7 @@ void evm_gpio_close(evm_t *e, void *dev){
     gpio_set_value_fd(gpio_dev, -1);
     close(gpio_dev->value_fd);
 
-    systemio_open_write_close(GPIO_PIN_FORMAT_UNEXPORT, buff);
+    system_open_write_close(GPIO_PIN_FORMAT_UNEXPORT, buff);
 }
 
 void evm_gpio_destroy(evm_t *e, void *dev){

@@ -22,17 +22,20 @@ int evm_module_registry_add(evm_t *e, evm_val_t v) {
         evm_val_free(e, item);
     }
     evm_list_set(e, registry, size, v);
-    return -1;
+    return size;
 }
 
 evm_val_t evm_module_registry_get(evm_t *e, int id) {
     evm_val_t registry = evm_global_get(e, "@registry");
     int size = evm_list_len(e, registry);
-    evm_val_free(e, registry);
+
     if( id < 0 || id >= size ) {
+        evm_val_free(e, registry);
         return evm_mk_undefined(e);
     }
-    return evm_list_get(e, registry, id);
+    evm_val_t res = evm_list_get(e, registry, id);
+    evm_val_free(e, registry);
+    return res;
 }
 
 void evm_module_registry_remove(evm_t *e, int id) {

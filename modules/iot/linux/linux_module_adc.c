@@ -1,6 +1,6 @@
 #ifdef CONFIG_EVM_MODULE_ADC
 #include "evm_module.h"
-#include "linux_systemio.h"
+#include "linux_system.h"
 
 #define ADC_VALUE_BUFFER_SIZE 64
 
@@ -18,7 +18,7 @@ void *evm_adc_open(evm_t *e, evm_val_t v) {
         evm_throw(e, evm_mk_string(e, "Configuration has no 'device' member"));
 	}
     const char *device_path = evm_2_string(e, val);
-	if (!systemio_check_path(device_path)) {
+    if (!system_check_path(device_path)) {
 		evm_throw(e, evm_mk_string(e, "Failed to open adc"));
 	}
     sprintf(dev->dev, "%s", device_path);
@@ -28,7 +28,7 @@ void *evm_adc_open(evm_t *e, evm_val_t v) {
 int evm_adc_read(evm_t *e, void *dev) {
 	_adc_dev_t *adc_dev = (_adc_dev_t*)dev;
 	char buffer[ADC_VALUE_BUFFER_SIZE];
-	if (!systemio_open_read_close(adc_dev->dev, buffer, sizeof(buffer))) {
+    if (!system_open_read_close(adc_dev->dev, buffer, sizeof(buffer))) {
 		return 0;
 	}
 	return atoi(buffer) ;

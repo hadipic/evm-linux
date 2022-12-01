@@ -3,7 +3,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <termios.h>
-#include "linux_systemio.h"
+#include "linux_system.h"
 
 typedef struct _uart_dev_t {
     char dev[DEVICE_IO_NAME_LEN];
@@ -72,18 +72,17 @@ static int databits_to_constant(int dataBits) {
 }
 
 static void uart_read_cb(uv_poll_t* req, int status, int events) {
-  _uart_dev_t* uart = (_uart_dev_t*)req->data;
-  char buf[DEVICE_IO_WRITE_BUFFER_SIZE];
-  int i = 0;
-  i = read(uart->fd, buf, DEVICE_IO_WRITE_BUFFER_SIZE - 1);
-  if (i > 0) {
+    _uart_dev_t* uart = (_uart_dev_t*)req->data;
+    char buf[DEVICE_IO_WRITE_BUFFER_SIZE];
+    int i = 0;
+    i = read(uart->fd, buf, DEVICE_IO_WRITE_BUFFER_SIZE - 1);
+    if (i > 0) {
         buf[i] = '\0';
         evm_t *e = uart->e;
         evm_val_t this = evm_val_duplicate(e, uart->this);
         evm_val_t emitCallBack = evm_prop_get(e, this, "emit");
         if (evm_is_callable(e, emitCallBack)){
             evm_val_t buffer =  evm_buffer_create(e, (uint8_t*)buf, (int)i);
-
             evm_val_t args[3];
             args[0] = evm_mk_string(e, "data");
             args[1] = buffer;
@@ -95,7 +94,7 @@ static void uart_read_cb(uv_poll_t* req, int status, int events) {
         }
         evm_val_free(e, emitCallBack);
         evm_val_free(e, this);
-  }
+    }
 }
 
 static void uart_register_read_cb(_uart_dev_t* uart) {

@@ -109,6 +109,7 @@ int main(int argc, char** argv) {
         lv_timer_handler();
         lv_task_handler();
         usleep(5 * 1000);
+        evm_loop();
     }
 
     return 0;

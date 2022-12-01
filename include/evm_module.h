@@ -130,6 +130,7 @@ void evm_run_repl(evm_t *e);
 #endif
 
 extern void evm_main(char *filename);
+extern void evm_loop();
 
 extern int evm_module_registry_add(evm_t *e, evm_val_t v);
 extern evm_val_t evm_module_registry_get(evm_t *e, int id);
@@ -159,7 +160,7 @@ extern void evm_i2c_write(evm_t *e, void *dev, void *buf, int size);
 extern void evm_i2c_close(evm_t *e, void *dev);
 extern void evm_i2c_destroy(evm_t *e, void *dev);
 
-extern void *evm_timer_open(evm_t *e, int tick, int flag);
+extern void *evm_timer_open(evm_t *e, evm_val_t cb, int tick, int flag);
 extern void evm_timer_destroy(evm_t *e, void *dev);
 
 extern void *evm_uart_open(evm_t *e, evm_val_t obj);

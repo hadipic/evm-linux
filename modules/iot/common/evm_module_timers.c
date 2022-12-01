@@ -8,18 +8,21 @@ static evm_val_t evm_module_timers_setTimeout(evm_t *e, evm_val_t p, int argc, e
         return EVM_UNDEFINED;
 
     int tick = evm_2_integer(e, v[1]);
-    void *dev = evm_timer_open(e, tick, EVM_TIMER_ONE_SHOT);
+    void *dev = evm_timer_open(e, v[0], tick, EVM_TIMER_ONE_SHOT);
     evm_val_t obj = evm_object_create_user_data(e, dev);
-    evm_prop_set(e, obj, "callback", evm_val_duplicate(e, v[0]));
-    return obj;
+    int id = evm_module_registry_add(e, obj);
+    return evm_mk_number(e, id);
 }
 
 //clearTimeout(timeout)
 static evm_val_t evm_module_timers_clearTimeout(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
+    int id = evm_2_integer(e, v[0]);
+    p = evm_module_registry_get(e, id);
     void *dev = evm_object_get_user_data(e, p);
     if( !dev )
         return EVM_UNDEFINED;
+    evm_module_registry_remove(e, id);
     evm_timer_destroy(e, dev);
     return EVM_UNDEFINED;
 }
@@ -31,10 +34,10 @@ static evm_val_t evm_module_timers_setInterval(evm_t *e, evm_val_t p, int argc, 
         return EVM_UNDEFINED;
 
     int tick = evm_2_integer(e, v[1]);
-    void *dev = evm_timer_open(e, tick, EVM_TIMER_PERIOD);
+    void *dev = evm_timer_open(e, v[0], tick, EVM_TIMER_PERIOD);
     evm_val_t obj = evm_object_create_user_data(e, dev);
-    evm_prop_set(e, obj, "callback", evm_val_duplicate(e, v[0]));
-    return obj;
+    int id = evm_module_registry_add(e, obj);
+    return evm_mk_number(e, id);
 }
 
 //clearInterval(timeout)
