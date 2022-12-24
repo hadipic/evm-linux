@@ -1,7 +1,7 @@
 #ifndef LINUX_SYSTEM_H
 #define LINUX_SYSTEM_H
 
-#include "evm.h"
+#include "evm_module.h"
 #include "uv.h"
 #include <unistd.h>
 

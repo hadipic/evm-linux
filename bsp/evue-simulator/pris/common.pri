@@ -15,8 +15,16 @@ DEFINES += CONFIG_EVM_MODULE_GPIO
 DEFINES += CONFIG_EVM_MODULE_I2C
 DEFINES += CONFIG_EVM_MODULE_UART
 DEFINES += CONFIG_EVM_MODULE_TIMER
+DEFINES += CONFIG_EVM_MODULE_TCP
 
 contains(DEFINES, EVM_USE_QUICKJS) {
+DEFINES += CONFIG_EVM_MODULE_LVGL
+SOURCES += \
+    ../../../modules/iot/gui/lvgl/evm_module_lvgl.c \
+    ../../../modules/iot/gui/lvgl/evm_module_lvgl_event.c
+}
+
+contains(DEFINES, EVM_USE_QUICKVM) {
 DEFINES += CONFIG_EVM_MODULE_LVGL
 SOURCES += \
     ../../../modules/iot/gui/lvgl/evm_module_lvgl.c \
@@ -44,12 +52,14 @@ SOURCES += \
     $$PWD/../../../modules/iot/linux/linux_system.c
 
 SOURCES += \
+    ../../../modules/iot/linux/linux_uv.c \
     ../../../modules/iot/linux/linux_module_adc.c \
     ../../../modules/iot/linux/linux_module_event.c \
     ../../../modules/iot/linux/linux_module_i2c.c \
     ../../../modules/iot/linux/linux_module_gpio.c \
     ../../../modules/iot/linux/linux_module_timers.c \
     ../../../modules/iot/linux/linux_module_uart.c \
+    ../../../modules/iot/linux/evm_module_tcp.c \
     ../../../modules/iot/linux/linux_module_repl.c
 
 SOURCES += \

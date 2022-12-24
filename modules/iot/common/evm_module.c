@@ -1,10 +1,13 @@
 #include "evm_module.h"
 
-evm_t *evm_runtime;
+static evm_t *_runtime;
 
+evm_t *evm_runtime(void) {
+   return  _runtime;
+}
 
 void evm_module_registry_init(evm_t *e) {
-    evm_runtime = e;
+    _runtime = e;
     evm_val_t registry = evm_list_create(e);
     evm_global_set(e, "@registry", registry);
 }
@@ -179,6 +182,11 @@ void evm_module_init(evm_t *env)
     extern void evm_module_lvgl(evm_t *e);
     evm_module_lvgl(env);
     evm_module_lvgl_event(env);
+#endif
+
+#ifdef CONFIG_EVM_MODULE_TCP
+    extern void evm_module_tcp(evm_t *e);
+    evm_module_tcp(env);
 #endif
 
 }

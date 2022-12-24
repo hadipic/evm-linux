@@ -6,9 +6,11 @@ CONFIG -= qt
 LIBS += -lpthread
 
 #DEFINES += EVM_USE_PIKASCRIPT
-DEFINES += EVM_USE_QUICKJS
+#DEFINES += EVM_USE_QUICKJS
 #DEFINES += EVM_USE_MUJS
 #DEFINES += EVM_USE_UPY
+DEFINES += EVM_USE_QUICKVM
+#DEFINES += EVM_USE_QUICKVM_DEBUG
 
 include($$PWD/../pris/common.pri)
 include($$PWD/../pris/tuv.pri)
@@ -36,6 +38,10 @@ if( contains(DEFINES, EVM_USE_MUJS) ) {
 
 if( contains(DEFINES, EVM_USE_UPY) ) {
     include($$PWD/../pris/micropy.pri)
+}
+
+if( contains(DEFINES, EVM_USE_QUICKVM) ) {
+    include($$PWD/../pris/quickvm.pri)
 }
 
 SOURCES += \

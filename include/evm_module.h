@@ -140,7 +140,7 @@ extern evm_err_t evm_module_event_add_listener(evm_t *e, evm_val_t pthis, const 
 extern void evm_module_event_remove_listener(evm_t *e, evm_val_t pthis, const char *type);
 extern void evm_module_event_emit (evm_t *e, evm_val_t pthis, const char *type, int argc, evm_val_t *v);
 void evm_module_init(evm_t *env);
-extern evm_t *evm_runtime;
+extern evm_t *evm_runtime(void);
 
 extern void *evm_adc_open(evm_t *e, evm_val_t obj);
 extern int evm_adc_read(evm_t *e, void *dev);
