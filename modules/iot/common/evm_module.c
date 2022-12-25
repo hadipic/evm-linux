@@ -2,6 +2,18 @@
 
 static evm_t *_runtime;
 
+iot_console_out_t iot_console_out = NULL;
+
+void iotjs_set_console_out(iot_console_out_t output) {
+  iot_console_out = output;
+}
+
+#ifdef CONFIG_EVM_DEBUG_LOG
+int iot_debug_level = DBGLEV_ERR;
+FILE* iot_log_stream = NULL;
+const char* iot_debug_prefix[4] = { "", "ERR", "WRN", "INF" };
+#endif // ENABLE_DEBUG_LOG
+
 evm_t *evm_runtime(void) {
    return  _runtime;
 }
@@ -153,7 +165,8 @@ void evm_module_init(evm_t *env)
 #endif
 
 #ifdef CONFIG_EVM_MODULE_TIMER
-    evm_module_timers(env);
+    extern void evm_module_timer(evm_t *e);
+    evm_module_timer(env);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_BUFFER
@@ -189,4 +202,20 @@ void evm_module_init(evm_t *env)
     evm_module_tcp(env);
 #endif
 
+#ifdef CONFIG_EVM_MODULE_TLS
+    extern void evm_module_tls(evm_t *e);
+    evm_module_tls(env);
+#endif
+
 }
+
+char* evm_buffer_allocate_from_number_array(evm_t *e, size_t size, const evm_val_t array) {
+  char* buffer = evm_malloc(size);
+  for (size_t i = 0; i < size; i++) {
+    evm_val_t jdata = evm_list_get(e, array, i);
+    buffer[i] = evm_2_integer(e, jdata);
+    evm_val_free(e, jdata);
+  }
+  return buffer;
+}
+

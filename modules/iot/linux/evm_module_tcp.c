@@ -3,7 +3,7 @@
 #include "linux_uv.h"
 
 static void tcp_object_init(evm_t *e, evm_val_t jtcp) {
-  uv_handle_t* handle = evm_uv_handle_create(sizeof(uv_tcp_t), jtcp, 0);
+  uv_handle_t* handle = iot_uv_handle_create(sizeof(uv_tcp_t), jtcp, 0);
   uv_tcp_init(system_get_uv_loop(), (uv_tcp_t*)handle);
 }
 
@@ -11,7 +11,7 @@ static void iotjs_tcp_report_req_result(uv_req_t* req, int status) {
   EVM_ASSERT(req);
   evm_t *e = evm_runtime();
   // Take callback function object.
-  evm_val_t jcallback = *EVM_UV_REQUEST_CALLBACK(req);
+  evm_val_t jcallback = *IOT_UV_REQUEST_CALLBACK(req);
 
   // Only parameter is status code.
   evm_val_t jstatus = evm_mk_number(e, status);
@@ -23,7 +23,7 @@ static void iotjs_tcp_report_req_result(uv_req_t* req, int status) {
   evm_val_free(e, jstatus);
 
   // Release request.
-  evm_uv_request_destroy(req);
+  iot_uv_request_destroy(req);
 }
 
 // Connection request result handler.
@@ -45,14 +45,14 @@ static evm_val_t evm_module_tcp_connect(evm_t *e, evm_val_t p, int argc, evm_val
     if (err == 0) {
         // Create connection request and configure request data.
         uv_req_t* req_connect =
-            evm_uv_request_create(sizeof(uv_connect_t), jcallback, 0);
+            iot_uv_request_create(sizeof(uv_connect_t), jcallback, 0);
 
         // Create connection request.
         err = uv_tcp_connect((uv_connect_t*)req_connect, tcp_handle,
                              (struct sockaddr*)(&addr), after_connect);
 
         if (err) {
-          evm_uv_request_destroy(req_connect);
+          iot_uv_request_destroy(req_connect);
         }
     }
     return evm_mk_number(e, err);
@@ -60,7 +60,7 @@ static evm_val_t evm_module_tcp_connect(evm_t *e, evm_val_t p, int argc, evm_val
 
 void after_close(uv_handle_t* handle) {
     evm_t *e = evm_runtime();
-    evm_val_t jtcp = EVM_UV_HANDLE_DATA(handle)->jobject;
+    evm_val_t jtcp = IOT_UV_HANDLE_DATA(handle)->jobject;
 
     // callback function.
     evm_val_t jcallback = evm_prop_get(e, jtcp, "onclose");
@@ -72,7 +72,7 @@ void after_close(uv_handle_t* handle) {
 
 static evm_val_t evm_module_tcp_close(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
     uv_handle_t *uv_handle = evm_object_get_user_data(e, p);
-    evm_uv_handle_close(uv_handle, after_close);
+    iot_uv_handle_close(uv_handle, after_close);
     return EVM_UNDEFINED;
 }
 
@@ -102,7 +102,7 @@ static evm_val_t evm_module_tcp_bind(evm_t *e, evm_val_t p, int argc, evm_val_t 
 //   * int status - status code
 static void on_connection(uv_stream_t* handle, int status) {
     evm_t *e = evm_runtime();
-    evm_val_t jtcp = EVM_UV_HANDLE_DATA(handle)->jobject;
+    evm_val_t jtcp = IOT_UV_HANDLE_DATA(handle)->jobject;
 
     // `onconnection` callback.
     evm_val_t jonconnection = evm_prop_get(e, jtcp, "onconnection");
@@ -159,12 +159,12 @@ static evm_val_t evm_module_tcp_write(evm_t *e, evm_val_t p, int argc, evm_val_t
     buf.len = (size_t)evm_buffer_len(e, jbuffer);
 
     evm_val_t arg1 = v[1];
-    uv_req_t* req_write = evm_uv_request_create(sizeof(uv_write_t), arg1, 0);
+    uv_req_t* req_write = iot_uv_request_create(sizeof(uv_write_t), arg1, 0);
 
     int err = uv_write((uv_write_t*)req_write, tcp_handle, &buf, 1, AfterWrite);
 
     if (err) {
-        evm_uv_request_destroy((uv_req_t*)req_write);
+        iot_uv_request_destroy((uv_req_t*)req_write);
     }
 
     return evm_mk_number(e, err);
@@ -182,7 +182,7 @@ static void on_alloc(uv_handle_t* handle, size_t suggested_size,
 
 static void on_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
     evm_t *e = evm_runtime();
-    evm_val_t jtcp = EVM_UV_HANDLE_DATA(handle)->jobject;
+    evm_val_t jtcp = IOT_UV_HANDLE_DATA(handle)->jobject;
 
     // socket object
     evm_val_t jsocket = evm_prop_get(e, jtcp, "owner");
@@ -237,12 +237,12 @@ static evm_val_t evm_module_tcp_shutdown(evm_t *e, evm_val_t p, int argc, evm_va
 
     evm_val_t arg0 = v[0];
     uv_shutdown_t* req_shutdown =
-      (uv_shutdown_t*)evm_uv_request_create(sizeof(uv_shutdown_t), arg0, 0);
+      (uv_shutdown_t*)iot_uv_request_create(sizeof(uv_shutdown_t), arg0, 0);
 
     int err = uv_shutdown(req_shutdown, tcp_handle, AfterShutdown);
 
     if (err) {
-        evm_uv_request_destroy((uv_req_t*)req_shutdown);
+        iot_uv_request_destroy((uv_req_t*)req_shutdown);
     }
 
     return evm_mk_number(e, err);

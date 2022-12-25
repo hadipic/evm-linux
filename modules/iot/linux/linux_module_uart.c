@@ -1,21 +1,15 @@
-#ifdef CONFIG_EVM_MODULE_UART
-#include "evm_module.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <termios.h>
-#include "linux_system.h"
+#include <unistd.h>
 
-typedef struct _uart_dev_t {
-    char dev[DEVICE_IO_NAME_LEN];
-    int baudrate;
-    int databits;
-    int fd;
-    uv_poll_t uart_poll_handle;
-    evm_t *e;
-    evm_val_t this;
-} _uart_dev_t;
+#include "evm_module_uart.h"
 
-static unsigned baud_to_constant(int baudRate) {
+struct iot_uart_platform_data_s {
+  char *device_path;
+};
+
+static unsigned baud_to_constant(unsigned baudRate) {
   switch (baudRate) {
     case 50:
       return B50;
@@ -71,119 +65,91 @@ static int databits_to_constant(int dataBits) {
   return -1;
 }
 
-static void uart_read_cb(uv_poll_t* req, int status, int events) {
-    _uart_dev_t* uart = (_uart_dev_t*)req->data;
-    char buf[DEVICE_IO_WRITE_BUFFER_SIZE];
-    int i = 0;
-    i = read(uart->fd, buf, DEVICE_IO_WRITE_BUFFER_SIZE - 1);
-    if (i > 0) {
-        buf[i] = '\0';
-        evm_t *e = uart->e;
-        evm_val_t this = evm_val_duplicate(e, uart->this);
-        evm_val_t emitCallBack = evm_prop_get(e, this, "emit");
-        if (evm_is_callable(e, emitCallBack)){
-            evm_val_t buffer =  evm_buffer_create(e, (uint8_t*)buf, (int)i);
-            evm_val_t args[3];
-            args[0] = evm_mk_string(e, "data");
-            args[1] = buffer;
-            args[2] = evm_mk_number(e, i);
-            evm_call_free(e, emitCallBack, this, 3, args);
-            evm_val_free(e, args[0]);
-            evm_val_free(e, args[1]);
-            evm_val_free(e, args[2]);
-        }
-        evm_val_free(e, emitCallBack);
-        evm_val_free(e, this);
+void iot_uart_create_platform_data(iot_uart_t* uart) {
+  uart->platform_data = evm_malloc( sizeof (iot_uart_platform_data_t) );
+}
+
+void iot_uart_destroy_platform_data(iot_uart_platform_data_t* platform_data) {
+  EVM_ASSERT(platform_data);
+  evm_free(platform_data->device_path);
+  evm_free(platform_data);
+}
+
+evm_val_t iot_uart_set_platform_config(evm_t *e, iot_uart_t* uart,
+                                             const evm_val_t jconfig) {
+  evm_val_t str = evm_prop_get(e, jconfig, IOT_MAGIC_STRING_DEVICE);
+  int len = evm_string_len(e, str);
+  uart->platform_data->device_path = evm_malloc(len + 1);
+  memcpy(uart->platform_data->device_path, evm_2_string(e, str), len);
+  return EVM_UNDEFINED;
+}
+
+bool iot_uart_open(uv_handle_t* uart_poll_handle) {
+  iot_uart_t* uart =
+      (iot_uart_t*)IOT_UV_HANDLE_EXTRA_DATA(uart_poll_handle);
+  int fd = open(uart->platform_data->device_path,
+                O_RDWR | O_NOCTTY | O_NDELAY);
+  if (fd < 0) {
+    return false;
+  }
+
+  struct termios options;
+  tcgetattr(fd, &options);
+  options.c_cflag = CLOCAL | CREAD;
+  options.c_cflag |= (tcflag_t)baud_to_constant(uart->baud_rate);
+  options.c_cflag |= (tcflag_t)databits_to_constant(uart->data_bits);
+  options.c_iflag = IGNPAR;
+  options.c_oflag = 0;
+  options.c_lflag = 0;
+  tcflush(fd, TCIFLUSH);
+  tcsetattr(fd, TCSANOW, &options);
+
+  uart->device_fd = fd;
+  iot_uart_register_read_cb((uv_poll_t*)uart_poll_handle);
+
+  return true;
+}
+
+bool iot_uart_write(uv_handle_t* uart_poll_handle) {
+  iot_uart_t* uart =
+      (iot_uart_t*)IOT_UV_HANDLE_EXTRA_DATA(uart_poll_handle);
+
+  int bytesWritten = 0;
+  unsigned offset = 0;
+  int fd = uart->device_fd;
+  const char* buf_data = uart->buf_data;
+
+  DDDLOG("%s - data: %s", __func__, buf_data);
+
+  do {
+    errno = 0;
+    bytesWritten = write(fd, buf_data + offset, uart->buf_len - offset);
+    tcdrain(fd);
+
+    DDDLOG("%s - size: %d", __func__, uart->buf_len - offset);
+
+    if (bytesWritten != -1) {
+      offset += (unsigned)bytesWritten;
+      continue;
     }
-}
 
-static void uart_register_read_cb(_uart_dev_t* uart) {
-    uv_poll_start(&uart->uart_poll_handle, UV_READABLE, uart_read_cb);
-}
-
-void *evm_uart_open(evm_t *e, evm_val_t v){
-    evm_val_t val ;
-    _uart_dev_t *dev;
-
-    dev = evm_malloc(sizeof(_uart_dev_t));
-    EVM_ASSERT(dev);
-
-    val = evm_prop_get(e, v, "device");
-    if( !evm_is_string(e, val) ) {
-        evm_free(dev);
-        evm_throw(e, evm_mk_string(e, "Configuration has no 'device' member"));
-    }
-    sprintf(dev->dev, "%s", evm_2_string(e, val));
-    int fd = open(dev->dev, O_RDWR | O_NOCTTY | O_NDELAY);
-    if (fd < 0) {
-        evm_free(dev);
-        evm_throw(e, evm_mk_string(e, "Failed to open uart"));
+    if (errno == EINTR) {
+      continue;
     }
 
-    val = evm_prop_get(e, v, "baudRate");
-    if( !evm_is_integer(e, val) ) {
-        evm_free(dev);
-        evm_throw(e, evm_mk_string(e, "Configuration has no 'baudRate' member"));
-    }
-    dev->baudrate = evm_2_integer(e, val);
+    return false;
 
-    val = evm_prop_get(e, v, "dataBits");
-    if( !evm_is_integer(e, val) ) {
-        evm_free(dev);
-        evm_throw(e, evm_mk_string(e, "Configuration has no 'dataBits' member"));
-    }
-    dev->databits = evm_2_integer(e, val);
+  } while (uart->buf_len > offset);
 
-    struct termios options;
-    tcgetattr(fd, &options);
-    options.c_cflag = CLOCAL | CREAD;
-    options.c_cflag |= (tcflag_t)baud_to_constant(dev->baudrate);
-    options.c_cflag |= (tcflag_t)databits_to_constant(dev->databits);
-    options.c_iflag = IGNPAR;
-    options.c_oflag = 0;
-    options.c_lflag = 0;
-    tcflush(fd, TCIFLUSH);
-    tcsetattr(fd, TCSANOW, &options);
-    dev->fd = fd;
-    dev->uart_poll_handle.data = dev;
-    uart_register_read_cb(dev);
-    return dev;
+  return true;
 }
 
-int evm_uart_write(evm_t *e, void *dev, void *buffer, int size){
-    _uart_dev_t *uart = dev;
-    int bytesWritten = 0;
-    int offset = 0;
-    int fd = uart->fd;
-    do {
-        errno = 0;
-        bytesWritten = write(fd, buffer, size);
-        tcdrain(fd);
-        if (bytesWritten != -1) {
-            offset += (unsigned)bytesWritten;
-            continue;
-        }
-        if (errno == EINTR) {
-            continue;
-        }
-        return 0;
-    } while (size > offset);
+void iot_uart_handle_close_cb(uv_handle_t* uart_poll_handle) {
+  iot_uart_t* uart =
+      (iot_uart_t*)IOT_UV_HANDLE_EXTRA_DATA(uart_poll_handle);
 
-    return 1;
+  if (close(uart->device_fd) < 0) {
+    DLOG(iot_periph_error_str(kUartOpClose));
+    EVM_ASSERT(0);
+  }
 }
-
-int evm_uart_read(evm_t *e, void *dev, void *buf, int size){
-    _uart_dev_t *uart = dev;
-    return read(uart->fd, buf, size);
-}
-
-void evm_uart_close(evm_t *e, void *dev){
-    _uart_dev_t *uart = dev;
-    close(uart->fd);
-}
-
-void evm_uart_destroy(evm_t *e, void *dev){
-    evm_free(dev);
-}
-
-#endif
