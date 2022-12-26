@@ -6,6 +6,7 @@ INCLUDEPATH += $$PWD/../../../modules/iot/common
 
 DEFINES += CONFIG_EVM_DEBUG_LOG
 DEFINES += CONFIG_EVM_MODULE_FS
+DEFINES += CONFIG_EVM_MODULE_HTTP_PARSER
 DEFINES += CONFIG_EVM_MODULE_TIMERS
 DEFINES += CONFIG_EVM_MODULE_BUFFER
 DEFINES += CONFIG_EVM_MODULE_ASSERT
@@ -35,6 +36,13 @@ contains(DEFINES, CONFIG_EVM_MODULE_TLS) {
 LIBS += -lmbedtls -lmbedx509 -lmbedcrypto
 }
 
+contains(DEFINES, CONFIG_EVM_MODULE_HTTP_PARSER) {
+INCLUDEPATH += $$PWD/../../../components/http-parser
+SOURCES += \
+    $$PWD/../../../components/http-parser/http_parser.c
+SOURCES += \
+    ../../../modules/iot/common/evm_module_http_parser.c
+}
 
 SOURCES += \
     ../../../modules/iot/common/evm_module_process.c \

@@ -209,6 +209,11 @@ void evm_module_init(evm_t *env)
     evm_module_tls(env);
 #endif
 
+#ifdef CONFIG_EVM_MODULE_HTTP_PARSER
+    extern int evm_module_http_parser(evm_t *e);
+    evm_module_http_parser(env);
+#endif
+
 }
 
 char* evm_buffer_allocate_from_number_array(evm_t *e, size_t size, const evm_val_t array) {

@@ -4,6 +4,7 @@
 #include "evm_module.h"
 #include "uv.h"
 #include <unistd.h>
+#include <stdbool.h>
 
 #define DEVICE_IO_NAME_LEN 64
 #define DEVICE_IO_PATH_BUFFER_SIZE 64
