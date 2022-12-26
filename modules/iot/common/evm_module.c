@@ -193,8 +193,10 @@ void evm_module_init(evm_t *env)
 #ifdef CONFIG_EVM_MODULE_LVGL
     extern void evm_module_lvgl_event(evm_t *e);
     extern void evm_module_lvgl(evm_t *e);
+    extern void evm_module_lvgl_image(evm_t *e);
     evm_module_lvgl(env);
     evm_module_lvgl_event(env);
+    evm_module_lvgl_image(env);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_TCP

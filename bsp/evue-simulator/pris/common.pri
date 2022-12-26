@@ -21,19 +21,15 @@ DEFINES += CONFIG_EVM_MODULE_TCP
 DEFINES += CONFIG_EVM_MODULE_TLS
 DEFINES += CONFIG_EVM_MODULE_PWM
 
-contains(DEFINES, EVM_USE_QUICKJS) {
+INCLUDEPATH +=  $$PWD/../../../components/lvgl/lvgl/src/extra/libs/png
 DEFINES += CONFIG_EVM_MODULE_LVGL
+DEFINES += LV_USE_PNG
+DEFINES += LV_USE_FS_STDIO
+DEFINES += LV_PNG_USE_LV_FILESYSTEM
 SOURCES += \
     ../../../modules/iot/gui/lvgl/evm_module_lvgl.c \
-    ../../../modules/iot/gui/lvgl/evm_module_lvgl_event.c
-}
-
-contains(DEFINES, EVM_USE_QUICKVM) {
-DEFINES += CONFIG_EVM_MODULE_LVGL
-SOURCES += \
-    ../../../modules/iot/gui/lvgl/evm_module_lvgl.c \
-    ../../../modules/iot/gui/lvgl/evm_module_lvgl_event.c
-}
+    ../../../modules/iot/gui/lvgl/evm_module_lvgl_event.c \
+    $$PWD/../../../modules/iot/gui/lvgl/evm_module_lvgl_image.c
 
 contains(DEFINES, CONFIG_EVM_MODULE_TLS) {
 LIBS += -lmbedtls -lmbedx509 -lmbedcrypto

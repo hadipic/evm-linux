@@ -1,4 +1,4 @@
-INCLUDEPATH +=  $$PWD/../../../components/lvgl/lvgl/src/lv/extra/libs/png
+INCLUDEPATH +=  $$PWD/../../../components/lvgl/lvgl/src/extra/libs/png
 
 HEADERS += \
     $$PWD/../../../components/lvgl/lvgl/src/extra/libs/png/lodepng.h \
