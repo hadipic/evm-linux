@@ -27,6 +27,15 @@
         {"name": "LV_ALIGN_OUT_RIGHT_MID", "value": "LV_ALIGN_OUT_RIGHT_MID", "type": "number" },
         {"name": "LV_ALIGN_OUT_RIGHT_BOTTOM", "value": "LV_ALIGN_OUT_RIGHT_BOTTOM", "type": "number" },
 
+        {"name": "LV_FLEX_FLOW_ROW", "value": "LV_FLEX_FLOW_ROW", "type": "number" },
+        {"name": "LV_FLEX_FLOW_COLUMN", "value": "LV_FLEX_FLOW_COLUMN", "type": "number" },
+        {"name": "LV_FLEX_FLOW_ROW_WRAP", "value": "LV_FLEX_FLOW_ROW_WRAP", "type": "number" },
+        {"name": "LV_FLEX_FLOW_ROW_REVERSE", "value": "LV_FLEX_FLOW_ROW_REVERSE", "type": "number" },
+        {"name": "LV_FLEX_FLOW_ROW_WRAP_REVERSE", "value": "LV_FLEX_FLOW_ROW_WRAP_REVERSE", "type": "number" },
+        {"name": "LV_FLEX_FLOW_COLUMN_WRAP", "value": "LV_FLEX_FLOW_COLUMN_WRAP", "type": "number" },
+        {"name": "LV_FLEX_FLOW_COLUMN_REVERSE", "value": "LV_FLEX_FLOW_COLUMN_REVERSE", "type": "number" },
+        {"name": "LV_FLEX_FLOW_COLUMN_WRAP_REVERSE", "value": "LV_FLEX_FLOW_COLUMN_WRAP_REVERSE", "type": "number" },
+
         {"name": "LV_EVENT_ALL", "value": "LV_EVENT_ALL", "type": "number" },
         {"name": "LV_EVENT_PRESSED", "value": "LV_EVENT_PRESSED", "type": "number" },
         {"name": "LV_EVENT_PRESSING", "value": "LV_EVENT_PRESSING", "type": "number" },
@@ -44,6 +53,7 @@
                 "<0> = lv_mem_alloc(sizeof(lv_style_t));"
             ]
         },
+        {"name": "lv_style_init", "signature": "vp"},
         {"name": "lv_style_set_width", "signature": "vpi"},
         {"name": "lv_style_set_min_width", "signature": "vpi"},
         {"name": "lv_style_set_max_width", "signature": "vpi"},
@@ -171,6 +181,7 @@
         {"name": "lv_style_set_text_align", "signature": "vpi"},
 
         {"name": "lv_obj_create", "signature": "pp"},
+        {"name": "lv_obj_add_style", "signature": "vppi"},
         {"name": "lv_obj_add_flag", "signature": "vpi"},
         {"name": "lv_obj_clear_flag", "signature": "vpi"},
         {"name": "lv_obj_add_state", "signature": "vpi"},

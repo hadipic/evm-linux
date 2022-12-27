@@ -1,11 +1,17 @@
 <html>
 <div class="container">
-    <text id="text">Hello</text>
-    <text id="text">EVUE</text>
+    <text id="text1">{{result}}</text>
 </div>
 </html>
 <script>
-data = {}
+export default {
+    data: {
+        result: "Hello EVM",
+    },
+    onShow: function() {
+        data.result = 'Hello EVUE'
+    }
+}
 </script>
 <style>
     .container {
@@ -13,5 +19,6 @@ data = {}
         height: 240px;
         top: 50px;
         left: 50px;
+        flex-wrap: wrap;
     }
 </style>

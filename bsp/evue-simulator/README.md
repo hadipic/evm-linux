@@ -15,6 +15,15 @@
 
 	DEFINES += EVM_USE_PIKASCRIPT
 
+
+###makefile编译
+
++ 编译quickjs版本： make quickjs
++ 编译mujs版本： make mujs
++ 编译pikascript版本： make pika
+
+编译完成后，evue-simulator/build目录下生成执行文件app
+
 ###编译pikascript
 
 进入bsp/evue-simulator/pikascript，运行before-build.bat。然后打开app工程，选择EVM_USE_PIKASCRIPT

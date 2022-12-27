@@ -3,14 +3,10 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
-LIBS += -lpthread
+OBJECTS_DIR = $$PWD/../build
+DESTDIR = $$PWD/../build
 
-#DEFINES += EVM_USE_PIKASCRIPT
-DEFINES += EVM_USE_QUICKJS
-#DEFINES += EVM_USE_MUJS
-#DEFINES += EVM_USE_UPY
-#DEFINES += EVM_USE_QUICKVM
-#DEFINES += EVM_USE_QUICKVM_DEBUG
+LIBS += -lpthread
 
 include($$PWD/../pris/common.pri)
 include($$PWD/../pris/tuv.pri)

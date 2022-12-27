@@ -18,6 +18,13 @@ static evm_val_t evm_module_lvgl_lv_style_create(evm_t *e, evm_val_t p, int argc
   return evm_cffi_exec_ret(e, cffi_args[0], "p");
 }
 
+static evm_val_t evm_module_lvgl_lv_style_init(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_style_init(cffi_args[1].p);
+  return EVM_UNDEFINED;
+}
+
 static evm_val_t evm_module_lvgl_lv_style_set_width(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
@@ -466,6 +473,13 @@ static evm_val_t evm_module_lvgl_lv_obj_create(evm_t *e, evm_val_t p, int argc, 
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].p = lv_obj_create(cffi_args[1].p);
   return evm_cffi_exec_ret(e, cffi_args[0], "pp");
+}
+
+static evm_val_t evm_module_lvgl_lv_obj_add_style(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+  evm_cffi_val_t cffi_args[4];
+  evm_cffi_exec_param(e, cffi_args + 1, "ppi", argc, v);
+  lv_obj_add_style(cffi_args[1].p, cffi_args[2].p, cffi_args[3].i32);
+  return EVM_UNDEFINED;
 }
 
 static evm_val_t evm_module_lvgl_lv_obj_add_flag(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
@@ -1278,6 +1292,7 @@ void evm_module_lvgl(evm_t *e) {
   evm_val_t obj = evm_object_create(e);
   evm_prop_set(e, obj, "lv_scr_act", evm_mk_native(e, evm_module_lvgl_lv_scr_act, "lv_scr_act", 0));
   evm_prop_set(e, obj, "lv_style_create", evm_mk_native(e, evm_module_lvgl_lv_style_create, "lv_style_create", 0));
+  evm_prop_set(e, obj, "lv_style_init", evm_mk_native(e, evm_module_lvgl_lv_style_init, "lv_style_init", 1));
   evm_prop_set(e, obj, "lv_style_set_width", evm_mk_native(e, evm_module_lvgl_lv_style_set_width, "lv_style_set_width", 2));
   evm_prop_set(e, obj, "lv_style_set_min_width", evm_mk_native(e, evm_module_lvgl_lv_style_set_min_width, "lv_style_set_min_width", 2));
   evm_prop_set(e, obj, "lv_style_set_max_width", evm_mk_native(e, evm_module_lvgl_lv_style_set_max_width, "lv_style_set_max_width", 2));
@@ -1340,6 +1355,7 @@ void evm_module_lvgl(evm_t *e) {
   evm_prop_set(e, obj, "lv_style_set_text_decor", evm_mk_native(e, evm_module_lvgl_lv_style_set_text_decor, "lv_style_set_text_decor", 2));
   evm_prop_set(e, obj, "lv_style_set_text_align", evm_mk_native(e, evm_module_lvgl_lv_style_set_text_align, "lv_style_set_text_align", 2));
   evm_prop_set(e, obj, "lv_obj_create", evm_mk_native(e, evm_module_lvgl_lv_obj_create, "lv_obj_create", 1));
+  evm_prop_set(e, obj, "lv_obj_add_style", evm_mk_native(e, evm_module_lvgl_lv_obj_add_style, "lv_obj_add_style", 3));
   evm_prop_set(e, obj, "lv_obj_add_flag", evm_mk_native(e, evm_module_lvgl_lv_obj_add_flag, "lv_obj_add_flag", 2));
   evm_prop_set(e, obj, "lv_obj_clear_flag", evm_mk_native(e, evm_module_lvgl_lv_obj_clear_flag, "lv_obj_clear_flag", 2));
   evm_prop_set(e, obj, "lv_obj_add_state", evm_mk_native(e, evm_module_lvgl_lv_obj_add_state, "lv_obj_add_state", 2));
@@ -1477,6 +1493,14 @@ void evm_module_lvgl(evm_t *e) {
   evm_prop_set(e, obj, "LV_ALIGN_OUT_RIGHT_TOP", evm_mk_number(e, LV_ALIGN_OUT_RIGHT_TOP));
   evm_prop_set(e, obj, "LV_ALIGN_OUT_RIGHT_MID", evm_mk_number(e, LV_ALIGN_OUT_RIGHT_MID));
   evm_prop_set(e, obj, "LV_ALIGN_OUT_RIGHT_BOTTOM", evm_mk_number(e, LV_ALIGN_OUT_RIGHT_BOTTOM));
+  evm_prop_set(e, obj, "LV_FLEX_FLOW_ROW", evm_mk_number(e, LV_FLEX_FLOW_ROW));
+  evm_prop_set(e, obj, "LV_FLEX_FLOW_COLUMN", evm_mk_number(e, LV_FLEX_FLOW_COLUMN));
+  evm_prop_set(e, obj, "LV_FLEX_FLOW_ROW_WRAP", evm_mk_number(e, LV_FLEX_FLOW_ROW_WRAP));
+  evm_prop_set(e, obj, "LV_FLEX_FLOW_ROW_REVERSE", evm_mk_number(e, LV_FLEX_FLOW_ROW_REVERSE));
+  evm_prop_set(e, obj, "LV_FLEX_FLOW_ROW_WRAP_REVERSE", evm_mk_number(e, LV_FLEX_FLOW_ROW_WRAP_REVERSE));
+  evm_prop_set(e, obj, "LV_FLEX_FLOW_COLUMN_WRAP", evm_mk_number(e, LV_FLEX_FLOW_COLUMN_WRAP));
+  evm_prop_set(e, obj, "LV_FLEX_FLOW_COLUMN_REVERSE", evm_mk_number(e, LV_FLEX_FLOW_COLUMN_REVERSE));
+  evm_prop_set(e, obj, "LV_FLEX_FLOW_COLUMN_WRAP_REVERSE", evm_mk_number(e, LV_FLEX_FLOW_COLUMN_WRAP_REVERSE));
   evm_prop_set(e, obj, "LV_EVENT_ALL", evm_mk_number(e, LV_EVENT_ALL));
   evm_prop_set(e, obj, "LV_EVENT_PRESSED", evm_mk_number(e, LV_EVENT_PRESSED));
   evm_prop_set(e, obj, "LV_EVENT_PRESSING", evm_mk_number(e, LV_EVENT_PRESSING));
