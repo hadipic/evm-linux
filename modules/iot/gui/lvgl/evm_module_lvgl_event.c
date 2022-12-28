@@ -18,9 +18,11 @@ static void event_handler(lv_event_t * e)
         evm_val_t cb = evm_list_get(info->e, cbs, i);
         evm_val_t this = evm_mk_global(info->e);
         evm_val_t args[2];
-        args[0] = info->obj;
+        args[0] = evm_val_duplicate(e, info->obj);
         args[1] = evm_mk_number(info->e, code);
         evm_call_free(info->e, cb, this, 2, args);
+        evm_val_free(info->e, args[0]);
+        evm_val_free(info->e, args[1]);
         evm_val_free(info->e, this);
         evm_val_free(info->e, cb);
     }

@@ -194,11 +194,11 @@ void evm_deinit(evm_t *e) {
     }
 }
 
-void evm_run_file(evm_t *e, const char *path) {
+evm_val_t evm_run_file(evm_t *e, const char *path) {
     evm_val_t obj = qvm_js_parse(e, path);
     qvm_value_t this = qvm_new_object(e);
     qvm_set_parent(e, obj, this);
-    qvm_call(e, obj, qvm_get_parent(e, obj), 0, NULL);
+    return qvm_call(e, obj, qvm_get_parent(e, obj), 0, NULL);
 }
 
 evm_val_t evm_run_string(evm_t *e, const char *source) {

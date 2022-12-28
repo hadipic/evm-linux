@@ -9,7 +9,7 @@ export default {
         result: "Hello EVM",
     },
     onShow: function() {
-        data.result = 'Hello EVUE'
+        this.result = 'Hello EVUE'
     }
 }
 </script>

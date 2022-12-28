@@ -17,6 +17,8 @@
 extern "C" {
 #endif
 
+#define PATH_MAX_LEN    256
+
 #define EVM_FUNCTION(name)                                \
   static evm_val_t name(evm_t *e,   \
                             evm_val_t p,   \
@@ -193,11 +195,8 @@ extern "C" {
 #define IOT_MAGIC_STRING_IN "IN"
 #endif
 #define IOT_MAGIC_STRING__INCOMING "_incoming"
-#define IOT_MAGIC_STRING_IOTJS_ENV_U "IOTJS_ENV"
-#define IOT_MAGIC_STRING_IOTJS_PATH_U "IOTJS_PATH"
-#define IOT_MAGIC_STRING_IOTJS_EXTRA_MODULE_PATH_U "IOTJS_EXTRA_MODULE_PATH"
-#define IOT_MAGIC_STRING_IOTJS_WORKING_DIR_PATH_U "IOTJS_WORKING_DIR_PATH"
-#define IOT_MAGIC_STRING_IOTJS "iotjs"
+#define IOT_MAGIC_STRING_EVM_PATH_U "EVM_PATH"
+#define IOT_MAGIC_STRING_EVM_MODULE_PATH_U "EVM_MODULE_PATH"
 #define IOT_MAGIC_STRING_IPV4 "IPv4"
 #define IOT_MAGIC_STRING_IPV6 "IPv6"
 #define IOT_MAGIC_STRING_ISALIVEEXCEPTFOR "isAliveExceptFor"
@@ -510,12 +509,6 @@ extern evm_err_t evm_module_udp(evm_t *e);
 
 #ifdef CONFIG_EVM_MODULE_NET
 extern evm_err_t evm_module_net(evm_t *e);
-#endif
-
-#ifdef CONFIG_EVM_MODULE_PROCESS
-extern evm_val_t evm_module_process_nextTick(evm_t *e, evm_val_t p, int argc, evm_val_t *v);
-extern void evm_module_process_poll(evm_t *e);
-extern evm_err_t evm_module_process(evm_t *e);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_EVENT

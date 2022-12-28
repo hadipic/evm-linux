@@ -4,17 +4,10 @@
 </div>
 </html>
 <script>
-export default {
-    data: {
+data = {}
 
-    },
-
-    onclicked: function(obj, code) {
-        print('hello EVUE')
-    }
-}
-
-
+def onclicked(self):
+    print('hello EVUE')
     
 </script>
 <style>

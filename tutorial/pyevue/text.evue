@@ -1,21 +1,12 @@
 <html>
 <div class="container">
-    <button onclick="onclicked">click me</button>
+    <text id="text1">{{result}}</text>
 </div>
 </html>
 <script>
-export default {
-    data: {
-
-    },
-
-    onclicked: function(obj, code) {
-        print('hello EVUE')
-    }
+data = {
+    result: "Hello EVM",
 }
-
-
-    
 </script>
 <style>
     .container {
@@ -23,5 +14,6 @@ export default {
         height: 240px;
         top: 50px;
         left: 50px;
+        flex-wrap: wrap;
     }
 </style>

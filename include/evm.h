@@ -101,8 +101,8 @@ EVM_API evm_val_t evm_mk_global(evm_t *e);
 /*** 虚拟机相关函数 ***/
 EVM_API evm_t *evm_init(void);
 EVM_API void evm_deinit(evm_t *e);
-EVM_API void evm_run_file(evm_t *e, const char *path);
-EVM_API evm_val_t evm_run_string(evm_t *e, const char *source);
+EVM_API int evm_run_file(evm_t *e, evm_val_t this_obj, const char *path);
+EVM_API evm_val_t evm_run_string(evm_t *e, evm_val_t this_obj, const char *source);
 EVM_API void evm_run_shell(evm_t *e);
 EVM_API evm_val_t evm_call(evm_t *e, evm_val_t obj, evm_val_t pthis, int argc, evm_val_t *v);
 EVM_API evm_val_t evm_call_free(evm_t *e, evm_val_t obj, evm_val_t pthis, int argc, evm_val_t *v);

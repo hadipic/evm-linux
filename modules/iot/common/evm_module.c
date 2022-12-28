@@ -63,11 +63,7 @@ void evm_module_registry_remove(evm_t *e, int id) {
 }
 
 void evm_module_next_tick(evm_t *e, int argc, evm_val_t *v) {
-#ifdef CONFIG_EVM_MODULE_PROCESS
-    evm_val_t undef = evm_mk_undefined(e);
-    evm_val_free(e, undef);
-    evm_module_process_nextTick(e, undef, argc, v);
-#endif
+
 }
 
 evm_err_t evm_module_event_add_listener(evm_t *e, evm_val_t pthis, const char *type, evm_val_t listener) {
@@ -122,9 +118,24 @@ static evm_val_t native_require(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
     return evm_module_get(e, evm_2_string(e, v[0]));
 }
 
+static evm_val_t native_compile(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+    if( evm_run_file(e, v[0], evm_2_string(e, v[1])) )
+        return evm_mk_boolean(e, 1);
+    return evm_mk_boolean(e, 0);
+}
+
 static void evm_native_init(evm_t *e) {
     evm_global_set(e, "print", evm_mk_native(e, native_print, "print", 1));
-    evm_global_set(e, "require", evm_mk_native(e, native_require, "require", 1));
+    evm_global_set(e, "__require__", evm_mk_native(e, native_require, "require", 1));
+    evm_global_set(e, "__compile__", evm_mk_native(e, native_compile, "__compile__", 1));
+}
+
+static void run_common_js(evm_t *e) {
+    evm_val_t process = evm_module_get(e, "process");
+    const char *evm_path = evm_2_string(e, evm_prop_get(e, process, IOT_MAGIC_STRING_EVM_PATH_U));
+    char common_js_path[PATH_MAX_LEN];
+    sprintf(common_js_path, "%s/modules/iot/js/common.js", evm_path);
+    evm_run_file(e, EVM_UNDEFINED, common_js_path);
 }
 
 void evm_module_init(evm_t *env)
@@ -152,9 +163,8 @@ void evm_module_init(evm_t *env)
     evm_module_net(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_PROCESS
+    extern void evm_module_process(evm_t *e);
     evm_module_process(env);
-#endif
 
 #ifdef CONFIG_EVM_MODULE_EVENT
     evm_module_events(env);
@@ -214,6 +224,7 @@ void evm_module_init(evm_t *env)
     evm_module_http_parser(env);
 #endif
 
+    run_common_js(env);
 }
 
 char* evm_buffer_allocate_from_number_array(evm_t *e, size_t size, const evm_val_t array) {

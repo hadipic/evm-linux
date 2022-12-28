@@ -12,6 +12,7 @@ DEFINES += CONFIG_EVM_MODULE_BUFFER
 DEFINES += CONFIG_EVM_MODULE_ASSERT
 DEFINES += CONFIG_EVM_MODULE_CFFI
 DEFINES += CONFIG_EVM_MODULE_LIBC
+DEFINES += CONFIG_EVM_MODULE_PROCESS
 DEFINES += CONFIG_EVM_MODULE_ADC
 DEFINES += CONFIG_EVM_MODULE_GPIO
 DEFINES += CONFIG_EVM_MODULE_I2C
@@ -45,7 +46,6 @@ SOURCES += \
 }
 
 SOURCES += \
-    ../../../modules/iot/common/evm_module_process.c \
     ../../../modules/iot/common/evm_module.c \
     ../../../modules/iot/common/evm_module_events.c \
     ../../../modules/iot/common/evm_module_buffer.c \
@@ -72,6 +72,7 @@ SOURCES += \
     ../../../modules/iot/linux/evm_module_uart.c \
     ../../../modules/iot/linux/evm_module_adc.c \
     ../../../modules/iot/linux/evm_module_timer.c \
+    ../../../modules/iot/linux/evm_module_process.c \
     ../../../modules/iot/linux/evm_module_periph_common.c \
     ../../../modules/iot/linux/linux_module_repl.c
 

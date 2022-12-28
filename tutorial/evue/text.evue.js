@@ -1,67 +1,20 @@
 var lv = require('lvgl');
 var image = require('image');
+var evue = require('evue.js');
 
-
-
-var nodes = {}
-var _bindings_ = {}
-function dataBinding(data) {
-    Object.keys(data).forEach(function(key){
-        var value = data[key];
-        Object.defineProperty(data, key,{
-            enumerable:true,
-            configurable:true,
-            get:function() {
-                return value;
-            },
-            set:function(v) {
-                if (value === v) {
-                    return
-                }
-                value = v;
-                var elements = _bindings_[key];
-                if( elements != undefined ) {
-                    for(var i in elements){
-                        var binding = elements[i];
-                        var func = lv[binding.prefix + 'set_' + binding.attr];
-                        func(binding.element, v);
-                    }
-                    
-                }
-            }
-        })
-    })
-}
-
-function set_binding_value(element, attr, key, prefix) {
-    if(_bindings_[key] == undefined) {
-        _bindings_[key] = []
-    }
-       
-    _bindings_[key].push({
-        "element": element,
-        "prefix": prefix,
-        "attr": attr
-    })
-}
 
 var page = {
     data: {
         result: "Hello EVM",
     },
     onShow: function() {
-        data.result = 'Hello EVUE'
+        this.result = 'Hello EVUE'
     }
 }
 
-
-var data = page.data;
-
-dataBinding(data);
-
-function getElementById(id) {
-    return nodes[id];
-}    
+page.$watcher = new evue.Watcher(page); 
+page.$nodes = {}; 
+page.$getElementById = evue.getElementById;  
 
 var widget0 = lv.lv_obj_create(lv.lv_scr_act())
 var style = lv.lv_style_create()
@@ -77,10 +30,10 @@ var style = lv.lv_style_create()
 lv.lv_style_init(style)
 lv.lv_label_set_text(text1, 'Hello EVM')
 lv.lv_obj_add_style(text1, style, 0)
-set_binding_value(text1, 'text', 'result', 'lv_label_')
-nodes['widget0'] = {"type":"div","id":"widget0","attributes":{"class":"container"}};
-nodes['widget0']['obj'] = widget0;
-nodes['text1'] = {"type":"text","attributes":{"id":"text1","value":"Hello EVM"}};
-nodes['text1']['obj'] = text1;
+page.$watcher.bind(text1, 'text', 'result', 'lv_label_')
+page.$nodes['widget0'] = {"type":"div","id":"widget0","attributes":{"class":"container"}};
+page.$nodes['widget0']['obj'] = widget0;
+page.$nodes['text1'] = {"type":"text","attributes":{"id":"text1","value":"Hello EVM"}};
+page.$nodes['text1']['obj'] = text1;
 page.onShow();
 

@@ -30,7 +30,7 @@ void evm_main (char *filename) {
 #ifdef CONFIG_EVM_MODULE_REPL
     evm_run_shell(env);
 #else
-    evm_run_file(env, filename);
+    evm_run_file(env, EVM_UNDEFINED, filename);
 #endif
 }
 

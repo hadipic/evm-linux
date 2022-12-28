@@ -6,6 +6,8 @@ CONFIG -= qt
 OBJECTS_DIR = $$PWD/../build
 DESTDIR = $$PWD/../build
 
+DEFINES += EVM_USE_QUICKJS
+
 LIBS += -lpthread
 
 include($$PWD/../pris/common.pri)

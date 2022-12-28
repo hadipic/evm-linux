@@ -287,21 +287,32 @@ void evm_deinit(evm_t *e) {
     }
 }
 
-void evm_run_file(evm_t *e, const char *path) {
+int evm_run_file(evm_t *e, evm_val_t this_obj, const char *path) {
     uint8_t *buf;
     size_t buf_len;
+    int res = 1;
     buf = js_load_file(e, &buf_len, path);
     if (!buf) {
-        return;
+        return 0;
     }
-    evm_val_t ret = JS_Eval(e, buf, buf_len, path, JS_EVAL_TYPE_MODULE);
+    evm_val_t ret;
+    if( evm_is_undefined(e, this_obj) )
+        ret = JS_Eval(e, buf, buf_len, path, JS_EVAL_TYPE_MODULE);
+    else
+        ret = JS_EvalThis(e, this_obj, buf, buf_len, path, JS_EVAL_TYPE_GLOBAL);
     js_free(e, (void *)buf);
-    JS_FreeValue(e, ret);
-    return;
+    if( JS_IsException(ret) ) {
+        res = 0;
+    }
+    evm_val_free(e, ret);
+    return res;
 }
 
-evm_val_t evm_run_string(evm_t *e, const char *source) {
-    return JS_Eval(e, source, strlen(source), "", JS_EVAL_TYPE_GLOBAL);
+evm_val_t evm_run_string(evm_t *e, evm_val_t this_obj, const char *source) {
+    if( evm_is_undefined(e, this_obj) )
+        return JS_Eval(e, source, strlen(source), "", JS_EVAL_TYPE_GLOBAL);
+    else
+        return JS_EvalThis(e, this_obj, source, strlen(source), "", JS_EVAL_TYPE_GLOBAL);
 }
 
 void evm_run_shell(evm_t *e) {
