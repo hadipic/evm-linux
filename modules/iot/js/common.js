@@ -21,20 +21,22 @@ function require(path) {
         return m.exports;
     }
 
+    var prevModule = globalThis.module;
     var module = new Module(path);
     globalThis.module = module;
     
     var res = module.compile(path);
     if( res ) {
         cached[path] = module;
+        globalThis.module = prevModule;
         return module.exports;
     }
-    
-    
+
     var evm_path = process.EVM_PATH;
     res = module.compile(evm_path + '/modules/iot/js/' + path);
     if( res ) {
         cached[path] = module;
+        globalThis.module = prevModule;
         return module.exports;
     }
     
@@ -42,6 +44,7 @@ function require(path) {
     res = module.compile(module_path + '/' + path);
     if( res ) {
         cached[path] = module;
+        globalThis.module = prevModule;
         return module.exports;
     }
     return undefined;

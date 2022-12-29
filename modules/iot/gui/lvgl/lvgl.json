@@ -4,6 +4,14 @@
         "lvgl.h"
     ],
     "const": [
+        {"name": "LV_OBJ_FLAG_HIDDEN", "value": "LV_OBJ_FLAG_HIDDEN", "type": "number" },
+        {"name": "LV_OBJ_FLAG_CLICKABLE", "value": "LV_OBJ_FLAG_CLICKABLE", "type": "number" },
+        {"name": "LV_OBJ_FLAG_CLICK_FOCUSABLE", "value": "LV_OBJ_FLAG_CLICK_FOCUSABLE", "type": "number" },
+        {"name": "LV_OBJ_FLAG_CHECKABLE", "value": "LV_OBJ_FLAG_CHECKABLE", "type": "number" },
+        {"name": "LV_OBJ_FLAG_SCROLLABLE", "value": "LV_OBJ_FLAG_SCROLLABLE", "type": "number" },
+        {"name": "LV_OBJ_FLAG_FLOATING", "value": "LV_OBJ_FLAG_FLOATING", "type": "number" },
+        {"name": "LV_OBJ_FLAG_IGNORE_LAYOUT", "value": "LV_OBJ_FLAG_IGNORE_LAYOUT", "type": "number" },
+
         {"name": "LV_OPA_TRANSP", "value": "LV_OPA_TRANSP", "type": "number" },
 
         {"name": "LV_PALETTE_RED", "value": "LV_PALETTE_RED", "type": "number" },

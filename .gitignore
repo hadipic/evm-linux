@@ -43,3 +43,4 @@ vm.pro.user
 vm.pro.user.*
 *.uvguix.*
 quickbclogs/
+tools/quickbc/quickbclogs/

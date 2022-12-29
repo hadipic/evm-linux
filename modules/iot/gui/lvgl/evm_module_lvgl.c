@@ -1495,6 +1495,13 @@ void evm_module_lvgl(evm_t *e) {
   evm_prop_set(e, obj, "lv_slider_get_value", evm_mk_native(e, evm_module_lvgl_lv_slider_get_value, "lv_slider_get_value", 1));
   evm_prop_set(e, obj, "lv_slider_get_min_value", evm_mk_native(e, evm_module_lvgl_lv_slider_get_min_value, "lv_slider_get_min_value", 1));
   evm_prop_set(e, obj, "lv_slider_get_max_value", evm_mk_native(e, evm_module_lvgl_lv_slider_get_max_value, "lv_slider_get_max_value", 1));
+  evm_prop_set(e, obj, "LV_OBJ_FLAG_HIDDEN", evm_mk_number(e, LV_OBJ_FLAG_HIDDEN));
+  evm_prop_set(e, obj, "LV_OBJ_FLAG_CLICKABLE", evm_mk_number(e, LV_OBJ_FLAG_CLICKABLE));
+  evm_prop_set(e, obj, "LV_OBJ_FLAG_CLICK_FOCUSABLE", evm_mk_number(e, LV_OBJ_FLAG_CLICK_FOCUSABLE));
+  evm_prop_set(e, obj, "LV_OBJ_FLAG_CHECKABLE", evm_mk_number(e, LV_OBJ_FLAG_CHECKABLE));
+  evm_prop_set(e, obj, "LV_OBJ_FLAG_SCROLLABLE", evm_mk_number(e, LV_OBJ_FLAG_SCROLLABLE));
+  evm_prop_set(e, obj, "LV_OBJ_FLAG_FLOATING", evm_mk_number(e, LV_OBJ_FLAG_FLOATING));
+  evm_prop_set(e, obj, "LV_OBJ_FLAG_IGNORE_LAYOUT", evm_mk_number(e, LV_OBJ_FLAG_IGNORE_LAYOUT));
   evm_prop_set(e, obj, "LV_OPA_TRANSP", evm_mk_number(e, LV_OPA_TRANSP));
   evm_prop_set(e, obj, "LV_PALETTE_RED", evm_mk_number(e, LV_PALETTE_RED));
   evm_prop_set(e, obj, "LV_PALETTE_PINK", evm_mk_number(e, LV_PALETTE_PINK));
