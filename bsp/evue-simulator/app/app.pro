@@ -6,15 +6,16 @@ CONFIG -= qt
 OBJECTS_DIR = $$PWD/../build
 DESTDIR = $$PWD/../build
 
-DEFINES += EVM_USE_QUICKJS
-
 LIBS += -lpthread
 
 include($$PWD/../pris/common.pri)
-include($$PWD/../pris/tuv.pri)
 include($$PWD/../pris/lvgl.pri)
 include($$PWD/../pris/lv_png.pri)
 include($$PWD/../pris/lv_drivers.pri)
+
+unix{
+include($$PWD/../pris/tuv.pri)
+}
 
 win32{
     INCLUDEPATH +=  $$PWD/../

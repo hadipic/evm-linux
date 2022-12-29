@@ -11,11 +11,25 @@ static evm_val_t evm_module_lvgl_lv_scr_act(evm_t *e, evm_val_t p, int argc, evm
   return evm_cffi_exec_ret(e, cffi_args[0], "p");
 }
 
+static evm_val_t evm_module_lvgl_lv_color_hex(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "i", argc, v);
+  return evm_mk_number(e, lv_color_hex(cffi_args[1].i32).full);
+  return evm_cffi_exec_ret(e, cffi_args[0], "ii");
+}
+
 static evm_val_t evm_module_lvgl_lv_style_create(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
   evm_cffi_val_t cffi_args[1];
   evm_cffi_exec_param(e, cffi_args + 1, "", argc, v);
   cffi_args[0].p = lv_mem_alloc(sizeof(lv_style_t));
   return evm_cffi_exec_ret(e, cffi_args[0], "p");
+}
+
+static evm_val_t evm_module_lvgl_lv_palette_main(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "i", argc, v);
+  return evm_mk_number(e, lv_palette_main(cffi_args[1].i32).full);
+  return evm_cffi_exec_ret(e, cffi_args[0], "ii");
 }
 
 static evm_val_t evm_module_lvgl_lv_style_init(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
@@ -465,6 +479,13 @@ static evm_val_t evm_module_lvgl_lv_style_set_text_align(evm_t *e, evm_val_t p, 
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   lv_style_set_text_align(cffi_args[1].p, cffi_args[2].i32);
+  return EVM_UNDEFINED;
+}
+
+static evm_val_t evm_module_lvgl_lv_style_set_radius(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_style_set_radius(cffi_args[1].p, cffi_args[2].i32);
   return EVM_UNDEFINED;
 }
 
@@ -1291,7 +1312,9 @@ static evm_val_t evm_module_lvgl_lv_slider_get_max_value(evm_t *e, evm_val_t p, 
 void evm_module_lvgl(evm_t *e) {
   evm_val_t obj = evm_object_create(e);
   evm_prop_set(e, obj, "lv_scr_act", evm_mk_native(e, evm_module_lvgl_lv_scr_act, "lv_scr_act", 0));
+  evm_prop_set(e, obj, "lv_color_hex", evm_mk_native(e, evm_module_lvgl_lv_color_hex, "lv_color_hex", 1));
   evm_prop_set(e, obj, "lv_style_create", evm_mk_native(e, evm_module_lvgl_lv_style_create, "lv_style_create", 0));
+  evm_prop_set(e, obj, "lv_palette_main", evm_mk_native(e, evm_module_lvgl_lv_palette_main, "lv_palette_main", 1));
   evm_prop_set(e, obj, "lv_style_init", evm_mk_native(e, evm_module_lvgl_lv_style_init, "lv_style_init", 1));
   evm_prop_set(e, obj, "lv_style_set_width", evm_mk_native(e, evm_module_lvgl_lv_style_set_width, "lv_style_set_width", 2));
   evm_prop_set(e, obj, "lv_style_set_min_width", evm_mk_native(e, evm_module_lvgl_lv_style_set_min_width, "lv_style_set_min_width", 2));
@@ -1354,6 +1377,7 @@ void evm_module_lvgl(evm_t *e) {
   evm_prop_set(e, obj, "lv_style_set_text_line_space", evm_mk_native(e, evm_module_lvgl_lv_style_set_text_line_space, "lv_style_set_text_line_space", 2));
   evm_prop_set(e, obj, "lv_style_set_text_decor", evm_mk_native(e, evm_module_lvgl_lv_style_set_text_decor, "lv_style_set_text_decor", 2));
   evm_prop_set(e, obj, "lv_style_set_text_align", evm_mk_native(e, evm_module_lvgl_lv_style_set_text_align, "lv_style_set_text_align", 2));
+  evm_prop_set(e, obj, "lv_style_set_radius", evm_mk_native(e, evm_module_lvgl_lv_style_set_radius, "lv_style_set_radius", 2));
   evm_prop_set(e, obj, "lv_obj_create", evm_mk_native(e, evm_module_lvgl_lv_obj_create, "lv_obj_create", 1));
   evm_prop_set(e, obj, "lv_obj_add_style", evm_mk_native(e, evm_module_lvgl_lv_obj_add_style, "lv_obj_add_style", 3));
   evm_prop_set(e, obj, "lv_obj_add_flag", evm_mk_native(e, evm_module_lvgl_lv_obj_add_flag, "lv_obj_add_flag", 2));
@@ -1471,6 +1495,26 @@ void evm_module_lvgl(evm_t *e) {
   evm_prop_set(e, obj, "lv_slider_get_value", evm_mk_native(e, evm_module_lvgl_lv_slider_get_value, "lv_slider_get_value", 1));
   evm_prop_set(e, obj, "lv_slider_get_min_value", evm_mk_native(e, evm_module_lvgl_lv_slider_get_min_value, "lv_slider_get_min_value", 1));
   evm_prop_set(e, obj, "lv_slider_get_max_value", evm_mk_native(e, evm_module_lvgl_lv_slider_get_max_value, "lv_slider_get_max_value", 1));
+  evm_prop_set(e, obj, "LV_OPA_TRANSP", evm_mk_number(e, LV_OPA_TRANSP));
+  evm_prop_set(e, obj, "LV_PALETTE_RED", evm_mk_number(e, LV_PALETTE_RED));
+  evm_prop_set(e, obj, "LV_PALETTE_PINK", evm_mk_number(e, LV_PALETTE_PINK));
+  evm_prop_set(e, obj, "LV_PALETTE_PURPLE", evm_mk_number(e, LV_PALETTE_PURPLE));
+  evm_prop_set(e, obj, "LV_PALETTE_DEEP_PURPLE", evm_mk_number(e, LV_PALETTE_DEEP_PURPLE));
+  evm_prop_set(e, obj, "LV_PALETTE_INDIGO", evm_mk_number(e, LV_PALETTE_INDIGO));
+  evm_prop_set(e, obj, "LV_PALETTE_BLUE", evm_mk_number(e, LV_PALETTE_BLUE));
+  evm_prop_set(e, obj, "LV_PALETTE_LIGHT_BLUE", evm_mk_number(e, LV_PALETTE_LIGHT_BLUE));
+  evm_prop_set(e, obj, "LV_PALETTE_CYAN", evm_mk_number(e, LV_PALETTE_CYAN));
+  evm_prop_set(e, obj, "LV_PALETTE_TEAL", evm_mk_number(e, LV_PALETTE_TEAL));
+  evm_prop_set(e, obj, "LV_PALETTE_GREEN", evm_mk_number(e, LV_PALETTE_GREEN));
+  evm_prop_set(e, obj, "LV_PALETTE_LIGHT_GREEN", evm_mk_number(e, LV_PALETTE_LIGHT_GREEN));
+  evm_prop_set(e, obj, "LV_PALETTE_LIME", evm_mk_number(e, LV_PALETTE_LIME));
+  evm_prop_set(e, obj, "LV_PALETTE_YELLOW", evm_mk_number(e, LV_PALETTE_YELLOW));
+  evm_prop_set(e, obj, "LV_PALETTE_AMBER", evm_mk_number(e, LV_PALETTE_AMBER));
+  evm_prop_set(e, obj, "LV_PALETTE_ORANGE", evm_mk_number(e, LV_PALETTE_ORANGE));
+  evm_prop_set(e, obj, "LV_PALETTE_DEEP_ORANGE", evm_mk_number(e, LV_PALETTE_DEEP_ORANGE));
+  evm_prop_set(e, obj, "LV_PALETTE_BROWN", evm_mk_number(e, LV_PALETTE_BROWN));
+  evm_prop_set(e, obj, "LV_PALETTE_BLUE_GREY", evm_mk_number(e, LV_PALETTE_BLUE_GREY));
+  evm_prop_set(e, obj, "LV_PALETTE_GREY", evm_mk_number(e, LV_PALETTE_GREY));
   evm_prop_set(e, obj, "LV_ALIGN_DEFAULT", evm_mk_number(e, LV_ALIGN_DEFAULT));
   evm_prop_set(e, obj, "LV_ALIGN_TOP_LEFT", evm_mk_number(e, LV_ALIGN_TOP_LEFT));
   evm_prop_set(e, obj, "LV_ALIGN_TOP_MID", evm_mk_number(e, LV_ALIGN_TOP_MID));

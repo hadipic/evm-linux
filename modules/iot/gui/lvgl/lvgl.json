@@ -4,6 +4,28 @@
         "lvgl.h"
     ],
     "const": [
+        {"name": "LV_OPA_TRANSP", "value": "LV_OPA_TRANSP", "type": "number" },
+
+        {"name": "LV_PALETTE_RED", "value": "LV_PALETTE_RED", "type": "number" },
+        {"name": "LV_PALETTE_PINK", "value": "LV_PALETTE_PINK", "type": "number" },
+        {"name": "LV_PALETTE_PURPLE", "value": "LV_PALETTE_PURPLE", "type": "number" },
+        {"name": "LV_PALETTE_DEEP_PURPLE", "value": "LV_PALETTE_DEEP_PURPLE", "type": "number" },
+        {"name": "LV_PALETTE_INDIGO", "value": "LV_PALETTE_INDIGO", "type": "number" },
+        {"name": "LV_PALETTE_BLUE", "value": "LV_PALETTE_BLUE", "type": "number" },
+        {"name": "LV_PALETTE_LIGHT_BLUE", "value": "LV_PALETTE_LIGHT_BLUE", "type": "number" },
+        {"name": "LV_PALETTE_CYAN", "value": "LV_PALETTE_CYAN", "type": "number" },
+        {"name": "LV_PALETTE_TEAL", "value": "LV_PALETTE_TEAL", "type": "number" },
+        {"name": "LV_PALETTE_GREEN", "value": "LV_PALETTE_GREEN", "type": "number" },
+        {"name": "LV_PALETTE_LIGHT_GREEN", "value": "LV_PALETTE_LIGHT_GREEN", "type": "number" },
+        {"name": "LV_PALETTE_LIME", "value": "LV_PALETTE_LIME", "type": "number" },
+        {"name": "LV_PALETTE_YELLOW", "value": "LV_PALETTE_YELLOW", "type": "number" },
+        {"name": "LV_PALETTE_AMBER", "value": "LV_PALETTE_AMBER", "type": "number" },
+        {"name": "LV_PALETTE_ORANGE", "value": "LV_PALETTE_ORANGE", "type": "number" },
+        {"name": "LV_PALETTE_DEEP_ORANGE", "value": "LV_PALETTE_DEEP_ORANGE", "type": "number" },
+        {"name": "LV_PALETTE_BROWN", "value": "LV_PALETTE_BROWN", "type": "number" },
+        {"name": "LV_PALETTE_BLUE_GREY", "value": "LV_PALETTE_BLUE_GREY", "type": "number" },
+        {"name": "LV_PALETTE_GREY", "value": "LV_PALETTE_GREY", "type": "number" },
+
         {"name": "LV_ALIGN_DEFAULT", "value": "LV_ALIGN_DEFAULT", "type": "number" },
         {"name": "LV_ALIGN_TOP_LEFT", "value": "LV_ALIGN_TOP_LEFT", "type": "number" },
         {"name": "LV_ALIGN_TOP_MID", "value": "LV_ALIGN_TOP_MID", "type": "number" },
@@ -45,12 +67,26 @@
     ],
     "apis":[ 
         {"name": "lv_scr_act", "signature": "p"},
+        {
+            "name": "lv_color_hex", 
+            "signature": "ii",
+            "how":[
+                "return evm_mk_number(e, lv_color_hex(<1>).full);"
+            ]
+        },
 
         {
             "name": "lv_style_create", 
             "signature": "p",
             "how":[
                 "<0> = lv_mem_alloc(sizeof(lv_style_t));"
+            ]
+        },
+        {
+            "name": "lv_palette_main", 
+            "signature": "ii",
+            "how":[
+                "return evm_mk_number(e, lv_palette_main(<1>).full);"
             ]
         },
         {"name": "lv_style_init", "signature": "vp"},
@@ -179,7 +215,8 @@
         {"name": "lv_style_set_text_line_space", "signature": "vpi"},
         {"name": "lv_style_set_text_decor", "signature": "vpi"},
         {"name": "lv_style_set_text_align", "signature": "vpi"},
-
+        {"name": "lv_style_set_radius", "signature": "vpi"},
+        
         {"name": "lv_obj_create", "signature": "pp"},
         {"name": "lv_obj_add_style", "signature": "vppi"},
         {"name": "lv_obj_add_flag", "signature": "vpi"},
