@@ -20,6 +20,7 @@ static void timeout_handler(uv_timer_t* handle) {
 
 
 EVM_FUNCTION(timer_start) {
+    EVM_EPCV;
   // Check parameters.
   uv_timer_t *timer_handle = evm_object_get_user_data(e, p);
 
@@ -30,11 +31,12 @@ EVM_FUNCTION(timer_start) {
   // Start timer.
   int res = uv_timer_start(timer_handle, timeout_handler, timeout, repeat);
 
-  return evm_mk_number(e, res);
+  EVM_RETURN(evm_mk_number(e, res));
 }
 
 
 EVM_FUNCTION(timer_stop) {
+    EVM_EPCV;
   uv_handle_t *timer_handle = evm_object_get_user_data(e, p);
   // Stop timer.
 
@@ -42,16 +44,17 @@ EVM_FUNCTION(timer_stop) {
     iot_uv_handle_close(timer_handle, NULL);
   }
 
-  return evm_mk_number(e, 0);
+  EVM_RETURN(evm_mk_number(e, 0));
 }
 
 
 EVM_FUNCTION(timer_constructor) {
+    EVM_EPCV;
   const evm_val_t jtimer = evm_object_create(e);
   iot_timer_object_init(jtimer);
   evm_prop_set(e, jtimer, IOT_MAGIC_STRING_START, evm_mk_native(e, timer_start, IOT_MAGIC_STRING_START, 0));
   evm_prop_set(e, jtimer, IOT_MAGIC_STRING_STOP, evm_mk_native(e, timer_stop, IOT_MAGIC_STRING_STOP, 0));
-  return jtimer;
+  EVM_RETURN(jtimer);
 }
 
 void evm_module_timer(evm_t *e) {

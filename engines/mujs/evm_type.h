@@ -22,6 +22,8 @@ extern "C" {
 typedef js_State evm_t;
 typedef js_Value evm_val_t;
 
+typedef evm_val_t (*evm_native_t)(evm_t *e, evm_val_t pthis, int argc, evm_val_t *v);
+
 #define EVM_UNDEFINED   (evm_val_t){ .type = JS_TUNDEFINED }
 
 #ifdef __cplusplus

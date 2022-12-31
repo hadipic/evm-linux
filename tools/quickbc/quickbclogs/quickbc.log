@@ -298,3 +298,6 @@
 2022-12-29 16:48:33,161     INFO [               quickbc.py             compile    63] start compile......
 2022-12-29 16:48:33,802     INFO [               quickbc.py             compile    68] E:\scriptiot\evuestudio-20221215162924-2c17005\evue_projects\text\text.evue.js
 2022-12-29 16:48:33,830     INFO [               quickbc.py             compile    71] compile [../../../evuestudio-20221215162924-2c17005/evue_projects/text/text.evue]-->[E:\scriptiot\evuestudio-20221215162924-2c17005\evue_projects\text\text.evue.js] successfully!
+2022-12-29 20:28:52,917     INFO [               quickbc.py             compile    63] start compile......
+2022-12-29 20:28:53,376     INFO [               quickbc.py             compile    68] /media/zhe/scriptiot/scriptiot/evm/tutorial/evue/text.evue.js
+2022-12-29 20:28:53,405     INFO [               quickbc.py             compile    71] compile [../../tutorial/evue/text.evue]-->[/media/zhe/scriptiot/scriptiot/evm/tutorial/evue/text.evue.js] successfully!

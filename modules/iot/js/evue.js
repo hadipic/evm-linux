@@ -1,5 +1,4 @@
 var lv = require('lvgl');
-
 var pages = {};
 var currentPage = undefined;
 
@@ -9,7 +8,7 @@ function Watcher(page) {
     var data = page.data;
     var keys = Object.keys(data);
     currentPage = page;
-    for (let i = 0; i < keys.length; i++) {
+    for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
         page[key] = data[key];
     }
@@ -84,7 +83,6 @@ function push(options) {
             currentPage = page;
             currentPage.$onShow();
         } else {
-            print(options.path + ".evue.js")
             require(options.path + ".evue.js");
             pages[options.path] = currentPage;
         }        

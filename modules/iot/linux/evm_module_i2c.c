@@ -33,22 +33,24 @@ static void i2c_worker(uv_work_t* work_req) {
 }
 
 EVM_FUNCTION(i2c_close) {
+    EVM_EPCV;
   iot_i2c_t *i2c = evm_object_get_user_data(e, p);
 
   iot_periph_call_async(i2c, v[0], kI2cOpClose,
                           i2c_worker);
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(i2c_close_sync) {
+    EVM_EPCV;
   iot_i2c_t *i2c = evm_object_get_user_data(e, p);
 
   if (!iot_i2c_close(i2c)) {
     evm_throw(e, evm_mk_string(e, iot_periph_error_str(kI2cOpClose)));
   }
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 static evm_val_t i2c_write_helper(evm_t *e, iot_i2c_t* i2c,
@@ -69,7 +71,7 @@ static evm_val_t i2c_write_helper(evm_t *e, iot_i2c_t* i2c,
     }
   }
 
-  return EVM_UNDEFINED;
+  EVM_RETURN_VAL(EVM_UNDEFINED);
 }
 
 typedef enum { IOT_I2C_WRITE, IOT_I2C_WRITESYNC } iot_i2c_op_t;
@@ -84,25 +86,29 @@ static evm_val_t i2c_do_write_or_writesync(evm_t *e,
 }
 
 EVM_FUNCTION(i2c_write) {
-  return i2c_do_write_or_writesync(e, p, v, argc, IOT_I2C_WRITE);
+    EVM_EPCV;
+  EVM_RETURN(i2c_do_write_or_writesync(e, p, v, argc, IOT_I2C_WRITE));
 }
 
 EVM_FUNCTION(i2c_write_sync) {
-  return i2c_do_write_or_writesync(e, p, v, argc,
-                                   IOT_I2C_WRITESYNC);
+    EVM_EPCV;
+  EVM_RETURN(i2c_do_write_or_writesync(e, p, v, argc,
+                                   IOT_I2C_WRITESYNC));
 }
 
 EVM_FUNCTION(i2c_read) {
+    EVM_EPCV;
   iot_i2c_t *i2c = evm_object_get_user_data(e, p);
   i2c->buf_len = evm_2_integer(e, v[0]);
 
   iot_periph_call_async(i2c, v[1], kI2cOpRead,
                           i2c_worker);
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(i2c_read_sync) {
+    EVM_EPCV;
   iot_i2c_t *i2c = evm_object_get_user_data(e, p);
 
   i2c->buf_len = evm_2_integer(e, v[0]);
@@ -116,10 +122,11 @@ EVM_FUNCTION(i2c_read_sync) {
 
   evm_free(i2c->buf_data);
 
-  return result;
+  EVM_RETURN(result);
 }
 
 EVM_FUNCTION(i2c_constructor) {
+    EVM_EPCV;
   // Create I2C object
   const evm_val_t ji2c = evm_object_create(e);
   iot_i2c_t* i2c = i2c_create(e, ji2c);
@@ -144,7 +151,7 @@ EVM_FUNCTION(i2c_constructor) {
   evm_prop_set(e, ji2c, IOT_MAGIC_STRING_WRITESYNC, evm_mk_native(e, i2c_write_sync, IOT_MAGIC_STRING_WRITESYNC, 0));
   evm_prop_set(e, ji2c, IOT_MAGIC_STRING_READ, evm_mk_native(e, i2c_read, IOT_MAGIC_STRING_READ, 0));
   evm_prop_set(e, ji2c, IOT_MAGIC_STRING_READSYNC, evm_mk_native(e, i2c_read_sync, IOT_MAGIC_STRING_READSYNC, 0));
-  return ji2c;
+  EVM_RETURN(ji2c);
 }
 
 void evm_module_i2c(evm_t *e) {

@@ -13,6 +13,7 @@ Module.prototype.compile = function(path) {
 function require(path) {
     var m = __require__(path);
     var process = __require__('process');
+    
     if( m != undefined )
         return m;
 

@@ -1,0 +1,67 @@
+/****************************************************************************
+**
+** Copyright (C) 2022 @武汉市凡迈科技有限公司
+**
+**  EVM是一款通用化设计的虚拟机引擎，拥有语法解析前端接口、编译器、虚拟机和虚拟机扩展接口框架。
+**  Version	: 3.2
+**  Email	: scriptiot@aliyun.com
+**  Website	: https://gitee.com/scriptiot
+**  Licence: 个人免费，企业授权
+****************************************************************************/
+#ifndef EVM_TYPE_H
+#define EVM_TYPE_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <stdarg.h>
+
+#include "duk_forwdecl.h"
+#include "duk_config.h"
+
+#include "duktape.h"
+
+#include "duk_tval.h"
+#include "duk_internal.h"
+#include "duk_dblunion.h"
+#include "duk_fltunion.h"
+#include "duk_util.h"
+#include "duk_unicode.h"
+#include "duk_builtins.h"
+#include "duk_lexer.h"
+#include "duk_js_bytecode.h"
+#include "duk_js_compiler.h"
+#include "duk_js.h"
+#include "duk_json.h"
+#include "duk_heaphdr.h"
+#include "duk_hobject.h"
+#include "duk_hthread.h"
+
+
+typedef duk_context evm_t;
+typedef duk_tval evm_val_t;
+
+extern evm_val_t EVM_UNDEFINED;
+
+typedef duk_int_t (*evm_native_t)(evm_t *);
+
+#define EVM_FUNCTION(name)                                \
+  static duk_ret_t name(evm_t *e)
+
+#define EVM_ARGS    e
+
+#define EVM_EPCV \
+    int argc = duk_get_top(e);\
+    evm_val_t *v = e->valstack_bottom;\
+    duk_push_this(e);\
+    evm_val_t p = *duk_get_tval(e, -1);
+
+#define EVM_RETURN(x)   evm_val_free(e, p);x;return 1;
+#define EVM_RETURN_VAL(x)   x;return *duk_get_tval(e, -1);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
+
+#endif

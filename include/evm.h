@@ -57,7 +57,6 @@ enum Errcode
 
 #define EVM_API     extern
 typedef int     evm_err_t;
-typedef evm_val_t (*evm_native_t)(evm_t *e, evm_val_t pthis, int argc, evm_val_t *v);
 
 /*** 字符串对象操作函数 ***/
 EVM_API evm_val_t evm_string_create(evm_t *e, const char *str);

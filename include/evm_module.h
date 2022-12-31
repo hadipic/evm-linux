@@ -19,12 +19,6 @@ extern "C" {
 
 #define PATH_MAX_LEN    256
 
-#define EVM_FUNCTION(name)                                \
-  static evm_val_t name(evm_t *e,   \
-                            evm_val_t p,   \
-                            int argc, \
-                            evm_val_t *v)
-
 #define IOT_DEFINE_PERIPH_CREATE_FUNCTION(name)                             \
   static iot_##name##_t* name##_create(evm_t *e, evm_val_t jobject) {       \
     iot_##name##_t* data = evm_malloc(sizeof(iot_##name##_t));                   \

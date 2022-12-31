@@ -124,22 +124,24 @@ static evm_val_t gpio_set_configuration(iot_gpio_t* gpio,
 }
 
 EVM_FUNCTION(gpio_close) {
+    EVM_EPCV;
   iot_gpio_t *gpio = evm_object_get_user_data(e, p);
 
   iot_periph_call_async(gpio, v[0], kGpioOpClose,
                           gpio_worker);
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(gpio_close_sync) {
+    EVM_EPCV;
   iot_gpio_t *gpio = evm_object_get_user_data(e, p);
 
   if (!iot_gpio_close(gpio)) {
     evm_throw(e, evm_mk_string(e, iot_periph_error_str(kGpioOpClose)));
   }
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 typedef enum { IOT_GPIO_WRITE, IOT_GPIO_WRITESYNC } iot_gpio_op_t;
@@ -182,35 +184,40 @@ evm_val_t gpio_do_write_or_writesync(evm_t*e, const evm_val_t jthis,
 }
 
 EVM_FUNCTION(gpio_write) {
-  return gpio_do_write_or_writesync(e, p, v, argc,
-                                    IOT_GPIO_WRITE);
+    EVM_EPCV;
+  EVM_RETURN(gpio_do_write_or_writesync(e, p, v, argc,
+                                    IOT_GPIO_WRITE));
 }
 
 EVM_FUNCTION(gpio_write_sync) {
-  return gpio_do_write_or_writesync(e, p, v, argc,
-                                    IOT_GPIO_WRITESYNC);
+    EVM_EPCV;
+  EVM_RETURN(gpio_do_write_or_writesync(e, p, v, argc,
+                                    IOT_GPIO_WRITESYNC));
 }
 
 EVM_FUNCTION(gpio_read) {
+    EVM_EPCV;
   iot_gpio_t *gpio = evm_object_get_user_data(e, p);
 
   iot_periph_call_async(gpio, v[0], kGpioOpRead,
                           gpio_worker);
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(gpio_read_sync) {
+    EVM_EPCV;
   iot_gpio_t *gpio = evm_object_get_user_data(e, p);
 
   if (!iot_gpio_read(gpio)) {
     evm_throw(e, evm_mk_string(e, iot_periph_error_str(kGpioOpRead)));
   }
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(gpio_set_direction_sync) {
+    EVM_EPCV;
   iot_gpio_t *gpio = evm_object_get_user_data(e, p);
 
   int direction = evm_2_integer(e, v[0]);
@@ -223,10 +230,11 @@ EVM_FUNCTION(gpio_set_direction_sync) {
     evm_throw(e, evm_mk_string(e, "GPIO SetDirectionSync Error - Cannot set direction"));
   }
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(gpio_constructor) {
+    EVM_EPCV;
   // Create GPIO object
   evm_val_t jgpio = evm_object_create(e);
   iot_gpio_t* gpio = gpio_create(e, jgpio);
@@ -250,7 +258,7 @@ EVM_FUNCTION(gpio_constructor) {
   evm_prop_set(e, jgpio, IOT_MAGIC_STRING_WRITESYNC, evm_mk_native(e, gpio_write_sync, IOT_MAGIC_STRING_WRITESYNC, 0));
   evm_prop_set(e, jgpio, IOT_MAGIC_STRING_READ, evm_mk_native(e, gpio_read, IOT_MAGIC_STRING_READ, 0));
   evm_prop_set(e, jgpio, IOT_MAGIC_STRING_READSYNC, evm_mk_native(e, gpio_read_sync, IOT_MAGIC_STRING_READSYNC, 0));
-  return jgpio;
+  EVM_RETURN(jgpio);
 }
 
 void evm_module_gpio(evm_t *e) {

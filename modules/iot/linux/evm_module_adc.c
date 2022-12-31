@@ -25,34 +25,38 @@ static void adc_worker(uv_work_t* work_req) {
 }
 
 EVM_FUNCTION(adc_read) {
+    EVM_EPCV;
   iot_adc_t *adc = evm_object_get_user_data(e, p);
 
   iot_periph_call_async(adc, v[0], kAdcOpRead,
                           adc_worker);
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(adc_read_sync) {
+    EVM_EPCV;
   iot_adc_t *adc = evm_object_get_user_data(e, p);
 
   if (!iot_adc_read(adc)) {
     evm_throw(e, evm_mk_string(e, iot_periph_error_str(kAdcOpRead)));
   }
 
-  return evm_mk_number(e, adc->value);
+  EVM_RETURN(evm_mk_number(e, adc->value));
 }
 
 EVM_FUNCTION(adc_close) {
+    EVM_EPCV;
   iot_adc_t *adc = evm_object_get_user_data(e, p);
 
   iot_periph_call_async(adc, v[0], kAdcOpClose,
                           adc_worker);
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(adc_close_sync) {
+    EVM_EPCV;
   iot_adc_t *adc = evm_object_get_user_data(e, p);
 
   bool ret = iot_adc_close(adc);
@@ -60,10 +64,11 @@ EVM_FUNCTION(adc_close_sync) {
     evm_throw(e, evm_mk_string(e, iot_periph_error_str(kAdcOpClose)));
   }
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(adc_constructor) {
+    EVM_EPCV;
   // Create ADC object
   const evm_val_t jadc = evm_object_create(e);
   iot_adc_t* adc = adc_create(e, jadc);
@@ -86,7 +91,7 @@ EVM_FUNCTION(adc_constructor) {
   evm_prop_set(e, jadc, IOT_MAGIC_STRING_CLOSESYNC, evm_mk_native(e, adc_close_sync, IOT_MAGIC_STRING_CLOSESYNC, 0));
   evm_prop_set(e, jadc, IOT_MAGIC_STRING_READ, evm_mk_native(e, adc_read, IOT_MAGIC_STRING_READ, 0));
   evm_prop_set(e, jadc, IOT_MAGIC_STRING_READSYNC, evm_mk_native(e, adc_read_sync, IOT_MAGIC_STRING_READSYNC, 0));
-  return jadc;
+  EVM_RETURN(jadc);
 }
 
 void evm_module_adc(evm_t *e) {

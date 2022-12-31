@@ -38,7 +38,8 @@ def compile(info):
         signature = item['signature']
         name = item['name']
         size = len(signature)
-        content = content + 'static evm_val_t evm_module_' + module_name + '_' + name + '(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {\n'
+        content = content + 'EVM_FUNCTION(evm_module_' + module_name + '_' + name + ') {\n'
+        content = content + '  EVM_EPCV;\n'
         content = content + '  evm_cffi_val_t cffi_args[' + str(size) + '];\n'
         content = content + '  evm_cffi_exec_param(e, cffi_args + 1, "' + signature[1:len(signature)] + '", argc, v);\n'
 
@@ -60,9 +61,9 @@ def compile(info):
                     content = content[0: len(content) - 2]
             content = content + ');\n'
         if signature[0] != 'v':
-            content = content + '  return evm_cffi_exec_ret(e, cffi_args[0], "' + signature + '");\n}\n\n'
+            content = content + '  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "' + signature + '"))\n}\n\n'
         else:
-            content = content + '  return EVM_UNDEFINED;\n}\n\n'
+            content = content + '  EVM_RETURN(EVM_UNDEFINED)\n}\n\n'
 
     content = content + '\nvoid evm_module_' + module_name + '(evm_t *e) {\n'
     content = content + '  evm_val_t obj = evm_object_create(e);\n'

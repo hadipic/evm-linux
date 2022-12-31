@@ -12,8 +12,9 @@ enum
 };
 
 //assert(value[, message])
-static evm_val_t evm_module_assert_assert(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_assert_assert)
 {
+    EVM_EPCV;
     if (argc < 1)
         return evm_mk_undefined(e);
 
@@ -31,15 +32,16 @@ static evm_val_t evm_module_assert_assert(evm_t *e, evm_val_t p, int argc, evm_v
     else if (evm_is_number(e, v[0]))
     {
         if (evm_2_integer(e, v[0]))
-            return evm_mk_boolean(e, 1);
+            EVM_RETURN(evm_mk_boolean(e, 1))
         evm_throw(e, evm_mk_string(e, message));
     }
-    return evm_mk_undefined(e);
+    EVM_RETURN(evm_mk_undefined(e))
 }
 
 //doesNotThrow(block[, message])
-static evm_val_t evm_module_assert_doesNotThrow(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_assert_doesNotThrow)
 {
+    EVM_EPCV;
     if (argc < 1 || !evm_is_callable(e, v[0]))
         return evm_mk_undefined(e);
 
@@ -91,8 +93,9 @@ static evm_val_t compare(evm_t *e, evm_val_t l, evm_val_t r) {
 }
 
 //equal(actual, expected[, message])
-static evm_val_t evm_module_assert_equal(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_assert_equal)
 {
+    EVM_EPCV;
     if (argc <= 1)
         return evm_mk_undefined(e);
 
@@ -165,8 +168,9 @@ static evm_val_t compare_by_value(evm_t *e, evm_val_t l, evm_val_t r, int _opera
 
 //fail(actual, expected, message, operator)
 //operator: != | == | > | >= | < | <=
-static evm_val_t evm_module_assert_fail(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_assert_fail)
 {
+    EVM_EPCV;
     if (argc <= 3 || !evm_is_string(e, v[3]))
         return evm_mk_undefined(e);
 
@@ -197,8 +201,9 @@ static evm_val_t evm_module_assert_fail(evm_t *e, evm_val_t p, int argc, evm_val
 }
 
 //notEqual(actual, expected[, message])
-static evm_val_t evm_module_assert_notEqual(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_assert_notEqual)
 {
+    EVM_EPCV;
     if (argc < 2)
         return evm_mk_undefined(e);
 
@@ -214,20 +219,23 @@ static evm_val_t evm_module_assert_notEqual(evm_t *e, evm_val_t p, int argc, evm
 }
 
 //notStrictEqual(actual, expected[, message])
-static evm_val_t evm_module_assert_notStrictEqual(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_assert_notStrictEqual)
 {
+    EVM_EPCV;
     return evm_module_assert_notEqual(e, p, argc, v);
 }
 
 //strictEqual(actual, expected[, message])
-static evm_val_t evm_module_assert_strictEqual(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_assert_strictEqual)
 {
+    EVM_EPCV;
     return evm_module_assert_equal(e, p, argc, v);
 }
 
 //throws(block[, expected, message])
-static evm_val_t evm_module_assert_throws(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_assert_throws)
 {
+    EVM_EPCV;
     if (argc < 1 || !evm_is_callable(e, v[0]))
         return evm_mk_undefined(e);
 

@@ -32,24 +32,27 @@ static void pwm_worker(uv_work_t* work_req) {
 }
 
 EVM_FUNCTION(pwm_close) {
+    EVM_EPCV;
   iot_pwm_t *pwm = evm_object_get_user_data(e, p);
   iot_periph_call_async(pwm, v[0], kPwmOpClose,
                           pwm_worker);
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(pwm_close_sync) {
+    EVM_EPCV;
   iot_pwm_t *pwm = evm_object_get_user_data(e, p);
 
   if (!iot_pwm_close(pwm)) {
       evm_throw(e, evm_mk_string(e, iot_periph_error_str(kPwmOpClose)));
   }
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(pwm_set_duty_cycle) {
+    EVM_EPCV;
   iot_pwm_t *pwm = evm_object_get_user_data(e, p);
 
   evm_val_t jcallback = v[1];
@@ -61,10 +64,11 @@ EVM_FUNCTION(pwm_set_duty_cycle) {
 
   iot_periph_call_async(pwm, jcallback, kPwmOpSetDutyCycle, pwm_worker);
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(pwm_set_duty_cycle_sync) {
+    EVM_EPCV;
   iot_pwm_t *pwm = evm_object_get_user_data(e, p);
 
   pwm->duty_cycle = evm_2_integer(e, v[0]);
@@ -76,10 +80,11 @@ EVM_FUNCTION(pwm_set_duty_cycle_sync) {
     evm_throw(e, evm_mk_string(e, iot_periph_error_str(kPwmOpSetDutyCycle)));
   }
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(pwm_set_enable) {
+    EVM_EPCV;
   iot_pwm_t *pwm = evm_object_get_user_data(e, p);
 
   evm_val_t jcallback = v[1];
@@ -88,10 +93,11 @@ EVM_FUNCTION(pwm_set_enable) {
 
   iot_periph_call_async(pwm, jcallback, kPwmOpSetEnable, pwm_worker);
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(pwm_set_enable_sync) {
+    EVM_EPCV;
   iot_pwm_t *pwm = evm_object_get_user_data(e, p);
 
   pwm->enable = evm_2_boolean(e, v[0]);
@@ -100,7 +106,7 @@ EVM_FUNCTION(pwm_set_enable_sync) {
     evm_throw(e, evm_mk_string(e, iot_periph_error_str(kPwmOpSetEnable)));
   }
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 static evm_val_t pwm_set_period_or_frequency(evm_t *e, iot_pwm_t* pwm, evm_val_t v[], int argc, uint8_t op, bool async) {
@@ -128,33 +134,37 @@ static evm_val_t pwm_set_period_or_frequency(evm_t *e, iot_pwm_t* pwm, evm_val_t
     }
   }
 
-  return EVM_UNDEFINED;
+  EVM_RETURN_VAL(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(pwm_set_frequency) {
+    EVM_EPCV;
   iot_pwm_t *pwm = evm_object_get_user_data(e, p);
 
-  return pwm_set_period_or_frequency(e, pwm, v, argc, kPwmOpSetFrequency,
-                                     true);
+  EVM_RETURN(pwm_set_period_or_frequency(e, pwm, v, argc, kPwmOpSetFrequency,
+                                     true));
 }
 
 EVM_FUNCTION(pwm_set_frequency_sync) {
+    EVM_EPCV;
   iot_pwm_t *pwm = evm_object_get_user_data(e, p);
 
-  return pwm_set_period_or_frequency(e, pwm, v, argc, kPwmOpSetFrequency,
-                                     false);
+  EVM_RETURN(pwm_set_period_or_frequency(e, pwm, v, argc, kPwmOpSetFrequency,
+                                     false));
 }
 
 EVM_FUNCTION(pwm_set_period) {
+    EVM_EPCV;
   iot_pwm_t *pwm = evm_object_get_user_data(e, p);
 
-  return pwm_set_period_or_frequency(e, pwm, v, argc, kPwmOpSetPeriod, true);
+  EVM_RETURN(pwm_set_period_or_frequency(e, pwm, v, argc, kPwmOpSetPeriod, true));
 }
 
 EVM_FUNCTION(pwm_set_period_sync) {
+    EVM_EPCV;
   iot_pwm_t *pwm = evm_object_get_user_data(e, p);
 
-  return pwm_set_period_or_frequency(e, pwm, v, argc, kPwmOpSetPeriod, false);
+  EVM_RETURN(pwm_set_period_or_frequency(e, pwm, v, argc, kPwmOpSetPeriod, false));
 }
 
 static evm_val_t pwm_set_configuration(iot_pwm_t* pwm,
@@ -172,11 +182,11 @@ static evm_val_t pwm_set_configuration(iot_pwm_t* pwm,
 
   pwm->pin = evm_2_integer(e, evm_prop_get(e, jconfig, IOT_MAGIC_STRING_PIN));
 
-  return EVM_UNDEFINED;
+  EVM_RETURN_VAL(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(pwm_constructor) {
-
+    EVM_EPCV;
   // Create PWM object
   evm_val_t jpwm = evm_object_create(e);
   iot_pwm_t* pwm = pwm_create(e, jpwm);
@@ -209,7 +219,7 @@ EVM_FUNCTION(pwm_constructor) {
   evm_prop_set(e, jpwm, IOT_MAGIC_STRING_SETFREQUENCYSYNC, evm_mk_native(e, pwm_set_frequency_sync, IOT_MAGIC_STRING_SETFREQUENCYSYNC, 0));
   evm_prop_set(e, jpwm, IOT_MAGIC_STRING_SETPERIOD, evm_mk_native(e, pwm_set_period, IOT_MAGIC_STRING_SETPERIOD, 0));
   evm_prop_set(e, jpwm, IOT_MAGIC_STRING_SETPERIODSYNC, evm_mk_native(e, pwm_set_period_sync, IOT_MAGIC_STRING_SETPERIODSYNC, 0));
-  return jpwm;
+  EVM_RETURN(jpwm);
 }
 
 void evm_module_pwm(evm_t *e) {

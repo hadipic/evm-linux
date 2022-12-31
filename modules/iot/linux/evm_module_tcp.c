@@ -32,7 +32,8 @@ static void after_connect(uv_connect_t* req, int status) {
 }
 
 //connect(address, port, callback)
-static evm_val_t evm_module_tcp_connect(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(evm_module_tcp_connect) {
+    EVM_EPCV;
     uv_tcp_t *tcp_handle = evm_object_get_user_data(e, p);
 
     const char *address = evm_2_string(e, v[0]);
@@ -55,7 +56,7 @@ static evm_val_t evm_module_tcp_connect(evm_t *e, evm_val_t p, int argc, evm_val
           iot_uv_request_destroy(req_connect);
         }
     }
-    return evm_mk_number(e, err);
+    EVM_RETURN(evm_mk_number(e, err));
 }
 
 void after_close(uv_handle_t* handle) {
@@ -70,17 +71,19 @@ void after_close(uv_handle_t* handle) {
     evm_val_free(e, jcallback);
 }
 
-static evm_val_t evm_module_tcp_close(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(evm_module_tcp_close) {
+    EVM_EPCV;
     uv_handle_t *uv_handle = evm_object_get_user_data(e, p);
     iot_uv_handle_close(uv_handle, after_close);
-    return EVM_UNDEFINED;
+    EVM_RETURN(EVM_UNDEFINED);
 }
 
 // Socket binding, this function would be called from server socket before
 // start listening.
 // [0] address
 // [1] port
-static evm_val_t evm_module_tcp_bind(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(evm_module_tcp_bind) {
+    EVM_EPCV;
     uv_tcp_t *tcp_handle = evm_object_get_user_data(e, p);
 
     const char * address = evm_2_string(e, v[0]);
@@ -93,7 +96,7 @@ static evm_val_t evm_module_tcp_bind(evm_t *e, evm_val_t p, int argc, evm_val_t 
         err = uv_tcp_bind(tcp_handle, (struct sockaddr*)(&addr), 0);
     }
 
-    return evm_mk_number(e, err);
+    EVM_RETURN(evm_mk_number(e, err));
 }
 
 // A client socket wants to connect to this server.
@@ -138,19 +141,21 @@ static void on_connection(uv_stream_t* handle, int status) {
     }
 }
 
-static evm_val_t evm_module_tcp_listen(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(evm_module_tcp_listen) {
+    EVM_EPCV;
     uv_tcp_t *tcp_handle = evm_object_get_user_data(e, p);
     int backlog = evm_2_integer(e, v[0]);
     int err = uv_listen((uv_stream_t*)tcp_handle, backlog, on_connection);
 
-    return evm_mk_number(e, err);
+    EVM_RETURN(evm_mk_number(e, err));
 }
 
 void AfterWrite(uv_write_t* req, int status) {
   iotjs_tcp_report_req_result((uv_req_t*)req, status);
 }
 
-static evm_val_t evm_module_tcp_write(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(evm_module_tcp_write) {
+    EVM_EPCV;
     uv_stream_t *tcp_handle = evm_object_get_user_data(e, p);
     evm_val_t jbuffer = v[0];
 
@@ -167,7 +172,7 @@ static evm_val_t evm_module_tcp_write(evm_t *e, evm_val_t p, int argc, evm_val_t
         iot_uv_request_destroy((uv_req_t*)req_write);
     }
 
-    return evm_mk_number(e, err);
+    EVM_RETURN(evm_mk_number(e, err));
 }
 
 static void on_alloc(uv_handle_t* handle, size_t suggested_size,
@@ -220,19 +225,21 @@ static void on_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
     evm_val_free(e, jonread);
 }
 
-static evm_val_t evm_module_tcp_read_start(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(evm_module_tcp_read_start) {
+    EVM_EPCV;
     uv_stream_t *tcp_handle = evm_object_get_user_data(e, p);
 
     int err = uv_read_start(tcp_handle, on_alloc, on_read);
 
-    return evm_mk_number(e, err);
+    EVM_RETURN(evm_mk_number(e, err));
 }
 
 static void AfterShutdown(uv_shutdown_t* req, int status) {
   iotjs_tcp_report_req_result((uv_req_t*)req, status);
 }
 
-static evm_val_t evm_module_tcp_shutdown(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(evm_module_tcp_shutdown) {
+    EVM_EPCV;
     uv_stream_t *tcp_handle = evm_object_get_user_data(e, p);
 
     evm_val_t arg0 = v[0];
@@ -245,10 +252,11 @@ static evm_val_t evm_module_tcp_shutdown(evm_t *e, evm_val_t p, int argc, evm_va
         iot_uv_request_destroy((uv_req_t*)req_shutdown);
     }
 
-    return evm_mk_number(e, err);
+    EVM_RETURN(evm_mk_number(e, err));
 }
 
-static evm_val_t evm_module_tcp_set_keep_alive(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(evm_module_tcp_set_keep_alive) {
+    EVM_EPCV;
     uv_tcp_t *tcp_handle = evm_object_get_user_data(e, p);
 
     int enable = evm_2_integer(e, v[0]);
@@ -256,12 +264,13 @@ static evm_val_t evm_module_tcp_set_keep_alive(evm_t *e, evm_val_t p, int argc, 
 
     int err = uv_tcp_keepalive(tcp_handle, enable, delay);
 
-    return evm_mk_number(e, err);
+    EVM_RETURN(evm_mk_number(e, err));
 }
 
-static evm_val_t evm_module_tcp_err_name(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(evm_module_tcp_err_name) {
+    EVM_EPCV;
     int errorcode = evm_2_integer(e, v[0]);
-    return evm_string_create(e, (const char*)uv_err_name(errorcode));
+    EVM_RETURN(evm_string_create(e, (const char*)uv_err_name(errorcode)));
 }
 
 void address_to_js(evm_val_t obj, struct sockaddr* addr) {
@@ -299,7 +308,8 @@ void address_to_js(evm_val_t obj, struct sockaddr* addr) {
     }
 }
 
-static evm_val_t evm_module_tcp_get_socket_name(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(evm_module_tcp_get_socket_name) {
+    EVM_EPCV;
     uv_tcp_t *tcp_handle = evm_object_get_user_data(e, p);
     struct sockaddr_storage storage;
     int addrlen = sizeof(storage);
@@ -307,10 +317,11 @@ static evm_val_t evm_module_tcp_get_socket_name(evm_t *e, evm_val_t p, int argc,
     int err = uv_tcp_getsockname(tcp_handle, addr, &addrlen);
     if (err == 0)
     address_to_js(v[0], addr);
-    return evm_mk_number(e, err);
+    EVM_RETURN(evm_mk_number(e, err));
 }
 
-static evm_val_t evm_module_tcp_create(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(evm_module_tcp_create) {
+    EVM_EPCV;
     evm_val_t obj = evm_object_create(e);
     tcp_object_init(e, obj);
     evm_prop_set(e, obj, "errname", evm_mk_native(e, evm_module_tcp_err_name, "errname", 0));
@@ -323,7 +334,7 @@ static evm_val_t evm_module_tcp_create(evm_t *e, evm_val_t p, int argc, evm_val_
     evm_prop_set(e, obj, "shutdown", evm_mk_native(e, evm_module_tcp_shutdown, "shutdown", 0));
     evm_prop_set(e, obj, "setKeepAlive", evm_mk_native(e, evm_module_tcp_set_keep_alive, "setKeepAlive", 0));
     evm_prop_set(e, obj, "getsockname", evm_mk_native(e, evm_module_tcp_get_socket_name, "getsockname", 0));
-    return obj;
+    EVM_RETURN(obj);
 }
 
 void evm_module_tcp(evm_t *e) {

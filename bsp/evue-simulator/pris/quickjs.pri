@@ -6,6 +6,9 @@ DEFINES += CONFIG_VERSION=\\\"2021-03-27\\\"
 HEADERS += \
     $$PWD/../../../include/evm.h
 
+HEADERS += \
+    $$PWD/../../../engines/quickjs/evm_type.h
+
 SOURCES += \
     $$PWD/../../../engines/quickjs/evm.c
 

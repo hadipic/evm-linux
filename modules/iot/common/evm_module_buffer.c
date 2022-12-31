@@ -20,8 +20,9 @@ static int hex_2_oct(int h) {
 //new Buffer(buffer)
 //new Buffer(size)
 //new Buffer(str[, encoding])
-static evm_val_t evm_module_buffer_class_new(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_class_new)
 {
+    EVM_EPCV;
     EVM_UNUSED(p);
     evm_val_t buf_obj;
     int length = 0;
@@ -78,26 +79,28 @@ static evm_val_t evm_module_buffer_class_new(evm_t *e, evm_val_t p, int argc, ev
             memcpy(evm_buffer_addr(e, buf_obj), evm_2_string(e, v[0]), length);
         }
     }
-    return buf_obj;
+    EVM_RETURN(buf_obj);
 }
 
 //Buffer.byteLength(str, encoding)
 //encoding: hex | bytes(default)
-static evm_val_t evm_module_buffer_byteLength(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_byteLength)
 {
+    EVM_EPCV;
     EVM_UNUSED(e);
     EVM_UNUSED(p);
     EVM_UNUSED(argc);
     EVM_UNUSED(v);
-    return evm_mk_number(e, evm_string_len(e, v[0]));
+    EVM_RETURN(evm_mk_number(e, evm_string_len(e, v[0])));
 }
 
 //Buffer.concat(list)
-static evm_val_t evm_module_buffer_concat(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_concat)
 {
+    EVM_EPCV;
     EVM_UNUSED(p);
     if (argc < 1 || !evm_is_list(e, v[0]))
-        return EVM_UNDEFINED;
+        EVM_RETURN(EVM_UNDEFINED);
 
     int len = evm_list_len(e, v[0]);
     int length = 0;
@@ -122,45 +125,49 @@ static evm_val_t evm_module_buffer_concat(evm_t *e, evm_val_t p, int argc, evm_v
         i++;
     }
 
-    return buf;
+    EVM_RETURN(buf);
 }
 
 //Buffer.from(array)
 //Buffer.from(buffer)
 //Buffer.from(string[,encoding])
 //Buffer.from(arrayBuffer[, byteOffset[, length]])
-static evm_val_t evm_module_buffer_from(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_from)
 {
-    return evm_module_buffer_class_new(e, p, argc, v);
+    EVM_EPCV;
+    EVM_RETURN( evm_module_buffer_class_new(EVM_ARGS));
 }
 
 //Buffer.isBuffer(buffer)
-static evm_val_t evm_module_buffer_isBuffer(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_isBuffer)
 {
+    EVM_EPCV;
     EVM_UNUSED(e);
     EVM_UNUSED(p);
     if (argc < 1)
-        return EVM_UNDEFINED;
+        EVM_RETURN( EVM_UNDEFINED);
 
     if (evm_is_buffer(e, v[0]))
-        return evm_mk_boolean(e, 1);
+        EVM_RETURN( evm_mk_boolean(e, 1));
 
-    return evm_mk_boolean(e, 0);
+    EVM_RETURN( evm_mk_boolean(e, 0));
 }
 
 //buf.length
-static evm_val_t evm_module_buffer_class_get_length(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_class_get_length)
 {
+    EVM_EPCV;
     EVM_UNUSED(e);EVM_UNUSED(p);EVM_UNUSED(argc);
-    return evm_mk_number(e, evm_buffer_len(e, v[0]));
+    EVM_RETURN( evm_mk_number(e, evm_buffer_len(e, v[0])));
 }
 
 //buf.compare(otherBuffer)
-static evm_val_t evm_module_buffer_class_compare(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_class_compare)
 {
+    EVM_EPCV;
     EVM_UNUSED(e);
     if (argc < 1 || !evm_is_buffer(e, v[0]))
-        return EVM_UNDEFINED;
+        EVM_RETURN( EVM_UNDEFINED);
 
     int p_len = evm_buffer_len(e, p);
     int v_len = evm_buffer_len(e, v[0]);
@@ -171,24 +178,25 @@ static evm_val_t evm_module_buffer_class_compare(evm_t *e, evm_val_t p, int argc
     uint8_t *v_addr = evm_buffer_addr(e, v[0]);
     if (p_len == v_len) {
         for(int i = 0; i < p_len; i++) {
-            if (p_addr[i] < v_addr[i]) return evm_mk_number(e, -1);
-            else if (p_addr[i] > v_addr[i]) return evm_mk_number(e, 1);
+            if (p_addr[i] < v_addr[i]) {EVM_RETURN( evm_mk_number(e, -1));}
+            else if (p_addr[i] > v_addr[i]) {EVM_RETURN( evm_mk_number(e, 1));}
         }
-        return evm_mk_number(e, 0);
+        EVM_RETURN( evm_mk_number(e, 0));
     } else if (p_len < v_len) { // length different
-        return evm_mk_number(e, -1); // return 1 if first less than second
+        EVM_RETURN( evm_mk_number(e, -1)); // return 1 if first less than second
     } else { // p_len > v_len
-        return evm_mk_number(e, 1); // return -1 if first rather than second
+        EVM_RETURN( evm_mk_number(e, 1)); // return -1 if first rather than second
     }
-    return EVM_UNDEFINED;
+    EVM_RETURN( EVM_UNDEFINED);
 }
 
 //buf.copy(targetBuffer[, targetStart[, sourceStart[, sourceEnd]]])
-static evm_val_t evm_module_buffer_class_copy(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_class_copy)
 {
+    EVM_EPCV;
     EVM_UNUSED(e);
     if (argc < 1 || !evm_is_buffer(e, v[0]))
-        return EVM_UNDEFINED;
+        EVM_RETURN( EVM_UNDEFINED);
 
     uint8_t *source = evm_buffer_addr(e, p);
     uint8_t *target = evm_buffer_addr(e, v[0]);
@@ -205,31 +213,33 @@ static evm_val_t evm_module_buffer_class_copy(evm_t *e, evm_val_t p, int argc, e
         source_end = evm_2_integer(e, v[3]);
 
     if (source_start > source_end)
-        return EVM_UNDEFINED;
+        EVM_RETURN( EVM_UNDEFINED);
 
     for(int i = target_start; i < target_length; i++) {
         if (source_start + i < source_end)
             memcpy(target + target_start + i, source + source_start + i, 1);
     }
-    return evm_mk_number(e, source_end - source_start);
+    EVM_RETURN( evm_mk_number(e, source_end - source_start))
 }
 
 //buf.equals(otherBuffer)
-static evm_val_t evm_module_buffer_class_equals(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_class_equals)
 {
+    EVM_EPCV;
     if (argc < 1 || !evm_is_buffer(e, v[0]))
-        return EVM_UNDEFINED;
+        EVM_RETURN( EVM_UNDEFINED);
 
-    evm_val_t result = evm_module_buffer_class_compare(e, p, argc, v);
-    return evm_2_boolean(e, result) == 0 ? evm_mk_boolean(e, 1) : evm_mk_boolean(e, 0);
+    evm_val_t result = evm_module_buffer_class_compare(EVM_ARGS);
+    EVM_RETURN( evm_2_boolean(e, result) == 0 ? evm_mk_boolean(e, 1) : evm_mk_boolean(e, 0));
 }
 
 //buf.fill(value)
-static evm_val_t evm_module_buffer_class_fill(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_class_fill)
 {
+    EVM_EPCV;
     EVM_UNUSED(e);
     if (argc < 1 || !evm_is_integer(e, v[0]))
-        return EVM_UNDEFINED;
+        EVM_RETURN( EVM_UNDEFINED);
 
     int value = evm_2_integer(e, v[0]);
     uint8_t *buffer = evm_buffer_addr(e, p);
@@ -239,12 +249,13 @@ static evm_val_t evm_module_buffer_class_fill(evm_t *e, evm_val_t p, int argc, e
     for(int i = 0; i < length; i++) {
         buffer[i] = value;
     }
-    return p;
+    EVM_RETURN( p)
 }
 
 //buf.slice([start[, end]])
-static evm_val_t evm_module_buffer_class_slice(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_class_slice)
 {
+    EVM_EPCV;
     // 根据开始下标和结束下标获取某一段buffer
     int start = 0;
     int end = evm_buffer_len(e, p);
@@ -255,7 +266,7 @@ static evm_val_t evm_module_buffer_class_slice(evm_t *e, evm_val_t p, int argc, 
         end = evm_2_integer(e, v[1]);
     }
     if (start > end)
-        return EVM_UNDEFINED;
+        EVM_RETURN( EVM_UNDEFINED)
 
     int length = end - start;
 
@@ -267,12 +278,13 @@ static evm_val_t evm_module_buffer_class_slice(evm_t *e, evm_val_t p, int argc, 
         cnt++;
     }
 
-    return buf;
+    EVM_RETURN( buf)
 }
 
 //buf.toString([start[, end]])
-static evm_val_t evm_module_buffer_class_toString(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_class_toString)
 {
+    EVM_EPCV;
     int start = 0;
     int end = evm_buffer_len(e, p);
 
@@ -283,17 +295,18 @@ static evm_val_t evm_module_buffer_class_toString(evm_t *e, evm_val_t p, int arg
         end = evm_2_integer(e, v[1]);
 
     if (start > end)
-        return EVM_UNDEFINED;
+        EVM_RETURN( EVM_UNDEFINED)
 
     evm_val_t result = evm_mk_lstring(e, (char*)evm_buffer_addr(e, p) + start, end - start);
-    return result;
+    EVM_RETURN( result)
 }
 
 //buf.write(string[, offset[, length]])
-static evm_val_t evm_module_buffer_class_write(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_class_write)
 {
+    EVM_EPCV;
     if (argc < 1 || !evm_is_string(e, v[0]))
-        return EVM_UNDEFINED;
+        EVM_RETURN( EVM_UNDEFINED)
 
     int offset = 0;
     int length = evm_string_len(e, v[0]);
@@ -305,14 +318,15 @@ static evm_val_t evm_module_buffer_class_write(evm_t *e, evm_val_t p, int argc, 
         length = evm_2_integer(e, v[2]);
 
     memcpy(evm_buffer_addr(e, p) + offset, (void *)evm_2_string(e, v[0]), length);
-    return evm_mk_number(e, length);
+    EVM_RETURN( evm_mk_number(e, length))
 }
 
 //buf.writeUInt8(value, offset[, noAssert])
-static evm_val_t evm_module_buffer_class_writeUInt8(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_class_writeUInt8)
 {
+    EVM_EPCV;
     if (argc < 1 || !evm_is_integer(e, v[0]))
-        return EVM_UNDEFINED;
+        EVM_RETURN( EVM_UNDEFINED)
 
     int offset = 0;
     if (argc > 1 && evm_is_integer(e, v[1])) {
@@ -331,14 +345,15 @@ static evm_val_t evm_module_buffer_class_writeUInt8(evm_t *e, evm_val_t p, int a
     uint8_t *buf = evm_buffer_addr(e, p);
 
     buf[offset] = evm_2_integer(e, v[0]);
-    return evm_mk_number(e, offset + 1);
+    EVM_RETURN( evm_mk_number(e, offset + 1))
 }
 
 //buf.writeUInt16LE(value, offset[, noAssert])
-static evm_val_t evm_module_buffer_class_writeUInt16LE(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_class_writeUInt16LE)
 {
+    EVM_EPCV;
     if (argc < 1 || !evm_is_integer(e, v[0]))
-        return EVM_UNDEFINED;
+        EVM_RETURN( EVM_UNDEFINED)
 
     int offset = 0;
     if (argc > 1 && evm_is_integer(e, v[1]))
@@ -351,14 +366,15 @@ static evm_val_t evm_module_buffer_class_writeUInt16LE(evm_t *e, evm_val_t p, in
     uint8_t *buf = evm_buffer_addr(e, p);
     int value = evm_2_integer(e, v[0]);
     memcpy(buf + offset, &value, sizeof(uint16_t));
-    return evm_mk_number(e, offset + 1);
+    EVM_RETURN( evm_mk_number(e, offset + 1))
 }
 
 //buf.writeUInt32LE(value, offset[, noAssert])
-static evm_val_t evm_module_buffer_class_writeUInt32LE(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_class_writeUInt32LE)
 {
+    EVM_EPCV;
     if (argc < 1 || !evm_is_integer(e, v[0]))
-        return EVM_UNDEFINED;
+        EVM_RETURN( EVM_UNDEFINED)
 
     int offset = 0;
     if (argc > 1 && evm_is_integer(e, v[1]))
@@ -371,12 +387,13 @@ static evm_val_t evm_module_buffer_class_writeUInt32LE(evm_t *e, evm_val_t p, in
     uint8_t *buf = evm_buffer_addr(e, p);
     uint32_t value = (uint32_t)evm_2_integer(e, v[0]);
     memcpy(buf + offset, &value, sizeof(uint32_t));
-    return evm_mk_number(e, offset + 1);
+    EVM_RETURN( evm_mk_number(e, offset + 1))
 }
 
 //buf.readInt8(offset[, noAssert])
-static evm_val_t evm_module_buffer_class_readInt8(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_class_readInt8)
 {
+    EVM_EPCV;
     EVM_UNUSED(e);
     int offset = 0;
     if (argc > 0 && evm_is_integer(e, v[0]))
@@ -385,12 +402,13 @@ static evm_val_t evm_module_buffer_class_readInt8(evm_t *e, evm_val_t p, int arg
     uint8_t *buf = evm_buffer_addr(e, p);
     int8_t value = (int8_t)buf[offset];
 
-    return evm_mk_number(e, value);
+    EVM_RETURN( evm_mk_number(e, value))
 }
 
 //buf.readUInt8(offset[, noAssert])
-static evm_val_t evm_module_buffer_class_readUInt8(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_class_readUInt8)
 {
+    EVM_EPCV;
     EVM_UNUSED(e);
     int offset = 0;
     if (argc > 0 && evm_is_integer(e, v[0]))
@@ -399,12 +417,13 @@ static evm_val_t evm_module_buffer_class_readUInt8(evm_t *e, evm_val_t p, int ar
     uint8_t *buf = evm_buffer_addr(e, p);
     uint8_t value = (uint8_t)buf[offset];
 
-    return evm_mk_number(e, value);
+    EVM_RETURN( evm_mk_number(e, value))
 }
 
 //buf.readUInt16LE(offset[, noAssert])
-static evm_val_t evm_module_buffer_class_readUInt16LE(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_class_readUInt16LE)
 {
+    EVM_EPCV;
     EVM_UNUSED(e);
     int offset = 0;
     if (argc > 0 && evm_is_integer(e, v[0]))
@@ -414,12 +433,13 @@ static evm_val_t evm_module_buffer_class_readUInt16LE(evm_t *e, evm_val_t p, int
     uint16_t value = 0;
     memcpy(&value, buf, sizeof(uint16_t));
 
-    return evm_mk_number(e, value);
+    EVM_RETURN( evm_mk_number(e, value))
 }
 
-static evm_val_t evm_module_buffer_alloc(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(evm_module_buffer_alloc)
 {
-    return evm_module_buffer_class_instantiate(e, evm_2_integer(e, v[0]));
+    EVM_EPCV;
+    EVM_RETURN( evm_module_buffer_class_instantiate(e, evm_2_integer(e, v[0])))
 }
 
 evm_val_t evm_module_buffer_class_instantiate(evm_t *e, int size)

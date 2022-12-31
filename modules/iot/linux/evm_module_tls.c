@@ -2,14 +2,15 @@
 
 #include "evm_module_tls.h"
 
-static evm_val_t evm_module_tls_connect(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(evm_module_tls_connect) {
+    EVM_EPCV;
     iot_tls_t *tls_data = evm_object_get_user_data(e, p);
     if (tls_data->state == TLS_HANDSHAKE_READY) {
         const char *server_name = evm_2_string(e, v[0]);
         mbedtls_ssl_set_hostname(&tls_data->ssl, server_name);
     }
 
-    return EVM_UNDEFINED;
+    EVM_RETURN( EVM_UNDEFINED );
 }
 
 static size_t iot_bio_pending(iot_bio_t *bio) {
@@ -178,10 +179,11 @@ static void tls_handshake(iot_tls_t *tls_data, evm_val_t jthis) {
     evm_val_free(e, jargv[1]);
 }
 
-static evm_val_t evm_module_tls_read(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(evm_module_tls_read) {
+    EVM_EPCV;
     iot_tls_t *tls_data = evm_object_get_user_data(e, p);
     if (tls_data->state == TLS_CLOSED) {
-        return EVM_UNDEFINED;
+        EVM_RETURN( EVM_UNDEFINED);
     }
 
     iot_bio_t *receive_bio = &(tls_data->bio.receive_bio);
@@ -220,7 +222,7 @@ static evm_val_t evm_module_tls_read(evm_t *e, evm_val_t p, int argc, evm_val_t 
                 }
 
                 bool result = (tls_data->state != TLS_CLOSED);
-                return evm_mk_boolean(e, result);
+                EVM_RETURN(evm_mk_boolean(e, result));
             }
         }
 
@@ -264,21 +266,22 @@ static evm_val_t evm_module_tls_read(evm_t *e, evm_val_t p, int argc, evm_val_t 
             tls_data->state = TLS_CLOSED;
 
             if (ret_val == MBEDTLS_ERR_SSL_PEER_CLOSE_NOTIFY) {
-                return evm_mk_boolean(e, true);
+                EVM_RETURN(evm_mk_boolean(e, true));
             }
 
             iot_tls_notify_error(tls_data);
-            return evm_mk_boolean(e, false);
+            EVM_RETURN(evm_mk_boolean(e, false));
         }
     } while (length > 0);
 
-    return evm_mk_boolean(e, true);
+    EVM_RETURN(evm_mk_boolean(e, true));
 }
 
-static evm_val_t evm_module_tls_write(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(evm_module_tls_write) {
+    EVM_EPCV;
     iot_tls_t *tls_data = evm_object_get_user_data(e, p);
     if (tls_data->state != TLS_CONNECTED) {
-        return evm_mk_null(e);
+        EVM_RETURN(evm_mk_null(e));
     }
 
     const unsigned char *data = NULL;
@@ -310,7 +313,7 @@ static evm_val_t evm_module_tls_write(evm_t *e, evm_val_t p, int argc, evm_val_t
             length -= (size_t)ret_val;
         } else if (ret_val != MBEDTLS_ERR_SSL_WANT_WRITE) {
             tls_data->state = TLS_CLOSED;
-            return evm_mk_null(e);
+            EVM_RETURN(evm_mk_null(e));
         }
     }
 
@@ -327,7 +330,7 @@ static evm_val_t evm_module_tls_write(evm_t *e, evm_val_t p, int argc, evm_val_t
             if (ret_val != MBEDTLS_ERR_SSL_WANT_WRITE) {
                 iot_tls_notify_error(tls_data);
                 tls_data->state = TLS_CLOSED;
-                return evm_mk_null(e);
+                EVM_RETURN(evm_mk_null(e));
             }
         }
     }
@@ -340,7 +343,7 @@ static evm_val_t evm_module_tls_write(evm_t *e, evm_val_t p, int argc, evm_val_t
     iot_bio_read(send_bio, buf, pending);
     evm_val_t jbuffer = evm_buffer_create(e, buf, pending);
     evm_free(buf);
-    return jbuffer;
+    EVM_RETURN(jbuffer);
 }
 
 static iot_tls_context_t *iot_tls_context_create(evm_val_t jobject) {
@@ -360,7 +363,8 @@ static iot_tls_context_t *iot_tls_context_create(evm_val_t jobject) {
     return tls_context;
 }
 
-static evm_val_t evm_module_tls_tlscontext(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(evm_module_tls_tlscontext) {
+    EVM_EPCV;
     evm_val_t jtls = p;
     iot_tls_context_t *tls_context = iot_tls_context_create(jtls);
 
@@ -425,7 +429,7 @@ static evm_val_t evm_module_tls_tlscontext(evm_t *e, evm_val_t p, int argc, evm_
         evm_throw(e, evm_mk_string(e, "certificate authority (CA) parsing failed"));
     }
 
-    return EVM_UNDEFINED;
+    EVM_RETURN(EVM_UNDEFINED);
 }
 
 static iot_tls_t *iot_tls_create(evm_val_t jobject, iot_tls_context_t *tls_context) {
@@ -445,7 +449,8 @@ static iot_tls_t *iot_tls_create(evm_val_t jobject, iot_tls_context_t *tls_conte
     return tls_data;
 }
 
-static evm_val_t evm_module_tls_init(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(evm_module_tls_init) {
+    EVM_EPCV;
     evm_val_t jtls_socket = v[0];
     evm_val_t joptions = v[1];
 
@@ -511,7 +516,7 @@ static evm_val_t evm_module_tls_init(evm_t *e, evm_val_t p, int argc, evm_val_t 
     mbedtls_ssl_set_bio(&tls_data->ssl, &(tls_data->bio), iot_bio_net_send,
                   iot_bio_net_receive, NULL);
 
-    return EVM_UNDEFINED;
+    EVM_RETURN(EVM_UNDEFINED);
 }
 
 

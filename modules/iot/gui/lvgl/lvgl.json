@@ -79,7 +79,7 @@
             "name": "lv_color_hex", 
             "signature": "ii",
             "how":[
-                "return evm_mk_number(e, lv_color_hex(<1>).full);"
+                "EVM_RETURN(evm_mk_number(e, lv_color_hex(<1>).full));"
             ]
         },
 
@@ -94,7 +94,7 @@
             "name": "lv_palette_main", 
             "signature": "ii",
             "how":[
-                "return evm_mk_number(e, lv_palette_main(<1>).full);"
+                "EVM_RETURN(evm_mk_number(e, lv_palette_main(<1>).full))"
             ]
         },
         {"name": "lv_style_init", "signature": "vp"},

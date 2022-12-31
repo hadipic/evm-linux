@@ -106,6 +106,7 @@ static evm_val_t uart_set_configuration(iot_uart_t* uart,
 }
 
 EVM_FUNCTION(uart_constructor) {
+    EVM_EPCV;
   // Create UART object
   const evm_val_t juart = evm_object_create(e);
   uv_handle_t* uart_poll_handle =
@@ -136,10 +137,11 @@ EVM_FUNCTION(uart_constructor) {
     evm_throw(e, evm_mk_string(e, iot_periph_error_str(kUartOpOpen)));
   }
 
-  return juart;
+  EVM_RETURN(juart)
 }
 
 EVM_FUNCTION(uart_write) {
+    EVM_EPCV;
   uv_handle_t *uart_poll_handle = evm_object_get_user_data(e, p);
 
   iot_uart_t* uart =
@@ -150,10 +152,11 @@ EVM_FUNCTION(uart_write) {
   iot_periph_call_async(uart_poll_handle, v[1],
                           kUartOpWrite, uart_worker);
 
-  return EVM_UNDEFINED;
+  EVM_RETURN (EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(uart_write_sync) {
+    EVM_EPCV;
   uv_handle_t *uart_poll_handle = evm_object_get_user_data(e, p);
 
   iot_uart_t* uart =
@@ -167,23 +170,25 @@ EVM_FUNCTION(uart_write_sync) {
     evm_throw(e, evm_mk_string(e, iot_periph_error_str(kUartOpWrite)));
   }
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(uart_close) {
+    EVM_EPCV;
   uv_handle_t *uart_poll_handle = evm_object_get_user_data(e, p);
 
   iot_periph_call_async(uart_poll_handle, v[0],
                           kUartOpClose, uart_worker);
 
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(uart_close_sync) {
+    EVM_EPCV;
   uv_handle_t *uart_poll_handle = evm_object_get_user_data(e, p);
 
   iot_uv_handle_close(uart_poll_handle, iot_uart_handle_close_cb);
-  return EVM_UNDEFINED;
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 void evm_module_uart(evm_t *e) {

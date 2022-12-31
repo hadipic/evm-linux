@@ -43,5 +43,9 @@ if( contains(DEFINES, EVM_USE_QUICKVM) ) {
     include($$PWD/../pris/quickvm.pri)
 }
 
+if( contains(DEFINES, EVM_USE_DUKTAPE) ) {
+    include($$PWD/../pris/duktape.pri)
+}
+
 SOURCES += \
         main.c
