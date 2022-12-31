@@ -219,6 +219,8 @@ evm_t *evm_init(void) {
     js_setreport(e, js_defaultreport);
     js_newobject(e);
 	js_setglobal(e, "@system");
+    js_pushglobal(e);
+    js_setglobal(e, "globalThis");
     return e;
 }
 
@@ -226,19 +228,20 @@ void evm_deinit(evm_t *e) {
     js_freestate(e);
 }
 
-void evm_run_file(evm_t *e, const char *path) {
+int evm_run_file(evm_t *e, evm_val_t pthis, const char *path) {
     if (js_try(e)) {
         js_report(e, js_trystring(e, -1, "Error"));
         js_pop(e, 1);
-        return;
+        return 0;
     }
     js_loadfile(e, path);
     js_pushundefined(e);
     js_call(e, 0);
     js_endtry(e);
+    return 1;
 }
 
-evm_val_t evm_run_string(evm_t *e, const char *source) {
+evm_val_t evm_run_string(evm_t *e, evm_val_t pthis, const char *source) {
     if (js_try(e)) {
         js_report(e, js_trystring(e, -1, "Error"));
         js_pop(e, 1);
@@ -292,12 +295,12 @@ int evm_2_boolean(evm_t *e, evm_val_t v) {
 const char *evm_2_string(evm_t *e, evm_val_t v) {
     const char *s = jsV_tostring(e, &v);
     if( v.type == JS_TSHRSTR ) {
-        static char buf[8];
-        memcpy(buf, v.u.shrstr, 8);
+        static char buf[15];
+        memcpy(buf, v.u.shrstr, 15);
         return buf;
     } else {
         return s;
-    } 
+    }
 }
 
 int evm_is_number(evm_t *e, evm_val_t v) {
