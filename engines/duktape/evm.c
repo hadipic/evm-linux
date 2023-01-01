@@ -2,7 +2,6 @@
 #include "duk_api_internal.h"
 #include "duk_js.h"
 
-evm_val_t EVM_UNDEFINED;
 
 evm_val_t evm_string_create(evm_t *e, const char *str) {
     duk_push_string(e, str);
@@ -202,7 +201,6 @@ evm_t *evm_init(void) {
     duk_context *ctx = duk_create_heap_default();
     evm_global_set(ctx, "@system", evm_object_create(ctx));
     duk_push_undefined(ctx);
-    EVM_UNDEFINED = *duk_get_tval(ctx, -1);
     return ctx;
 }
 

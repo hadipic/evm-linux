@@ -29,13 +29,13 @@ void evm_main (char *filename) {
 #ifdef CONFIG_EVM_USE_UV
     system_loop();
 #endif
-    evm_t *env = evm_init();
-    evm_module_init(env);
+    evm_t *e = evm_init();
+    evm_module_init(e);
 
 #ifdef CONFIG_EVM_MODULE_REPL
     evm_run_shell(env);
 #else
-    evm_run_file(env, EVM_UNDEFINED, filename);
+    evm_run_file(e, EVM_UNDEFINED, filename);
 #endif
 }
 

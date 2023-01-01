@@ -19,6 +19,7 @@ static void set_http_options(http_parser *p, evm_val_t res){
 }
 
 static void free_http_options(http_parser *p){
+    evm_t *e = evm_runtime();
     http_options_t *http_js =(http_options_t *)p->data;
     http_js->value = EVM_UNDEFINED;
     evm_free(p->data);
@@ -154,36 +155,36 @@ static evm_val_t module_http_parser_execute(evm_t *e, evm_val_t p, int argc, evm
     return  evm_mk_boolean(e, 1);
 }
 
-static evm_val_t module_http_parser_destroy(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
-    EVM_UNUSED(e);EVM_UNUSED(argc);EVM_UNUSED(v);
+EVM_FUNCTION(module_http_parser_destroy) {
+    EVM_EPCV;
     http_parser *parser = (http_parser *)evm_object_get_user_data(e, p);
     if( !parser ){
-        return EVM_UNDEFINED;
+        EVM_RETURN(EVM_UNDEFINED);
     }
     free_http_options(parser);
     evm_free(parser);
-    return EVM_UNDEFINED;
+    EVM_RETURN(EVM_UNDEFINED);
 }
 
 //create(type)
-static evm_val_t module_http_parser_create(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
-    EVM_UNUSED(p);
+EVM_FUNCTION(module_http_parser_create) {
+    EVM_EPCV;
     if( argc == 0 || !evm_is_number(e, v[0]) ) {
         evm_throw(e, evm_mk_string(e, "Http type must be defined"));
-        return EVM_UNDEFINED;
+        EVM_RETURN(EVM_UNDEFINED);
     }
     int type = evm_2_integer(e, v[0]);
     http_parser *parser = evm_malloc(sizeof (http_parser));
     if( !parser ) {
         evm_throw(e, evm_mk_string(e, "Engine runs out of memory"));
-        return EVM_UNDEFINED;
+        EVM_RETURN(EVM_UNDEFINED);
     }
     evm_val_t res = evm_object_create_user_data(e, parser);
     evm_prop_set(e, res, "execute", evm_mk_native(e, module_http_parser_execute, "execute", 0));
     evm_prop_set(e, res, "destroy", evm_mk_native(e, module_http_parser_destroy, "destroy", 0));
     http_parser_init(parser, (enum http_parser_type)type);
     set_http_options(parser, res);
-    return res;
+    EVM_RETURN(res);
 }
 
 int evm_module_http_parser(evm_t *e) {

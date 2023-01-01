@@ -42,7 +42,8 @@ extern "C" {
 typedef duk_context evm_t;
 typedef duk_tval evm_val_t;
 
-extern evm_val_t EVM_UNDEFINED;
+#define EVM_UNDEFINED \
+    evm_mk_undefined(e)
 
 typedef duk_int_t (*evm_native_t)(evm_t *);
 
@@ -59,6 +60,8 @@ typedef duk_int_t (*evm_native_t)(evm_t *);
 
 #define EVM_RETURN(x)   evm_val_free(e, p);x;return 1;
 #define EVM_RETURN_VAL(x)   x;return *duk_get_tval(e, -1);
+#define EVM_VARARGS DUK_VARARGS
+
 
 #ifdef __cplusplus
 } /* extern "C" */

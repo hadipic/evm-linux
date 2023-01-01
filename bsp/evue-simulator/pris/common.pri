@@ -5,13 +5,12 @@ INCLUDEPATH += $$PWD/../../../include
 INCLUDEPATH += $$PWD/../../../modules/iot/common
 
 DEFINES += CONFIG_EVM_DEBUG_LOG
-DEFINES += CONFIG_EVM_MODULE_FS
 DEFINES += CONFIG_EVM_MODULE_HTTP_PARSER
 DEFINES += CONFIG_EVM_MODULE_TIMERS
 DEFINES += CONFIG_EVM_MODULE_CFFI
 DEFINES += CONFIG_EVM_MODULE_LIBC
 DEFINES += CONFIG_EVM_MODULE_PROCESS
-
+DEFINES += CONFIG_EVM_MODULE_FS
 
 unix {
 DEFINES += CONFIG_EVM_USE_UV
@@ -64,12 +63,12 @@ SOURCES += \
     ../../../modules/iot/common/evm_module_events.c \
     ../../../modules/iot/common/evm_module_cffi.c \
     ../../../modules/iot/common/evm_module_libc.c \
-    ../../../modules/iot/common/evm_module_fs.c \
     ../../../modules/iot/common/evm_module_dns.c \
     ../../../modules/iot/common/evm_module_repl.c \
     ../../../modules/iot/common/evm_module_network.c
 
 SOURCES += \
+    ../../../modules/iot/linux/evm_module_fs.c \
     ../../../modules/iot/linux/evm_module_tcp.c \
     ../../../modules/iot/linux/evm_module_tls.c \
     ../../../modules/iot/linux/evm_module_pwm.c \
