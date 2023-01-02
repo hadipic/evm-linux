@@ -52,7 +52,7 @@ EVM_FUNCTION(timer_constructor) {
     EVM_EPCV;
   const evm_val_t jtimer = evm_object_create(e);
   iot_timer_object_init(jtimer);
-  evm_prop_set(e, jtimer, IOT_MAGIC_STRING_START, evm_mk_native(e, timer_start, IOT_MAGIC_STRING_START, 0));
+  evm_prop_set(e, jtimer, IOT_MAGIC_STRING_START, evm_mk_native(e, timer_start, IOT_MAGIC_STRING_START, 2));
   evm_prop_set(e, jtimer, IOT_MAGIC_STRING_STOP, evm_mk_native(e, timer_stop, IOT_MAGIC_STRING_STOP, 0));
   EVM_RETURN(jtimer);
 }

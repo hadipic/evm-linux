@@ -13,19 +13,15 @@ Module.prototype.compile = function(path) {
 function require(path) {
     var m = __require__(path);
     var process = __require__('process');
-    
     if( m != undefined )
         return m;
-
     m = cached[path];
     if( m != undefined ) {
         return m.exports;
     }
-
     var prevModule = globalThis.module;
     var module = new Module(path);
     globalThis.module = module;
-    
     var res = module.compile(path);
     if( res ) {
         cached[path] = module;

@@ -1,8 +1,10 @@
-var timer = setInterval(function () {
-    print('hello,world')
-}, 500);
-setTimeout(function () {
-    print("123213")
-    print(timer)
-    clearInterval(timer);
- }, 2000)
+print('Hello EVM')
+var timer = require('timer');
+
+function timeout() {
+    print('Hello EVM')
+}
+
+var t = timer.create();
+t.handleTimeout = timeout;
+t.start(500, 500);

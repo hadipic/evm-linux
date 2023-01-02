@@ -73,7 +73,7 @@ evm_val_t evm_list_get(evm_t *e, evm_val_t o, int i) {
 /*** 对象操作函数 ***/
 evm_val_t evm_object_create(evm_t *e) {
     duk_push_object(e);
-    return *(e->valstack_top - 1);
+    return *duk_get_tval(e, -1);
 }
 
 evm_val_t evm_object_create_user_data(evm_t *e, void *data) {
@@ -235,12 +235,14 @@ void evm_run_shell(evm_t *e) {
 
 evm_val_t evm_call(evm_t *e, evm_val_t obj, evm_val_t pthis, int argc, evm_val_t *v) {
     if(evm_is_undefined(e, pthis) ){
+        duk_push_tval(e, &obj);
         for(int i = 0; i < argc; i++){
             duk_push_tval(e, v + i);
         }
         duk_call(e, argc);
         return *duk_get_tval(e, -1);
     } else {
+        duk_push_tval(e, &obj);
         duk_push_tval(e, &pthis);
         for(int i = 0; i < argc; i++){
             duk_push_tval(e, v + i);

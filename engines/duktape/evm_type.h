@@ -56,9 +56,13 @@ typedef duk_int_t (*evm_native_t)(evm_t *);
     int argc = duk_get_top(e);\
     evm_val_t *v = e->valstack_bottom;\
     duk_push_this(e);\
-    evm_val_t p = *duk_get_tval(e, -1);
+    evm_val_t p = *duk_get_tval(e, -1); \
+    evm_val_free(e, p);\
 
-#define EVM_RETURN(x)   evm_val_free(e, p);x;return 1;
+#define EVM_RETURN(x)   \
+    x;\
+    return 1;\
+
 #define EVM_RETURN_VAL(x)   x;return *duk_get_tval(e, -1);
 #define EVM_VARARGS DUK_VARARGS
 
