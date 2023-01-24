@@ -1,3 +1,9 @@
+/****************************************************************************
+**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  QQ Group: 399011436
+**  Git: https://gitee.com/scriptiot/evm
+**  Licence: 个人免费，企业授权
+****************************************************************************/
 #include "evm_module_periph_common.h"
 
 const char* iot_periph_error_str(uint8_t op) {

@@ -1,3 +1,9 @@
+/****************************************************************************
+**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  QQ Group: 399011436
+**  Git: https://gitee.com/scriptiot/evm
+**  Licence: 个人免费，企业授权
+****************************************************************************/
 #include "uv.h"
 
 
@@ -22,13 +28,6 @@ void uv_mutex_unlock(uv_mutex_t* mutex) {
 }
 
 int uv_thread_create(uv_thread_t *tid, void (*entry)(void *arg), void *arg) {
-
-}
-
-void uv__work_submit(uv_loop_t* loop,
-                     struct uv__work* w,
-                     void (*work)(struct uv__work* w),
-                     void (*done)(struct uv__work* w, int status)) {
 
 }
 
@@ -87,7 +86,8 @@ static void work_close(uv_handle_t *watcher) {
 
 static void work_async_on_done(uv_async_t *async) {
   uv_work_t *worker = (uv_work_t *) async->data;
-  worker->done_cb(worker);
+  if( worker->done_cb)
+    worker->done_cb(worker);
 }
 
 static void work_async_on_close(uv_handle_t *handle) {

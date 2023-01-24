@@ -1,62 +1,108 @@
-#include "evm_module.h"
+/****************************************************************************
+**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  QQ Group: 399011436
+**  Git: https://gitee.com/scriptiot/evm
+**  Licence: 个人免费，企业授权
+****************************************************************************/
 #ifdef CONFIG_EVM_MODULE_ADC
 
-static evm_val_t evm_module_adc_class_instantiate(evm_t *e);
+#include "evm_module_adc.h"
 
-//adc.open(configuration)
-static evm_val_t evm_module_adc_open(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
-{
-    if( argc < 1)
-        return EVM_UNDEFINED;
+IOT_DEFINE_PERIPH_CREATE_FUNCTION(adc)
 
-    evm_val_t ret_obj = evm_module_adc_class_instantiate(e);
-    void *dev = evm_adc_open(e, v[0]);
-    evm_object_set_user_data(e, ret_obj, dev);
-    return ret_obj;
+static void adc_worker(uv_work_t* work_req) {
+  iot_periph_data_t* worker_data =
+      (iot_periph_data_t*)IOT_UV_REQUEST_EXTRA_DATA(work_req);
+  iot_adc_t* adc = (iot_adc_t*)worker_data->data;
+
+  switch (worker_data->op) {
+    case kAdcOpOpen:
+      worker_data->result = iot_adc_open(adc);
+      break;
+    case kAdcOpRead:
+      worker_data->result = iot_adc_read(adc);
+      break;
+    case kAdcOpClose:
+      worker_data->result = iot_adc_close(adc);
+      break;
+    default:
+      EVM_ASSERT(!"Invalid Adc Operation");
+  }
 }
 
-//adcpin.read()
-static evm_val_t evm_module_adc_class_read(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
-{
-    void *dev = evm_object_get_user_data(e, p);
-    if( !dev )
-		return EVM_UNDEFINED;
-    return evm_mk_number(e, evm_adc_read(e, dev) );
+EVM_FUNCTION(adc_read) {
+    EVM_EPCV;
+  iot_adc_t *adc = evm_object_get_user_data(e, p);
+
+  iot_periph_call_async(adc, v[0], kAdcOpRead,
+                          adc_worker);
+
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
-//adcpin.close()
-static evm_val_t evm_module_adc_class_close(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
-{
-    void *dev = evm_object_get_user_data(e, p);
-    if( !dev )
-        return EVM_UNDEFINED;
-    evm_adc_close(e, dev);
-	return EVM_UNDEFINED;
+EVM_FUNCTION(adc_read_sync) {
+    EVM_EPCV;
+  iot_adc_t *adc = evm_object_get_user_data(e, p);
+
+  if (!iot_adc_read(adc)) {
+    evm_throw(e, evm_mk_string(e, iot_periph_error_str(kAdcOpRead)));
+  }
+
+  EVM_RETURN(evm_mk_number(e, adc->value));
 }
 
-//adcpin.destroy()
-static evm_val_t evm_module_adc_class_destroy(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
-{
-    void *dev = evm_object_get_user_data(e, p);
-    if( !dev )
-        return EVM_UNDEFINED;
-    evm_adc_destroy(e, dev);
-	return EVM_UNDEFINED;
+EVM_FUNCTION(adc_close) {
+    EVM_EPCV;
+  iot_adc_t *adc = evm_object_get_user_data(e, p);
+
+  iot_periph_call_async(adc, v[0], kAdcOpClose,
+                          adc_worker);
+
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
-static evm_val_t evm_module_adc_class_instantiate(evm_t *e)
-{
-	evm_val_t obj = evm_object_create(e);
-	evm_prop_set(e, obj, "read", evm_mk_native(e, evm_module_adc_class_read, "read", 0));
-	evm_prop_set(e, obj, "close", evm_mk_native(e, evm_module_adc_class_close, "close", 0));
-	evm_prop_set(e, obj, "destroy", evm_mk_native(e, evm_module_adc_class_destroy, "destroy", 0));
-	return obj;
+EVM_FUNCTION(adc_close_sync) {
+    EVM_EPCV;
+  iot_adc_t *adc = evm_object_get_user_data(e, p);
+
+  bool ret = iot_adc_close(adc);
+  if (!ret) {
+    evm_throw(e, evm_mk_string(e, iot_periph_error_str(kAdcOpClose)));
+  }
+
+  EVM_RETURN(EVM_UNDEFINED);
+}
+
+EVM_FUNCTION(adc_constructor) {
+    EVM_EPCV;
+  // Create ADC object
+  const evm_val_t jadc = evm_object_create(e);
+  iot_adc_t* adc = adc_create(e, jadc);
+
+  evm_val_t jconfig = v[0];
+
+  evm_val_t config_res = iot_adc_set_platform_config(e, adc, jconfig);
+  EVM_ASSERT(evm_is_undefined(e, config_res));
+
+  evm_val_t jcallback = v[1];
+
+  // If the callback doesn't exist, it is completed synchronously.
+  // Otherwise, it will be executed asynchronously.
+  if (!evm_is_null(e, jcallback)) {
+    iot_periph_call_async(adc, jcallback, kAdcOpOpen, adc_worker);
+  } else if (!iot_adc_open(adc)) {
+    evm_throw(e, evm_mk_string(e, iot_periph_error_str(kAdcOpOpen)));
+  }
+  evm_prop_set(e, jadc, IOT_MAGIC_STRING_CLOSE, evm_mk_native(e, adc_close, IOT_MAGIC_STRING_CLOSE, 0));
+  evm_prop_set(e, jadc, IOT_MAGIC_STRING_CLOSESYNC, evm_mk_native(e, adc_close_sync, IOT_MAGIC_STRING_CLOSESYNC, 0));
+  evm_prop_set(e, jadc, IOT_MAGIC_STRING_READ, evm_mk_native(e, adc_read, IOT_MAGIC_STRING_READ, 0));
+  evm_prop_set(e, jadc, IOT_MAGIC_STRING_READSYNC, evm_mk_native(e, adc_read_sync, IOT_MAGIC_STRING_READSYNC, 0));
+  EVM_RETURN(jadc);
 }
 
 void evm_module_adc(evm_t *e) {
-	evm_val_t obj = evm_object_create(e);
-	evm_prop_set(e, obj, "open", evm_mk_native(e, evm_module_adc_open, "open", 0));
-	evm_module_add(e, "adc", obj);
+    evm_val_t obj = evm_object_create(e);
+    evm_prop_set(e, obj, IOT_MAGIC_STRING_CREATE, evm_mk_native(e, adc_constructor, IOT_MAGIC_STRING_CREATE, 0));
+    evm_module_add(e, "adc", obj);
 }
-
 #endif

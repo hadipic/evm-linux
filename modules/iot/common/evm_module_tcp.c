@@ -1,3 +1,9 @@
+/****************************************************************************
+**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  QQ Group: 399011436
+**  Git: https://gitee.com/scriptiot/evm
+**  Licence: 个人免费，企业授权
+****************************************************************************/
 #ifdef CONFIG_EVM_MODULE_TCP
 
 #include "linux_uv.h"
@@ -151,7 +157,7 @@ EVM_FUNCTION(evm_module_tcp_listen) {
 }
 
 void AfterWrite(uv_write_t* req, int status) {
-  iotjs_tcp_report_req_result((uv_req_t*)req, status);
+    iotjs_tcp_report_req_result((uv_req_t*)req, status);
 }
 
 EVM_FUNCTION(evm_module_tcp_write) {
@@ -325,13 +331,13 @@ EVM_FUNCTION(evm_module_tcp_create) {
     evm_val_t obj = evm_object_create(e);
     tcp_object_init(e, obj);
     evm_prop_set(e, obj, "errname", evm_mk_native(e, evm_module_tcp_err_name, "errname", 0));
-    evm_prop_set(e, obj, "close", evm_mk_native(e, evm_module_tcp_close, "close", 0));
-    evm_prop_set(e, obj, "connect", evm_mk_native(e, evm_module_tcp_connect, "connect", 0));
-    evm_prop_set(e, obj, "bind", evm_mk_native(e, evm_module_tcp_bind, "bind", 0));
-    evm_prop_set(e, obj, "listen", evm_mk_native(e, evm_module_tcp_listen, "listen", 0));
-    evm_prop_set(e, obj, "write", evm_mk_native(e, evm_module_tcp_write, "write", 0));
-    evm_prop_set(e, obj, "readStart", evm_mk_native(e, evm_module_tcp_read_start, "readStart", 0));
-    evm_prop_set(e, obj, "shutdown", evm_mk_native(e, evm_module_tcp_shutdown, "shutdown", 0));
+    evm_prop_set(e, obj, "close", evm_mk_native(e, evm_module_tcp_close, "close", EVM_VARARGS));
+    evm_prop_set(e, obj, "connect", evm_mk_native(e, evm_module_tcp_connect, "connect", EVM_VARARGS));
+    evm_prop_set(e, obj, "bind", evm_mk_native(e, evm_module_tcp_bind, "bind", EVM_VARARGS));
+    evm_prop_set(e, obj, "listen", evm_mk_native(e, evm_module_tcp_listen, "listen", EVM_VARARGS));
+    evm_prop_set(e, obj, "write", evm_mk_native(e, evm_module_tcp_write, "write", EVM_VARARGS));
+    evm_prop_set(e, obj, "readStart", evm_mk_native(e, evm_module_tcp_read_start, "readStart", EVM_VARARGS));
+    evm_prop_set(e, obj, "shutdown", evm_mk_native(e, evm_module_tcp_shutdown, "shutdown", EVM_VARARGS));
     evm_prop_set(e, obj, "setKeepAlive", evm_mk_native(e, evm_module_tcp_set_keep_alive, "setKeepAlive", 0));
     evm_prop_set(e, obj, "getsockname", evm_mk_native(e, evm_module_tcp_get_socket_name, "getsockname", 0));
     EVM_RETURN(obj);

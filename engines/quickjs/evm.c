@@ -1,3 +1,9 @@
+/****************************************************************************
+**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  QQ Group: 399011436
+**  Git: https://gitee.com/scriptiot/evm
+**  Licence: 个人免费，企业授权
+****************************************************************************/
 #include "evm.h"
 #include "quickjs-libc.h"
 #include "cutils.h"
@@ -119,17 +125,12 @@ void evm_prop_delete(evm_t *e, evm_val_t o, const char *key){
 
 /*** 模块操作函数 ***/
 evm_err_t evm_module_add(evm_t *e, const char* name, evm_val_t v) {
-    evm_val_t system = evm_global_get(e, "@system");
-    evm_prop_set(e, system, name, v);
-    evm_val_free(e, system);
+    evm_global_set(e, name, v);
     return ec_ok;
 }
 
 evm_val_t evm_module_get(evm_t *e, const char* name) {
-    evm_val_t system = evm_global_get(e, "@system");
-    evm_val_t res = evm_prop_get(e, system, name);
-    evm_val_free(e, system);
-    return res;
+    return evm_global_get(e, name);
 }
 
 /*** 其它操作函数 ***/
@@ -452,6 +453,14 @@ evm_val_t evm_mk_null(evm_t *e){
 
 evm_val_t evm_mk_undefined(evm_t *e){
     return JS_UNDEFINED;
+}
+
+evm_val_t evm_mk_invoke(evm_t *e, void *user_data) {
+    return evm_object_create_user_data(e, user_data);
+}
+
+void *evm_2_invoke(evm_t *e, evm_val_t o) {
+    return evm_object_get_user_data(e, o);
 }
 
 void evm_val_free(evm_t *e, evm_val_t v) {

@@ -1,5 +1,6 @@
 {
     "name": "lvgl",
+    "altname": "@native.lvgl",
     "includes": [
         "lvgl.h"
     ],
@@ -71,9 +72,19 @@
         {"name": "LV_EVENT_PRESSING", "value": "LV_EVENT_PRESSING", "type": "number" },
         {"name": "LV_EVENT_LONG_PRESSED", "value": "LV_EVENT_LONG_PRESSED", "type": "number" },
         {"name": "LV_EVENT_CLICKED", "value": "LV_EVENT_CLICKED", "type": "number" },
-        {"name": "LV_EVENT_RELEASED", "value": "LV_EVENT_RELEASED", "type": "number" }
+        {"name": "LV_EVENT_RELEASED", "value": "LV_EVENT_RELEASED", "type": "number" },
+
+        {"name": "LV_EVENT_VALUE_CHANGED", "value": "LV_EVENT_VALUE_CHANGED", "type": "number" },
+        {"name": "LV_EVENT_GESTURE", "value": "LV_EVENT_GESTURE", "type": "number" },
+        {"name": "LV_EVENT_SCROLL_BEGIN", "value": "LV_EVENT_SCROLL_BEGIN", "type": "number" },
+        {"name": "LV_EVENT_SCROLL_END", "value": "LV_EVENT_SCROLL_END", "type": "number" },
+        {"name": "LV_EVENT_SCROLL", "value": "LV_EVENT_SCROLL", "type": "number" },
+        {"name": "LV_EVENT_FOCUSED", "value": "LV_EVENT_FOCUSED", "type": "number" },
+        {"name": "LV_EVENT_DEFOCUSED", "value": "LV_EVENT_DEFOCUSED", "type": "number" }
     ],
     "apis":[ 
+        {"name": "lv_obj_move_background", "signature": "vp"},
+        {"name": "lv_obj_move_foreground", "signature": "vp"},
         {"name": "lv_scr_act", "signature": "p"},
         {
             "name": "lv_color_hex", 
@@ -225,7 +236,15 @@
         {"name": "lv_style_set_text_align", "signature": "vpi"},
         {"name": "lv_style_set_radius", "signature": "vpi"},
         
-        {"name": "lv_obj_create", "signature": "pp"},
+        {
+            "name": "lv_obj_create", 
+            "signature": "pp",
+            "how":[
+                "<0> = lv_obj_create(<1>);",
+                "lv_obj_add_flag(<0>, LV_OBJ_FLAG_FLOATING);",
+                "lv_obj_clear_flag(<0>, LV_OBJ_FLAG_SCROLLABLE);"
+            ]
+        },
         {"name": "lv_obj_add_style", "signature": "vppi"},
         {"name": "lv_obj_add_flag", "signature": "vpi"},
         {"name": "lv_obj_clear_flag", "signature": "vpi"},
@@ -343,12 +362,84 @@
 
         {"name": "lv_img_create", "signature": "pp"},
         {"name": "lv_img_set_src", "signature": "vpp"},
+        {"name": "lv_img_set_offset_x", "signature": "vpi"},
+        {"name": "lv_img_set_offset_y", "signature": "vpi"},
+        {"name": "lv_img_set_angle", "signature": "vpi"},
+        {"name": "lv_img_set_zoom", "signature": "vpi"},
+        {"name": "lv_img_set_antialias", "signature": "vpb"},
+
+        {"name": "lv_img_get_src", "signature": "sp"},
+        {"name": "lv_img_get_offset_x", "signature": "ip"},
+        {"name": "lv_img_get_offset_y", "signature": "ip"},
+        {"name": "lv_img_get_angle", "signature": "ip"},
+        {"name": "lv_img_get_zoom", "signature": "ip"},
+        {"name": "lv_img_get_antialias", "signature": "bp"},
 
         {"name": "lv_slider_create", "signature": "pp"},
         {"name": "lv_slider_set_value", "signature": "vpii"},
         {"name": "lv_slider_set_range", "signature": "vpii"},
         {"name": "lv_slider_get_value", "signature": "ip"},
+        {
+            "name": "lv_slider_set_min", 
+            "signature": "vpi",
+            "how":[
+                "lv_slider_set_range(<1>, <2>, lv_slider_get_max_value(<1>));"
+            ]
+        },
+        {
+            "name": "lv_slider_set_max", 
+            "signature": "vpi",
+            "how":[
+                "lv_slider_set_range(<1>, lv_slider_get_min_value(<1>), <2>);"
+            ]
+        },
         {"name": "lv_slider_get_min_value", "signature": "ip"},
-        {"name": "lv_slider_get_max_value", "signature": "ip"}
+        {"name": "lv_slider_get_max_value", "signature": "ip"},
+
+        {"name": "lv_roller_create", "signature": "pp"},
+        {"name": "lv_roller_set_options", "signature": "vpsi"},
+        {"name": "lv_roller_set_selected", "signature": "vpii"},
+        {"name": "lv_roller_set_visible_row_count", "signature": "vpi"},
+        {"name": "lv_roller_get_selected", "signature": "ip"},
+        {"name": "lv_roller_get_options", "signature": "sp"},
+        {"name": "lv_roller_get_option_cnt", "signature": "ip"},
+
+        {"name": "lv_switch_create", "signature": "pp"},
+
+        {"name": "lv_textarea_create", "signature": "pp"},
+        {"name": "lv_textarea_add_char", "signature": "vpi"},
+        {"name": "lv_textarea_add_text", "signature": "vps"},
+        {"name": "lv_textarea_del_char", "signature": "vp"},
+        {"name": "lv_textarea_del_char_forward", "signature": "vp"},
+        {"name": "lv_textarea_set_text", "signature": "vps"},
+        {"name": "lv_textarea_set_placeholder_text", "signature": "vps"},
+        {"name": "lv_textarea_set_cursor_pos", "signature": "vpi"},
+        {"name": "lv_textarea_set_cursor_click_pos", "signature": "vpb"},
+        {"name": "lv_textarea_set_password_mode", "signature": "vpb"},
+        {"name": "lv_textarea_set_password_bullet", "signature": "vps"},
+        {"name": "lv_textarea_set_one_line", "signature": "vpb"},
+        {"name": "lv_textarea_set_accepted_chars", "signature": "vps"},
+        {"name": "lv_textarea_set_max_length", "signature": "vpi"},
+        {"name": "lv_textarea_set_insert_replace", "signature": "vps"},
+        {"name": "lv_textarea_set_text_selection", "signature": "vpb"},
+        {"name": "lv_textarea_set_password_show_time", "signature": "vpi"},
+        {"name": "lv_textarea_set_align", "signature": "vpi"},
+        {"name": "lv_textarea_get_text", "signature": "sp"},
+        {"name": "lv_textarea_get_placeholder_text", "signature": "sp"},
+        {"name": "lv_textarea_get_cursor_pos", "signature": "ip"},
+        {"name": "lv_textarea_get_cursor_click_pos", "signature": "bp"},
+        {"name": "lv_textarea_get_password_mode", "signature": "bp"},
+        {"name": "lv_textarea_get_password_bullet", "signature": "sp"},
+        {"name": "lv_textarea_get_one_line", "signature": "bp"},
+        {"name": "lv_textarea_get_accepted_chars", "signature": "sp"},
+        {"name": "lv_textarea_get_max_length", "signature": "ip"},
+        {"name": "lv_textarea_text_is_selected", "signature": "bp"},
+        {"name": "lv_textarea_get_text_selection", "signature": "bp"},
+        {"name": "lv_textarea_get_password_show_time", "signature": "ip"},
+        {"name": "lv_textarea_clear_selection", "signature": "vp"},
+        {"name": "lv_textarea_cursor_right", "signature": "vp"},
+        {"name": "lv_textarea_cursor_left", "signature": "vp"},  
+        {"name": "lv_textarea_cursor_down", "signature": "vp"},
+        {"name": "lv_textarea_cursor_up", "signature": "vp"}
     ]
 }

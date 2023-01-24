@@ -1,3 +1,9 @@
+/****************************************************************************
+**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  QQ Group: 399011436
+**  Git: https://gitee.com/scriptiot/evm
+**  Licence: 个人免费，企业授权
+****************************************************************************/
 #include "uv.h"
 
 int uv_timer_init(uv_loop_t* loop, uv_timer_t* handle) {
@@ -34,7 +40,6 @@ void uv_update_time(uv_loop_t *ctx) {
 }
 
 void uv_run_timers(uv_loop_t *loop) {
-  uv_update_time(loop);
   QUEUE *q;
   uv_timer_t *t;
   QUEUE_FOREACH(q, &loop->timer_queue) {

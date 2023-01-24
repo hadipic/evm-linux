@@ -1,3 +1,9 @@
+/****************************************************************************
+**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  QQ Group: 399011436
+**  Git: https://gitee.com/scriptiot/evm
+**  Licence: 个人免费，企业授权
+****************************************************************************/
 #include "evm_module.h"
 
 static evm_t *_runtime;
@@ -208,9 +214,13 @@ void evm_module_init(evm_t *env)
     extern void evm_module_lvgl_event(evm_t *e);
     extern void evm_module_lvgl(evm_t *e);
     extern void evm_module_lvgl_image(evm_t *e);
+    extern void evm_module_lvgl_misc(evm_t *e);
+    extern void evm_module_lvgl_style(evm_t *e);
     evm_module_lvgl(env);
     evm_module_lvgl_event(env);
     evm_module_lvgl_image(env);
+    evm_module_lvgl_misc(env);
+    evm_module_lvgl_style(env);
 #endif
 
 #ifdef CONFIG_EVM_MODULE_TCP

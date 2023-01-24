@@ -1,11 +1,7 @@
 /****************************************************************************
-**
-** Copyright (C) 2022 @武汉市凡迈科技有限公司
-**
-**  EVM是一款通用化设计的虚拟机引擎，拥有语法解析前端接口、编译器、虚拟机和虚拟机扩展接口框架。
-**  Version	: 1.0
-**  Email	: scriptiot@aliyun.com
-**  Website	: https://gitee.com/scriptiot
+**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  QQ Group: 399011436
+**  Git: https://gitee.com/scriptiot/evm
 **  Licence: 个人免费，企业授权
 ****************************************************************************/
 #ifndef EVM_H
@@ -129,6 +125,8 @@ EVM_API evm_val_t evm_mk_boolean(evm_t *e, int v);
 EVM_API evm_val_t evm_mk_native(evm_t *e, evm_native_t v, const char *name, int len);
 EVM_API evm_val_t evm_mk_null(evm_t *e);
 EVM_API evm_val_t evm_mk_undefined(evm_t *e);
+EVM_API evm_val_t evm_mk_invoke(evm_t *e, void *user_data);
+EVM_API void *evm_2_invoke(evm_t *e, evm_val_t o);
 EVM_API void evm_val_free(evm_t *e, evm_val_t v);
 EVM_API evm_val_t evm_val_duplicate(evm_t *e, evm_val_t v);
 

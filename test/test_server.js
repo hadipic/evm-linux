@@ -1,24 +1,23 @@
-var net = require('net');
+var tcp = require('tcp');
+var so = tcp.create();
 
-var port = 8000;
+function createTCP() {
+  return tcp.create();
+}
 
-var server = net.createServer(
-  {
-    allowHalfOpen: true
-  },
-  function(socket) {
-    server.close();
-  }
-);
+function onread(socket, nread, isEOF, buffer) {
+    print(buffer);
+    print(nread);
+}
 
-server.listen(port);
+function onconnection(status, clientHandle) {
+  clientHandle.owner = {};
+  clientHandle.onread = onread;
+  clientHandle.readStart();
+}
 
-server.on('connection', function(socket) {
-  var msg = '';
-  socket.on('data', function(data) {
-    msg += data;
-  });
-  socket.on('end', function() {
-    socket.end(msg);
-  });
-});
+so.createTCP = createTCP;
+so.onconnection = onconnection;
+var err = so.bind('0.0.0.0', 12345);
+print(err);
+so.listen(12345);

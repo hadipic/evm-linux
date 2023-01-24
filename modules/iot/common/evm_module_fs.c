@@ -1,532 +1,513 @@
-#include "evm_module.h"
+/****************************************************************************
+**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  QQ Group: 399011436
+**  Git: https://gitee.com/scriptiot/evm
+**  Licence: 个人免费，企业授权
+****************************************************************************/
 #ifdef CONFIG_EVM_MODULE_FS
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <errno.h>
+#include "linux_uv.h"
 
-//stats.isDirectory()
-EVM_FUNCTION(evm_module_fs_stats_isDirectory)
-{
-    EVM_EPCV;
-    struct stat *st = (struct stat *)evm_object_get_user_data(e, p);
-    if( !st )
-        EVM_RETURN(EVM_UNDEFINED);
+evm_val_t make_stat_object(uv_stat_t* statbuf);
 
-    if( S_ISDIR(st->st_mode) )
-        EVM_RETURN(evm_mk_boolean(e, 1));
-    EVM_RETURN(evm_mk_boolean(e, 0));
+
+static evm_val_t iot_create_uv_exception(int errorno,
+                                               const char* syscall) {
+  evm_t *e = evm_runtime();
+  static char msg[256];
+  snprintf(msg, sizeof(msg), "'%s' %s", syscall, uv_strerror(errorno));
+  return evm_mk_string(e, msg);
 }
 
-//stats.isFile()
-EVM_FUNCTION(evm_module_fs_stats_isFile)
-{
-    EVM_EPCV;
-    struct stat *st = (struct stat *)evm_object_get_user_data(e, p);
-    if( !st )
-        EVM_RETURN(EVM_UNDEFINED);
 
-    if( S_ISREG(st->st_mode) )
-        EVM_RETURN(evm_mk_boolean(e, 1));
-    EVM_RETURN(evm_mk_boolean(e, 0));
-}
+static void fs_after_async(uv_fs_t* req) {
+  evm_t *e = evm_runtime();
+  const evm_val_t cb = *IOT_UV_REQUEST_CALLBACK(req);
+  EVM_ASSERT(evm_is_callable(e, cb));
 
-//fs.close(fd)
-EVM_FUNCTION(evm_module_fs_close)
-{
-    EVM_EPCV;
-    if( argc == 0 )
-        EVM_RETURN(EVM_UNDEFINED);
-
-    if( !evm_is_integer(e, v[0]) || evm_2_integer(e, v[0]) == -1 )
-        EVM_RETURN(EVM_UNDEFINED);
-    close(evm_2_integer(e, v[0]));
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.closeSync(fd)
-EVM_FUNCTION(evm_module_fs_closeSync)
-{
-    EVM_EPCV;
-    if( argc == 0 )
-        EVM_RETURN(EVM_UNDEFINED);
-
-    if( !evm_is_integer(e, v[0]) || evm_2_integer(e, v[0]) == -1 )
-        EVM_RETURN(EVM_UNDEFINED);
-    close(evm_2_integer(e, v[0]));
-
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.createReadStream
-EVM_FUNCTION(evm_module_fs_createReadStream)
-{
-    EVM_EPCV;
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.createWriteStream
-EVM_FUNCTION(evm_module_fs_createWriteStream)
-{
-    EVM_EPCV;
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.existsSync
-EVM_FUNCTION(evm_module_fs_existsSync)
-{
-    EVM_EPCV;
-    if( argc == 0 || !evm_is_string(e, v[0]) )
-        EVM_RETURN(evm_mk_boolean(e, 0));
-    if( access(evm_2_string(e, v[0]), F_OK) == 0 ) {
-        EVM_RETURN(evm_mk_boolean(e, 1));;
+  evm_val_t jargs[2] = { EVM_UNDEFINED };
+  int jargc = 0;
+  if (req->result < 0) {
+    evm_val_t jerror = iot_create_uv_exception(req->result, "open");
+    jargs[jargc++] = jerror;
+  } else {
+    jargs[jargc++] = evm_mk_null(e);
+    switch (req->fs_type) {
+      case UV_FS_CLOSE: {
+        break;
+      }
+      case UV_FS_OPEN:
+      case UV_FS_READ:
+      case UV_FS_WRITE: {
+        jargs[jargc++] = evm_mk_number(e, (double)req->result);
+        break;
+      }
+      case UV_FS_SCANDIR: {
+        int r;
+        uv_dirent_t ent;
+        int idx = 0;
+        jargs[jargc++] = evm_list_create(e);
+        while ((r = uv_fs_scandir_next(req, &ent)) != UV_EOF) {
+          evm_val_t name =
+              evm_mk_string(e, (const char*)ent.name);
+          evm_list_set(e, jargs[1], idx, name);
+          evm_val_free(e, name);
+          idx++;
+        }
+        break;
+      }
+      case UV_FS_FSTAT:
+      case UV_FS_STAT: {
+        uv_stat_t s = (req->statbuf);
+        jargs[jargc++] = make_stat_object(&s);
+        break;
+      }
+      default: { break; }
     }
-    EVM_RETURN(evm_mk_boolean(e, 0));
+  }
+
+  evm_call_free(e, cb, EVM_UNDEFINED, jargc, jargs);
+
+  evm_val_free(e, jargs[0]);
+  evm_val_free(e, jargs[1]);
+  uv_fs_req_cleanup(req);
+  iot_uv_request_destroy((uv_req_t*)req);
 }
 
-//fs.exists
-EVM_FUNCTION(evm_module_fs_exists)
-{
-    EVM_EPCV;
-    evm_val_t exists = evm_module_fs_existsSync(e, p, argc, v);
-    if( argc > 1 && evm_is_callable(e, v[1]) ) {
-        evm_call_free(e, v[1], EVM_UNDEFINED, 1, &exists);
+
+static evm_val_t fs_after_sync(uv_fs_t* req, int err,
+                                   const char* syscall_name) {
+  evm_t *e = evm_runtime();
+  if (err < 0) {
+    evm_val_t jvalue = iot_create_uv_exception(err, syscall_name);
+    return jvalue;
+  }
+
+  switch (req->fs_type) {
+    case UV_FS_CLOSE:
+      break;
+    case UV_FS_OPEN:
+    case UV_FS_READ:
+    case UV_FS_WRITE:
+      return evm_mk_number(e, err);
+    case UV_FS_FSTAT:
+    case UV_FS_STAT: {
+      uv_stat_t* s = &(req->statbuf);
+      return make_stat_object(s);
     }
+    case UV_FS_MKDIR:
+    case UV_FS_RMDIR:
+    case UV_FS_UNLINK:
+    case UV_FS_RENAME:
+      return evm_mk_undefined(e);
+    case UV_FS_SCANDIR: {
+      int r;
+      uv_dirent_t ent;
+      int idx = 0;
+      evm_val_t ret = evm_list_create(e);
+      while ((r = uv_fs_scandir_next(req, &ent)) != UV_EOF) {
+        evm_val_t name = evm_mk_string(e, (const char*)ent.name);
+        evm_list_set(e, ret, idx, name);
+        evm_val_free(e, name);
+        idx++;
+      }
+      return ret;
+    }
+    default: {
+      EVM_ASSERT(false);
+      break;
+    }
+  }
+  return evm_mk_undefined(e);
+}
+
+
+static inline bool is_within_bounds(size_t off, size_t len, size_t max) {
+  if (off >= max || max - off < len)
+    return false;
+
+  return true;
+}
+
+
+#define FS_ASYNC(e, syscall, pcallback, ...)                                \
+  uv_fs_t* fs_req =                                                           \
+      (uv_fs_t*)iot_uv_request_create(sizeof(uv_fs_t), pcallback, 0);       \
+  int err = uv_fs_##syscall(system_get_uv_loop(), fs_req, __VA_ARGS__, \
+                            fs_after_async);                                  \
+  if (err < 0) {                                                              \
+    fs_req->result = err;                                                     \
+    fs_after_async(fs_req);                                                   \
+  }                                                                           \
+  ret_value = evm_mk_null(e);
+
+
+#define FS_SYNC(syscall, ...)                                             \
+  uv_fs_t fs_req;                                                              \
+  int err = uv_fs_##syscall(system_get_uv_loop(), &fs_req, __VA_ARGS__, \
+                            NULL);                                             \
+  ret_value = fs_after_sync(&fs_req, err, #syscall);                           \
+  uv_fs_req_cleanup(&fs_req);
+
+
+EVM_FUNCTION(fs_close) {
+  EVM_EPCV;
+
+  int fd = evm_2_double(e, v[0]);
+  const evm_val_t jcallback = v[1];
+
+  evm_val_t ret_value;
+  if (!evm_is_null(e, jcallback)) {
+    FS_ASYNC(e, close, jcallback, fd);
+  } else {
+    FS_SYNC(close, fd);
+  }
+  EVM_RETURN(ret_value);
+}
+
+
+EVM_FUNCTION(fs_open) {
+  EVM_EPCV
+
+  const char *path = evm_2_string(e, v[0]);
+  int flags = evm_2_integer(e, v[1]);
+  int mode = evm_2_integer(e, v[2]);
+  const evm_val_t jcallback = v[3];
+
+  evm_val_t ret_value;
+  if (!evm_is_null(e, jcallback)) {
+    FS_ASYNC(e, open, jcallback, path, flags, mode);
+  } else {
+    FS_SYNC(open, path, flags, mode);
+  }
+
+  EVM_RETURN(ret_value);
+}
+
+
+typedef enum { IOT_FS_READ, IOT_FS_WRITE } iot_fs_op_t;
+
+evm_val_t fs_do_read_or_write(const evm_val_t jthis,
+                                  const evm_val_t v[],
+                                  const int jargc,
+                                  const iot_fs_op_t fs_op) {
+  evm_t *e = evm_runtime();
+  int fd = evm_2_integer(e, v[0]);
+  const evm_val_t jbuffer = v[1];
+  size_t offset = evm_2_integer(e, v[2]);
+  size_t length = evm_2_integer(e, v[3]);
+  int position = evm_2_integer(e, v[4]);
+  const evm_val_t jcallback = v[5];
+
+  char* data = (char*)evm_buffer_addr(e, jbuffer);
+  size_t data_length = evm_buffer_len(e, jbuffer);
+
+  if (!is_within_bounds(offset, length, data_length)) {
+    evm_throw(e, evm_mk_string(e, "length out of bound"));
+  }
+
+  uv_buf_t uvbuf = uv_buf_init(data + offset, length);
+
+  evm_val_t ret_value;
+  if (fs_op == IOT_FS_READ) {
+    if (!evm_is_null(e,jcallback)) {
+      FS_ASYNC(e, read, jcallback, fd, &uvbuf, 1, position);
+    } else {
+      FS_SYNC(read, fd, &uvbuf, 1, position);
+    }
+  } else {
+    if (!evm_is_null(e, jcallback)) {
+      FS_ASYNC(e, write, jcallback, fd, &uvbuf, 1, position);
+    } else {
+      FS_SYNC(write, fd, &uvbuf, 1, position);
+    }
+  }
+  EVM_RETURN_VAL(ret_value);
+}
+
+
+EVM_FUNCTION(fs_read) {
+  EVM_EPCV
+  EVM_RETURN(fs_do_read_or_write(p, v, argc, IOT_FS_READ));
+}
+
+
+EVM_FUNCTION(fs_write) {
+  EVM_EPCV
+  EVM_RETURN(fs_do_read_or_write(p, v, argc, IOT_FS_WRITE));
+}
+
+
+evm_val_t make_stat_object(uv_stat_t* statbuf) {
+  evm_t *e = evm_runtime();
+  const evm_val_t fs = evm_module_get(e, "fs");
+
+  evm_val_t stat_prototype =
+      evm_prop_get(e, fs, IOT_MAGIC_STRING_STATS);
+  EVM_ASSERT(evm_is_object(e, stat_prototype));
+
+  evm_val_t jstat = evm_object_create(e);
+  evm_prop_set(e, jstat, "prototype", stat_prototype);
+
+  evm_val_free(e, stat_prototype);
+
+
+#define X(statobj, name) \
+  evm_prop_set(e, statobj, #name, evm_mk_number(e, statbuf->st_##name));
+
+  X(jstat, dev)
+  X(jstat, mode)
+  X(jstat, nlink)
+  X(jstat, uid)
+  X(jstat, gid)
+  X(jstat, rdev)
+  X(jstat, blksize)
+  X(jstat, ino)
+  X(jstat, size)
+  X(jstat, blocks)
+
+#undef X
+
+  return jstat;
+}
+
+
+EVM_FUNCTION(fs_stat) {
+  EVM_EPCV
+
+  const char *path = evm_2_string(e, v[0]);
+  const evm_val_t jcallback = v[1];
+
+  evm_val_t ret_value;
+  if (!evm_is_null(e, jcallback)) {
+    FS_ASYNC(e, stat, jcallback, path);
+  } else {
+    FS_SYNC(stat, path);
+  }
+
+  EVM_RETURN(ret_value);
+}
+
+
+EVM_FUNCTION(fs_fstat) {
+  EVM_EPCV
+
+  int fd = evm_2_integer(e, v[0]);
+  const evm_val_t jcallback = v[1];
+
+  evm_val_t ret_value;
+  if (!evm_is_null(e, jcallback)) {
+    FS_ASYNC(e, fstat, jcallback, fd);
+  } else {
+    FS_SYNC(fstat, fd);
+  }
+  EVM_RETURN(ret_value);
+}
+
+
+EVM_FUNCTION(fs_mkdir) {
+  EVM_EPCV
+
+  const char *path = evm_2_string(e, v[0]);
+  int mode = evm_2_integer(e, v[1]);
+  const evm_val_t jcallback = v[2];
+
+  evm_val_t ret_value;
+  if (!evm_is_null(e, jcallback)) {
+    FS_ASYNC(e, mkdir, jcallback, path, mode);
+  } else {
+    FS_SYNC(mkdir, path, mode);
+  }
+
+  EVM_RETURN(ret_value);
+}
+
+
+EVM_FUNCTION(fs_rmdir) {
+  EVM_EPCV
+
+  const char *path = evm_2_string(e, v[0]);
+  const evm_val_t jcallback = v[1];
+
+  evm_val_t ret_value;
+  if (!evm_is_null(e, jcallback)) {
+    FS_ASYNC(e, rmdir, jcallback, path);
+  } else {
+    FS_SYNC(rmdir, path);
+  }
+
+  EVM_RETURN(ret_value);
+}
+
+
+EVM_FUNCTION(fs_unlink) {
+  EVM_EPCV
+
+  const char *path = evm_2_string(e, v[0]);
+  const evm_val_t jcallback = v[1];
+
+  evm_val_t ret_value;
+  if (!evm_is_null(e, jcallback)) {
+    FS_ASYNC(e, unlink, jcallback, path);
+  } else {
+    FS_SYNC(unlink, path);
+  }
+
+  EVM_RETURN(ret_value);
+}
+
+
+EVM_FUNCTION(fs_rename) {
+  EVM_EPCV
+
+  const char *old_path = evm_2_string(e, v[0]);
+  const char *new_path = evm_2_string(e, v[1]);
+  const evm_val_t jcallback = v[2];
+
+  evm_val_t ret_value;
+  if (!evm_is_null(e, jcallback)) {
+    FS_ASYNC(e, rename, jcallback, old_path, new_path);
+  } else {
+    FS_SYNC(rename, old_path, new_path);
+  }
+
+  EVM_RETURN(ret_value);
+}
+
+
+EVM_FUNCTION(fs_read_dir) {
+  EVM_EPCV
+  const char *path = evm_2_string(e, v[0]);
+  const evm_val_t jcallback = v[1];
+
+  evm_val_t ret_value;
+  if (!evm_is_null(e, jcallback)) {
+    FS_ASYNC(e, scandir, jcallback, path, 0);
+  } else {
+    FS_SYNC(scandir, path, 0);
+  }
+
+  EVM_RETURN(ret_value);
+}
+
+static evm_val_t stats_is_typeof(evm_val_t stats, int type) {
+  evm_t *e = evm_runtime();
+  evm_val_t mode = evm_prop_get(e, stats, IOT_MAGIC_STRING_MODE);
+
+  if (!evm_is_number(e, mode)) {
+    evm_val_free(e, mode);
+    evm_throw(e, evm_mk_string(e, "fstat: file mode should be a number"));
+  }
+
+  int mode_number = (int)evm_2_integer(e, mode);
+
+  evm_val_free(e, mode);
+
+  return evm_mk_boolean(e, (mode_number & S_IFMT) == type);
+}
+
+EVM_FUNCTION(fs_stats_is_directory) {
+  EVM_EPCV
+  evm_val_t stats = p;
+  EVM_RETURN(stats_is_typeof(stats, S_IFDIR));
+}
+
+EVM_FUNCTION(fs_stats_is_file) {
+  EVM_EPCV
+  evm_val_t stats = p;
+  EVM_RETURN(stats_is_typeof(stats, S_IFREG));
+}
+
+EVM_FUNCTION(fs_size) {
+  EVM_EPCV
+  int fd = open(evm_2_string(e, v[0]), O_RDONLY);
+  if( fd < 0 ){
+      EVM_RETURN(evm_mk_boolean(e, 0))
+  }
+  struct stat buf;
+  fstat(fd, &buf);
+  close(fd);
+  EVM_RETURN(evm_mk_number(e, buf.st_size));
+}
+
+EVM_FUNCTION(fs_exists) {
+  EVM_EPCV
+  int fd = open(evm_2_string(e, v[0]), O_RDONLY);
+  if( fd < 0 ){
+      EVM_RETURN(evm_mk_boolean(e, 0))
+  }
+  close(fd);
+  EVM_RETURN(evm_mk_boolean(e, 1))
+}
+
+EVM_FUNCTION(fs_readFile) {
+  EVM_EPCV;
+  const char *path = evm_2_string(e, v[0]);
+  const char *mode = evm_2_string(e, v[1]);
+  int fd = open(path, O_RDONLY);
+  if( fd < 0 ){
+      EVM_RETURN(EVM_UNDEFINED)
+  }
+  struct stat buf;
+  fstat(fd, &buf);
+  char *temp_buf = zmalloc(buf.st_size);
+  EVM_ASSERT(temp_buf);
+  evm_val_t ret = EVM_UNDEFINED;
+  if( strstr(mode, "b") ){
+    read(fd, temp_buf, buf.st_size);
+    ret = evm_buffer_create(e, temp_buf, buf.st_size);
+  } else {
+    ret = evm_mk_lstring(e, temp_buf, buf.st_size);
+  }
+  zfree(temp_buf);
+  close(fd);
+  EVM_RETURN(ret)
+}
+
+EVM_FUNCTION(fs_writeFile) {
+  EVM_EPCV;
+  if( !evm_is_string(e, v[0]) || (!evm_is_buffer(e, v[1]) && !evm_is_string(e, v[1])))
     EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.fstatSync(fd)
-EVM_FUNCTION(evm_module_fs_fstatSync)
-{
-    EVM_EPCV;
-    if( argc == 0 || !evm_is_integer(e, v[0]) )
-        EVM_RETURN(EVM_UNDEFINED);
-    struct stat *st = (struct stat *)malloc(sizeof(struct stat));
-    fstat(evm_2_integer(e, v[0]), st);
-    evm_val_t obj = evm_object_create_user_data(e, st);
-    evm_prop_set(e, obj, "isDirectory", evm_mk_native(e, evm_module_fs_stats_isDirectory, "isDirectory", 0));
-    evm_prop_set(e, obj, "isFile", evm_mk_native(e, evm_module_fs_stats_isFile, "isFile", 0));
-    EVM_RETURN(obj);
-}
-
-//fs.fstat(fd, callback)
-EVM_FUNCTION(evm_module_fs_fstat)
-{
-    EVM_EPCV;
-    evm_val_t obj = evm_module_fs_fstatSync(e, p, argc, v);
-    if( evm_is_undefined(e, obj) )
-        EVM_RETURN(EVM_UNDEFINED);
-    if( argc > 1 && evm_is_callable(e, v[1]) ) {
-        evm_val_t args[2];
-        args[0] = evm_mk_null(e);
-        args[1] = obj;
-        evm_call_free(e, v[0], EVM_UNDEFINED, 2, args);
-    }
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.mkdir(path[, mode], callback)
-EVM_FUNCTION(evm_module_fs_mkdirSync)
-{
-    EVM_EPCV;
-    if( argc == 0 || !evm_is_string(e, v[0]) )
-        EVM_RETURN(EVM_UNDEFINED);
-#if defined (__linux)
-    __mode_t mode = 777;
-    if( argc > 1 && evm_is_integer(e, v[1]) )
-        mode = (__mode_t)evm_2_integer(e, v[1]);
-    mkdir(evm_2_string(e, v[0]), mode);
-#elif defined (WIN32) || defined (WIN64)
-    mkdir(evm_2_string(e, v[0]));
-#endif
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.mkdir
-EVM_FUNCTION(evm_module_fs_mkdir)
-{
-    EVM_EPCV;
-    evm_module_fs_mkdirSync(e, p, argc, v);
-    evm_val_t args = evm_mk_number(e, errno);
-    if( argc > 2 && evm_is_callable(e, v[2]) ) {
-        evm_call_free(e, v[2], EVM_UNDEFINED, 1, &args);
-    } else if( argc > 1 && evm_is_callable(e, v[1]) ){
-        evm_call_free(e, v[1], EVM_UNDEFINED, 1, &args);
-    }
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.openSync(path, flags[, mode])
-EVM_FUNCTION(evm_module_fs_openSync)
-{
-    EVM_EPCV;
-    if( argc < 2 || !evm_is_string(e, v[0]) || !evm_is_string(e, v[1]) )
-        EVM_RETURN(EVM_UNDEFINED);
-    const char *flag = evm_2_string(e, v[1]);
-    int mode = O_RDONLY;
-    if (strstr(flag, "+") != NULL){
-        mode = mode | O_CREAT;
-    }
-
-    if (strstr(flag, "r") != NULL){
-        mode = mode | O_RDONLY;
-    }
-
-    if (strstr(flag, "w") != NULL){
-        mode = mode | O_WRONLY;
-    }
-
-    if (strstr(flag, "a") != NULL){
-        mode = mode | O_APPEND;
-    }
-
-#if defined (WIN32) || defined (WIN64)
-    if (strstr(flag, "b") != NULL){
-        mode = mode | O_BINARY;
-    }
-#endif
-    return evm_mk_number(e, open(evm_2_string(e, v[0]), mode));
-}
-
-//fs.open(path, flags[, mode], callback)
-EVM_FUNCTION(evm_module_fs_open)
-{
-    EVM_EPCV;
-    evm_val_t ret = evm_module_fs_openSync(e, p, argc, v);
-    if(argc > 2 && evm_is_callable(e, v[2]) ) {
-        evm_val_t args[2];
-        args[0] = evm_mk_number(e, errno);
-        args[1] = ret;
-        evm_call_free(e, v[2], EVM_UNDEFINED, 2, args);
-        evm_val_free(e, args[0]);
-        evm_val_free(e, args[1]);
-    }
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.readSync(fd, buffer, offset, length, position)
-EVM_FUNCTION(evm_module_fs_readSync)
-{
-    EVM_EPCV;
-    int fd;
-    void *buffer;
-    size_t offset;
-    size_t length;
-    size_t position;
-
-    if( argc < 5 )
-        EVM_RETURN(EVM_UNDEFINED);
-
-    if( !evm_is_integer(e, v[0]) || !evm_is_buffer(e, v[1]) || !evm_is_integer(e, v[2]) || !evm_is_integer(e, v[3]) || !evm_is_integer(e, v[4]) )
-        EVM_RETURN(EVM_UNDEFINED);
-
-    fd = evm_2_integer(e, v[0]);
-    if( fd == -1 )
-        EVM_RETURN(evm_mk_number(e, 0));
-
-    buffer = evm_buffer_addr(e, v[1]);
-    offset = (size_t)evm_2_integer(e, v[2]);
-    length = (size_t)evm_2_integer(e, v[3]);
-    position = (size_t)evm_2_integer(e, v[4]);
-
-    EVM_RETURN(evm_mk_number(e, read(fd, buffer + offset, length) ));
-}
-
-//fs.read(fd, buffer, offset, length, position, callback)
-EVM_FUNCTION(evm_module_fs_read)
-{
-    EVM_EPCV;
-    evm_val_t ret = evm_module_fs_readSync(e, p, argc, v);
-    if(argc > 4 && evm_is_callable(e, v[4]) ) {
-        evm_val_t args[3];
-        args[0] = evm_mk_number(e, errno);
-        args[1] = ret;
-        args[2] = v[1];
-        evm_call_free(e, v[2], EVM_UNDEFINED, 3, args);
-        evm_val_free(e, args[0]);
-        evm_val_free(e, args[1]);
-    }
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.readdir
-EVM_FUNCTION(evm_module_fs_readdir)
-{
-    EVM_EPCV;
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.readdirSync
-EVM_FUNCTION(evm_module_fs_readdirSync)
-{
-    EVM_EPCV;
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.readFileSync(path)
-EVM_FUNCTION(evm_module_fs_readFileSync)
-{
-    EVM_EPCV;
-    if( argc == 0 || !evm_is_string(e, v[0]) )
-        EVM_RETURN(EVM_UNDEFINED);
-
-    const char * fpath = evm_2_string(e, v[0]);
-
-    struct stat st;
-    if(stat(fpath, &st) < 0){
-       EVM_RETURN(EVM_UNDEFINED);
-    }
-
-#if defined (WIN32) || defined (WIN64)
-    int fd = open(fpath, O_RDONLY | O_BINARY);
-#else
-    int fd = open(fpath, O_RDONLY);
-#endif
-    if( fd == -1 )
-        EVM_RETURN(EVM_UNDEFINED);
-    uint8_t *buf = malloc(st.st_size);
-    EVM_ASSERT(buf);
-    read(fd, buf, st.st_size);
-    close(fd);
-    evm_val_t buf_obj = evm_buffer_create(e, buf, st.st_size);
-    free(buf);
-    EVM_RETURN(buf_obj);
-}
-
-//fs.readFile(path, callback)
-EVM_FUNCTION(evm_module_fs_readFile)
-{
-    EVM_EPCV;
-    evm_val_t ret = evm_module_fs_readFileSync(e, p, argc, v);
-    if( evm_is_undefined(e, ret) )
-        EVM_RETURN(ret);
-    if( argc > 1 && evm_is_callable(e, v[1]) ) {
-        evm_val_t args[2];
-        args[0] = evm_mk_number(e, errno);
-        args[1] = ret;
-        evm_call_free(e, v[1], EVM_UNDEFINED, 2, args);
-        evm_val_free(e, args[0]);
-    }
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.renameSync(oldPath, newPath)
-EVM_FUNCTION(evm_module_fs_renameSync)
-{
-    EVM_EPCV;
-    if( argc < 2 || !evm_is_string(e, v[0]) || !evm_is_string(e, v[1]) )
-        EVM_RETURN(EVM_UNDEFINED);
-    rename(evm_2_string(e, v[0]), evm_2_string(e, v[1]));
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.rename
-EVM_FUNCTION(evm_module_fs_rename)
-{
-    EVM_EPCV;
-    evm_module_fs_renameSync(e, p, argc, v);
-    if( argc > 2 && evm_is_callable(e, v[2]) ) {
-        evm_val_t args;
-        args = evm_mk_number(e, errno);
-        evm_call_free(e, v[2], EVM_UNDEFINED, 1, &args);
-        evm_val_free(e, args);
-    }
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.rmdirSync(path)
-EVM_FUNCTION(evm_module_fs_rmdirSync)
-{
-    EVM_EPCV;
-    if( argc == 0 || !evm_is_string(e, v[0]) )
-        EVM_RETURN(EVM_UNDEFINED);
-    rmdir(evm_2_string(e, v[0]));
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.rmdir(path, callback)
-EVM_FUNCTION(evm_module_fs_rmdir)
-{
-    EVM_EPCV;
-    evm_module_fs_rmdirSync(e, p, argc, v);
-    if( argc > 1 && evm_is_callable(e, v[1]) ) {
-        evm_val_t args;
-        args = evm_mk_number(e, errno);
-        evm_call_free(e, v[1], EVM_UNDEFINED, 1, &args);
-        evm_val_free(e, args);
-    }
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.statSync(path)
-EVM_FUNCTION(evm_module_fs_statSync)
-{
-    EVM_EPCV;
-    if( argc == 0 || !evm_is_string(e, v[0]) ) {
-        EVM_RETURN(EVM_UNDEFINED);
-    }
-    struct stat *st = (struct stat *)malloc(sizeof(struct stat));
-    if( !st )
-        EVM_RETURN(EVM_UNDEFINED);
-    stat(evm_2_string(e, v[0]), st);
-    evm_val_t obj = evm_object_create_user_data(e, st);
-    evm_prop_set(e, obj, "isDirectory", evm_mk_native(e, evm_module_fs_stats_isDirectory, "isDirectory", 0));
-    evm_prop_set(e, obj, "isFile", evm_mk_native(e, evm_module_fs_stats_isFile, "isFile", 0));
-    EVM_RETURN(obj);
-}
-
-//fs.stat(path, callback)
-EVM_FUNCTION(evm_module_fs_stat)
-{
-    EVM_EPCV;
-    evm_val_t obj = evm_module_fs_statSync(e, p, argc, v);
-    if( argc > 1 && evm_is_callable(e, v[1]) ) {
-        evm_val_t args[2];
-        args[0] = evm_mk_null(e);
-        args[1] = obj;
-        evm_call_free(e, v[1], EVM_UNDEFINED, 2, args);
-        evm_val_free(e, args[0]);
-        evm_val_free(e, args[1]);
-    }
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.unlinkSync(path)
-EVM_FUNCTION(evm_module_fs_unlinkSync)
-{
-    EVM_EPCV;
-    if( argc == 0 || !evm_is_string(e, v[0]) ) {
-        EVM_RETURN(EVM_UNDEFINED);
-    }
-    unlink(evm_2_string(e, v[0]));
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.unlink(path, callback)
-EVM_FUNCTION(evm_module_fs_unlink)
-{
-    EVM_EPCV;
-    evm_module_fs_unlinkSync(e, p, argc, v);
-    if( argc > 1 && evm_is_callable(e, v[1]) ) {
-        evm_val_t args;
-        args = evm_mk_number(e, errno);
-        evm_call_free(e, v[1], EVM_UNDEFINED, 1, &args);
-        evm_val_free(e, args);
-    }
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.writeSync(fd, buffer, offset, length[, position])
-EVM_FUNCTION(evm_module_fs_writeSync)
-{
-    EVM_EPCV;
-    int fd;
-    void *buffer;
-    size_t offset;
-    size_t length;
-
-    if( argc < 5 )
-        EVM_RETURN(EVM_UNDEFINED);
-
-    if( !evm_is_integer(e, v[0]) || !evm_is_buffer(e, v[1]) || !evm_is_integer(e, v[2]) || !evm_is_integer(e, v[3]) || !evm_is_integer(e, v[4]) )
-        EVM_RETURN(EVM_UNDEFINED);
-
-    fd = evm_2_integer(e, v[0]);
-    if( fd == -1 )
-        EVM_RETURN(evm_mk_number(e, 0));
-
-    buffer = evm_buffer_addr(e, v[1]);
-    offset = (size_t)evm_2_integer(e, v[2]);
-    length = (size_t)evm_2_integer(e, v[3]);
-
-    EVM_RETURN(evm_mk_number(e, write(fd, buffer + offset, length) ));
-}
-
-//fs.write(fd, buffer, offset, length[, position], callback)
-EVM_FUNCTION(evm_module_fs_write)
-{
-    EVM_EPCV
-    evm_val_t ret = evm_module_fs_writeSync(e, p, argc, v);
-    if(argc > 4 && evm_is_callable(e, v[4]) ) {
-        evm_val_t args[3];
-        args[0] = evm_mk_number(e, errno);
-        args[1] = ret;
-        args[2] = v[1];
-        evm_call_free(e, v[2], EVM_UNDEFINED, 3, args);
-    }
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.writeFileSync(path, data)
-EVM_FUNCTION(evm_module_fs_writeFileSync)
-{
-    EVM_EPCV
-    if( argc < 2 || !evm_is_string(e, v[0]) || !(evm_is_buffer(e, v[1]) || evm_is_string(e, v[1]) ) )
-        EVM_RETURN(EVM_UNDEFINED);
-#if defined (WIN32) || defined (WIN64)
-    int fd = open(evm_2_string(e, v[0]), O_CREAT |O_RDWR | O_BINARY);
-#else
-    int fd = open(evm_2_string(e, v[0]), O_CREAT |O_RDWR);
-#endif
-    if( fd == -1 )
-        EVM_RETURN(EVM_UNDEFINED);
-    if( evm_is_buffer(e, v[1]) ){
-        size_t len = (size_t)evm_buffer_len(e, v[1]);
-        uint8_t *addr = evm_buffer_addr(e, v[2]);
-        write(fd, addr, len);
-    }else {
-        write(fd, evm_2_string(e, v[1]), (size_t)evm_string_len(e, v[1]));
-    }
-    close(fd);
-    EVM_RETURN(EVM_UNDEFINED);
-}
-
-//fs.writeFile(path, data, callback)
-EVM_FUNCTION(evm_module_fs_writeFile)
-{
-    EVM_EPCV
-    evm_module_fs_writeFileSync(e, p, argc, v);
-    if( argc > 2 && evm_is_callable(e, v[2]) ) {
-        evm_val_t args;
-        args = evm_mk_number(e, errno);
-        evm_call_free(e, v[1], EVM_UNDEFINED, 1, &args);
-        evm_val_free(e, args);
-    }
-    EVM_RETURN(EVM_UNDEFINED);
+  const char *path = evm_2_string(e, v[0]);
+  int fd = open(path, O_WRONLY);
+  if( fd < 0 ){
+      EVM_RETURN(EVM_UNDEFINED)
+  }
+  if( evm_is_string(e, v[1]) ){
+      write(fd, evm_2_string(e, v[1]), evm_string_len(e, v[1]));
+  } else if( evm_is_buffer(e, v[1]) ){
+      write(fd, evm_buffer_addr(e, v[1]), evm_buffer_len(e, v[1]));
+  }
+  close(fd);
+  EVM_RETURN(EVM_UNDEFINED);
 }
 
 void evm_module_fs(evm_t *e) {
-    evm_val_t obj = evm_object_create(e);
-    evm_prop_set(e, obj, "close", evm_mk_native(e, evm_module_fs_close, "close", 1));
-    evm_prop_set(e, obj, "closeSync", evm_mk_native(e, evm_module_fs_closeSync, "closeSync", 1));
-    evm_prop_set(e, obj, "createReadStream", evm_mk_native(e, evm_module_fs_createReadStream, "createReadStream", 1));
-    evm_prop_set(e, obj, "createWriteStream", evm_mk_native(e, evm_module_fs_createWriteStream, "createWriteStream", 1));
-    evm_prop_set(e, obj, "exists", evm_mk_native(e, evm_module_fs_exists, "exists", 1));
-    evm_prop_set(e, obj, "existsSync", evm_mk_native(e, evm_module_fs_existsSync, "existsSync", 1));
-    evm_prop_set(e, obj, "fstat", evm_mk_native(e, evm_module_fs_fstat, "fstat", 1));
-    evm_prop_set(e, obj, "fstatSync", evm_mk_native(e, evm_module_fs_fstatSync, "fstatSync", 1));
-    evm_prop_set(e, obj, "mkdir", evm_mk_native(e, evm_module_fs_mkdir, "mkdir", 1));
-    evm_prop_set(e, obj, "mkdirSync", evm_mk_native(e, evm_module_fs_mkdirSync, "mkdirSync", 1));
-    evm_prop_set(e, obj, "open", evm_mk_native(e, evm_module_fs_open, "open", 1));
-    evm_prop_set(e, obj, "openSync", evm_mk_native(e, evm_module_fs_openSync, "openSync", 1));
-    evm_prop_set(e, obj, "read", evm_mk_native(e, evm_module_fs_read, "read", 1));
-    evm_prop_set(e, obj, "readSync", evm_mk_native(e, evm_module_fs_readSync, "readSync", 1));
-    evm_prop_set(e, obj, "readdir", evm_mk_native(e, evm_module_fs_readdir, "readdir", 1));
-    evm_prop_set(e, obj, "readdirSync", evm_mk_native(e, evm_module_fs_readdirSync, "readdirSync", 1));
-    evm_prop_set(e, obj, "readFile", evm_mk_native(e, evm_module_fs_readFile, "readFile", 1));
-    evm_prop_set(e, obj, "readFileSync", evm_mk_native(e, evm_module_fs_readFileSync, "readFileSync", 1));
-    evm_prop_set(e, obj, "rename", evm_mk_native(e, evm_module_fs_rename, "rename", 1));
-    evm_prop_set(e, obj, "renameSync", evm_mk_native(e, evm_module_fs_renameSync, "renameSync", 1));
-    evm_prop_set(e, obj, "rmdir", evm_mk_native(e, evm_module_fs_rmdir, "rmdir", 1));
-    evm_prop_set(e, obj, "rmdirSync", evm_mk_native(e, evm_module_fs_rmdirSync, "rmdirSync", 1));
-    evm_prop_set(e, obj, "stat", evm_mk_native(e, evm_module_fs_stat, "stat", 1));
-    evm_prop_set(e, obj, "statSync", evm_mk_native(e, evm_module_fs_statSync, "statSync", 1));
-    evm_prop_set(e, obj, "unlink", evm_mk_native(e, evm_module_fs_unlink, "unlink", 1));
-    evm_prop_set(e, obj, "unlinkSync", evm_mk_native(e, evm_module_fs_unlinkSync, "unlinkSync", 1));
-    evm_prop_set(e, obj, "write", evm_mk_native(e, evm_module_fs_write, "write", 1));
-    evm_prop_set(e, obj, "writeSync", evm_mk_native(e, evm_module_fs_writeSync, "writeSync", 1));
-    evm_prop_set(e, obj, "writeFile", evm_mk_native(e, evm_module_fs_writeFile, "writeFile", 1));
-    evm_prop_set(e, obj, "writeFileSync", evm_mk_native(e, evm_module_fs_writeFileSync, "writeFileSync", 1));
+  evm_val_t fs = evm_object_create(e);
+
+  evm_prop_set(e, fs, IOT_MAGIC_STRING_CLOSE, evm_mk_native(e, fs_close, IOT_MAGIC_STRING_CLOSE, EVM_VARARGS));
+  evm_prop_set(e, fs, IOT_MAGIC_STRING_OPEN, evm_mk_native(e, fs_open, IOT_MAGIC_STRING_OPEN, EVM_VARARGS));
+  evm_prop_set(e, fs, IOT_MAGIC_STRING_READ, evm_mk_native(e, fs_read, IOT_MAGIC_STRING_READ, EVM_VARARGS));
+  evm_prop_set(e, fs, IOT_MAGIC_STRING_WRITE, evm_mk_native(e, fs_write, IOT_MAGIC_STRING_WRITE, EVM_VARARGS));
+  evm_prop_set(e, fs, IOT_MAGIC_STRING_STAT, evm_mk_native(e, fs_stat, IOT_MAGIC_STRING_STAT, EVM_VARARGS));
+  evm_prop_set(e, fs, IOT_MAGIC_STRING_FSTAT, evm_mk_native(e, fs_fstat, IOT_MAGIC_STRING_FSTAT, EVM_VARARGS));
+  evm_prop_set(e, fs, IOT_MAGIC_STRING_MKDIR, evm_mk_native(e, fs_mkdir, IOT_MAGIC_STRING_MKDIR, EVM_VARARGS));
+  evm_prop_set(e, fs, IOT_MAGIC_STRING_RMDIR, evm_mk_native(e, fs_rmdir, IOT_MAGIC_STRING_RMDIR, EVM_VARARGS));
+  evm_prop_set(e, fs, IOT_MAGIC_STRING_UNLINK, evm_mk_native(e, fs_unlink, IOT_MAGIC_STRING_UNLINK, EVM_VARARGS));
+  evm_prop_set(e, fs, IOT_MAGIC_STRING_RENAME, evm_mk_native(e, fs_rename, IOT_MAGIC_STRING_RENAME, EVM_VARARGS));
+  evm_prop_set(e, fs, IOT_MAGIC_STRING_READDIR, evm_mk_native(e, fs_read_dir, IOT_MAGIC_STRING_READDIR, EVM_VARARGS));
+  evm_prop_set(e, fs, IOT_MAGIC_STRING_EXISTS, evm_mk_native(e, fs_exists, IOT_MAGIC_STRING_EXISTS, EVM_VARARGS));
+  evm_prop_set(e, fs, "readFile", evm_mk_native(e, fs_readFile, "readFile", EVM_VARARGS));
+  evm_prop_set(e, fs, "writeFile", evm_mk_native(e, fs_writeFile, "writeFile", EVM_VARARGS));
+  evm_prop_set(e, fs, "size", evm_mk_native(e, fs_size, "size", EVM_VARARGS));
+
+  evm_val_t stats_prototype = evm_object_create(e);
+
+  evm_prop_set(e, stats_prototype, IOT_MAGIC_STRING_ISDIRECTORY,
+                        evm_mk_native(e, fs_stats_is_directory, IOT_MAGIC_STRING_ISDIRECTORY, EVM_VARARGS));
+  evm_prop_set(e, stats_prototype, IOT_MAGIC_STRING_ISFILE,
+                        evm_mk_native(e, fs_stats_is_file, IOT_MAGIC_STRING_ISFILE, EVM_VARARGS));
+
+  evm_prop_set(e, fs, IOT_MAGIC_STRING_STATS, stats_prototype);
+  evm_module_add(e, "@system.fs", fs);
 }
 #endif

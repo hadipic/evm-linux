@@ -4,6 +4,22 @@
 #include "lvgl.h"
 #include "evm_module.h"
 
+EVM_FUNCTION(evm_module_lvgl_lv_obj_move_background) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_obj_move_background(cffi_args[1].p);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_obj_move_foreground) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_obj_move_foreground(cffi_args[1].p);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
 EVM_FUNCTION(evm_module_lvgl_lv_scr_act) {
   EVM_EPCV;
   evm_cffi_val_t cffi_args[1];
@@ -561,6 +577,8 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_create) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].p = lv_obj_create(cffi_args[1].p);
+  lv_obj_add_flag(cffi_args[0].p, LV_OBJ_FLAG_FLOATING);
+  lv_obj_clear_flag(cffi_args[0].p, LV_OBJ_FLAG_SCROLLABLE);
   EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
 }
 
@@ -1444,6 +1462,94 @@ EVM_FUNCTION(evm_module_lvgl_lv_img_set_src) {
   EVM_RETURN(EVM_UNDEFINED)
 }
 
+EVM_FUNCTION(evm_module_lvgl_lv_img_set_offset_x) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_img_set_offset_x(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_img_set_offset_y) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_img_set_offset_y(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_img_set_angle) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_img_set_angle(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_img_set_zoom) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_img_set_zoom(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_img_set_antialias) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pb", argc, v);
+  lv_img_set_antialias(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_img_get_src) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].s = lv_img_get_src(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "sp"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_img_get_offset_x) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].i32 = lv_img_get_offset_x(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_img_get_offset_y) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].i32 = lv_img_get_offset_y(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_img_get_angle) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].i32 = lv_img_get_angle(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_img_get_zoom) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].i32 = lv_img_get_zoom(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_img_get_antialias) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].i32 = lv_img_get_antialias(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+}
+
 EVM_FUNCTION(evm_module_lvgl_lv_slider_create) {
   EVM_EPCV;
   evm_cffi_val_t cffi_args[2];
@@ -1476,6 +1582,22 @@ EVM_FUNCTION(evm_module_lvgl_lv_slider_get_value) {
   EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
 }
 
+EVM_FUNCTION(evm_module_lvgl_lv_slider_set_min) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_slider_set_range(cffi_args[1].p, cffi_args[2].i32, lv_slider_get_max_value(cffi_args[1].p));
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_slider_set_max) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_slider_set_range(cffi_args[1].p, lv_slider_get_min_value(cffi_args[1].p), cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
 EVM_FUNCTION(evm_module_lvgl_lv_slider_get_min_value) {
   EVM_EPCV;
   evm_cffi_val_t cffi_args[2];
@@ -1492,9 +1614,355 @@ EVM_FUNCTION(evm_module_lvgl_lv_slider_get_max_value) {
   EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
 }
 
+EVM_FUNCTION(evm_module_lvgl_lv_roller_create) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].p = lv_roller_create(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_roller_set_options) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[4];
+  evm_cffi_exec_param(e, cffi_args + 1, "psi", argc, v);
+  lv_roller_set_options(cffi_args[1].p, cffi_args[2].s, cffi_args[3].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_roller_set_selected) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[4];
+  evm_cffi_exec_param(e, cffi_args + 1, "pii", argc, v);
+  lv_roller_set_selected(cffi_args[1].p, cffi_args[2].i32, cffi_args[3].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_roller_set_visible_row_count) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_roller_set_visible_row_count(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_roller_get_selected) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].i32 = lv_roller_get_selected(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_roller_get_options) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].s = lv_roller_get_options(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "sp"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_roller_get_option_cnt) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].i32 = lv_roller_get_option_cnt(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_switch_create) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].p = lv_switch_create(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_create) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].p = lv_textarea_create(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_add_char) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_textarea_add_char(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_add_text) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "ps", argc, v);
+  lv_textarea_add_text(cffi_args[1].p, cffi_args[2].s);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_del_char) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_textarea_del_char(cffi_args[1].p);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_del_char_forward) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_textarea_del_char_forward(cffi_args[1].p);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_set_text) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "ps", argc, v);
+  lv_textarea_set_text(cffi_args[1].p, cffi_args[2].s);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_set_placeholder_text) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "ps", argc, v);
+  lv_textarea_set_placeholder_text(cffi_args[1].p, cffi_args[2].s);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_set_cursor_pos) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_textarea_set_cursor_pos(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_set_cursor_click_pos) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pb", argc, v);
+  lv_textarea_set_cursor_click_pos(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_set_password_mode) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pb", argc, v);
+  lv_textarea_set_password_mode(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_set_password_bullet) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "ps", argc, v);
+  lv_textarea_set_password_bullet(cffi_args[1].p, cffi_args[2].s);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_set_one_line) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pb", argc, v);
+  lv_textarea_set_one_line(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_set_accepted_chars) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "ps", argc, v);
+  lv_textarea_set_accepted_chars(cffi_args[1].p, cffi_args[2].s);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_set_max_length) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_textarea_set_max_length(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_set_insert_replace) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "ps", argc, v);
+  lv_textarea_set_insert_replace(cffi_args[1].p, cffi_args[2].s);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_set_text_selection) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pb", argc, v);
+  lv_textarea_set_text_selection(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_set_password_show_time) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_textarea_set_password_show_time(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_set_align) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_textarea_set_align(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_text) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].s = lv_textarea_get_text(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "sp"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_placeholder_text) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].s = lv_textarea_get_placeholder_text(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "sp"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_cursor_pos) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].i32 = lv_textarea_get_cursor_pos(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_cursor_click_pos) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].i32 = lv_textarea_get_cursor_click_pos(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_password_mode) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].i32 = lv_textarea_get_password_mode(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_password_bullet) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].s = lv_textarea_get_password_bullet(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "sp"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_one_line) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].i32 = lv_textarea_get_one_line(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_accepted_chars) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].s = lv_textarea_get_accepted_chars(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "sp"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_max_length) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].i32 = lv_textarea_get_max_length(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_text_is_selected) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].i32 = lv_textarea_text_is_selected(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_text_selection) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].i32 = lv_textarea_get_text_selection(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_password_show_time) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].i32 = lv_textarea_get_password_show_time(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_clear_selection) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_textarea_clear_selection(cffi_args[1].p);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_cursor_right) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_textarea_cursor_right(cffi_args[1].p);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_cursor_left) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_textarea_cursor_left(cffi_args[1].p);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_cursor_down) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_textarea_cursor_down(cffi_args[1].p);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_textarea_cursor_up) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_textarea_cursor_up(cffi_args[1].p);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
 
 void evm_module_lvgl(evm_t *e) {
   evm_val_t obj = evm_object_create(e);
+  evm_prop_set(e, obj, "lv_obj_move_background", evm_mk_native(e, evm_module_lvgl_lv_obj_move_background, "lv_obj_move_background", 1));
+  evm_prop_set(e, obj, "lv_obj_move_foreground", evm_mk_native(e, evm_module_lvgl_lv_obj_move_foreground, "lv_obj_move_foreground", 1));
   evm_prop_set(e, obj, "lv_scr_act", evm_mk_native(e, evm_module_lvgl_lv_scr_act, "lv_scr_act", 0));
   evm_prop_set(e, obj, "lv_color_hex", evm_mk_native(e, evm_module_lvgl_lv_color_hex, "lv_color_hex", 1));
   evm_prop_set(e, obj, "lv_style_create", evm_mk_native(e, evm_module_lvgl_lv_style_create, "lv_style_create", 0));
@@ -1673,12 +2141,68 @@ void evm_module_lvgl(evm_t *e) {
   evm_prop_set(e, obj, "lv_label_get_text", evm_mk_native(e, evm_module_lvgl_lv_label_get_text, "lv_label_get_text", 1));
   evm_prop_set(e, obj, "lv_img_create", evm_mk_native(e, evm_module_lvgl_lv_img_create, "lv_img_create", 1));
   evm_prop_set(e, obj, "lv_img_set_src", evm_mk_native(e, evm_module_lvgl_lv_img_set_src, "lv_img_set_src", 2));
+  evm_prop_set(e, obj, "lv_img_set_offset_x", evm_mk_native(e, evm_module_lvgl_lv_img_set_offset_x, "lv_img_set_offset_x", 2));
+  evm_prop_set(e, obj, "lv_img_set_offset_y", evm_mk_native(e, evm_module_lvgl_lv_img_set_offset_y, "lv_img_set_offset_y", 2));
+  evm_prop_set(e, obj, "lv_img_set_angle", evm_mk_native(e, evm_module_lvgl_lv_img_set_angle, "lv_img_set_angle", 2));
+  evm_prop_set(e, obj, "lv_img_set_zoom", evm_mk_native(e, evm_module_lvgl_lv_img_set_zoom, "lv_img_set_zoom", 2));
+  evm_prop_set(e, obj, "lv_img_set_antialias", evm_mk_native(e, evm_module_lvgl_lv_img_set_antialias, "lv_img_set_antialias", 2));
+  evm_prop_set(e, obj, "lv_img_get_src", evm_mk_native(e, evm_module_lvgl_lv_img_get_src, "lv_img_get_src", 1));
+  evm_prop_set(e, obj, "lv_img_get_offset_x", evm_mk_native(e, evm_module_lvgl_lv_img_get_offset_x, "lv_img_get_offset_x", 1));
+  evm_prop_set(e, obj, "lv_img_get_offset_y", evm_mk_native(e, evm_module_lvgl_lv_img_get_offset_y, "lv_img_get_offset_y", 1));
+  evm_prop_set(e, obj, "lv_img_get_angle", evm_mk_native(e, evm_module_lvgl_lv_img_get_angle, "lv_img_get_angle", 1));
+  evm_prop_set(e, obj, "lv_img_get_zoom", evm_mk_native(e, evm_module_lvgl_lv_img_get_zoom, "lv_img_get_zoom", 1));
+  evm_prop_set(e, obj, "lv_img_get_antialias", evm_mk_native(e, evm_module_lvgl_lv_img_get_antialias, "lv_img_get_antialias", 1));
   evm_prop_set(e, obj, "lv_slider_create", evm_mk_native(e, evm_module_lvgl_lv_slider_create, "lv_slider_create", 1));
   evm_prop_set(e, obj, "lv_slider_set_value", evm_mk_native(e, evm_module_lvgl_lv_slider_set_value, "lv_slider_set_value", 3));
   evm_prop_set(e, obj, "lv_slider_set_range", evm_mk_native(e, evm_module_lvgl_lv_slider_set_range, "lv_slider_set_range", 3));
   evm_prop_set(e, obj, "lv_slider_get_value", evm_mk_native(e, evm_module_lvgl_lv_slider_get_value, "lv_slider_get_value", 1));
+  evm_prop_set(e, obj, "lv_slider_set_min", evm_mk_native(e, evm_module_lvgl_lv_slider_set_min, "lv_slider_set_min", 2));
+  evm_prop_set(e, obj, "lv_slider_set_max", evm_mk_native(e, evm_module_lvgl_lv_slider_set_max, "lv_slider_set_max", 2));
   evm_prop_set(e, obj, "lv_slider_get_min_value", evm_mk_native(e, evm_module_lvgl_lv_slider_get_min_value, "lv_slider_get_min_value", 1));
   evm_prop_set(e, obj, "lv_slider_get_max_value", evm_mk_native(e, evm_module_lvgl_lv_slider_get_max_value, "lv_slider_get_max_value", 1));
+  evm_prop_set(e, obj, "lv_roller_create", evm_mk_native(e, evm_module_lvgl_lv_roller_create, "lv_roller_create", 1));
+  evm_prop_set(e, obj, "lv_roller_set_options", evm_mk_native(e, evm_module_lvgl_lv_roller_set_options, "lv_roller_set_options", 3));
+  evm_prop_set(e, obj, "lv_roller_set_selected", evm_mk_native(e, evm_module_lvgl_lv_roller_set_selected, "lv_roller_set_selected", 3));
+  evm_prop_set(e, obj, "lv_roller_set_visible_row_count", evm_mk_native(e, evm_module_lvgl_lv_roller_set_visible_row_count, "lv_roller_set_visible_row_count", 2));
+  evm_prop_set(e, obj, "lv_roller_get_selected", evm_mk_native(e, evm_module_lvgl_lv_roller_get_selected, "lv_roller_get_selected", 1));
+  evm_prop_set(e, obj, "lv_roller_get_options", evm_mk_native(e, evm_module_lvgl_lv_roller_get_options, "lv_roller_get_options", 1));
+  evm_prop_set(e, obj, "lv_roller_get_option_cnt", evm_mk_native(e, evm_module_lvgl_lv_roller_get_option_cnt, "lv_roller_get_option_cnt", 1));
+  evm_prop_set(e, obj, "lv_switch_create", evm_mk_native(e, evm_module_lvgl_lv_switch_create, "lv_switch_create", 1));
+  evm_prop_set(e, obj, "lv_textarea_create", evm_mk_native(e, evm_module_lvgl_lv_textarea_create, "lv_textarea_create", 1));
+  evm_prop_set(e, obj, "lv_textarea_add_char", evm_mk_native(e, evm_module_lvgl_lv_textarea_add_char, "lv_textarea_add_char", 2));
+  evm_prop_set(e, obj, "lv_textarea_add_text", evm_mk_native(e, evm_module_lvgl_lv_textarea_add_text, "lv_textarea_add_text", 2));
+  evm_prop_set(e, obj, "lv_textarea_del_char", evm_mk_native(e, evm_module_lvgl_lv_textarea_del_char, "lv_textarea_del_char", 1));
+  evm_prop_set(e, obj, "lv_textarea_del_char_forward", evm_mk_native(e, evm_module_lvgl_lv_textarea_del_char_forward, "lv_textarea_del_char_forward", 1));
+  evm_prop_set(e, obj, "lv_textarea_set_text", evm_mk_native(e, evm_module_lvgl_lv_textarea_set_text, "lv_textarea_set_text", 2));
+  evm_prop_set(e, obj, "lv_textarea_set_placeholder_text", evm_mk_native(e, evm_module_lvgl_lv_textarea_set_placeholder_text, "lv_textarea_set_placeholder_text", 2));
+  evm_prop_set(e, obj, "lv_textarea_set_cursor_pos", evm_mk_native(e, evm_module_lvgl_lv_textarea_set_cursor_pos, "lv_textarea_set_cursor_pos", 2));
+  evm_prop_set(e, obj, "lv_textarea_set_cursor_click_pos", evm_mk_native(e, evm_module_lvgl_lv_textarea_set_cursor_click_pos, "lv_textarea_set_cursor_click_pos", 2));
+  evm_prop_set(e, obj, "lv_textarea_set_password_mode", evm_mk_native(e, evm_module_lvgl_lv_textarea_set_password_mode, "lv_textarea_set_password_mode", 2));
+  evm_prop_set(e, obj, "lv_textarea_set_password_bullet", evm_mk_native(e, evm_module_lvgl_lv_textarea_set_password_bullet, "lv_textarea_set_password_bullet", 2));
+  evm_prop_set(e, obj, "lv_textarea_set_one_line", evm_mk_native(e, evm_module_lvgl_lv_textarea_set_one_line, "lv_textarea_set_one_line", 2));
+  evm_prop_set(e, obj, "lv_textarea_set_accepted_chars", evm_mk_native(e, evm_module_lvgl_lv_textarea_set_accepted_chars, "lv_textarea_set_accepted_chars", 2));
+  evm_prop_set(e, obj, "lv_textarea_set_max_length", evm_mk_native(e, evm_module_lvgl_lv_textarea_set_max_length, "lv_textarea_set_max_length", 2));
+  evm_prop_set(e, obj, "lv_textarea_set_insert_replace", evm_mk_native(e, evm_module_lvgl_lv_textarea_set_insert_replace, "lv_textarea_set_insert_replace", 2));
+  evm_prop_set(e, obj, "lv_textarea_set_text_selection", evm_mk_native(e, evm_module_lvgl_lv_textarea_set_text_selection, "lv_textarea_set_text_selection", 2));
+  evm_prop_set(e, obj, "lv_textarea_set_password_show_time", evm_mk_native(e, evm_module_lvgl_lv_textarea_set_password_show_time, "lv_textarea_set_password_show_time", 2));
+  evm_prop_set(e, obj, "lv_textarea_set_align", evm_mk_native(e, evm_module_lvgl_lv_textarea_set_align, "lv_textarea_set_align", 2));
+  evm_prop_set(e, obj, "lv_textarea_get_text", evm_mk_native(e, evm_module_lvgl_lv_textarea_get_text, "lv_textarea_get_text", 1));
+  evm_prop_set(e, obj, "lv_textarea_get_placeholder_text", evm_mk_native(e, evm_module_lvgl_lv_textarea_get_placeholder_text, "lv_textarea_get_placeholder_text", 1));
+  evm_prop_set(e, obj, "lv_textarea_get_cursor_pos", evm_mk_native(e, evm_module_lvgl_lv_textarea_get_cursor_pos, "lv_textarea_get_cursor_pos", 1));
+  evm_prop_set(e, obj, "lv_textarea_get_cursor_click_pos", evm_mk_native(e, evm_module_lvgl_lv_textarea_get_cursor_click_pos, "lv_textarea_get_cursor_click_pos", 1));
+  evm_prop_set(e, obj, "lv_textarea_get_password_mode", evm_mk_native(e, evm_module_lvgl_lv_textarea_get_password_mode, "lv_textarea_get_password_mode", 1));
+  evm_prop_set(e, obj, "lv_textarea_get_password_bullet", evm_mk_native(e, evm_module_lvgl_lv_textarea_get_password_bullet, "lv_textarea_get_password_bullet", 1));
+  evm_prop_set(e, obj, "lv_textarea_get_one_line", evm_mk_native(e, evm_module_lvgl_lv_textarea_get_one_line, "lv_textarea_get_one_line", 1));
+  evm_prop_set(e, obj, "lv_textarea_get_accepted_chars", evm_mk_native(e, evm_module_lvgl_lv_textarea_get_accepted_chars, "lv_textarea_get_accepted_chars", 1));
+  evm_prop_set(e, obj, "lv_textarea_get_max_length", evm_mk_native(e, evm_module_lvgl_lv_textarea_get_max_length, "lv_textarea_get_max_length", 1));
+  evm_prop_set(e, obj, "lv_textarea_text_is_selected", evm_mk_native(e, evm_module_lvgl_lv_textarea_text_is_selected, "lv_textarea_text_is_selected", 1));
+  evm_prop_set(e, obj, "lv_textarea_get_text_selection", evm_mk_native(e, evm_module_lvgl_lv_textarea_get_text_selection, "lv_textarea_get_text_selection", 1));
+  evm_prop_set(e, obj, "lv_textarea_get_password_show_time", evm_mk_native(e, evm_module_lvgl_lv_textarea_get_password_show_time, "lv_textarea_get_password_show_time", 1));
+  evm_prop_set(e, obj, "lv_textarea_clear_selection", evm_mk_native(e, evm_module_lvgl_lv_textarea_clear_selection, "lv_textarea_clear_selection", 1));
+  evm_prop_set(e, obj, "lv_textarea_cursor_right", evm_mk_native(e, evm_module_lvgl_lv_textarea_cursor_right, "lv_textarea_cursor_right", 1));
+  evm_prop_set(e, obj, "lv_textarea_cursor_left", evm_mk_native(e, evm_module_lvgl_lv_textarea_cursor_left, "lv_textarea_cursor_left", 1));
+  evm_prop_set(e, obj, "lv_textarea_cursor_down", evm_mk_native(e, evm_module_lvgl_lv_textarea_cursor_down, "lv_textarea_cursor_down", 1));
+  evm_prop_set(e, obj, "lv_textarea_cursor_up", evm_mk_native(e, evm_module_lvgl_lv_textarea_cursor_up, "lv_textarea_cursor_up", 1));
   evm_prop_set(e, obj, "LV_OBJ_FLAG_HIDDEN", evm_mk_number(e, LV_OBJ_FLAG_HIDDEN));
   evm_prop_set(e, obj, "LV_OBJ_FLAG_CLICKABLE", evm_mk_number(e, LV_OBJ_FLAG_CLICKABLE));
   evm_prop_set(e, obj, "LV_OBJ_FLAG_CLICK_FOCUSABLE", evm_mk_number(e, LV_OBJ_FLAG_CLICK_FOCUSABLE));
@@ -1742,6 +2266,13 @@ void evm_module_lvgl(evm_t *e) {
   evm_prop_set(e, obj, "LV_EVENT_LONG_PRESSED", evm_mk_number(e, LV_EVENT_LONG_PRESSED));
   evm_prop_set(e, obj, "LV_EVENT_CLICKED", evm_mk_number(e, LV_EVENT_CLICKED));
   evm_prop_set(e, obj, "LV_EVENT_RELEASED", evm_mk_number(e, LV_EVENT_RELEASED));
-  evm_module_add(e, "lvgl", obj);
+  evm_prop_set(e, obj, "LV_EVENT_VALUE_CHANGED", evm_mk_number(e, LV_EVENT_VALUE_CHANGED));
+  evm_prop_set(e, obj, "LV_EVENT_GESTURE", evm_mk_number(e, LV_EVENT_GESTURE));
+  evm_prop_set(e, obj, "LV_EVENT_SCROLL_BEGIN", evm_mk_number(e, LV_EVENT_SCROLL_BEGIN));
+  evm_prop_set(e, obj, "LV_EVENT_SCROLL_END", evm_mk_number(e, LV_EVENT_SCROLL_END));
+  evm_prop_set(e, obj, "LV_EVENT_SCROLL", evm_mk_number(e, LV_EVENT_SCROLL));
+  evm_prop_set(e, obj, "LV_EVENT_FOCUSED", evm_mk_number(e, LV_EVENT_FOCUSED));
+  evm_prop_set(e, obj, "LV_EVENT_DEFOCUSED", evm_mk_number(e, LV_EVENT_DEFOCUSED));
+  evm_module_add(e, "@native.lvgl", obj);
 }
 #endif

@@ -1,11 +1,7 @@
 /****************************************************************************
-**
-** Copyright (C) 2022 @武汉市凡迈科技有限公司
-**
-**  EVM是一款通用化设计的虚拟机引擎，拥有语法解析前端接口、编译器、虚拟机和虚拟机扩展接口框架。
-**  Version	: 1.0
-**  Email	: scriptiot@aliyun.com
-**  Website	: https://gitee.com/scriptiot
+**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  QQ Group: 399011436
+**  Git: https://gitee.com/scriptiot/evm
 **  Licence: 个人免费，企业授权
 ****************************************************************************/
 #ifndef EVM_MODULE_H
@@ -272,6 +268,7 @@ extern "C" {
 #define IOT_MAGIC_STRING_OPENDRAIN_U "OPENDRAIN"
 #endif
 #define IOT_MAGIC_STRING_OPEN "open"
+#define IOT_MAGIC_STRING_EXISTS "exists"
 #if CONFIG_EVM_MODULE_GPIO
 #define IOT_MAGIC_STRING_OUT_U "OUT"
 #endif

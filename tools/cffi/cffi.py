@@ -80,7 +80,7 @@ def compile(info):
         vtype = item['type']
         if vtype == 'number':
             content = content + '  evm_prop_set(e, obj, "' + name + '", evm_mk_number(e, '+ value +'));\n'
-    content = content + '  evm_module_add(e, "'+ module_name+'", obj);\n}\n'
+    content = content + '  evm_module_add(e, "'+ info['altname']+'", obj);\n}\n'
     content = content + "#endif\n"
     modules.update({"name": name, "content": content})
     return (content, module_name)
