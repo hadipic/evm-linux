@@ -24,6 +24,8 @@
         {"name": "set_style_transform_zoom", "signature": "vpi"},
         {"name": "set_style_transform_pivot_x", "signature": "vpi"},
         {"name": "set_style_transform_pivot_y", "signature": "vpi"},
+        
+        {"name": "set_style_pad_all", "signature": "vpi"},
         {"name": "set_style_pad_top", "signature": "vpi"},
         {"name": "set_style_pad_bottom", "signature": "vpi"},
         {"name": "set_style_pad_left", "signature": "vpi"},
@@ -39,7 +41,10 @@
                 "set_style_bg_color(<1>, color);"
             ]
         },
-        {"name": "set_style_bg_opa", "signature": "vpi"},
+        {
+            "name": "set_style_bg_opa", 
+            "signature": "vpi"
+        },
         {
             "name": "set_style_bg_grad_color", 
             "signature": "vpi",
@@ -118,6 +123,7 @@
             ]
         },
         {"name": "set_style_arc_opa", "signature": "vpi"},
+        {"name": "set_style_arc_indic_opa", "signature": "vpi"},
         {"name": "set_style_arc_indic_width", "signature": "vpi"},
         {
             "name": "set_style_arc_indic_color", 
@@ -138,11 +144,39 @@
             ]
         },
         {"name": "set_style_text_opa", "signature": "vpi"},
-        {"name": "set_style_text_font", "signature": "vpi"},
+        {"name": "set_style_text_font", "signature": "vpp"},
         {"name": "set_style_text_letter_space", "signature": "vpi"},
         {"name": "set_style_text_line_space", "signature": "vpi"},
         {"name": "set_style_text_decor", "signature": "vpi"},
         {"name": "set_style_text_align", "signature": "vpi"},
-        {"name": "set_style_radius", "signature": "vpi"}
+        {"name": "set_style_radius", "signature": "vpi"},
+
+        {
+            "name": "set_style_progress_indic_color", 
+            "signature": "vpi",
+            "how":[
+                "lv_color_t color;",
+                "color.full = <2>;",
+                "set_style_progress_indic_color(<1>, color);"
+            ]
+        },
+
+        {
+            "name": "set_style_switch_indic_color", 
+            "signature": "vpi",
+            "how":[
+                "lv_color_t color;",
+                "color.full = <2>;",
+                "set_style_switch_indic_color(<1>, color);"
+            ]
+        },{
+            "name": "set_style_switch_knob_color", 
+            "signature": "vpi",
+            "how":[
+                "lv_color_t color;",
+                "color.full = <2>;",
+                "set_style_switch_knob_color(<1>, color);"
+            ]
+        }
     ]
 }

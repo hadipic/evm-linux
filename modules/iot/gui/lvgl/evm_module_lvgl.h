@@ -19,6 +19,7 @@
 #define set_style_transform_zoom(obj, v) lv_obj_set_style_transform_zoom(obj, v, LV_PART_MAIN)
 #define set_style_transform_pivot_x(obj, v) lv_obj_set_style_transform_pivot_x(obj, v, LV_PART_MAIN)
 #define set_style_transform_pivot_y(obj, v) lv_obj_set_style_transform_pivot_y(obj, v, LV_PART_MAIN)
+#define set_style_pad_all(obj, v) lv_obj_set_style_pad_all(obj, v, LV_PART_MAIN)
 #define set_style_pad_top(obj, v) lv_obj_set_style_pad_top(obj, v, LV_PART_MAIN)
 #define set_style_pad_bottom(obj, v) lv_obj_set_style_pad_bottom(obj, v, LV_PART_MAIN)
 #define set_style_pad_left(obj, v) lv_obj_set_style_pad_left(obj, v, LV_PART_MAIN)
@@ -59,6 +60,7 @@
 #define set_style_arc_opa(obj, v) lv_obj_set_style_arc_opa(obj, v, LV_PART_MAIN)
 #define set_style_arc_indic_width(obj, v) lv_obj_set_style_arc_width(obj, v, LV_PART_INDICATOR)
 #define set_style_arc_indic_color(obj, v) lv_obj_set_style_arc_color(obj, v, LV_PART_INDICATOR)
+#define set_style_arc_indic_opa(obj, v) lv_obj_set_style_arc_opa(obj, v, LV_PART_INDICATOR)
 #define set_style_text_opa(obj, v) lv_obj_set_style_text_opa(obj, v, LV_PART_MAIN)
 #define set_style_text_font(obj, v) lv_obj_set_style_text_font(obj, v, LV_PART_MAIN)
 #define set_style_text_letter_space(obj, v) lv_obj_set_style_text_letter_space(obj, v, LV_PART_MAIN)
@@ -67,5 +69,8 @@
 #define set_style_text_align(obj, v) lv_obj_set_style_text_align(obj, v, LV_PART_MAIN)
 #define set_style_radius(obj, v) lv_obj_set_style_radius(obj, v, LV_PART_MAIN)
 #define set_style_text_color(obj, v) lv_obj_set_style_text_color(obj, v, LV_PART_MAIN)
+#define set_style_progress_indic_color(obj, v) lv_obj_set_style_bg_color(obj, v, LV_PART_INDICATOR)
+#define set_style_switch_indic_color(obj, v) lv_obj_set_style_bg_color(obj, v, LV_PART_INDICATOR)
+#define set_style_switch_knob_color(obj, v) lv_obj_set_style_bg_color(obj, v, LV_PART_KNOB)
 
 #endif

@@ -456,6 +456,7 @@ EVM_FUNCTION(fs_readFile) {
     read(fd, temp_buf, buf.st_size);
     ret = evm_buffer_create(e, temp_buf, buf.st_size);
   } else {
+    read(fd, temp_buf, buf.st_size);
     ret = evm_mk_lstring(e, temp_buf, buf.st_size);
   }
   zfree(temp_buf);

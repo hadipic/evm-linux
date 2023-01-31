@@ -250,7 +250,5 @@ SOURCES += \
     $$PWD/../../../components/lvgl/lvgl/src/widgets/lv_table.c \
     $$PWD/../../../components/lvgl/lvgl/src/widgets/lv_textarea.c
 
-contains(DEFINES, LV_USE_FS_STDIO) {
 SOURCES += \
     $$PWD/../../../components/lvgl/lvgl/src/extra/libs/fsdrv/lv_fs_stdio.c
-}

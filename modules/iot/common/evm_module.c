@@ -238,7 +238,7 @@ void evm_module_init(evm_t *env)
     evm_module_http_parser(env);
 #endif
 
-    run_common_js(env);
+    //run_common_js(env);
 }
 
 char* evm_buffer_allocate_from_number_array(evm_t *e, size_t size, const evm_val_t array) {

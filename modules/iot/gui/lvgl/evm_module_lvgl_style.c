@@ -132,6 +132,14 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_transform_pivot_y) {
   EVM_RETURN(EVM_UNDEFINED)
 }
 
+EVM_FUNCTION(evm_module_lvgl_style_set_style_pad_all) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  set_style_pad_all(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
 EVM_FUNCTION(evm_module_lvgl_style_set_style_pad_top) {
   EVM_EPCV;
   evm_cffi_val_t cffi_args[3];
@@ -450,6 +458,14 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_arc_opa) {
   EVM_RETURN(EVM_UNDEFINED)
 }
 
+EVM_FUNCTION(evm_module_lvgl_style_set_style_arc_indic_opa) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  set_style_arc_indic_opa(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
 EVM_FUNCTION(evm_module_lvgl_style_set_style_arc_indic_width) {
   EVM_EPCV;
   evm_cffi_val_t cffi_args[3];
@@ -489,8 +505,8 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_text_opa) {
 EVM_FUNCTION(evm_module_lvgl_style_set_style_text_font) {
   EVM_EPCV;
   evm_cffi_val_t cffi_args[3];
-  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
-  set_style_text_font(cffi_args[1].p, cffi_args[2].i32);
+  evm_cffi_exec_param(e, cffi_args + 1, "pp", argc, v);
+  set_style_text_font(cffi_args[1].p, cffi_args[2].p);
   EVM_RETURN(EVM_UNDEFINED)
 }
 
@@ -534,6 +550,36 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_radius) {
   EVM_RETURN(EVM_UNDEFINED)
 }
 
+EVM_FUNCTION(evm_module_lvgl_style_set_style_progress_indic_color) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_color_t color;
+  color.full = cffi_args[2].i32;
+  set_style_progress_indic_color(cffi_args[1].p, color);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_style_set_style_switch_indic_color) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_color_t color;
+  color.full = cffi_args[2].i32;
+  set_style_switch_indic_color(cffi_args[1].p, color);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_style_set_style_switch_knob_color) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_color_t color;
+  color.full = cffi_args[2].i32;
+  set_style_switch_knob_color(cffi_args[1].p, color);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
 
 void evm_module_lvgl_style(evm_t *e) {
   evm_val_t obj = evm_object_create(e);
@@ -553,6 +599,7 @@ void evm_module_lvgl_style(evm_t *e) {
   evm_prop_set(e, obj, "set_style_transform_zoom", evm_mk_native(e, evm_module_lvgl_style_set_style_transform_zoom, "set_style_transform_zoom", 2));
   evm_prop_set(e, obj, "set_style_transform_pivot_x", evm_mk_native(e, evm_module_lvgl_style_set_style_transform_pivot_x, "set_style_transform_pivot_x", 2));
   evm_prop_set(e, obj, "set_style_transform_pivot_y", evm_mk_native(e, evm_module_lvgl_style_set_style_transform_pivot_y, "set_style_transform_pivot_y", 2));
+  evm_prop_set(e, obj, "set_style_pad_all", evm_mk_native(e, evm_module_lvgl_style_set_style_pad_all, "set_style_pad_all", 2));
   evm_prop_set(e, obj, "set_style_pad_top", evm_mk_native(e, evm_module_lvgl_style_set_style_pad_top, "set_style_pad_top", 2));
   evm_prop_set(e, obj, "set_style_pad_bottom", evm_mk_native(e, evm_module_lvgl_style_set_style_pad_bottom, "set_style_pad_bottom", 2));
   evm_prop_set(e, obj, "set_style_pad_left", evm_mk_native(e, evm_module_lvgl_style_set_style_pad_left, "set_style_pad_left", 2));
@@ -591,6 +638,7 @@ void evm_module_lvgl_style(evm_t *e) {
   evm_prop_set(e, obj, "set_style_arc_rounded", evm_mk_native(e, evm_module_lvgl_style_set_style_arc_rounded, "set_style_arc_rounded", 2));
   evm_prop_set(e, obj, "set_style_arc_color", evm_mk_native(e, evm_module_lvgl_style_set_style_arc_color, "set_style_arc_color", 2));
   evm_prop_set(e, obj, "set_style_arc_opa", evm_mk_native(e, evm_module_lvgl_style_set_style_arc_opa, "set_style_arc_opa", 2));
+  evm_prop_set(e, obj, "set_style_arc_indic_opa", evm_mk_native(e, evm_module_lvgl_style_set_style_arc_indic_opa, "set_style_arc_indic_opa", 2));
   evm_prop_set(e, obj, "set_style_arc_indic_width", evm_mk_native(e, evm_module_lvgl_style_set_style_arc_indic_width, "set_style_arc_indic_width", 2));
   evm_prop_set(e, obj, "set_style_arc_indic_color", evm_mk_native(e, evm_module_lvgl_style_set_style_arc_indic_color, "set_style_arc_indic_color", 2));
   evm_prop_set(e, obj, "set_style_text_color", evm_mk_native(e, evm_module_lvgl_style_set_style_text_color, "set_style_text_color", 2));
@@ -601,6 +649,9 @@ void evm_module_lvgl_style(evm_t *e) {
   evm_prop_set(e, obj, "set_style_text_decor", evm_mk_native(e, evm_module_lvgl_style_set_style_text_decor, "set_style_text_decor", 2));
   evm_prop_set(e, obj, "set_style_text_align", evm_mk_native(e, evm_module_lvgl_style_set_style_text_align, "set_style_text_align", 2));
   evm_prop_set(e, obj, "set_style_radius", evm_mk_native(e, evm_module_lvgl_style_set_style_radius, "set_style_radius", 2));
+  evm_prop_set(e, obj, "set_style_progress_indic_color", evm_mk_native(e, evm_module_lvgl_style_set_style_progress_indic_color, "set_style_progress_indic_color", 2));
+  evm_prop_set(e, obj, "set_style_switch_indic_color", evm_mk_native(e, evm_module_lvgl_style_set_style_switch_indic_color, "set_style_switch_indic_color", 2));
+  evm_prop_set(e, obj, "set_style_switch_knob_color", evm_mk_native(e, evm_module_lvgl_style_set_style_switch_knob_color, "set_style_switch_knob_color", 2));
   evm_module_add(e, "@native.lv_style", obj);
 }
 #endif

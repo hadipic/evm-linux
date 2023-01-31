@@ -27,10 +27,62 @@ EVM_FUNCTION(get_screen_height) {
     EVM_RETURN(evm_mk_number(e, width));
 }
 
+EVM_FUNCTION(rgba_to_color){
+    EVM_EPCV;
+    lv_color_t color;
+    double r = evm_2_double(e, v[0]);
+    double g = evm_2_double(e, v[1]);
+    double b = evm_2_double(e, v[2]);
+    double a = evm_2_double(e, v[3]);
+    color.ch.red = r * 255;
+    color.ch.green = g * 255;
+    color.ch.blue = b * 255;
+    color.ch.alpha = a * 255;
+    EVM_RETURN(evm_mk_number(e, color.full));
+}
+
+EVM_FUNCTION(disp_set_rotation){
+    EVM_EPCV;
+    int i = evm_2_integer(e, v[0]);
+    lv_disp_rot_t rotation = i % 4;
+    lv_disp_set_rotation(lv_disp_get_default(), rotation);
+    EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(wrap_lv_img_set_pivot){
+    EVM_EPCV;
+    if( !evm_is_invoke(e, v[0]))
+        EVM_RETURN(EVM_UNDEFINED);
+    if( !evm_is_list(e, v[1]) )
+        EVM_RETURN(EVM_UNDEFINED);
+    lv_obj_t *obj = evm_2_invoke(e, v[0]);
+    evm_val_t x = evm_list_get(e, v[1], 0);
+    evm_val_t y = evm_list_get(e, v[1], 1);
+    lv_img_set_pivot(obj, (lv_coord_t)evm_2_integer(e, x), (lv_coord_t)evm_2_integer(e, y));
+    EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(wrap_lv_obj_get_abs_x){
+    EVM_EPCV;
+    lv_obj_t *obj = evm_2_invoke(e, v[0]);
+    EVM_RETURN(evm_mk_number(e, obj->coords.x1));
+}
+
+EVM_FUNCTION(wrap_lv_obj_get_abs_y){
+    EVM_EPCV;
+    lv_obj_t *obj = evm_2_invoke(e, v[0]);
+    EVM_RETURN(evm_mk_number(e, obj->coords.y1));
+}
+
 void evm_module_lvgl_misc(evm_t *e) {
     evm_val_t obj = evm_module_get(e, "@native.lvgl");
     evm_prop_set(e, obj, "destroy_obj", evm_mk_native(e, destroy_obj, "destroy_obj", EVM_VARARGS));
     evm_prop_set(e, obj, "get_screen_width", evm_mk_native(e, get_screen_width, "get_screen_width", EVM_VARARGS));
     evm_prop_set(e, obj, "get_screen_height", evm_mk_native(e, get_screen_height, "get_screen_height", EVM_VARARGS));
+    evm_prop_set(e, obj, "rgba_to_color", evm_mk_native(e, rgba_to_color, "rgba_to_color", EVM_VARARGS));
+    evm_prop_set(e, obj, "disp_set_rotation", evm_mk_native(e, disp_set_rotation, "disp_set_rotation", EVM_VARARGS));
+    evm_prop_set(e, obj, "lv_img_set_pivot", evm_mk_native(e, wrap_lv_img_set_pivot, "lv_img_set_pivot", EVM_VARARGS));
+    evm_prop_set(e, obj, "lv_obj_get_abs_x", evm_mk_native(e, wrap_lv_obj_get_abs_x, "lv_obj_get_abs_x", EVM_VARARGS));
+    evm_prop_set(e, obj, "lv_obj_get_abs_y", evm_mk_native(e, wrap_lv_obj_get_abs_y, "lv_obj_get_abs_y", EVM_VARARGS));
 }
 #endif

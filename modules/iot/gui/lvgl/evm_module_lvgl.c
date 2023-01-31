@@ -2,6 +2,7 @@
 #ifdef CONFIG_EVM_MODULE_LVGL
 
 #include "lvgl.h"
+#include "lv_gif.h"
 #include "evm_module.h"
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_move_background) {
@@ -527,8 +528,8 @@ EVM_FUNCTION(evm_module_lvgl_lv_style_set_text_opa) {
 EVM_FUNCTION(evm_module_lvgl_lv_style_set_text_font) {
   EVM_EPCV;
   evm_cffi_val_t cffi_args[3];
-  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
-  lv_style_set_text_font(cffi_args[1].p, cffi_args[2].i32);
+  evm_cffi_exec_param(e, cffi_args + 1, "pp", argc, v);
+  lv_style_set_text_font(cffi_args[1].p, cffi_args[2].p);
   EVM_RETURN(EVM_UNDEFINED)
 }
 
@@ -577,9 +578,16 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_create) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].p = lv_obj_create(cffi_args[1].p);
-  lv_obj_add_flag(cffi_args[0].p, LV_OBJ_FLAG_FLOATING);
   lv_obj_clear_flag(cffi_args[0].p, LV_OBJ_FLAG_SCROLLABLE);
   EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_obj_set_parent) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pp", argc, v);
+  lv_obj_set_parent(cffi_args[1].p, cffi_args[2].p);
+  EVM_RETURN(EVM_UNDEFINED)
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_add_style) {
@@ -931,6 +939,30 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_set_flex_flow) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   lv_obj_set_flex_flow(cffi_args[1].p, cffi_args[2].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_obj_set_style_flex_main_place) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[4];
+  evm_cffi_exec_param(e, cffi_args + 1, "pii", argc, v);
+  lv_obj_set_style_flex_main_place(cffi_args[1].p, cffi_args[2].i32, cffi_args[3].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_obj_set_style_flex_cross_place) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[4];
+  evm_cffi_exec_param(e, cffi_args + 1, "pii", argc, v);
+  lv_obj_set_style_flex_cross_place(cffi_args[1].p, cffi_args[2].i32, cffi_args[3].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_obj_set_style_flex_track_place) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[4];
+  evm_cffi_exec_param(e, cffi_args + 1, "pii", argc, v);
+  lv_obj_set_style_flex_track_place(cffi_args[1].p, cffi_args[2].i32, cffi_args[3].i32);
   EVM_RETURN(EVM_UNDEFINED)
 }
 
@@ -1482,15 +1514,15 @@ EVM_FUNCTION(evm_module_lvgl_lv_img_set_angle) {
   EVM_EPCV;
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
-  lv_img_set_angle(cffi_args[1].p, cffi_args[2].i32);
+  lv_img_set_angle(cffi_args[1].p, cffi_args[2].i32 * 10);
   EVM_RETURN(EVM_UNDEFINED)
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_img_set_zoom) {
   EVM_EPCV;
   evm_cffi_val_t cffi_args[3];
-  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
-  lv_img_set_zoom(cffi_args[1].p, cffi_args[2].i32);
+  evm_cffi_exec_param(e, cffi_args + 1, "pf", argc, v);
+  lv_img_set_zoom(cffi_args[1].p, cffi_args[2].f32 * 256);
   EVM_RETURN(EVM_UNDEFINED)
 }
 
@@ -1958,6 +1990,54 @@ EVM_FUNCTION(evm_module_lvgl_lv_textarea_cursor_up) {
   EVM_RETURN(EVM_UNDEFINED)
 }
 
+EVM_FUNCTION(evm_module_lvgl_lv_gif_create) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  cffi_args[0].p = lv_gif_create(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_gif_set_src) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "ps", argc, v);
+  lv_gif_set_src(cffi_args[1].p, cffi_args[2].s);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_gif_restart) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_gif_restart(cffi_args[1].p);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_obj_fade_in) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[4];
+  evm_cffi_exec_param(e, cffi_args + 1, "pii", argc, v);
+  lv_obj_fade_in(cffi_args[1].p, cffi_args[2].i32, cffi_args[3].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_obj_fade_out) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[4];
+  evm_cffi_exec_param(e, cffi_args + 1, "pii", argc, v);
+  lv_obj_fade_out(cffi_args[1].p, cffi_args[2].i32, cffi_args[3].i32);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_anim_del_all) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[1];
+  evm_cffi_exec_param(e, cffi_args + 1, "", argc, v);
+  lv_anim_del_all();
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
 
 void evm_module_lvgl(evm_t *e) {
   evm_val_t obj = evm_object_create(e);
@@ -2031,6 +2111,7 @@ void evm_module_lvgl(evm_t *e) {
   evm_prop_set(e, obj, "lv_style_set_text_align", evm_mk_native(e, evm_module_lvgl_lv_style_set_text_align, "lv_style_set_text_align", 2));
   evm_prop_set(e, obj, "lv_style_set_radius", evm_mk_native(e, evm_module_lvgl_lv_style_set_radius, "lv_style_set_radius", 2));
   evm_prop_set(e, obj, "lv_obj_create", evm_mk_native(e, evm_module_lvgl_lv_obj_create, "lv_obj_create", 1));
+  evm_prop_set(e, obj, "lv_obj_set_parent", evm_mk_native(e, evm_module_lvgl_lv_obj_set_parent, "lv_obj_set_parent", 2));
   evm_prop_set(e, obj, "lv_obj_add_style", evm_mk_native(e, evm_module_lvgl_lv_obj_add_style, "lv_obj_add_style", 3));
   evm_prop_set(e, obj, "lv_obj_add_flag", evm_mk_native(e, evm_module_lvgl_lv_obj_add_flag, "lv_obj_add_flag", 2));
   evm_prop_set(e, obj, "lv_obj_clear_flag", evm_mk_native(e, evm_module_lvgl_lv_obj_clear_flag, "lv_obj_clear_flag", 2));
@@ -2075,6 +2156,9 @@ void evm_module_lvgl(evm_t *e) {
   evm_prop_set(e, obj, "lv_obj_invalidate", evm_mk_native(e, evm_module_lvgl_lv_obj_invalidate, "lv_obj_invalidate", 1));
   evm_prop_set(e, obj, "lv_obj_is_visible", evm_mk_native(e, evm_module_lvgl_lv_obj_is_visible, "lv_obj_is_visible", 1));
   evm_prop_set(e, obj, "lv_obj_set_flex_flow", evm_mk_native(e, evm_module_lvgl_lv_obj_set_flex_flow, "lv_obj_set_flex_flow", 2));
+  evm_prop_set(e, obj, "lv_obj_set_style_flex_main_place", evm_mk_native(e, evm_module_lvgl_lv_obj_set_style_flex_main_place, "lv_obj_set_style_flex_main_place", 3));
+  evm_prop_set(e, obj, "lv_obj_set_style_flex_cross_place", evm_mk_native(e, evm_module_lvgl_lv_obj_set_style_flex_cross_place, "lv_obj_set_style_flex_cross_place", 3));
+  evm_prop_set(e, obj, "lv_obj_set_style_flex_track_place", evm_mk_native(e, evm_module_lvgl_lv_obj_set_style_flex_track_place, "lv_obj_set_style_flex_track_place", 3));
   evm_prop_set(e, obj, "lv_obj_set_flex_grow", evm_mk_native(e, evm_module_lvgl_lv_obj_set_flex_grow, "lv_obj_set_flex_grow", 2));
   evm_prop_set(e, obj, "lv_obj_set_flex_align", evm_mk_native(e, evm_module_lvgl_lv_obj_set_flex_align, "lv_obj_set_flex_align", 4));
   evm_prop_set(e, obj, "lv_arc_create", evm_mk_native(e, evm_module_lvgl_lv_arc_create, "lv_arc_create", 1));
@@ -2203,6 +2287,12 @@ void evm_module_lvgl(evm_t *e) {
   evm_prop_set(e, obj, "lv_textarea_cursor_left", evm_mk_native(e, evm_module_lvgl_lv_textarea_cursor_left, "lv_textarea_cursor_left", 1));
   evm_prop_set(e, obj, "lv_textarea_cursor_down", evm_mk_native(e, evm_module_lvgl_lv_textarea_cursor_down, "lv_textarea_cursor_down", 1));
   evm_prop_set(e, obj, "lv_textarea_cursor_up", evm_mk_native(e, evm_module_lvgl_lv_textarea_cursor_up, "lv_textarea_cursor_up", 1));
+  evm_prop_set(e, obj, "lv_gif_create", evm_mk_native(e, evm_module_lvgl_lv_gif_create, "lv_gif_create", 1));
+  evm_prop_set(e, obj, "lv_gif_set_src", evm_mk_native(e, evm_module_lvgl_lv_gif_set_src, "lv_gif_set_src", 2));
+  evm_prop_set(e, obj, "lv_gif_restart", evm_mk_native(e, evm_module_lvgl_lv_gif_restart, "lv_gif_restart", 1));
+  evm_prop_set(e, obj, "lv_obj_fade_in", evm_mk_native(e, evm_module_lvgl_lv_obj_fade_in, "lv_obj_fade_in", 3));
+  evm_prop_set(e, obj, "lv_obj_fade_out", evm_mk_native(e, evm_module_lvgl_lv_obj_fade_out, "lv_obj_fade_out", 3));
+  evm_prop_set(e, obj, "lv_anim_del_all", evm_mk_native(e, evm_module_lvgl_lv_anim_del_all, "lv_anim_del_all", 0));
   evm_prop_set(e, obj, "LV_OBJ_FLAG_HIDDEN", evm_mk_number(e, LV_OBJ_FLAG_HIDDEN));
   evm_prop_set(e, obj, "LV_OBJ_FLAG_CLICKABLE", evm_mk_number(e, LV_OBJ_FLAG_CLICKABLE));
   evm_prop_set(e, obj, "LV_OBJ_FLAG_CLICK_FOCUSABLE", evm_mk_number(e, LV_OBJ_FLAG_CLICK_FOCUSABLE));
@@ -2211,6 +2301,7 @@ void evm_module_lvgl(evm_t *e) {
   evm_prop_set(e, obj, "LV_OBJ_FLAG_FLOATING", evm_mk_number(e, LV_OBJ_FLAG_FLOATING));
   evm_prop_set(e, obj, "LV_OBJ_FLAG_IGNORE_LAYOUT", evm_mk_number(e, LV_OBJ_FLAG_IGNORE_LAYOUT));
   evm_prop_set(e, obj, "LV_OPA_TRANSP", evm_mk_number(e, LV_OPA_TRANSP));
+  evm_prop_set(e, obj, "LV_OPA_COVER", evm_mk_number(e, LV_OPA_COVER));
   evm_prop_set(e, obj, "LV_PALETTE_RED", evm_mk_number(e, LV_PALETTE_RED));
   evm_prop_set(e, obj, "LV_PALETTE_PINK", evm_mk_number(e, LV_PALETTE_PINK));
   evm_prop_set(e, obj, "LV_PALETTE_PURPLE", evm_mk_number(e, LV_PALETTE_PURPLE));
@@ -2260,6 +2351,13 @@ void evm_module_lvgl(evm_t *e) {
   evm_prop_set(e, obj, "LV_FLEX_FLOW_COLUMN_WRAP", evm_mk_number(e, LV_FLEX_FLOW_COLUMN_WRAP));
   evm_prop_set(e, obj, "LV_FLEX_FLOW_COLUMN_REVERSE", evm_mk_number(e, LV_FLEX_FLOW_COLUMN_REVERSE));
   evm_prop_set(e, obj, "LV_FLEX_FLOW_COLUMN_WRAP_REVERSE", evm_mk_number(e, LV_FLEX_FLOW_COLUMN_WRAP_REVERSE));
+  evm_prop_set(e, obj, "LV_FLEX_ALIGN_START", evm_mk_number(e, LV_FLEX_ALIGN_START));
+  evm_prop_set(e, obj, "LV_FLEX_ALIGN_END", evm_mk_number(e, LV_FLEX_ALIGN_END));
+  evm_prop_set(e, obj, "LV_FLEX_ALIGN_CENTER", evm_mk_number(e, LV_FLEX_ALIGN_CENTER));
+  evm_prop_set(e, obj, "LV_FLEX_ALIGN_SPACE_EVENLY", evm_mk_number(e, LV_FLEX_ALIGN_SPACE_EVENLY));
+  evm_prop_set(e, obj, "LV_FLEX_ALIGN_SPACE_AROUND", evm_mk_number(e, LV_FLEX_ALIGN_SPACE_AROUND));
+  evm_prop_set(e, obj, "LV_FLEX_ALIGN_SPACE_BETWEEN", evm_mk_number(e, LV_FLEX_ALIGN_SPACE_BETWEEN));
+  evm_prop_set(e, obj, "LV_LAYOUT_FLEX", evm_mk_number(e, LV_LAYOUT_FLEX));
   evm_prop_set(e, obj, "LV_EVENT_ALL", evm_mk_number(e, LV_EVENT_ALL));
   evm_prop_set(e, obj, "LV_EVENT_PRESSED", evm_mk_number(e, LV_EVENT_PRESSED));
   evm_prop_set(e, obj, "LV_EVENT_PRESSING", evm_mk_number(e, LV_EVENT_PRESSING));
@@ -2273,6 +2371,7 @@ void evm_module_lvgl(evm_t *e) {
   evm_prop_set(e, obj, "LV_EVENT_SCROLL", evm_mk_number(e, LV_EVENT_SCROLL));
   evm_prop_set(e, obj, "LV_EVENT_FOCUSED", evm_mk_number(e, LV_EVENT_FOCUSED));
   evm_prop_set(e, obj, "LV_EVENT_DEFOCUSED", evm_mk_number(e, LV_EVENT_DEFOCUSED));
+  evm_prop_set(e, obj, "LV_STATE_CHECKED", evm_mk_number(e, LV_STATE_CHECKED));
   evm_module_add(e, "@native.lvgl", obj);
 }
 #endif

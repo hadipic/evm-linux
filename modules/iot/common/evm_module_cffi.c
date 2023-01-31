@@ -1,7 +1,7 @@
 #include "evm_module.h"
 #ifdef CONFIG_EVM_MODULE_CFFI
 
-void evm_cffi_exec_param(evm_t *e, evm_cffi_val_t *cffi_vals, const char *signature, int argc, evm_val_t *v) {
+inline void evm_cffi_exec_param(evm_t *e, evm_cffi_val_t *cffi_vals, const char *signature, int argc, evm_val_t *v) {
     for (int i = 0; i < argc; i++) {
         switch (signature[i]) {
             case 'b': cffi_vals[i].i32 = evm_2_boolean(e, v[i]);break;
@@ -17,7 +17,7 @@ void evm_cffi_exec_param(evm_t *e, evm_cffi_val_t *cffi_vals, const char *signat
     }
 }
 
-evm_val_t evm_cffi_exec_ret(evm_t *e, evm_cffi_val_t cffi_val, const char *signature) {
+inline evm_val_t evm_cffi_exec_ret(evm_t *e, evm_cffi_val_t cffi_val, const char *signature) {
     switch (signature[0]) {
         case 'b': return evm_mk_boolean(e, cffi_val.i32);
         case 'i': return evm_mk_number(e, cffi_val.i32);
