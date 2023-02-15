@@ -5,7 +5,6 @@
 **  Licence: 个人免费，企业授权
 ****************************************************************************/
 #ifdef CONFIG_EVM_MODULE_ADC
-
 #include "evm_module_adc.h"
 
 IOT_DEFINE_PERIPH_CREATE_FUNCTION(adc)

@@ -2,7 +2,6 @@
 #ifdef CONFIG_EVM_MODULE_LVGL
 
 #include "lvgl.h"
-#include "lv_gif.h"
 #include "evm_module.h"
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_move_background) {

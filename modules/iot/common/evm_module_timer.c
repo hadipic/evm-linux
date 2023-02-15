@@ -6,7 +6,7 @@
 ****************************************************************************/
 #ifdef CONFIG_EVM_MODULE_TIMER
 
-#include "linux_uv.h"
+#include "iot_uv.h"
 
 void iot_timer_object_init(evm_val_t jtimer) {
     uv_handle_t* handle = iot_uv_handle_create(sizeof(uv_timer_t), jtimer, 0);

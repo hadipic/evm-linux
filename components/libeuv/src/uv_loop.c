@@ -24,13 +24,18 @@ int uv_loop_init(uv_loop_t* loop) {
     loop->watcher_count = 0;
     loop->poll_count = 0;
     pthread_mutex_init(&loop->async_lock, NULL);
+
     pthread_condattr_t cond_attr;
+    #ifdef __linux__
     pthread_condattr_init(&cond_attr);
-    #if !(defined(__APPLE__) && defined(__MACH__))
+    #endif
+
+    #ifdef __linux__
     pthread_condattr_setclock(&cond_attr, CLOCK_MONOTONIC);
     #endif
     pthread_cond_init(&loop->async_cond, &cond_attr);
-    #ifndef __ESP_IDF__
+    
+    #ifdef __linux__
     pthread_condattr_destroy(&cond_attr);
     #endif
     loop->closing_handles = NULL;

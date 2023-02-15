@@ -21,32 +21,15 @@ DEFINES += CONFIG_EVM_MODULE_SOCKET
 SOURCES += \
     ../../../modules/iot/common/evm_module_process.c \
     ../../../modules/iot/common/evm_module.c \
-    ../../../modules/iot/common/evm_module_events.c \
-    ../../../modules/iot/common/evm_module_buffer.c \
     ../../../modules/iot/common/evm_module_cffi.c \
-    ../../../modules/iot/common/evm_module_libc.c \
-    ../../../modules/iot/common/evm_module_assert.c \
-    ../../../modules/iot/common/evm_module_fs.c \
-    ../../../modules/iot/common/evm_module_dns.c \
     ../../../modules/iot/common/evm_module_adc.c \
-    ../../../modules/iot/common/evm_module_gpio.c \
-    ../../../modules/iot/common/evm_module_i2c.c \
     ../../../modules/iot/common/evm_module_timers.c \
     ../../../modules/iot/common/evm_module_uart.c \
     ../../../modules/iot/common/evm_module_repl.c \
-    ../../../modules/iot/common/evm_module_network.c
+    ../../../modules/iot/common/iot_adc.c \
+    ../../../modules/iot/common/iot_system.c \
+    ../../../modules/iot/common/iot_uv.c
 
-SOURCES += \
-    ../../../modules/iot/linux/linux_module_adc.c \
-    ../../../modules/iot/linux/linux_module_event.c \
-    ../../../modules/iot/linux/linux_module_i2c.c \
-    ../../../modules/iot/linux/linux_module_gpio.c \
-    ../../../modules/iot/linux/linux_module_timers.c \
-    ../../../modules/iot/linux/linux_module_uart.c \
-    ../../../modules/iot/linux/linux_module_repl.c
-
-SOURCES += \
-    ../../../modules/iot/network/socket/linux/evm_module_socket.c
 
 
 SOURCES += \

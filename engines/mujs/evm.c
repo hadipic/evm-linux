@@ -376,6 +376,14 @@ int evm_is_object(evm_t *e, evm_val_t v) {
     return v.type == JS_TOBJECT;
 }
 
+int evm_is_invoke(evm_t *e, evm_val_t v) {
+    if( !evm_is_object(e, v) )
+        return 0;
+    if( evm_object_get_user_data(e, v) == NULL )
+        return 0;
+    return 1;
+}
+
 evm_val_t evm_mk_number(evm_t *e, double d){
     js_pushnumber(e, d);
     return *js_tovalue(e, -1);
@@ -424,4 +432,12 @@ evm_val_t evm_val_duplicate(evm_t *e, evm_val_t v) {
 evm_val_t evm_mk_global(evm_t *e) {
     js_pushglobal(e);
     return *js_tovalue(e, -1);
+}
+
+void *evm_2_invoke(evm_t *e, evm_val_t o) {
+    return evm_object_get_user_data(e, o);
+}
+
+evm_val_t evm_mk_invoke(evm_t *e, void *user_data) {
+    return evm_object_create_user_data(e, user_data);
 }

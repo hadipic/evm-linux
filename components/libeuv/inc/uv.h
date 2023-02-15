@@ -12,6 +12,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+
+
+
+#include "uv_errno.h"
+#include "queue.h"
+#include "evm.h"
+
+#if defined (__linux__)
+
 #include <pthread.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -19,16 +28,33 @@
 #include <netinet/ip.h>
 #include <netdb.h>
 #include <unistd.h>
-#include "uv_errno.h"
-#include "queue.h"
-#include "evm.h"
-
-#if defined (__linux__)
+#include<sys/stat.h>
 
 #define uv_posix_open       open
 #define uv_posix_write      write
 #define uv_posix_read       read
 #define uv_posix_close      close
+#define uv_posix_fsync      fsync
+#define uv_posix_fdatasync  fdatasync
+#define uv_posix_stat       stat
+#define uv_posix_fstat      fstat
+#define uv_posix_rename     rename
+
+#else
+#include "FreeRTOS_POSIX.h"
+#include "FreeRTOS_POSIX/fcntl.h"
+#include "FreeRTOS_POSIX/pthread.h"
+#include "FreeRTOS_POSIX/mqueue.h"
+
+extern int uv_posix_open (const char *__file, int __oflag, ...);
+extern int uv_posix_write (int __fd, const void *__buf, size_t __n);
+extern int uv_posix_read (int __fd, void *__buf, size_t __nbytes);
+extern int uv_posix_close (int __fd);
+extern int uv_posix_fsync (int __fd);
+extern int uv_posix_fdatasync (int __fildes);
+extern int uv_posix_stat(const char *path, struct stat *buf);
+extern int uv_posix_fstat (int __fd, struct stat *__buf);
+extern int uv_posix_rename(char *oldname, char *newname);
 
 #endif
 

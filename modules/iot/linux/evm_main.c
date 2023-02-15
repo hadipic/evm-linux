@@ -5,12 +5,7 @@
 **  Licence: 个人免费，企业授权
 ****************************************************************************/
 #include "evm_module.h"
-#include <pthread.h>
-#include <unistd.h>
-
-#ifdef CONFIG_EVM_USE_UV
-#include "linux_system.h"
-#endif
+#include "iot_system.h"
 
 void *evm_malloc(size_t size)
 {

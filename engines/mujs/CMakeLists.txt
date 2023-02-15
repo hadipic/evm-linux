@@ -1,14 +1,6 @@
-set(MUJS_DIR ./mujs)
-
-set(mujs_src
-    ${MUJS_DIR}/one.c
-)
-
-idf_component_register(SRCS
-                       evm.c
-                       ${mujs_src}
-                       INCLUDE_DIRS 
-                       .
-                       ./mujs
-                       ../../include)
-
+sdk_generate_library()
+sdk_add_include_directories(../../include)
+sdk_add_include_directories(.)
+sdk_add_include_directories(./mujs)
+sdk_library_add_sources(mujs/one.c)
+sdk_library_add_sources(evm.c)

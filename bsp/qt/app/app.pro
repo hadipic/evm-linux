@@ -11,6 +11,7 @@ DEFINES += EVM_USE_QUICKJS
 #DEFINES += EVM_USE_MICROPY
 
 include($$PWD/../pris/common.pri)
+include($$PWD/../pris/.pri)
 
 if( contains(DEFINES, EVM_USE_PIKASCRIPT) ) {
     include($$PWD/../pris/pikascript.pri)

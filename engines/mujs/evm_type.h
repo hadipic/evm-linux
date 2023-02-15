@@ -31,6 +31,7 @@ typedef evm_val_t (*evm_native_t)(evm_t *e, evm_val_t pthis, int argc, evm_val_t
 #define EVM_EPCV
 #define EVM_RETURN(x)   return x;
 #define EVM_RETURN_VAL(x)   return x;
+#define EVM_VARARGS 0
 
 #ifdef __cplusplus
 } /* extern "C" */

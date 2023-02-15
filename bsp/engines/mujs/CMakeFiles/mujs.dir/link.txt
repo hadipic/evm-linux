@@ -1,0 +1,2 @@
+/media/zhe/scriptiot/scriptiot/toolchain_gcc_t-head_linux/bin/riscv64-unknown-elf-ar qc /media/zhe/scriptiot/scriptiot/evm/bsp/bl616/build/build_out/lib/libmujs.a CMakeFiles/mujs.dir/mujs/one.c.obj CMakeFiles/mujs.dir/evm.c.obj
+/media/zhe/scriptiot/scriptiot/toolchain_gcc_t-head_linux/bin/riscv64-unknown-elf-ranlib /media/zhe/scriptiot/scriptiot/evm/bsp/bl616/build/build_out/lib/libmujs.a

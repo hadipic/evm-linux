@@ -37,7 +37,9 @@ EVM_FUNCTION(rgba_to_color){
     color.ch.red = r * 255;
     color.ch.green = g * 255;
     color.ch.blue = b * 255;
+#if LV_COLOR_DEPTH == 32
     color.ch.alpha = a * 255;
+#endif
     EVM_RETURN(evm_mk_number(e, color.full));
 }
 

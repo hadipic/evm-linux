@@ -7,7 +7,7 @@
 #ifndef EVM_MODULE_PERIPH_COMMON
 #define EVM_MODULE_PERIPH_COMMON
 
-#include "linux_uv.h"
+#include "iot_uv.h"
 
 typedef enum {
   kAdcOpOpen,
