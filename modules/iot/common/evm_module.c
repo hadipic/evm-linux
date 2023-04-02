@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  Copyright (C) 2023
 **  QQ Group: 399011436
 **  Git: https://gitee.com/scriptiot/evm
 **  Licence: 个人免费，企业授权
@@ -140,77 +140,69 @@ static void evm_native_init(evm_t *e) {
     evm_global_set(e, "__compile__", evm_mk_native(e, native_compile, "__compile__", 2));
 }
 
-static void run_common_js(evm_t *e) {
-    evm_val_t process = evm_module_get(e, "process");
-    const char *evm_path = evm_2_string(e, evm_prop_get(e, process, IOT_MAGIC_STRING_EVM_PATH_U));
-    char common_js_path[PATH_MAX_LEN];
-    sprintf(common_js_path, "%s/modules/iot/js/common.js", evm_path);
-    evm_run_file(e, EVM_UNDEFINED, common_js_path);
-}
-
 void evm_module_init(evm_t *env)
 {
     evm_module_registry_init(env);
     evm_native_init(env);
 
-#ifdef CONFIG_EVM_MODULE_ADC
+#ifdef EVM_USE_MODULE_ADC
     evm_module_adc(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_UART
+#ifdef EVM_USE_MODULE_UART
     evm_module_uart(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_GPIO
+#ifdef EVM_USE_MODULE_GPIO
     evm_module_gpio(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_FS
+#ifdef EVM_USE_MODULE_FS
     evm_module_fs(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_NET
+#ifdef EVM_USE_MODULE_NET
     evm_module_net(env);
 #endif
 
     extern void evm_module_process(evm_t *e);
     evm_module_process(env);
 
-#ifdef CONFIG_EVM_MODULE_EVENT
+#ifdef EVM_USE_MODULE_EVENT
     evm_module_events(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_DNS
+#ifdef EVM_USE_MODULE_DNS
     evm_module_dns(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_TIMER
+#ifdef EVM_USE_MODULE_TIMER
     extern void evm_module_timer(evm_t *e);
     evm_module_timer(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_BUFFER
+#ifdef EVM_USE_MODULE_BUFFER
     evm_module_buffer(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_ASSERT
+#ifdef EVM_USE_MODULE_ASSERT
     evm_module_assert(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_LIBC
+#ifdef EVM_USE_MODULE_LIBC
     evm_module_libc(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_SOCKET
+#ifdef EVM_USE_MODULE_SOCKET
     extern void evm_module_socket(evm_t *e);
     evm_module_socket(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_WLAN
+#ifdef EVM_USE_MODULE_WLAN
     evm_module_wlan(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_LVGL
+#ifdef EVM_USE_MODULE_LVGL
     extern void evm_module_lvgl_event(evm_t *e);
     extern void evm_module_lvgl(evm_t *e);
     extern void evm_module_lvgl_misc(evm_t *e);
@@ -222,27 +214,25 @@ void evm_module_init(evm_t *env)
     evm_module_lvgl_style(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_LVGL_IMAGE
+#ifdef EVM_USE_MODULE_LVGL_IMAGE
     extern void evm_module_lvgl_image(evm_t *e);
     evm_module_lvgl_image(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_TCP
+#ifdef EVM_USE_MODULE_TCP
     extern void evm_module_tcp(evm_t *e);
     evm_module_tcp(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_TLS
+#ifdef EVM_USE_MODULE_TLS
     extern void evm_module_tls(evm_t *e);
     evm_module_tls(env);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_HTTP_PARSER
+#ifdef EVM_USE_MODULE_HTTP_PARSER
     extern int evm_module_http_parser(evm_t *e);
     evm_module_http_parser(env);
 #endif
-
-    //run_common_js(env);
 }
 
 char* evm_buffer_allocate_from_number_array(evm_t *e, size_t size, const evm_val_t array) {

@@ -8,11 +8,6 @@ DEFINES += CONFIG_EVM_MODULE_ADC
 DEFINES += CONFIG_EVM_MODULE_TIMER
 DEFINES += CONFIG_EVM_MODULE_CFFI
 
-unix {
-SOURCES += \
-    $$PWD/../../../modules/iot/linux/evm_main.c
-}
-
 contains(DEFINES, CONFIG_EVM_MODULE_TLS) {
 LIBS += -lmbedtls -lmbedx509 -lmbedcrypto
 }
@@ -26,6 +21,9 @@ SOURCES += \
     $$PWD/../../../modules/iot/common/evm_module_http_parser.c
 }
 
+SOURCES += \
+    $$PWD/../../../modules/iot/freertos_linux/uv_posix.c \
+    $$PWD/../../../modules/iot/freertos_linux/evm_main.c
 
 SOURCES += \
     $$PWD/../../../modules/iot/common/iot_adc.c \

@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  Copyright (C) 2022
 **  QQ Group: 399011436
 **  Git: https://gitee.com/scriptiot/evm
 **  Licence: 个人免费，企业授权
@@ -15,6 +15,9 @@ extern "C" {
 
 #define PATH_MAX_LEN    256
 
+
+#ifdef EVM_USE_LIBUV
+
 #define IOT_DEFINE_PERIPH_CREATE_FUNCTION(name)                             \
   static iot_##name##_t* name##_create(evm_t *e, evm_val_t jobject) {       \
     iot_##name##_t* data = evm_malloc(sizeof(iot_##name##_t));                   \
@@ -24,72 +27,72 @@ extern "C" {
     return data;                                                              \
   }
 
-#if CONFIG_EVM_MODULE_SPI
+#if EVM_USE_MODULE_SPI
 #define IOT_MAGIC_STRING_0 "0"
 #define IOT_MAGIC_STRING_1 "1"
 #define IOT_MAGIC_STRING_2 "2"
 #define IOT_MAGIC_STRING_3 "3"
 #endif
 #define IOT_MAGIC_STRING_ABORT "abort"
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_ACKTYPE "type"
 #endif
-#if CONFIG_EVM_MODULE_ADC
+#if EVM_USE_MODULE_ADC
 #define IOT_MAGIC_STRING_ADC "Adc"
 #endif
 #define IOT_MAGIC_STRING_ADDHEADER "addHeader"
-#if CONFIG_EVM_MODULE_UDP
+#if EVM_USE_MODULE_UDP
 #define IOT_MAGIC_STRING_ADDMEMBERSHIP "addMembership"
 #endif
 #define IOT_MAGIC_STRING_ADDRESS "address"
 #define IOT_MAGIC_STRING_ARCH "arch"
 #define IOT_MAGIC_STRING_ARGV "argv"
 #define IOT_MAGIC_STRING_BASE64 "base64"
-#if CONFIG_EVM_MODULE_CRYPTO
+#if EVM_USE_MODULE_CRYPTO
 #define IOT_MAGIC_STRING_BASE64ENCODE "base64Encode"
 #endif
-#if CONFIG_EVM_MODULE_UART
+#if EVM_USE_MODULE_UART
 #define IOT_MAGIC_STRING_BAUDRATE "baudRate"
 #endif
 #define IOT_MAGIC_STRING_BIND "bind"
-#if CONFIG_EVM_MODULE_BLE
+#if EVM_USE_MODULE_BLE
 #define IOT_MAGIC_STRING_BINDCONTROL "bindControl"
 #endif
 #define IOT_MAGIC_STRING_BINDING "binding"
-#if CONFIG_EVM_MODULE_BLE
+#if EVM_USE_MODULE_BLE
 #define IOT_MAGIC_STRING_BINDRAW "bindRaw"
 #define IOT_MAGIC_STRING_BINDUSER "bindUser"
 #endif
-#if CONFIG_EVM_MODULE_SPI
+#if EVM_USE_MODULE_SPI
 #define IOT_MAGIC_STRING_BITORDER "bitOrder"
 #define IOT_MAGIC_STRING_BITORDER_U "BITORDER"
 #define IOT_MAGIC_STRING_BITSPERWORD "bitsPerWord"
 #endif
 #define IOT_MAGIC_STRING_BOARD "board"
-#if CONFIG_EVM_MODULE_GPIO
+#if EVM_USE_MODULE_GPIO
 #define IOT_MAGIC_STRING_BOTH_U "BOTH"
 #endif
 #define IOT_MAGIC_STRING_BUFFER "Buffer"
 #define IOT_MAGIC_STRING_BUILTIN_MODULES "builtin_modules"
-#if CONFIG_EVM_MODULE_I2C || CONFIG_EVM_MODULE_SPI
+#if EVM_USE_MODULE_I2C || EVM_USE_MODULE_SPI
 #define IOT_MAGIC_STRING_BUS "bus"
 #endif
 #define IOT_MAGIC_STRING_BYTELENGTH "byteLength"
 #define IOT_MAGIC_STRING_BYTEPARSED "byteParsed"
 #define IOT_MAGIC_STRING_FROM_ARRAYBUFFER "fromArrayBuffer"
-#if CONFIG_EVM_MODULE_HTTPS || CONFIG_EVM_MODULE_TLS
+#if EVM_USE_MODULE_HTTPS || EVM_USE_MODULE_TLS
 #define IOT_MAGIC_STRING_CA "ca"
 #define IOT_MAGIC_STRING_CERT "cert"
 #endif
 #define IOT_MAGIC_STRING_CHDIR "chdir"
-#if CONFIG_EVM_MODULE_PWM
+#if EVM_USE_MODULE_PWM
 #define IOT_MAGIC_STRING_CHIP "chip"
 #endif
-#if CONFIG_EVM_MODULE_SPI
+#if EVM_USE_MODULE_SPI
 #define IOT_MAGIC_STRING_CHIPSELECT "chipSelect"
 #define IOT_MAGIC_STRING_CHIPSELECT_U "CHIPSELECT"
 #endif
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_CLIENTID "clientId"
 #endif
 #define IOT_MAGIC_STRING_CREATE "create"
@@ -102,14 +105,14 @@ extern "C" {
 #define IOT_MAGIC_STRING_CONFIG "config"
 #define IOT_MAGIC_STRING_CONNECT "connect"
 #define IOT_MAGIC_STRING_COPY "copy"
-#if CONFIG_EVM_MODULE_HTTPS
+#if EVM_USE_MODULE_HTTPS
 #define IOT_MAGIC_STRING_CREATEREQUEST "createRequest"
 #endif
 #define IOT_MAGIC_STRING__CREATESTAT "_createStat"
 #define IOT_MAGIC_STRING_CREATETCP "createTCP"
 #define IOT_MAGIC_STRING_CWD "cwd"
 #define IOT_MAGIC_STRING_DATA "data"
-#if CONFIG_EVM_MODULE_UART
+#if EVM_USE_MODULE_UART
 #define IOT_MAGIC_STRING_DATABITS "dataBits"
 #endif
 #ifdef DEBUG
@@ -117,31 +120,31 @@ extern "C" {
 #endif
 #define IOT_MAGIC_STRING_DEBUGGERGETSOURCE "debuggerGetSource"
 #define IOT_MAGIC_STRING_DEBUGGERWAITSOURCE "debuggerWaitSource"
-#if CONFIG_EVM_MODULE_WEBSOCKET
+#if EVM_USE_MODULE_WEBSOCKET
 #define IOT_MAGIC_STRING_DECODEFRAME "decodeFrame"
 #endif
 #define IOT_MAGIC_STRING_DEVICE "device"
-#if CONFIG_EVM_MODULE_GPIO
+#if EVM_USE_MODULE_GPIO
 #define IOT_MAGIC_STRING_DIRECTION "direction"
 #define IOT_MAGIC_STRING_DIRECTION_U "DIRECTION"
 #endif
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_DISCONNECT "disconnect"
 #endif
 #define IOT_MAGIC_STRING_DOEXIT "doExit"
-#if CONFIG_EVM_MODULE_UDP
+#if EVM_USE_MODULE_UDP
 #define IOT_MAGIC_STRING_DROPMEMBERSHIP "dropMembership"
 #endif
-#if CONFIG_EVM_MODULE_PWM
+#if EVM_USE_MODULE_PWM
 #define IOT_MAGIC_STRING_DUTYCYCLE "dutyCycle"
 #endif
-#if CONFIG_EVM_MODULE_GPIO
+#if EVM_USE_MODULE_GPIO
 #define IOT_MAGIC_STRING_EDGE "edge"
 #define IOT_MAGIC_STRING_EDGE_U "EDGE"
 #endif
 #define IOT_MAGIC_STRING_EMIT "emit"
 #define IOT_MAGIC_STRING_EMITEXIT "emitExit"
-#if CONFIG_EVM_MODULE_TLS
+#if EVM_USE_MODULE_TLS
 #define IOT_MAGIC_STRING_END "end"
 #endif
 #define IOT_MAGIC_STRING_ENV "env"
@@ -149,15 +152,15 @@ extern "C" {
 #define IOT_MAGIC_STRING_EXECUTE "execute"
 #define IOT_MAGIC_STRING_EXITCODE "exitCode"
 #define IOT_MAGIC_STRING_EXPORT "export"
-#if CONFIG_EVM_MODULE_GPIO
+#if EVM_USE_MODULE_GPIO
 #define IOT_MAGIC_STRING_FALLING_U "FALLING"
 #endif
 #define IOT_MAGIC_STRING_FAMILY "family"
 #define IOT_MAGIC_STRING_FINISH "finish"
-#if CONFIG_EVM_MODULE_HTTPS
+#if EVM_USE_MODULE_HTTPS
 #define IOT_MAGIC_STRING_FINISHREQUEST "finishRequest"
 #endif
-#if CONFIG_EVM_MODULE_GPIO
+#if EVM_USE_MODULE_GPIO
 #define IOT_MAGIC_STRING_FLOAT_U "FLOAT"
 #endif
 #define IOT_MAGIC_STRING_FSTAT "fstat"
@@ -166,14 +169,14 @@ extern "C" {
 #endif
 #define IOT_MAGIC_STRING_GETADDRINFO "getaddrinfo"
 #define IOT_MAGIC_STRING_GETSOCKNAME "getsockname"
-#if CONFIG_EVM_MODULE_GPIO
+#if EVM_USE_MODULE_GPIO
 #define IOT_MAGIC_STRING_GPIO "Gpio"
 #endif
 #define IOT_MAGIC_STRING_HANDLER "handler"
 #define IOT_MAGIC_STRING_HANDLETIMEOUT "handleTimeout"
 #define IOT_MAGIC_STRING_HEADERS "headers"
 #define IOT_MAGIC_STRING_HEX "hex"
-#if CONFIG_EVM_MODULE_SPI
+#if EVM_USE_MODULE_SPI
 #define IOT_MAGIC_STRING_HIGH_U "HIGH"
 #endif
 #define IOT_MAGIC_STRING_HOME_U "HOME"
@@ -181,7 +184,7 @@ extern "C" {
 #define IOT_MAGIC_STRING_HTTPPARSER "HTTPParser"
 #define IOT_MAGIC_STRING_HTTP_VERSION_MAJOR "http_major"
 #define IOT_MAGIC_STRING_HTTP_VERSION_MINOR "http_minor"
-#if CONFIG_EVM_MODULE_GPIO
+#if EVM_USE_MODULE_GPIO
 #define IOT_MAGIC_STRING_IN "IN"
 #endif
 #define IOT_MAGIC_STRING__INCOMING "_incoming"
@@ -193,42 +196,42 @@ extern "C" {
 #define IOT_MAGIC_STRING_ISDEVUP "isDevUp"
 #define IOT_MAGIC_STRING_ISDIRECTORY "isDirectory"
 #define IOT_MAGIC_STRING_ISFILE "isFile"
-#if CONFIG_EVM_MODULE_TLS
+#if EVM_USE_MODULE_TLS
 #define IOT_MAGIC_STRING_ISSERVER "isServer"
 #endif
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_KEEPALIVE "keepalive"
 #endif
 #define IOT_MAGIC_STRING_KEY "key"
 #define IOT_MAGIC_STRING_LENGTH "length"
 #define IOT_MAGIC_STRING_LISTEN "listen"
 #define IOT_MAGIC_STRING_LOOPBACK "loopback"
-#if CONFIG_EVM_MODULE_SPI
+#if EVM_USE_MODULE_SPI
 #define IOT_MAGIC_STRING_LSB "LSB"
 #define IOT_MAGIC_STRING_MAXSPEED "maxSpeed"
 #endif
-#if CONFIG_EVM_MODULE_MQTT || CONFIG_EVM_MODULE_WEBSOCKET
+#if EVM_USE_MODULE_MQTT || EVM_USE_MODULE_WEBSOCKET
 #define IOT_MAGIC_STRING_MESSAGE "message"
 #endif
 #define IOT_MAGIC_STRING_METHOD "method"
 #define IOT_MAGIC_STRING_METHODS "methods"
 #define IOT_MAGIC_STRING_MKDIR "mkdir"
 #define IOT_MAGIC_STRING_MODE "mode"
-#if CONFIG_EVM_MODULE_SPI || CONFIG_EVM_MODULE_GPIO
+#if EVM_USE_MODULE_SPI || EVM_USE_MODULE_GPIO
 #define IOT_MAGIC_STRING_MODE_U "MODE"
 #endif
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_MQTTINIT "MqttInit"
 #define IOT_MAGIC_STRING_MQTTMESSAGE "MqttMessage"
 #define IOT_MAGIC_STRING_MQTTRECEIVE "MqttReceive"
 #endif
-#if CONFIG_EVM_MODULE_SPI
+#if EVM_USE_MODULE_SPI
 #define IOT_MAGIC_STRING_MSB "MSB"
 #endif
-#if CONFIG_EVM_MODULE_SPI || CONFIG_EVM_MODULE_GPIO
+#if EVM_USE_MODULE_SPI || EVM_USE_MODULE_GPIO
 #define IOT_MAGIC_STRING_NONE_U "NONE"
 #endif
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_ONACK "onack"
 #endif
 #define IOT_MAGIC_STRING_ONBODY "OnBody"
@@ -238,7 +241,7 @@ extern "C" {
 #define IOT_MAGIC_STRING_ONDATA "onData"
 #define IOT_MAGIC_STRING_ONEND "onEnd"
 #define IOT_MAGIC_STRING_ONERROR "onError"
-#if CONFIG_EVM_MODULE_TLS
+#if EVM_USE_MODULE_TLS
 #define IOT_MAGIC_STRING_ONHANDSHAKEDONE "onhandshakedone"
 #endif
 #define IOT_MAGIC_STRING_ONHEADERSCOMPLETE "OnHeadersComplete"
@@ -246,13 +249,13 @@ extern "C" {
 #define IOT_MAGIC_STRING_ONMESSAGECOMPLETE "OnMessageComplete"
 #define IOT_MAGIC_STRING_ONMESSAGE "onmessage"
 #define IOT_MAGIC_STRING__ONNEXTTICK "_onNextTick"
-#if CONFIG_EVM_MODULE_WEBSOCKET
+#if EVM_USE_MODULE_WEBSOCKET
 #define IOT_MAGIC_STRING_ONPING "onping"
 #endif
-#if CONFIG_EVM_MODULE_MQTT || CONFIG_EVM_MODULE_WEBSOCKET
+#if EVM_USE_MODULE_MQTT || EVM_USE_MODULE_WEBSOCKET
 #define IOT_MAGIC_STRING_ONPINGRESP "onpingresp"
 #endif
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_ONPUBREC "onpubrec"
 #define IOT_MAGIC_STRING_ONPUBREL "onpubrel"
 #endif
@@ -260,51 +263,51 @@ extern "C" {
 #define IOT_MAGIC_STRING_ONSOCKET "onSocket"
 #define IOT_MAGIC_STRING_ONTIMEOUT "onTimeout"
 #define IOT_MAGIC_STRING__ONUNCAUGHTEXCEPTION "_onUncaughtException"
-#if CONFIG_EVM_MODULE_TLS
+#if EVM_USE_MODULE_TLS
 #define IOT_MAGIC_STRING_ONWRITE "onwrite"
 #endif
 #define IOT_MAGIC_STRING_ONWRITABLE "onWritable"
-#if CONFIG_EVM_MODULE_GPIO
+#if EVM_USE_MODULE_GPIO
 #define IOT_MAGIC_STRING_OPENDRAIN_U "OPENDRAIN"
 #endif
 #define IOT_MAGIC_STRING_OPEN "open"
 #define IOT_MAGIC_STRING_EXISTS "exists"
-#if CONFIG_EVM_MODULE_GPIO
+#if EVM_USE_MODULE_GPIO
 #define IOT_MAGIC_STRING_OUT_U "OUT"
 #endif
 #define IOT_MAGIC_STRING_OWNER "owner"
-#if CONFIG_EVM_MODULE_WEBSOCKET
+#if EVM_USE_MODULE_WEBSOCKET
 #define IOT_MAGIC_STRING_PARSEHANDSHAKEDATA "parseHandshakeData"
 #endif
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_PASSWORD "password"
 #endif
 #define IOT_MAGIC_STRING_PAUSE "pause"
 #define IOT_MAGIC_STRING_PERIOD "period"
 #define IOT_MAGIC_STRING_PID "pid"
 #define IOT_MAGIC_STRING_PIN "pin"
-#if CONFIG_EVM_MODULE_MQTT || CONFIG_EVM_MODULE_WEBSOCKET
+#if EVM_USE_MODULE_MQTT || EVM_USE_MODULE_WEBSOCKET
 #define IOT_MAGIC_STRING_PING "ping"
 #endif
 #define IOT_MAGIC_STRING_PLATFORM "platform"
-#if CONFIG_EVM_MODULE_WEBSOCKET
+#if EVM_USE_MODULE_WEBSOCKET
 #define IOT_MAGIC_STRING_PONG "pong"
 #endif
 #define IOT_MAGIC_STRING_PORT "port"
-#if CONFIG_EVM_MODULE_WEBSOCKET
+#if EVM_USE_MODULE_WEBSOCKET
 #define IOT_MAGIC_STRING_PREPAREHANDSHAKE "prepareHandshake"
 #endif
 #define IOT_MAGIC_STRING_PRIVATE "_private"
 #define IOT_MAGIC_STRING_PROTOTYPE "prototype"
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_PUBLISH "publish"
 #endif
-#if CONFIG_EVM_MODULE_GPIO
+#if EVM_USE_MODULE_GPIO
 #define IOT_MAGIC_STRING_PULLDOWN_U "PULLDOWN"
 #define IOT_MAGIC_STRING_PULLUP_U "PULLUP"
 #define IOT_MAGIC_STRING_PUSHPULL_U "PUSHPULL"
 #endif
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_QOS "qos"
 #endif
 #define IOT_MAGIC_STRING_READDIR "readdir"
@@ -313,50 +316,50 @@ extern "C" {
 #define IOT_MAGIC_STRING_READSTART "readStart"
 #define IOT_MAGIC_STRING_READSYNC "readSync"
 #define IOT_MAGIC_STRING_READUINT8 "readUInt8"
-#if CONFIG_EVM_MODULE_DGRAM
+#if EVM_USE_MODULE_DGRAM
 #define IOT_MAGIC_STRING_RECVSTART "recvStart"
 #define IOT_MAGIC_STRING_RECVSTOP "recvStop"
 #endif
 #define IOT_MAGIC_STRING_REF "ref"
-#if CONFIG_EVM_MODULE_TLS || CONFIG_EVM_MODULE_HTTPS
+#if EVM_USE_MODULE_TLS || EVM_USE_MODULE_HTTPS
 #define IOT_MAGIC_STRING_REJECTUNAUTHORIZED "rejectUnauthorized"
 #endif
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_REMAINING "remaining"
 #endif
 #define IOT_MAGIC_STRING_RENAME "rename"
 #define IOT_MAGIC_STRING_REQUEST_U "REQUEST"
 #define IOT_MAGIC_STRING_RESPONSE_U "RESPONSE"
 #define IOT_MAGIC_STRING_RESUME "resume"
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_RETAIN "retain"
 #endif
 #define IOT_MAGIC_STRING__REUSEADDR "_reuseAddr"
-#if CONFIG_EVM_MODULE_GPIO
+#if EVM_USE_MODULE_GPIO
 #define IOT_MAGIC_STRING_RISING_U "RISING"
 #endif
 #define IOT_MAGIC_STRING_RMDIR "rmdir"
-#if CONFIG_EVM_MODULE_CRYPTO
+#if EVM_USE_MODULE_CRYPTO
 #define IOT_MAGIC_STRING_RSAVERIFY "rsaVerify"
 #endif
 #define IOT_MAGIC_STRING_SEND "send"
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_SENDACK "sendAck"
 #endif
 #define IOT_MAGIC_STRING_SENDREQUEST "sendRequest"
-#if CONFIG_EVM_MODULE_TLS
+#if EVM_USE_MODULE_TLS
 #define IOT_MAGIC_STRING_SERVERNAME "servername"
 #endif
-#if CONFIG_EVM_MODULE_I2C
+#if EVM_USE_MODULE_I2C
 #define IOT_MAGIC_STRING_SETADDRESS "setAddress"
 #endif
-#if CONFIG_EVM_MODULE_UDP
+#if EVM_USE_MODULE_UDP
 #define IOT_MAGIC_STRING_CONFIGURE "configure"
 #endif
-#if CONFIG_EVM_MODULE_GPIO
+#if EVM_USE_MODULE_GPIO
 #define IOT_MAGIC_STRING_SETDIRECTIONSYNC "setDirectionSync"
 #endif
-#if CONFIG_EVM_MODULE_PWM
+#if EVM_USE_MODULE_PWM
 #define IOT_MAGIC_STRING_SETDUTYCYCLE "setDutyCycle"
 #define IOT_MAGIC_STRING_SETDUTYCYCLESYNC "setDutyCycleSync"
 #define IOT_MAGIC_STRING_SETENABLE "setEnable"
@@ -364,22 +367,22 @@ extern "C" {
 #define IOT_MAGIC_STRING_SETFREQUENCY "setFrequency"
 #define IOT_MAGIC_STRING_SETFREQUENCYSYNC "setFrequencySync"
 #endif
-#if CONFIG_EVM_MODULE_BLE
+#if EVM_USE_MODULE_BLE
 #define IOT_MAGIC_STRING_SETFILTER "setFilter"
 #endif
 #define IOT_MAGIC_STRING_SETKEEPALIVE "setKeepAlive"
-#if CONFIG_EVM_MODULE_PWM
+#if EVM_USE_MODULE_PWM
 #define IOT_MAGIC_STRING_SETPERIOD "setPeriod"
 #define IOT_MAGIC_STRING_SETPERIODSYNC "setPeriodSync"
 #endif
 #define IOT_MAGIC_STRING_SETTIMEOUT "setTimeout"
-#if CONFIG_EVM_MODULE_CRYPTO
+#if EVM_USE_MODULE_CRYPTO
 #define IOT_MAGIC_STRING_SHAENCODE "shaEncode"
 #endif
 #define IOT_MAGIC_STRING_SHOULDKEEPALIVE "shouldkeepalive"
 #define IOT_MAGIC_STRING_SHUTDOWN "shutdown"
 #define IOT_MAGIC_STRING_SLICE "slice"
-#if CONFIG_EVM_MODULE_SPI
+#if EVM_USE_MODULE_SPI
 #define IOT_MAGIC_STRING_SPI "Spi"
 #endif
 #define IOT_MAGIC_STRING_START "start"
@@ -390,59 +393,60 @@ extern "C" {
 #define IOT_MAGIC_STRING_STDERR "stderr"
 #define IOT_MAGIC_STRING_STDOUT "stdout"
 #define IOT_MAGIC_STRING_STOP "stop"
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_SUBSCRIBE "subscribe"
 #endif
-#if CONFIG_EVM_MODULE_TLS
+#if EVM_USE_MODULE_TLS
 #define IOT_MAGIC_STRING_TLSSOCKET "TLSSocket"
 #define IOT_MAGIC_STRING_TLSCONTEXT "TlsContext"
 #define IOT_MAGIC_STRING_TLSINIT "TlsInit"
 #endif
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_TOPIC "topic"
 #endif
 #define IOT_MAGIC_STRING_TOSTRING "toString"
-#if CONFIG_EVM_MODULE_SPI
+#if EVM_USE_MODULE_SPI
 #define IOT_MAGIC_STRING_TRANSFER "transfer"
 #define IOT_MAGIC_STRING_TRANSFERSYNC "transferSync"
 #endif
 #define IOT_MAGIC_STRING_UNLINK "unlink"
 #define IOT_MAGIC_STRING_UNREF "unref"
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_UNSUBSCRIBE "unsubscribe"
 #endif
 #define IOT_MAGIC_STRING_UPGRADE "upgrade"
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_USERNAME "username"
 #endif
 #define IOT_MAGIC_STRING_URL "url"
 #define IOT_MAGIC_STRING_VERSION "version"
-#if CONFIG_EVM_MODULE_MQTT
+#if EVM_USE_MODULE_MQTT
 #define IOT_MAGIC_STRING_WILL "will"
 #endif
 #define IOT_MAGIC_STRING_WRITEUINT8 "writeUInt8"
 #define IOT_MAGIC_STRING_WRITE "write"
 #define IOT_MAGIC_STRING_WRITEDECODE "writeDecode"
 #define IOT_MAGIC_STRING_WRITESYNC "writeSync"
-#if CONFIG_EVM_MODULE_HTTPS
+#if EVM_USE_MODULE_HTTPS
 #define IOT_MAGIC_STRING__WRITE "_write"
 #endif
-#if CONFIG_EVM_MODULE_WEBSOCKET
+#if EVM_USE_MODULE_WEBSOCKET
 #define IOT_MAGIC_STRING_WSINIT "wsInit"
 #define IOT_MAGIC_STRING_WSRECEIVE "wsReceive"
 #define IOT_MAGIC_STRING_WSRECEIVEHANDSHAKEDATA "ReceiveHandshakeData"
 #endif
-#if CONFIG_EVM_MODULE_BRIDGE
+#if EVM_USE_MODULE_BRIDGE
 #define IOT_MAGIC_STRING_MODULE_NAME "MODULE_NAME"
 #endif
-#if CONFIG_EVM_MODULE_TIZEN
+#if EVM_USE_MODULE_TIZEN
 #define IOT_MAGIC_STRING_TIZEN "tizen"
 #define IOT_MAGIC_STRING_APP_CONTROL "appControl"
 #endif
-#if CONFIG_EVM_MODULE_NAPI
+#if EVM_USE_MODULE_NAPI
 #define IOT_MAGIC_STRING_ERROR "Error"
 #endif
 
+#endif
 
 
 #define EVM_GPIO_DIRECTION_IN   0
@@ -470,39 +474,39 @@ extern "C" {
 #endif
 #define EVM_MODULE_REGISTRY_SIZE 20
 
-#ifdef CONFIG_EVM_MODULE_ADC
+#ifdef EVM_USE_MODULE_ADC
 extern void evm_module_adc(evm_t *e);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_GPIO
+#ifdef EVM_USE_MODULE_GPIO
 extern void evm_module_gpio(evm_t *e);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_TIMER
+#ifdef EVM_USE_MODULE_TIMER
 extern void evm_module_timers(evm_t *e);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_I2C
+#ifdef EVM_USE_MODULE_I2C
 extern void evm_module_i2c(evm_t *e);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_UART
+#ifdef EVM_USE_MODULE_UART
 extern void evm_module_uart(evm_t *e);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_FS
+#ifdef EVM_USE_MODULE_FS
 extern void evm_module_fs(evm_t *e);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_UDP
+#ifdef EVM_USE_MODULE_UDP
 extern evm_err_t evm_module_udp(evm_t *e);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_NET
+#ifdef EVM_USE_MODULE_NET
 extern evm_err_t evm_module_net(evm_t *e);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_EVENT
+#ifdef EVM_USE_MODULE_EVENT
 typedef void (*event_handler) (evm_t *e, void* ptr);
 typedef struct evm_eventbus_t{
     event_handler handler;
@@ -514,19 +518,19 @@ extern int evm_eventbus_set(evm_eventbus_t *msg);
 extern int evm_eventbus_get(evm_eventbus_t *msg);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_DNS
+#ifdef EVM_USE_MODULE_DNS
 extern evm_err_t evm_module_dns(evm_t *e);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_BUFFER
+#ifdef EVM_USE_MODULE_BUFFER
 extern evm_err_t evm_module_buffer(evm_t *e);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_ASSERT
+#ifdef EVM_USE_MODULE_ASSERT
 extern evm_err_t evm_module_assert(evm_t *e);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_CFFI
+#ifdef EVM_USE_MODULE_CFFI
 typedef union  {
     void *p; 
     char *s; 
@@ -536,18 +540,18 @@ typedef union  {
     int64_t i64;
 } evm_cffi_val_t;
 extern void evm_cffi_exec_param(evm_t *e, evm_cffi_val_t *cffi_vals, const char *signature, int argc, evm_val_t *v);
-extern evm_val_t evm_cffi_exec_ret(evm_t *e, evm_cffi_val_t cffi_val, const char *signature);
+extern evm_val_t evm_cffi_exec_ret(evm_t *e, evm_cffi_val_t *cffi_vals, int argc, const char *signature);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_LIBC
+#ifdef EVM_USE_MODULE_LIBC
 void evm_module_libc(evm_t *e);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_WLAN
+#ifdef EVM_USE_MODULE_WLAN
 void evm_module_wlan(evm_t *e);
 #endif
 
-#ifdef CONFIG_EVM_MODULE_REPL
+#ifdef EVM_USE_MODULE_REPL
 void evm_run_repl(evm_t *e);
 #endif
 

@@ -1,9 +1,10 @@
 /****************************************************************************
-**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  Copyright (C) 2022
 **  QQ Group: 399011436
 **  Git: https://gitee.com/scriptiot/evm
 **  Licence: 个人免费，企业授权
 ****************************************************************************/
+#ifdef EVM_USE_LIBUV
 #include "iot_system.h"
 
 static uv_loop_t *uv_loop = NULL;
@@ -134,3 +135,4 @@ void system_loop()
         more = uv_loop_alive(uv_loop);
     }
 }
+#endif

@@ -1,9 +1,11 @@
 /****************************************************************************
-**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  Copyright (C) 2022
 **  QQ Group: 399011436
 **  Git: https://gitee.com/scriptiot/evm
 **  Licence: 个人免费，企业授权
 ****************************************************************************/
+#ifdef EVM_USE_LIBUV
+
 #include "iot_uv.h"
 
 #define IOT_ALIGNUP(value, alignment) \
@@ -65,3 +67,4 @@ void iot_uv_handle_close(uv_handle_t* handle, OnCloseHandler close_handler) {
   handle_data->on_close_cb = close_handler;
   uv_close(handle, uv_handle_close_processor);
 }
+#endif

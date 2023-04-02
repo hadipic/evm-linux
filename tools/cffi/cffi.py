@@ -29,7 +29,7 @@ def compile(info):
     module_name = info['name']
     includes = info['includes']
     content = '//This is auto-generated file\n'
-    content = content + "#ifdef CONFIG_EVM_MODULE_" + module_name.upper() + "\n\n"
+    content = content + "#ifdef EVM_USE_MODULE_" + module_name.upper() + "\n\n"
     for item in includes:
         content = content + '#include "' + item + '"\n'  
     content = content + '#include "evm_module.h"\n'
@@ -61,7 +61,7 @@ def compile(info):
                     content = content[0: len(content) - 2]
             content = content + ');\n'
         if signature[0] != 'v':
-            content = content + '  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "' + signature + '"))\n}\n\n'
+            content = content + '  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "' + signature + '"))\n}\n\n'
         else:
             content = content + '  EVM_RETURN(EVM_UNDEFINED)\n}\n\n'
 

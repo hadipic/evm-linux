@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  Copyright (C) 2023
 **  QQ Group: 399011436
 **  Git: https://gitee.com/scriptiot/evm
 **  Licence: 个人免费，企业授权
@@ -101,12 +101,14 @@ EVM_API evm_val_t evm_run_string(evm_t *e, evm_val_t this_obj, const char *sourc
 EVM_API void evm_run_shell(evm_t *e);
 EVM_API evm_val_t evm_call(evm_t *e, evm_val_t obj, evm_val_t pthis, int argc, evm_val_t *v);
 EVM_API evm_val_t evm_call_free(evm_t *e, evm_val_t obj, evm_val_t pthis, int argc, evm_val_t *v);
+EVM_API void evm_register_print(int (*fn)(const char *fmt, ...));
 
 /*** value操作 ***/
 EVM_API double evm_2_double(evm_t *e, evm_val_t v);
 EVM_API int32_t evm_2_integer(evm_t *e, evm_val_t v);
 EVM_API int evm_2_boolean(evm_t *e, evm_val_t v);
-EVM_API const char *evm_2_string(evm_t *e, evm_val_t v);
+EVM_API char *evm_2_string(evm_t *e, evm_val_t v);
+EVM_API void evm_string_free(evm_t *e, char *str);
 EVM_API int evm_is_number(evm_t *e, evm_val_t v);
 EVM_API int evm_is_integer(evm_t *e, evm_val_t v);
 EVM_API int evm_is_string(evm_t *e, evm_val_t v);
@@ -131,9 +133,11 @@ EVM_API void *evm_2_invoke(evm_t *e, evm_val_t o);
 EVM_API void evm_val_free(evm_t *e, evm_val_t v);
 EVM_API evm_val_t evm_val_duplicate(evm_t *e, evm_val_t v);
 
+EVM_API uint8_t *evm_load_file(const char *filename, size_t *size);
 EVM_API void *evm_malloc(size_t size);
 EVM_API void *evm_realloc(void *p, size_t size);
 EVM_API void evm_free(void *p);
+EVM_API int (*evm_print)(const char *fmt, ...);
 
 static inline void evm_assert_fail (const char *assertion, const char *file, const char *function, const int line){
     printf ("AssertionError: '%s' failed at %s(%s):%lu.\n",

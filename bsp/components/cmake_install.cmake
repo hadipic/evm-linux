@@ -37,8 +37,3 @@ if(NOT DEFINED CMAKE_OBJDUMP)
   set(CMAKE_OBJDUMP "riscv64-unknown-elf-objdump")
 endif()
 
-if(NOT CMAKE_INSTALL_LOCAL_ONLY)
-  # Include the install script for the subdirectory.
-  include("/media/zhe/scriptiot/scriptiot/evm/bsp/components/libeuv/cmake_install.cmake")
-endif()
-

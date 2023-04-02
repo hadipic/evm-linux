@@ -39,12 +39,8 @@ if( contains(DEFINES, EVM_USE_MUJS) ) {
     include($$PWD/../pris/mujs.pri)
 }
 
-if( contains(DEFINES, EVM_USE_UPY) ) {
-    include($$PWD/../pris/micropy.pri)
-}
-
-if( contains(DEFINES, EVM_USE_QUICKVM) ) {
-    include($$PWD/../pris/quickvm.pri)
+if( contains(DEFINES, EVM_USE_TINYSCRIPT) ) {
+    include($$PWD/../pris/tinyscript.pri)
 }
 
 if( contains(DEFINES, EVM_USE_DUKTAPE) ) {

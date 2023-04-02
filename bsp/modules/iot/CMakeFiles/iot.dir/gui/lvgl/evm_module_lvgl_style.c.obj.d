@@ -221,9 +221,9 @@
  /media/zhe/scriptiot/scriptiot/bouffalolab/components/graphics/lvgl/./extra/widgets/led/lv_led.h \
  /media/zhe/scriptiot/scriptiot/bouffalolab/components/graphics/lvgl/./extra/widgets/imgbtn/lv_imgbtn.h \
  /media/zhe/scriptiot/scriptiot/bouffalolab/components/graphics/lvgl/./extra/widgets/span/lv_span.h \
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/../../include/evm_module.h \
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/../../include/evm.h \
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/./evm_type.h \
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/./mujs/jsi.h \
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/./mujs/mujs.h \
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/./mujs/jsvalue.h
+ /media/zhe/scriptiot/scriptiot/evm/engines/tinyscript/../../include/evm_module.h \
+ /media/zhe/scriptiot/scriptiot/evm/engines/tinyscript/../../include/evm.h \
+ /media/zhe/scriptiot/scriptiot/evm/engines/tinyscript/./evm_type.h \
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h \
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/ts_parser.h \
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h

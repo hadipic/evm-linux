@@ -1,10 +1,10 @@
 /****************************************************************************
-**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  Copyright (C) 2023
 **  QQ Group: 399011436
 **  Git: https://gitee.com/scriptiot/evm
 **  Licence: 个人免费，企业授权
 ****************************************************************************/
-#ifdef CONFIG_EVM_MODULE_FS
+#ifdef EVM_USE_MODULE_FS
 #include "linux_uv.h"
 
 evm_val_t make_stat_object(uv_stat_t* statbuf);
@@ -179,7 +179,7 @@ EVM_FUNCTION(fs_open) {
   } else {
     FS_SYNC(open, path, flags, mode);
   }
-
+  evm_string_free(e, path);
   EVM_RETURN(ret_value);
 }
 
@@ -283,7 +283,7 @@ EVM_FUNCTION(fs_stat) {
   } else {
     FS_SYNC(stat, path);
   }
-
+  evm_string_free(e, path);
   EVM_RETURN(ret_value);
 }
 
@@ -317,7 +317,7 @@ EVM_FUNCTION(fs_mkdir) {
   } else {
     FS_SYNC(mkdir, path, mode);
   }
-
+  evm_string_free(e, path);
   EVM_RETURN(ret_value);
 }
 
@@ -334,7 +334,7 @@ EVM_FUNCTION(fs_rmdir) {
   } else {
     FS_SYNC(rmdir, path);
   }
-
+  evm_string_free(e, path);
   EVM_RETURN(ret_value);
 }
 
@@ -342,7 +342,7 @@ EVM_FUNCTION(fs_rmdir) {
 EVM_FUNCTION(fs_unlink) {
   EVM_EPCV
 
-  const char *path = evm_2_string(e, v[0]);
+  char *path = evm_2_string(e, v[0]);
   const evm_val_t jcallback = v[1];
 
   evm_val_t ret_value;
@@ -351,7 +351,7 @@ EVM_FUNCTION(fs_unlink) {
   } else {
     FS_SYNC(unlink, path);
   }
-
+  evm_string_free(e, path);
   EVM_RETURN(ret_value);
 }
 
@@ -359,8 +359,8 @@ EVM_FUNCTION(fs_unlink) {
 EVM_FUNCTION(fs_rename) {
   EVM_EPCV
 
-  const char *old_path = evm_2_string(e, v[0]);
-  const char *new_path = evm_2_string(e, v[1]);
+  char *old_path = evm_2_string(e, v[0]);
+  char *new_path = evm_2_string(e, v[1]);
   const evm_val_t jcallback = v[2];
 
   evm_val_t ret_value;
@@ -369,14 +369,15 @@ EVM_FUNCTION(fs_rename) {
   } else {
     FS_SYNC(rename, old_path, new_path);
   }
-
+  evm_string_free(e, old_path);
+  evm_string_free(e, new_path);
   EVM_RETURN(ret_value);
 }
 
 
 EVM_FUNCTION(fs_read_dir) {
   EVM_EPCV
-  const char *path = evm_2_string(e, v[0]);
+  char *path = evm_2_string(e, v[0]);
   const evm_val_t jcallback = v[1];
 
   evm_val_t ret_value;
@@ -385,7 +386,7 @@ EVM_FUNCTION(fs_read_dir) {
   } else {
     FS_SYNC(scandir, path, 0);
   }
-
+  evm_string_free(e, path);
   EVM_RETURN(ret_value);
 }
 
@@ -419,7 +420,9 @@ EVM_FUNCTION(fs_stats_is_file) {
 
 EVM_FUNCTION(fs_size) {
   EVM_EPCV
-  int fd = open(evm_2_string(e, v[0]), O_RDONLY);
+  char *name = evm_2_string(e, v[0]);
+  int fd = open(name, O_RDONLY);
+  evm_string_free(e, name);
   if( fd < 0 ){
       EVM_RETURN(evm_mk_boolean(e, 0))
   }
@@ -431,7 +434,9 @@ EVM_FUNCTION(fs_size) {
 
 EVM_FUNCTION(fs_exists) {
   EVM_EPCV
-  int fd = open(evm_2_string(e, v[0]), O_RDONLY);
+  char *name = evm_2_string(e, v[0]);
+  int fd = open(name, O_RDONLY);
+  evm_string_free(e, name);
   if( fd < 0 ){
       EVM_RETURN(evm_mk_boolean(e, 0))
   }
@@ -441,8 +446,8 @@ EVM_FUNCTION(fs_exists) {
 
 EVM_FUNCTION(fs_readFile) {
   EVM_EPCV;
-  const char *path = evm_2_string(e, v[0]);
-  const char *mode = evm_2_string(e, v[1]);
+  char *path = evm_2_string(e, v[0]);
+  char *mode = evm_2_string(e, v[1]);
   int fd = open(path, O_RDONLY);
   if( fd < 0 ){
       EVM_RETURN(EVM_UNDEFINED)
@@ -459,6 +464,8 @@ EVM_FUNCTION(fs_readFile) {
     read(fd, temp_buf, buf.st_size);
     ret = evm_mk_lstring(e, temp_buf, buf.st_size);
   }
+  evm_string_free(e, path);
+  evm_string_free(e, mode);
   zfree(temp_buf);
   close(fd);
   EVM_RETURN(ret)
@@ -474,10 +481,13 @@ EVM_FUNCTION(fs_writeFile) {
       EVM_RETURN(EVM_UNDEFINED)
   }
   if( evm_is_string(e, v[1]) ){
-      write(fd, evm_2_string(e, v[1]), evm_string_len(e, v[1]));
+      char *content = evm_2_string(e, v[1]);
+      write(fd, content, evm_string_len(e, v[1]));
+      evm_string_free(e, content);
   } else if( evm_is_buffer(e, v[1]) ){
       write(fd, evm_buffer_addr(e, v[1]), evm_buffer_len(e, v[1]));
   }
+  evm_string_free(e, path);
   close(fd);
   EVM_RETURN(EVM_UNDEFINED);
 }

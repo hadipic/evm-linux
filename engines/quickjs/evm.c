@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  Copyright (C) 2023
 **  QQ Group: 399011436
 **  Git: https://gitee.com/scriptiot/evm
 **  Licence: 个人免费，企业授权
@@ -18,7 +18,12 @@ int evm_string_len(evm_t *e, evm_val_t o) {
     if( !evm_is_string(e, o) )
         return 0;
     const char *s = JS_ToCString(e, o);
+    JS_FreeCString(e, s);
     return strlen(s);
+}
+
+void evm_string_free(evm_t *e, char *str){
+    evm_free(e, str);
 }
 
 /*** 字节数组对象操作函数 ***/
@@ -264,6 +269,10 @@ JSModuleDef *js_module_loader(JSContext *ctx,
     return m;
 }
 
+evm_val_t native_require(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+    return evm_module_get(e, evm_2_string(e, v[0]));
+}
+
 evm_t *evm_init(void) {
     JSRuntime *rt;
     JSContext *ctx;
@@ -276,6 +285,7 @@ evm_t *evm_init(void) {
     }
     JS_SetModuleLoaderFunc(rt, NULL, js_module_loader, NULL);
     evm_global_set(ctx, "@system", evm_object_create(ctx));
+    evm_global_set(ctx, "require", evm_mk_native(ctx, native_require, "require", 1));
     return ctx;
 }
 
@@ -398,6 +408,14 @@ int evm_is_native(evm_t *e, evm_val_t v) {
 
 int evm_is_callable(evm_t *e, evm_val_t v) {
     return JS_IsFunction(e, v);
+}
+
+int evm_is_invoke(evm_t *e, evm_val_t v) {
+    if( !evm_is_object(e, v) )
+        return 0;
+    if( evm_object_get_user_data(e, v) == NULL )
+        return 0;
+    return 1;
 }
 
 int evm_is_list(evm_t *e, evm_val_t v) {

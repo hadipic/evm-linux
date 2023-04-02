@@ -1,4 +1,4 @@
-#ifdef CONFIG_EVM_MODULE_LVGL_IMAGE
+#ifdef EVM_USE_MODULE_LVGL_IMAGE
 
 #include "evm_module.h"
 #include "lodepng.h"

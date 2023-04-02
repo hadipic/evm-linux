@@ -39,6 +39,6 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/media/zhe/scriptiot/scriptiot/evm/bsp/engines/mujs/cmake_install.cmake")
+  include("/media/zhe/scriptiot/scriptiot/evm/bsp/engines/tinyscript/cmake_install.cmake")
 endif()
 

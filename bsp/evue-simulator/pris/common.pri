@@ -5,32 +5,16 @@ INCLUDEPATH += $$PWD/../../../include
 INCLUDEPATH += $$PWD/../../../modules/iot/common
 INCLUDEPATH += $$PWD/../../../modules/iot/linux
 
-DEFINES += CONFIG_EVM_MODULE_LVGL
-DEFINES += CONFIG_EVM_MODULE_LVGL_STYLE
-DEFINES += CONFIG_EVM_MODULE_CFFI
-DEFINES += CONFIG_EVM_MODULE_PROCESS
-DEFINES += CONFIG_EVM_MODULE_FS
-DEFINES += CONFIG_EVM_USE_UV
-DEFINES += CONFIG_EVM_MODULE_ADC
-DEFINES += CONFIG_EVM_MODULE_GPIO
-DEFINES += CONFIG_EVM_MODULE_I2C
-DEFINES += CONFIG_EVM_MODULE_SPI
-DEFINES += CONFIG_EVM_MODULE_UART
-DEFINES += CONFIG_EVM_MODULE_TIMER
-DEFINES += CONFIG_EVM_MODULE_PWM
-DEFINES += CONFIG_EVM_MODULE_TLS
-DEFINES += CONFIG_EVM_MODULE_TCP
+DEFINES += EVM_USE_LIBUV
+DEFINES += EVM_USE_MODULE_FS
+DEFINES += EVM_USE_MODULE_LVGL
+DEFINES += EVM_USE_MODULE_LVGL_STYLE
+DEFINES += EVM_USE_MODULE_CFFI
+DEFINES += EVM_USE_MODULE_PROCESS
+DEFINES += EVM_USE_MODULE_TIMER
 
 unix {
 SOURCES += \
-    $$PWD/../../../modules/iot/linux/linux_module_pwm.c \
-    $$PWD/../../../modules/iot/linux/linux_module_repl.c \
-    $$PWD/../../../modules/iot/linux/linux_system.c \
-    $$PWD/../../../modules/iot/linux/linux_module_adc.c \
-    $$PWD/../../../modules/iot/linux/linux_module_i2c.c \
-    $$PWD/../../../modules/iot/linux/linux_module_gpio.c \
-    $$PWD/../../../modules/iot/linux/linux_module_uart.c \
-    $$PWD/../../../modules/iot/linux/linux_uv.c \
     $$PWD/../../../modules/iot/linux/evm_main.c
 }
 
@@ -55,6 +39,9 @@ SOURCES += \
     $$PWD/../../../modules/iot/gui/lvgl/evm_module_lvgl_image.c
 
 SOURCES += \
+    $$PWD/../../../modules/iot/common/iot_adc.c \
+    $$PWD/../../../modules/iot/common/iot_system.c \
+    $$PWD/../../../modules/iot/common/iot_uv.c \
     $$PWD/../../../modules/iot/common/evm_module.c \
     $$PWD/../../../modules/iot/common/evm_module_cffi.c \
     $$PWD/../../../modules/iot/common/evm_module_libc.c \

@@ -5,298 +5,37 @@
  /media/zhe/scriptiot/scriptiot/evm/modules/iot/bouffalolab/evm_main.c
  /media/zhe/scriptiot/scriptiot/evm/include/evm_module.h
  /media/zhe/scriptiot/scriptiot/evm/include/evm.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/evm_type.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsi.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/mujs.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsvalue.h
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/iot_system.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/uv.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/uv_errno.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/queue.h
- /media/zhe/scriptiot/scriptiot/evm/include/evm.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_portable.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_portable_default.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/FreeRTOS.h
- /media/zhe/scriptiot/scriptiot/evm/bsp/bl616/FreeRTOSConfig.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/projdefs.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/portable.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/deprecated_definitions.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/portable/GCC/RISC-V/common/portmacro.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/mpu_wrappers.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/event_groups.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/timers.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/task.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/list.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/semphr.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/queue.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/task.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sys/types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_internal.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/iot_doubly_linked_list.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/fcntl.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/pthread.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sched.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/time.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sys/types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/signal.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/mqueue.h
-
-/media/zhe/scriptiot/scriptiot/evm/bsp/modules/iot/CMakeFiles/iot.dir/bouffalolab/uv_posix.c.obj
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/bouffalolab/uv_posix.c
+ /media/zhe/scriptiot/scriptiot/evm/engines/tinyscript/evm_type.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/ts_parser.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h
 
 /media/zhe/scriptiot/scriptiot/evm/bsp/modules/iot/CMakeFiles/iot.dir/common/evm_module.c.obj
  /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/evm_module.c
  /media/zhe/scriptiot/scriptiot/evm/include/evm_module.h
  /media/zhe/scriptiot/scriptiot/evm/include/evm.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/evm_type.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsi.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/mujs.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsvalue.h
-
-/media/zhe/scriptiot/scriptiot/evm/bsp/modules/iot/CMakeFiles/iot.dir/common/evm_module_adc.c.obj
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/evm_module_adc.c
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/evm_module_adc.h
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/evm_module_periph_common.h
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/iot_uv.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/uv.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/uv_errno.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/queue.h
- /media/zhe/scriptiot/scriptiot/evm/include/evm.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/evm_type.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsi.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/mujs.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsvalue.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_portable.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_portable_default.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/FreeRTOS.h
- /media/zhe/scriptiot/scriptiot/evm/bsp/bl616/FreeRTOSConfig.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/projdefs.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/portable.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/deprecated_definitions.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/portable/GCC/RISC-V/common/portmacro.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/mpu_wrappers.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/event_groups.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/timers.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/task.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/list.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/semphr.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/queue.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/task.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sys/types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_internal.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/iot_doubly_linked_list.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/fcntl.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/pthread.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sched.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/time.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sys/types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/signal.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/mqueue.h
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/iot_system.h
- /media/zhe/scriptiot/scriptiot/evm/include/evm_module.h
- /media/zhe/scriptiot/scriptiot/evm/include/evm.h
+ /media/zhe/scriptiot/scriptiot/evm/engines/tinyscript/evm_type.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/ts_parser.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h
 
 /media/zhe/scriptiot/scriptiot/evm/bsp/modules/iot/CMakeFiles/iot.dir/common/evm_module_cffi.c.obj
  /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/evm_module_cffi.c
  /media/zhe/scriptiot/scriptiot/evm/include/evm_module.h
  /media/zhe/scriptiot/scriptiot/evm/include/evm.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/evm_type.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsi.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/mujs.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsvalue.h
-
-/media/zhe/scriptiot/scriptiot/evm/bsp/modules/iot/CMakeFiles/iot.dir/common/evm_module_gpio.c.obj
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/evm_module_gpio.c
-
-/media/zhe/scriptiot/scriptiot/evm/bsp/modules/iot/CMakeFiles/iot.dir/common/evm_module_periph_common.c.obj
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/evm_module_periph_common.c
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/evm_module_periph_common.h
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/iot_uv.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/uv.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/uv_errno.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/queue.h
- /media/zhe/scriptiot/scriptiot/evm/include/evm.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/evm_type.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsi.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/mujs.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsvalue.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_portable.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_portable_default.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/FreeRTOS.h
- /media/zhe/scriptiot/scriptiot/evm/bsp/bl616/FreeRTOSConfig.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/projdefs.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/portable.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/deprecated_definitions.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/portable/GCC/RISC-V/common/portmacro.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/mpu_wrappers.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/event_groups.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/timers.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/task.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/list.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/semphr.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/queue.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/task.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sys/types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_internal.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/iot_doubly_linked_list.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/fcntl.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/pthread.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sched.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/time.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sys/types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/signal.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/mqueue.h
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/iot_system.h
- /media/zhe/scriptiot/scriptiot/evm/include/evm_module.h
- /media/zhe/scriptiot/scriptiot/evm/include/evm.h
+ /media/zhe/scriptiot/scriptiot/evm/engines/tinyscript/evm_type.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/ts_parser.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h
 
 /media/zhe/scriptiot/scriptiot/evm/bsp/modules/iot/CMakeFiles/iot.dir/common/evm_module_process.c.obj
  /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/evm_module_process.c
  /media/zhe/scriptiot/scriptiot/evm/include/evm_module.h
  /media/zhe/scriptiot/scriptiot/evm/include/evm.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/evm_type.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsi.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/mujs.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsvalue.h
-
-/media/zhe/scriptiot/scriptiot/evm/bsp/modules/iot/CMakeFiles/iot.dir/common/evm_module_timer.c.obj
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/evm_module_timer.c
-
-/media/zhe/scriptiot/scriptiot/evm/bsp/modules/iot/CMakeFiles/iot.dir/common/iot_adc.c.obj
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/iot_adc.c
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/evm_module_adc.h
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/evm_module_periph_common.h
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/iot_uv.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/uv.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/uv_errno.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/queue.h
- /media/zhe/scriptiot/scriptiot/evm/include/evm.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/evm_type.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsi.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/mujs.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsvalue.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_portable.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_portable_default.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/FreeRTOS.h
- /media/zhe/scriptiot/scriptiot/evm/bsp/bl616/FreeRTOSConfig.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/projdefs.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/portable.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/deprecated_definitions.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/portable/GCC/RISC-V/common/portmacro.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/mpu_wrappers.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/event_groups.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/timers.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/task.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/list.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/semphr.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/queue.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/task.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sys/types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_internal.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/iot_doubly_linked_list.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/fcntl.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/pthread.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sched.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/time.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sys/types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/signal.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/mqueue.h
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/iot_system.h
- /media/zhe/scriptiot/scriptiot/evm/include/evm_module.h
- /media/zhe/scriptiot/scriptiot/evm/include/evm.h
-
-/media/zhe/scriptiot/scriptiot/evm/bsp/modules/iot/CMakeFiles/iot.dir/common/iot_system.c.obj
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/iot_system.c
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/iot_system.h
- /media/zhe/scriptiot/scriptiot/evm/include/evm_module.h
- /media/zhe/scriptiot/scriptiot/evm/include/evm.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/evm_type.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsi.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/mujs.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsvalue.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/uv.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/uv_errno.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/queue.h
- /media/zhe/scriptiot/scriptiot/evm/include/evm.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_portable.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_portable_default.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/FreeRTOS.h
- /media/zhe/scriptiot/scriptiot/evm/bsp/bl616/FreeRTOSConfig.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/projdefs.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/portable.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/deprecated_definitions.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/portable/GCC/RISC-V/common/portmacro.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/mpu_wrappers.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/event_groups.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/timers.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/task.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/list.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/semphr.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/queue.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/task.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sys/types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_internal.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/iot_doubly_linked_list.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/fcntl.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/pthread.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sched.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/time.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sys/types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/signal.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/mqueue.h
-
-/media/zhe/scriptiot/scriptiot/evm/bsp/modules/iot/CMakeFiles/iot.dir/common/iot_uv.c.obj
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/iot_uv.c
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/iot_uv.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/uv.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/uv_errno.h
- /media/zhe/scriptiot/scriptiot/evm/components/libeuv/inc/queue.h
- /media/zhe/scriptiot/scriptiot/evm/include/evm.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/evm_type.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsi.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/mujs.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsvalue.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_portable.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_portable_default.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/FreeRTOS.h
- /media/zhe/scriptiot/scriptiot/evm/bsp/bl616/FreeRTOSConfig.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/projdefs.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/portable.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/deprecated_definitions.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/portable/GCC/RISC-V/common/portmacro.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/mpu_wrappers.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/event_groups.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/timers.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/task.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/list.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/semphr.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/queue.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/include/task.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sys/types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX_internal.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/iot_doubly_linked_list.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/fcntl.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/pthread.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sched.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/time.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/sys/types.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/signal.h
- /media/zhe/scriptiot/scriptiot/bouffalolab/components/os/freertos/posix/include/FreeRTOS_POSIX/mqueue.h
- /media/zhe/scriptiot/scriptiot/evm/modules/iot/common/iot_system.h
- /media/zhe/scriptiot/scriptiot/evm/include/evm_module.h
- /media/zhe/scriptiot/scriptiot/evm/include/evm.h
+ /media/zhe/scriptiot/scriptiot/evm/engines/tinyscript/evm_type.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/ts_parser.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h
 
 /media/zhe/scriptiot/scriptiot/evm/bsp/modules/iot/CMakeFiles/iot.dir/gui/lvgl/evm_module_lvgl.c.obj
  /media/zhe/scriptiot/scriptiot/evm/modules/iot/gui/lvgl/evm_module_lvgl.c
@@ -522,10 +261,10 @@
  /media/zhe/scriptiot/scriptiot/bouffalolab/components/graphics/lvgl/extra/widgets/span/lv_span.h
  /media/zhe/scriptiot/scriptiot/evm/include/evm_module.h
  /media/zhe/scriptiot/scriptiot/evm/include/evm.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/evm_type.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsi.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/mujs.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsvalue.h
+ /media/zhe/scriptiot/scriptiot/evm/engines/tinyscript/evm_type.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/ts_parser.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h
 
 /media/zhe/scriptiot/scriptiot/evm/bsp/modules/iot/CMakeFiles/iot.dir/gui/lvgl/evm_module_lvgl_event.c.obj
  /media/zhe/scriptiot/scriptiot/evm/modules/iot/gui/lvgl/evm_module_lvgl_event.c
@@ -751,19 +490,19 @@
  /media/zhe/scriptiot/scriptiot/bouffalolab/components/graphics/lvgl/extra/widgets/span/lv_span.h
  /media/zhe/scriptiot/scriptiot/evm/include/evm_module.h
  /media/zhe/scriptiot/scriptiot/evm/include/evm.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/evm_type.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsi.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/mujs.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsvalue.h
+ /media/zhe/scriptiot/scriptiot/evm/engines/tinyscript/evm_type.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/ts_parser.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h
 
 /media/zhe/scriptiot/scriptiot/evm/bsp/modules/iot/CMakeFiles/iot.dir/gui/lvgl/evm_module_lvgl_misc.c.obj
  /media/zhe/scriptiot/scriptiot/evm/modules/iot/gui/lvgl/evm_module_lvgl_misc.c
  /media/zhe/scriptiot/scriptiot/evm/include/evm_module.h
  /media/zhe/scriptiot/scriptiot/evm/include/evm.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/evm_type.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsi.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/mujs.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsvalue.h
+ /media/zhe/scriptiot/scriptiot/evm/engines/tinyscript/evm_type.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/ts_parser.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h
  /media/zhe/scriptiot/scriptiot/bouffalolab/components/graphics/lvgl/lvgl.h
  /media/zhe/scriptiot/scriptiot/bouffalolab/components/graphics/lvgl/misc/lv_log.h
  /media/zhe/scriptiot/scriptiot/bouffalolab/components/graphics/lvgl/lv_conf_internal.h
@@ -1210,8 +949,8 @@
  /media/zhe/scriptiot/scriptiot/bouffalolab/components/graphics/lvgl/extra/widgets/span/lv_span.h
  /media/zhe/scriptiot/scriptiot/evm/include/evm_module.h
  /media/zhe/scriptiot/scriptiot/evm/include/evm.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/evm_type.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsi.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/mujs.h
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/mujs/jsvalue.h
+ /media/zhe/scriptiot/scriptiot/evm/engines/tinyscript/evm_type.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/ts_parser.h
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h
 

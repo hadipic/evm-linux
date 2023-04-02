@@ -1,7 +1,8 @@
 //This is auto-generated file
-#ifdef CONFIG_EVM_MODULE_LVGL
+#ifdef EVM_USE_MODULE_LVGL
 
 #include "lvgl.h"
+#include "lv_gif.h"
 #include "evm_module.h"
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_move_background) {
@@ -25,7 +26,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_scr_act) {
   evm_cffi_val_t cffi_args[1];
   evm_cffi_exec_param(e, cffi_args + 1, "", argc, v);
   cffi_args[0].p = lv_scr_act();
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "p"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "p"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_color_hex) {
@@ -33,7 +34,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_color_hex) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "i", argc, v);
   EVM_RETURN(evm_mk_number(e, lv_color_hex(cffi_args[1].i32).full));
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ii"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ii"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_style_create) {
@@ -41,7 +42,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_style_create) {
   evm_cffi_val_t cffi_args[1];
   evm_cffi_exec_param(e, cffi_args + 1, "", argc, v);
   cffi_args[0].p = lv_mem_alloc(sizeof(lv_style_t));
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "p"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "p"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_palette_main) {
@@ -49,7 +50,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_palette_main) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "i", argc, v);
   EVM_RETURN(evm_mk_number(e, lv_palette_main(cffi_args[1].i32).full))
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ii"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ii"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_style_init) {
@@ -578,7 +579,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_create) {
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].p = lv_obj_create(cffi_args[1].p);
   lv_obj_clear_flag(cffi_args[0].p, LV_OBJ_FLAG_SCROLLABLE);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "pp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_set_parent) {
@@ -634,7 +635,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_has_flag) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   cffi_args[0].i32 = lv_obj_has_flag(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bpi"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "bpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_has_flag_any) {
@@ -642,7 +643,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_has_flag_any) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   cffi_args[0].i32 = lv_obj_has_flag_any(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bpi"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "bpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_get_state) {
@@ -650,7 +651,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_get_state) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_obj_get_state(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_has_state) {
@@ -658,7 +659,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_has_state) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   cffi_args[0].i32 = lv_obj_has_state(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bpi"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "bpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_set_pos) {
@@ -698,7 +699,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_refr_size) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_obj_refr_size(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "bp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_set_width) {
@@ -746,7 +747,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_is_layout_positioned) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_obj_is_layout_positioned(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "bp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_mark_layout_as_dirty) {
@@ -802,7 +803,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_get_x) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_obj_get_x(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_get_x2) {
@@ -810,7 +811,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_get_x2) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_obj_get_x2(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_get_y) {
@@ -818,7 +819,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_get_y) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_obj_get_y(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_get_y2) {
@@ -826,7 +827,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_get_y2) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_obj_get_y2(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_get_width) {
@@ -834,7 +835,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_get_width) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_obj_get_width(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_get_height) {
@@ -842,7 +843,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_get_height) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_obj_get_height(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_get_content_width) {
@@ -850,7 +851,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_get_content_width) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_obj_get_content_width(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_get_content_height) {
@@ -858,7 +859,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_get_content_height) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_obj_get_content_height(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_get_self_width) {
@@ -866,7 +867,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_get_self_width) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_obj_get_self_width(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_get_self_height) {
@@ -874,7 +875,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_get_self_height) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_obj_get_self_height(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_refresh_self_size) {
@@ -882,7 +883,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_refresh_self_size) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_obj_refresh_self_size(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "bp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_refr_pos) {
@@ -930,7 +931,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_obj_is_visible) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_obj_is_visible(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "bp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_obj_set_flex_flow) {
@@ -986,7 +987,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_arc_create) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].p = lv_arc_create(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "pp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_arc_set_start_angle) {
@@ -1082,7 +1083,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_arc_get_angle_start) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_arc_get_angle_start(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_arc_get_angle_end) {
@@ -1090,7 +1091,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_arc_get_angle_end) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_arc_get_angle_end(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_arc_get_bg_angle_start) {
@@ -1098,7 +1099,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_arc_get_bg_angle_start) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_arc_get_bg_angle_start(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_arc_get_bg_angle_end) {
@@ -1106,7 +1107,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_arc_get_bg_angle_end) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_arc_get_bg_angle_end(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_arc_get_value) {
@@ -1114,7 +1115,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_arc_get_value) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_arc_get_value(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_arc_get_min_value) {
@@ -1122,7 +1123,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_arc_get_min_value) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_arc_get_min_value(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_arc_get_max_value) {
@@ -1130,7 +1131,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_arc_get_max_value) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_arc_get_max_value(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_arc_get_mode) {
@@ -1138,7 +1139,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_arc_get_mode) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_arc_get_mode(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_bar_create) {
@@ -1146,7 +1147,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_bar_create) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].p = lv_bar_create(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "pp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_bar_set_value) {
@@ -1186,7 +1187,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_bar_get_value) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_bar_get_value(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_bar_get_start_value) {
@@ -1194,7 +1195,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_bar_get_start_value) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_bar_get_start_value(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_bar_get_min_value) {
@@ -1202,7 +1203,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_bar_get_min_value) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_bar_get_min_value(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_bar_get_max_value) {
@@ -1210,7 +1211,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_bar_get_max_value) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_bar_get_max_value(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_bar_get_mode) {
@@ -1218,7 +1219,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_bar_get_mode) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_bar_get_mode(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_btn_create) {
@@ -1226,7 +1227,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_btn_create) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].p = lv_btn_create(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "pp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_checkbox_create) {
@@ -1234,7 +1235,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_checkbox_create) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].p = lv_checkbox_create(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "pp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_checkbox_set_text) {
@@ -1258,7 +1259,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_checkbox_get_text) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].s = lv_checkbox_get_text(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "sp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "sp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_dropdown_create) {
@@ -1266,7 +1267,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_dropdown_create) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].p = lv_dropdown_create(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "pp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_dropdown_set_text) {
@@ -1346,7 +1347,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_dropdown_get_list) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].p = lv_dropdown_get_list(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "pp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_dropdown_get_text) {
@@ -1354,7 +1355,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_dropdown_get_text) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].s = lv_dropdown_get_text(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "sp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "sp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_dropdown_get_options) {
@@ -1362,7 +1363,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_dropdown_get_options) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].s = lv_dropdown_get_options(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "sp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "sp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_dropdown_get_selected) {
@@ -1370,7 +1371,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_dropdown_get_selected) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_dropdown_get_selected(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_dropdown_get_option_cnt) {
@@ -1378,7 +1379,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_dropdown_get_option_cnt) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_dropdown_get_option_cnt(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_dropdown_get_option_index) {
@@ -1386,7 +1387,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_dropdown_get_option_index) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "ps", argc, v);
   cffi_args[0].i32 = lv_dropdown_get_option_index(cffi_args[1].p, cffi_args[2].s);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ips"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ips"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_dropdown_get_symbol) {
@@ -1394,7 +1395,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_dropdown_get_symbol) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].s = lv_dropdown_get_symbol(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "sp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "sp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_dropdown_get_selected_highlight) {
@@ -1402,7 +1403,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_dropdown_get_selected_highlight) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_dropdown_get_selected_highlight(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "bp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_dropdown_get_dir) {
@@ -1410,7 +1411,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_dropdown_get_dir) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_dropdown_get_dir(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_dropdown_open) {
@@ -1434,7 +1435,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_dropdown_is_open) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_dropdown_is_open(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "bp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_label_create) {
@@ -1442,7 +1443,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_label_create) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].p = lv_label_create(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "pp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_label_set_text) {
@@ -1474,7 +1475,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_label_get_text) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].s = lv_label_get_text(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "sp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "sp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_img_create) {
@@ -1482,7 +1483,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_img_create) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].p = lv_img_create(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "pp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_img_set_src) {
@@ -1538,7 +1539,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_img_get_src) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].s = lv_img_get_src(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "sp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "sp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_img_get_offset_x) {
@@ -1546,7 +1547,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_img_get_offset_x) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_img_get_offset_x(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_img_get_offset_y) {
@@ -1554,7 +1555,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_img_get_offset_y) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_img_get_offset_y(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_img_get_angle) {
@@ -1562,7 +1563,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_img_get_angle) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_img_get_angle(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_img_get_zoom) {
@@ -1570,7 +1571,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_img_get_zoom) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_img_get_zoom(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_img_get_antialias) {
@@ -1578,7 +1579,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_img_get_antialias) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_img_get_antialias(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "bp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_slider_create) {
@@ -1586,7 +1587,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_slider_create) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].p = lv_slider_create(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "pp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_slider_set_value) {
@@ -1610,7 +1611,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_slider_get_value) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_slider_get_value(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_slider_set_min) {
@@ -1634,7 +1635,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_slider_get_min_value) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_slider_get_min_value(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_slider_get_max_value) {
@@ -1642,7 +1643,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_slider_get_max_value) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_slider_get_max_value(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_roller_create) {
@@ -1650,7 +1651,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_roller_create) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].p = lv_roller_create(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "pp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_roller_set_options) {
@@ -1682,7 +1683,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_roller_get_selected) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_roller_get_selected(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_roller_get_options) {
@@ -1690,7 +1691,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_roller_get_options) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].s = lv_roller_get_options(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "sp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "sp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_roller_get_option_cnt) {
@@ -1698,7 +1699,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_roller_get_option_cnt) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_roller_get_option_cnt(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_switch_create) {
@@ -1706,7 +1707,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_switch_create) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].p = lv_switch_create(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "pp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_textarea_create) {
@@ -1714,7 +1715,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_textarea_create) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].p = lv_textarea_create(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "pp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_textarea_add_char) {
@@ -1858,7 +1859,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_text) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].s = lv_textarea_get_text(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "sp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "sp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_placeholder_text) {
@@ -1866,7 +1867,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_placeholder_text) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].s = lv_textarea_get_placeholder_text(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "sp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "sp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_cursor_pos) {
@@ -1874,7 +1875,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_cursor_pos) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_textarea_get_cursor_pos(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_cursor_click_pos) {
@@ -1882,7 +1883,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_cursor_click_pos) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_textarea_get_cursor_click_pos(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "bp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_password_mode) {
@@ -1890,7 +1891,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_password_mode) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_textarea_get_password_mode(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "bp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_password_bullet) {
@@ -1898,7 +1899,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_password_bullet) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].s = lv_textarea_get_password_bullet(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "sp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "sp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_one_line) {
@@ -1906,7 +1907,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_one_line) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_textarea_get_one_line(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "bp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_accepted_chars) {
@@ -1914,7 +1915,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_accepted_chars) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].s = lv_textarea_get_accepted_chars(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "sp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "sp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_max_length) {
@@ -1922,7 +1923,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_max_length) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_textarea_get_max_length(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_textarea_text_is_selected) {
@@ -1930,7 +1931,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_textarea_text_is_selected) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_textarea_text_is_selected(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "bp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_text_selection) {
@@ -1938,7 +1939,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_text_selection) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_textarea_get_text_selection(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "bp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "bp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_password_show_time) {
@@ -1946,7 +1947,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_textarea_get_password_show_time) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].i32 = lv_textarea_get_password_show_time(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "ip"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "ip"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_textarea_clear_selection) {
@@ -1994,7 +1995,7 @@ EVM_FUNCTION(evm_module_lvgl_lv_gif_create) {
   evm_cffi_val_t cffi_args[2];
   evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
   cffi_args[0].p = lv_gif_create(cffi_args[1].p);
-  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "pp"))
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "pp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_lv_gif_set_src) {

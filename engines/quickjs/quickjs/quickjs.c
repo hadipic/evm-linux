@@ -1115,7 +1115,7 @@ static BOOL js_same_value(JSContext *ctx, JSValueConst op1, JSValueConst op2);
 static BOOL js_same_value_zero(JSContext *ctx, JSValueConst op1, JSValueConst op2);
 static JSValue JS_ToObject(JSContext *ctx, JSValueConst val);
 static JSValue JS_ToObjectFree(JSContext *ctx, JSValue val);
-static JSProperty *add_property(JSContext *ctx,
+static JSProperty *tsP_add_property(JSContext *ctx,
                                 JSObject *p, JSAtom prop, int prop_flags);
 #ifdef CONFIG_BIGNUM
 static void js_float_env_finalizer(JSRuntime *rt, JSValue val);
@@ -4765,7 +4765,7 @@ static JSValue JS_NewObjectFromShape(JSContext *ctx, JSShape *sh, JSClassID clas
             } else {
                 /* only used for the first array */
                 /* cannot fail */
-                pr = add_property(ctx, p, JS_ATOM_length,
+                pr = tsP_add_property(ctx, p, JS_ATOM_length,
                                   JS_PROP_WRITABLE | JS_PROP_LENGTH);
             }
             pr->u.value = JS_NewInt32(ctx, 0);
@@ -7250,7 +7250,7 @@ static int JS_DefinePrivateField(JSContext *ctx, JSValueConst obj,
                               prop);
         goto fail;
     }
-    pr = add_property(ctx, p, prop, JS_PROP_C_W_E);
+    pr = tsP_add_property(ctx, p, prop, JS_PROP_C_W_E);
     if (unlikely(!pr)) {
     fail:
         JS_FreeValue(ctx, val);
@@ -7332,7 +7332,7 @@ static int JS_AddBrand(JSContext *ctx, JSValueConst obj, JSValueConst home_obj)
         if (JS_IsException(brand))
             return -1;
         /* if the brand is not present, add it */
-        pr = add_property(ctx, p, JS_ATOM_Private_brand, JS_PROP_C_W_E);
+        pr = tsP_add_property(ctx, p, JS_ATOM_Private_brand, JS_PROP_C_W_E);
         if (!pr) {
             JS_FreeValue(ctx, brand);
             return -1;
@@ -7349,7 +7349,7 @@ static int JS_AddBrand(JSContext *ctx, JSValueConst obj, JSValueConst home_obj)
         return -1;
     }
     p1 = JS_VALUE_GET_OBJ(obj);
-    pr = add_property(ctx, p1, brand_atom, JS_PROP_C_W_E);
+    pr = tsP_add_property(ctx, p1, brand_atom, JS_PROP_C_W_E);
     JS_FreeAtom(ctx, brand_atom);
     if (!pr)
         return -1;
@@ -7974,7 +7974,7 @@ JSValue JS_GetPropertyStr(JSContext *ctx, JSValueConst this_obj,
 
 /* Note: the property value is not initialized. Return NULL if memory
    error. */
-static JSProperty *add_property(JSContext *ctx,
+static JSProperty *tsP_add_property(JSContext *ctx,
                                 JSObject *p, JSAtom prop, int prop_flags)
 {
     JSShape *sh, *new_sh;
@@ -8040,7 +8040,7 @@ static no_inline __exception int convert_fast_array_to_array(JSContext *ctx,
     for(i = 0; i < len; i++) {
         /* add_property cannot fail here but
            __JS_AtomFromUInt32(i) fails for i > INT32_MAX */
-        pr = add_property(ctx, p, __JS_AtomFromUInt32(i), JS_PROP_C_W_E);
+        pr = tsP_add_property(ctx, p, __JS_AtomFromUInt32(i), JS_PROP_C_W_E);
         pr->u.value = *tab++;
     }
     js_free(ctx, p->u.array.u.values);
@@ -8632,7 +8632,7 @@ retry:
         }
     }
 
-    pr = add_property(ctx, p, prop, JS_PROP_C_W_E);
+    pr = tsP_add_property(ctx, p, prop, JS_PROP_C_W_E);
     if (unlikely(!pr)) {
         JS_FreeValue(ctx, val);
         return -1;
@@ -8911,7 +8911,7 @@ static int JS_CreateProperty(JSContext *ctx, JSObject *p,
     } else {
         prop_flags = flags & JS_PROP_C_W_E;
     }
-    pr = add_property(ctx, p, prop, prop_flags);
+    pr = tsP_add_property(ctx, p, prop, prop_flags);
     if (unlikely(!pr))
         return -1;
     if (flags & (JS_PROP_HAS_GET | JS_PROP_HAS_SET)) {
@@ -9303,7 +9303,7 @@ static int JS_DefineAutoInitProperty(JSContext *ctx, JSValueConst this_obj,
     }
 
     /* Specialized CreateProperty */
-    pr = add_property(ctx, p, prop, (flags & JS_PROP_C_W_E) | JS_PROP_AUTOINIT);
+    pr = tsP_add_property(ctx, p, prop, (flags & JS_PROP_C_W_E) | JS_PROP_AUTOINIT);
     if (unlikely(!pr))
         return -1;
     pr->u.init.realm_and_id = (uintptr_t)JS_DupContext(ctx);
@@ -9517,7 +9517,7 @@ static int JS_DefineGlobalVar(JSContext *ctx, JSAtom prop, int def_flags)
         return 0;
     if (!p->extensible)
         return 0;
-    pr = add_property(ctx, p, prop, flags);
+    pr = tsP_add_property(ctx, p, prop, flags);
     if (unlikely(!pr))
         return -1;
     pr->u.value = val;
@@ -14958,7 +14958,7 @@ static JSValue js_build_arguments(JSContext *ctx, int argc, JSValueConst *argv)
     p = JS_VALUE_GET_OBJ(val);
 
     /* add the length field (cannot fail) */
-    pr = add_property(ctx, p, JS_ATOM_length,
+    pr = tsP_add_property(ctx, p, JS_ATOM_length,
                       JS_PROP_WRITABLE | JS_PROP_CONFIGURABLE);
     pr->u.value = JS_NewInt32(ctx, argc);
 
@@ -15007,7 +15007,7 @@ static JSValue js_build_mapped_arguments(JSContext *ctx, int argc,
     p = JS_VALUE_GET_OBJ(val);
 
     /* add the length field (cannot fail) */
-    pr = add_property(ctx, p, JS_ATOM_length,
+    pr = tsP_add_property(ctx, p, JS_ATOM_length,
                       JS_PROP_WRITABLE | JS_PROP_CONFIGURABLE);
     pr->u.value = JS_NewInt32(ctx, argc);
 
@@ -15016,7 +15016,7 @@ static JSValue js_build_mapped_arguments(JSContext *ctx, int argc,
         var_ref = get_var_ref(ctx, sf, i, TRUE);
         if (!var_ref)
             goto fail;
-        pr = add_property(ctx, p, __JS_AtomFromUInt32(i), JS_PROP_C_W_E | JS_PROP_VARREF);
+        pr = tsP_add_property(ctx, p, __JS_AtomFromUInt32(i), JS_PROP_C_W_E | JS_PROP_VARREF);
         if (!pr) {
             free_var_ref(ctx->rt, var_ref);
             goto fail;
@@ -17234,7 +17234,7 @@ static JSValue JS_CallInternal(JSContext *caller_ctx, JSValueConst func_obj,
                     if (!var_ref)
                         goto exception;
                 }
-                pr = add_property(ctx, JS_VALUE_GET_OBJ(sp[-1]), atom,
+                pr = tsP_add_property(ctx, JS_VALUE_GET_OBJ(sp[-1]), atom,
                                   JS_PROP_WRITABLE | JS_PROP_VARREF);
                 if (!pr) {
                     free_var_ref(rt, var_ref);
@@ -27761,7 +27761,7 @@ static JSValue js_build_module_ns(JSContext *ctx, JSModuleDef *m)
         case EXPORTED_NAME_NORMAL:
             {
                 JSVarRef *var_ref = en->u.var_ref;
-                pr = add_property(ctx, p, en->export_name,
+                pr = tsP_add_property(ctx, p, en->export_name,
                                   JS_PROP_ENUMERABLE | JS_PROP_WRITABLE |
                                   JS_PROP_VARREF);
                 if (!pr)

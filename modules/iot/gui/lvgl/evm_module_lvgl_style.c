@@ -1,5 +1,5 @@
 //This is auto-generated file
-#ifdef CONFIG_EVM_MODULE_LVGL_STYLE
+#ifdef EVM_USE_MODULE_LVGL_STYLE
 
 #include "evm_module_lvgl.h"
 #include "evm_module.h"

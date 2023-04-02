@@ -1,10 +1,10 @@
 /****************************************************************************
-**  Copyright (C) 2022 @武汉市凡迈科技有限公司
+**  Copyright (C) 2023
 **  QQ Group: 399011436
 **  Git: https://gitee.com/scriptiot/evm
 **  Licence: 个人免费，企业授权
 ****************************************************************************/
-#ifdef CONFIG_EVM_MODULE_TIMER
+#ifdef EVM_USE_MODULE_TIMER
 
 #include "iot_uv.h"
 
@@ -65,6 +65,6 @@ EVM_FUNCTION(timer_constructor) {
 void evm_module_timer(evm_t *e) {
     evm_val_t obj = evm_object_create(e);
     evm_prop_set(e, obj, IOT_MAGIC_STRING_CREATE, evm_mk_native(e, timer_constructor, IOT_MAGIC_STRING_CREATE, 0));
-    evm_module_add(e, "timer", obj);
+    evm_module_add(e, "@native.timer", obj);
 }
 #endif

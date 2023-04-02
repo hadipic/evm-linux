@@ -1,11 +1,11 @@
 /media/zhe/scriptiot/scriptiot/evm/bsp/modules/iot/CMakeFiles/iot.dir/gui/lvgl/evm_module_lvgl_misc.c.obj: \
  /media/zhe/scriptiot/scriptiot/evm/modules/iot/gui/lvgl/evm_module_lvgl_misc.c \
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/../../include/evm_module.h \
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/../../include/evm.h \
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/./evm_type.h \
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/./mujs/jsi.h \
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/./mujs/mujs.h \
- /media/zhe/scriptiot/scriptiot/evm/engines/mujs/./mujs/jsvalue.h \
+ /media/zhe/scriptiot/scriptiot/evm/engines/tinyscript/../../include/evm_module.h \
+ /media/zhe/scriptiot/scriptiot/evm/engines/tinyscript/../../include/evm.h \
+ /media/zhe/scriptiot/scriptiot/evm/engines/tinyscript/./evm_type.h \
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h \
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/ts_parser.h \
+ /media/zhe/scriptiot/scriptiot/tinyscript/tinyscript/tinyscript.h \
  /media/zhe/scriptiot/scriptiot/bouffalolab/components/graphics/lvgl/./lvgl.h \
  /media/zhe/scriptiot/scriptiot/bouffalolab/components/graphics/lvgl/./misc/lv_log.h \
  /media/zhe/scriptiot/scriptiot/bouffalolab/components/graphics/lvgl/./misc/../lv_conf_internal.h \

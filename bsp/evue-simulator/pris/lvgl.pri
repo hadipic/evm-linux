@@ -252,3 +252,4 @@ SOURCES += \
 
 SOURCES += \
     $$PWD/../../../components/lvgl/lvgl/src/extra/libs/fsdrv/lv_fs_stdio.c
+

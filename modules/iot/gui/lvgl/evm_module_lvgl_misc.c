@@ -1,4 +1,4 @@
-#ifdef CONFIG_EVM_MODULE_LVGL
+#ifdef EVM_USE_MODULE_LVGL
 
 #include "evm_module.h"
 #include "lvgl.h"
