@@ -6,70 +6,14 @@
 ****************************************************************************/
 #include <errno.h>
 #include <fcntl.h>
-#include <termios.h>
 #include <unistd.h>
+#include <windows.h>
 
 #include "evm_module_uart.h"
 
 struct iot_uart_platform_data_s {
   char *device_path;
 };
-
-static unsigned baud_to_constant(unsigned baudRate) {
-  switch (baudRate) {
-    case 50:
-      return B50;
-    case 75:
-      return B75;
-    case 110:
-      return B110;
-    case 134:
-      return B134;
-    case 150:
-      return B150;
-    case 200:
-      return B200;
-    case 300:
-      return B300;
-    case 600:
-      return B600;
-    case 1200:
-      return B1200;
-    case 1800:
-      return B1800;
-    case 2400:
-      return B2400;
-    case 4800:
-      return B4800;
-    case 9600:
-      return B9600;
-    case 19200:
-      return B19200;
-    case 38400:
-      return B38400;
-    case 57600:
-      return B57600;
-    case 115200:
-      return B115200;
-    case 230400:
-      return B230400;
-  }
-  return B0;
-}
-
-static int databits_to_constant(int dataBits) {
-  switch (dataBits) {
-    case 8:
-      return CS8;
-    case 7:
-      return CS7;
-    case 6:
-      return CS6;
-    case 5:
-      return CS5;
-  }
-  return -1;
-}
 
 void iot_uart_create_platform_data(iot_uart_t* uart) {
   uart->platform_data = evm_malloc( sizeof (iot_uart_platform_data_t) );
@@ -92,27 +36,85 @@ evm_val_t iot_uart_set_platform_config(evm_t *e, iot_uart_t* uart,
   return EVM_UNDEFINED;
 }
 
+static unsigned baud_to_constant(unsigned baudRate) {
+  switch (baudRate) {
+  case 2400: return CBR_2400;
+  case 4800: return CBR_4800;
+  case 9600: return CBR_9600;
+  case 19200:return CBR_19200;
+  case 38400:return CBR_38400;
+  case 56000:return CBR_56000;
+  case 115200:return CBR_115200;
+  default:
+          return CBR_115200;
+  }
+  return CBR_115200;
+}
+
+static int databits_to_constant(int dataBits) {
+  switch (dataBits) {
+    case 8:
+      return 8;
+    case 7:
+      return 7;
+    case 6:
+      return 6;
+    case 5:
+      return 5;
+  }
+  return -1;
+}
+
+static int serial_port_config(iot_uart_t* uart)
+{
+    DCB dcbSerialParams = {0};
+    BOOL Status;
+    dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
+    Status = GetCommState((HANDLE)uart->device_fd, &dcbSerialParams);
+    if(Status == FALSE)
+        return -1;
+    dcbSerialParams.BaudRate = baud_to_constant(uart->baud_rate);
+    dcbSerialParams.ByteSize = databits_to_constant(uart->data_bits);
+    dcbSerialParams.StopBits = ONESTOPBIT;
+    dcbSerialParams.Parity = NOPARITY;
+    Status = SetCommState((HANDLE)uart->device_fd, &dcbSerialParams);
+    return Status;
+}
+
 bool iot_uart_open(uv_handle_t* uart_poll_handle) {
     iot_uart_t* uart =
       (iot_uart_t*)IOT_UV_HANDLE_EXTRA_DATA(uart_poll_handle);
-    int fd = open(uart->platform_data->device_path,
-                O_RDWR | O_NOCTTY | O_NDELAY);
-    if (fd < 0) {
-    return false;
+
+    HANDLE fd;
+    TCHAR comname[100];
+    wsprintf(comname,TEXT("%S"), uart->platform_data->device_path);
+    fd = CreateFile(comname,
+            GENERIC_READ | GENERIC_WRITE,
+            0,
+            NULL,
+            OPEN_EXISTING,
+            0,
+            NULL);
+    if(fd == INVALID_HANDLE_VALUE)
+    {
+        return false;
+    }
+    COMMTIMEOUTS timeouts = {0};
+    timeouts.ReadIntervalTimeout = 50;
+    timeouts.ReadTotalTimeoutConstant = 50;
+    timeouts.ReadTotalTimeoutMultiplier = 10;
+    timeouts.WriteTotalTimeoutConstant = 50;
+    timeouts.WriteTotalTimeoutMultiplier= 10;
+    if(SetCommTimeouts(fd, &timeouts) == FALSE){
+        return false;
     }
 
-    struct termios options;
-    tcgetattr(fd, &options);
-    options.c_cflag = CLOCAL | CREAD;
-    options.c_cflag |= (tcflag_t)baud_to_constant(uart->baud_rate);
-    options.c_cflag |= (tcflag_t)databits_to_constant(uart->data_bits);
-    options.c_iflag = IGNPAR;
-    options.c_oflag = 0;
-    options.c_lflag = 0;
-    tcflush(fd, TCIFLUSH);
-    tcsetattr(fd, TCSANOW, &options);
+    if(SetCommMask(fd, EV_RXCHAR) == FALSE){
+        return false;
+    }
 
-    uart->device_fd = fd;
+    uart->device_fd = (intptr_t)fd;
+    serial_port_config(uart);
     iot_uart_register_read_cb((uv_poll_t*)uart_poll_handle);
     return true;
 }
@@ -121,7 +123,11 @@ void iot_uart_read_cb(uv_poll_t* req, int status, int events) {
     evm_t *e = evm_runtime();
     iot_uart_t* uart = (iot_uart_t*)req->data;
     char buf[UART_WRITE_BUFFER_SIZE];
-    int i = read(uart->device_fd, buf, UART_WRITE_BUFFER_SIZE - 1);
+    int i;
+    BOOL Status = ReadFile(uart->device_fd, buf, UART_WRITE_BUFFER_SIZE - 1, (DWORD *)&i, NULL);
+    if(Status == FALSE){
+        return;
+    }
     if (i > 0) {
         buf[i] = '\0';
         DDDLOG("%s - read length: %d", __func__, i);
@@ -149,31 +155,32 @@ bool iot_uart_write(uv_handle_t* uart_poll_handle) {
 
   int bytesWritten = 0;
   unsigned offset = 0;
-  int fd = uart->device_fd;
+  HANDLE fd = (HANDLE)uart->device_fd;
   const char* buf_data = uart->buf_data;
 
   DDDLOG("%s - data: %s", __func__, buf_data);
-
+  DWORD dNoOFBytesWriten;
   do {
-    errno = 0;
-    bytesWritten = write(fd, buf_data + offset, uart->buf_len - offset);
-    tcdrain(fd);
+      errno = 0;
+      WriteFile(fd,
+                               buf_data + offset,
+                               uart->buf_len - offset,
+                               &dNoOFBytesWriten,
+                               NULL);
 
-    DDDLOG("%s - size: %d", __func__, uart->buf_len - offset);
 
-    if (bytesWritten != -1) {
-      offset += (unsigned)bytesWritten;
-      continue;
-    }
+      if (bytesWritten != -1) {
+          offset += (unsigned)dNoOFBytesWriten;
+          continue;
+      }
 
-    if (errno == EINTR) {
-      continue;
-    }
+      if (errno == EINTR) {
+          continue;
+      }
 
-    return false;
+      return false;
 
   } while (uart->buf_len > offset);
-
   return true;
 }
 

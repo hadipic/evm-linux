@@ -4,7 +4,7 @@
 **  Git: https://gitee.com/scriptiot/evm
 **  Licence: 个人免费，企业授权
 ****************************************************************************/
-#ifdef CONFIG_EVM_MODULE_UART
+#ifdef EVM_USE_MODULE_UART
 
 #include "evm_module_uart.h"
 
@@ -26,36 +26,6 @@ static void uart_worker(uv_work_t* work_req) {
     default:
         DDDLOG("Invalid Operation");
         EVM_ASSERT(0);
-    }
-}
-
-static void iot_uart_read_cb(uv_poll_t* req, int status, int events) {
-    evm_t *e = evm_runtime();
-    iot_uart_t* uart = (iot_uart_t*)req->data;
-    char buf[UART_WRITE_BUFFER_SIZE];
-#ifdef EVM_USE_EUV
-    int i = uv_posix_read(uart->device_fd, buf, UART_WRITE_BUFFER_SIZE - 1);
-#else
-    int i = read(uart->device_fd, buf, UART_WRITE_BUFFER_SIZE - 1);
-#endif
-    if (i > 0) {
-        buf[i] = '\0';
-        DDDLOG("%s - read length: %d", __func__, i);
-        evm_val_t juart = IOT_UV_HANDLE_DATA(req)->jobject;
-        evm_val_t jemit =
-            evm_prop_get(e, juart, IOT_MAGIC_STRING_EMIT);
-        EVM_ASSERT(evm_is_callable(e, jemit));
-
-        evm_val_t str = evm_mk_string(e, IOT_MAGIC_STRING_DATA);
-
-        evm_val_t jbuf = evm_buffer_create(e, buf, (size_t)i);
-        evm_val_t jargs[] = { str, jbuf };
-        evm_val_t jres = evm_call(e, jemit, IOT_UV_HANDLE_DATA(req)->jobject, 2, jargs);
-
-        evm_val_free(e, jres);
-        evm_val_free(e, str);
-        evm_val_free(e, jbuf);
-        evm_val_free(e, jemit);
     }
 }
 

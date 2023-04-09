@@ -61,6 +61,7 @@
 #define set_style_arc_indic_width(obj, v) lv_obj_set_style_arc_width(obj, v, LV_PART_INDICATOR)
 #define set_style_arc_indic_color(obj, v) lv_obj_set_style_arc_color(obj, v, LV_PART_INDICATOR)
 #define set_style_arc_indic_opa(obj, v) lv_obj_set_style_arc_opa(obj, v, LV_PART_INDICATOR)
+#define set_style_arc_knob_color(obj, v) lv_obj_set_style_arc_color(obj, v, LV_PART_KNOB)
 #define set_style_text_opa(obj, v) lv_obj_set_style_text_opa(obj, v, LV_PART_MAIN)
 #define set_style_text_font(obj, v) lv_obj_set_style_text_font(obj, v, LV_PART_MAIN)
 #define set_style_text_letter_space(obj, v) lv_obj_set_style_text_letter_space(obj, v, LV_PART_MAIN)
@@ -69,8 +70,9 @@
 #define set_style_text_align(obj, v) lv_obj_set_style_text_align(obj, v, LV_PART_MAIN)
 #define set_style_radius(obj, v) lv_obj_set_style_radius(obj, v, LV_PART_MAIN)
 #define set_style_text_color(obj, v) lv_obj_set_style_text_color(obj, v, LV_PART_MAIN)
-#define set_style_progress_indic_color(obj, v) lv_obj_set_style_bg_color(obj, v, LV_PART_INDICATOR)
-#define set_style_switch_indic_color(obj, v) lv_obj_set_style_bg_color(obj, v, LV_PART_INDICATOR)
-#define set_style_switch_knob_color(obj, v) lv_obj_set_style_bg_color(obj, v, LV_PART_KNOB)
+#define set_style_indic_bg_color(obj, v) lv_obj_set_style_bg_color(obj, v, LV_PART_INDICATOR)
+#define set_style_knob_bg_color(obj, v) lv_obj_set_style_bg_color(obj, v, LV_PART_KNOB)
+#define set_style_selected_bg_color(obj, v) lv_obj_set_style_bg_color(obj, v, LV_PART_SELECTED)
+#define set_style_checked_bg_color(obj, v) lv_obj_set_style_bg_color(obj, v, LV_STATE_CHECKED|LV_PART_INDICATOR)
 
 #endif

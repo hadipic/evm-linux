@@ -141,7 +141,7 @@ typedef struct {
 typedef struct iot_uart_platform_data_s iot_uart_platform_data_t;
 
 typedef struct {
-  int device_fd;
+  intptr_t device_fd;
   unsigned baud_rate;
   uint8_t data_bits;
   char *buf_data;

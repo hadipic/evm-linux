@@ -6,6 +6,7 @@
 ****************************************************************************/
 #ifdef EVM_USE_MODULE_FS
 #include "linux_uv.h"
+#include <fcntl.h>
 
 evm_val_t make_stat_object(uv_stat_t* statbuf);
 

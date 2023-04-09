@@ -6,6 +6,7 @@
 ****************************************************************************/
 #ifdef EVM_USE_LIBUV
 #include "iot_system.h"
+#include <fcntl.h>
 
 static uv_loop_t *uv_loop = NULL;
 

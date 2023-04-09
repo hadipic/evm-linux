@@ -150,32 +150,40 @@
         {"name": "set_style_text_decor", "signature": "vpi"},
         {"name": "set_style_text_align", "signature": "vpi"},
         {"name": "set_style_radius", "signature": "vpi"},
-
         {
-            "name": "set_style_progress_indic_color", 
+            "name": "set_style_indic_bg_color", 
             "signature": "vpi",
             "how":[
                 "lv_color_t color;",
                 "color.full = <2>;",
-                "set_style_progress_indic_color(<1>, color);"
+                "set_style_indic_bg_color(<1>, color);"
             ]
         },
-
         {
-            "name": "set_style_switch_indic_color", 
+            "name": "set_style_knob_bg_color", 
             "signature": "vpi",
             "how":[
                 "lv_color_t color;",
                 "color.full = <2>;",
-                "set_style_switch_indic_color(<1>, color);"
+                "set_style_knob_bg_color(<1>, color);"
             ]
-        },{
-            "name": "set_style_switch_knob_color", 
+        },
+        {
+            "name": "set_style_checked_bg_color", 
             "signature": "vpi",
             "how":[
                 "lv_color_t color;",
                 "color.full = <2>;",
-                "set_style_switch_knob_color(<1>, color);"
+                "set_style_checked_bg_color(<1>, color);"
+            ]
+        },
+        {
+            "name": "set_style_selected_bg_color", 
+            "signature": "vpi",
+            "how":[
+                "lv_color_t color;",
+                "color.full = <2>;",
+                "set_style_selected_bg_color(<1>, color);"
             ]
         }
     ]

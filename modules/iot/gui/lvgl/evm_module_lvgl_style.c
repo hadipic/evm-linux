@@ -550,33 +550,43 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_radius) {
   EVM_RETURN(EVM_UNDEFINED)
 }
 
-EVM_FUNCTION(evm_module_lvgl_style_set_style_progress_indic_color) {
+EVM_FUNCTION(evm_module_lvgl_style_set_style_indic_bg_color) {
   EVM_EPCV;
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   lv_color_t color;
   color.full = cffi_args[2].i32;
-  set_style_progress_indic_color(cffi_args[1].p, color);
+  set_style_indic_bg_color(cffi_args[1].p, color);
   EVM_RETURN(EVM_UNDEFINED)
 }
 
-EVM_FUNCTION(evm_module_lvgl_style_set_style_switch_indic_color) {
+EVM_FUNCTION(evm_module_lvgl_style_set_style_knob_bg_color) {
   EVM_EPCV;
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   lv_color_t color;
   color.full = cffi_args[2].i32;
-  set_style_switch_indic_color(cffi_args[1].p, color);
+  set_style_knob_bg_color(cffi_args[1].p, color);
   EVM_RETURN(EVM_UNDEFINED)
 }
 
-EVM_FUNCTION(evm_module_lvgl_style_set_style_switch_knob_color) {
+EVM_FUNCTION(evm_module_lvgl_style_set_style_checked_bg_color) {
   EVM_EPCV;
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   lv_color_t color;
   color.full = cffi_args[2].i32;
-  set_style_switch_knob_color(cffi_args[1].p, color);
+  set_style_checked_bg_color(cffi_args[1].p, color);
+  EVM_RETURN(EVM_UNDEFINED)
+}
+
+EVM_FUNCTION(evm_module_lvgl_style_set_style_selected_bg_color) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[3];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_color_t color;
+  color.full = cffi_args[2].i32;
+  set_style_selected_bg_color(cffi_args[1].p, color);
   EVM_RETURN(EVM_UNDEFINED)
 }
 
@@ -649,9 +659,10 @@ void evm_module_lvgl_style(evm_t *e) {
   evm_prop_set(e, obj, "set_style_text_decor", evm_mk_native(e, evm_module_lvgl_style_set_style_text_decor, "set_style_text_decor", 2));
   evm_prop_set(e, obj, "set_style_text_align", evm_mk_native(e, evm_module_lvgl_style_set_style_text_align, "set_style_text_align", 2));
   evm_prop_set(e, obj, "set_style_radius", evm_mk_native(e, evm_module_lvgl_style_set_style_radius, "set_style_radius", 2));
-  evm_prop_set(e, obj, "set_style_progress_indic_color", evm_mk_native(e, evm_module_lvgl_style_set_style_progress_indic_color, "set_style_progress_indic_color", 2));
-  evm_prop_set(e, obj, "set_style_switch_indic_color", evm_mk_native(e, evm_module_lvgl_style_set_style_switch_indic_color, "set_style_switch_indic_color", 2));
-  evm_prop_set(e, obj, "set_style_switch_knob_color", evm_mk_native(e, evm_module_lvgl_style_set_style_switch_knob_color, "set_style_switch_knob_color", 2));
+  evm_prop_set(e, obj, "set_style_indic_bg_color", evm_mk_native(e, evm_module_lvgl_style_set_style_indic_bg_color, "set_style_indic_bg_color", 2));
+  evm_prop_set(e, obj, "set_style_knob_bg_color", evm_mk_native(e, evm_module_lvgl_style_set_style_knob_bg_color, "set_style_knob_bg_color", 2));
+  evm_prop_set(e, obj, "set_style_checked_bg_color", evm_mk_native(e, evm_module_lvgl_style_set_style_checked_bg_color, "set_style_checked_bg_color", 2));
+  evm_prop_set(e, obj, "set_style_selected_bg_color", evm_mk_native(e, evm_module_lvgl_style_set_style_selected_bg_color, "set_style_selected_bg_color", 2));
   evm_module_add(e, "@native.lv_style", obj);
 }
 #endif

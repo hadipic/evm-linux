@@ -4,10 +4,6 @@
 **  Git: https://gitee.com/scriptiot/evm
 **  Licence: 个人免费，企业授权
 ****************************************************************************/
-#if !defined(__linux__)
-#error "Module __FILE__ is for Linux only"
-#endif
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -44,14 +40,11 @@ evm_val_t iot_adc_set_platform_config(evm_t *e, iot_adc_t* adc,
   evm_val_t str = evm_prop_get(e, jconfig, IOT_MAGIC_STRING_DEVICE);
   int len = evm_string_len(e, str);
   platform_data->device = evm_malloc(len + 1);
-  memcpy(platform_data->device, evm_2_string(e, str), len);
-
+  char *device_s = evm_2_string(e, str);
+  memcpy(platform_data->device, device_s, len);
+  evm_string_free(e, device_s);
   return EVM_UNDEFINED;
 }
-
-
-// Implementation used here are based on:
-//  https://www.kernel.org/doc/Documentation/adc/sysfs.txt
 
 bool iot_adc_read(iot_adc_t* adc) {
   iot_adc_platform_data_t* platform_data = adc->platform_data;
