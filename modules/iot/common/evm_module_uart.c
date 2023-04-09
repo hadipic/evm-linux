@@ -79,24 +79,23 @@ static evm_val_t uart_set_configuration(iot_uart_t* uart, evm_val_t jconfig) {
     return EVM_UNDEFINED;
 }
 
-EVM_FUNCTION(uart_constructor) {
+EVM_FUNCTION(uart_open) {
     EVM_EPCV;
-    const evm_val_t juart = evm_object_create(e);
+    const evm_val_t juart = evm_val_duplicate(e, v[0]);
     uv_handle_t* uart_poll_handle = iot_uv_handle_create(sizeof(uv_poll_t), juart, sizeof(iot_uart_t));
     iot_uart_t* uart = (iot_uart_t*)IOT_UV_HANDLE_EXTRA_DATA(uart_poll_handle);
     iot_uart_create_platform_data(uart);
     uart->device_fd = -1;
 
-    evm_val_t jconfig = v[0];
+    evm_val_t jconfig = v[1];
 
     evm_val_t res = iot_uart_set_platform_config(e, uart, jconfig);
     res = uart_set_configuration(uart, jconfig);
 
     DDDLOG("%s - baudRate: %d, dataBits: %d", __func__, uart->baud_rate, uart->data_bits);
 
-    evm_val_t jcallback = v[1];
-
-    if (!evm_is_null(e, jcallback)) {
+    evm_val_t jcallback = v[2];
+    if (argc > 1 && evm_is_callable(e, jcallback)) {
         iot_periph_call_async(uart_poll_handle, jcallback, kUartOpOpen, uart_worker);
     } else if (!iot_uart_open(uart_poll_handle)) {
         evm_throw(e, evm_mk_string(e, iot_periph_error_str(kUartOpOpen)));
@@ -107,31 +106,40 @@ EVM_FUNCTION(uart_constructor) {
 
 EVM_FUNCTION(uart_write) {
     EVM_EPCV;
-    uv_handle_t *uart_poll_handle = evm_object_get_user_data(e, p);
+    uv_handle_t *uart_poll_handle = evm_object_get_user_data(e, v[0]);
 
     iot_uart_t* uart =
       (iot_uart_t*)IOT_UV_HANDLE_EXTRA_DATA(uart_poll_handle);
-    uart->buf_data = evm_2_string(e, v[0]);
-    uart->buf_len = evm_string_len(e, v[0]);
+    uart->buf_data = evm_2_string(e, v[1]);
+    uart->buf_len = evm_string_len(e, v[1]);
 
-    iot_periph_call_async(uart_poll_handle, v[1],
+    iot_periph_call_async(uart_poll_handle, v[2],
                           kUartOpWrite, uart_worker);
+
+    EVM_RETURN (EVM_UNDEFINED);
+}
+
+EVM_FUNCTION(uart_read) {
+    EVM_EPCV;
+    uv_handle_t *uart_poll_handle = evm_object_get_user_data(e, v[0]);
+
+    iot_uart_read(uart_poll_handle);
 
     EVM_RETURN (EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(uart_write_sync) {
     EVM_EPCV;
-    uv_handle_t *uart_poll_handle = evm_object_get_user_data(e, p);
+    uv_handle_t *uart_poll_handle = evm_object_get_user_data(e, v[0]);
 
     iot_uart_t* uart = (iot_uart_t*)IOT_UV_HANDLE_EXTRA_DATA(uart_poll_handle);
-    uart->buf_data = evm_2_string(e, v[0]);
-    uart->buf_len = evm_string_len(e, v[0]);
+    uart->buf_data = evm_2_string(e, v[1]);
+    uart->buf_len = evm_string_len(e, v[1]);
 
     bool result = iot_uart_write(uart_poll_handle);
 
     if (!result) {
-    evm_throw(e, evm_mk_string(e, iot_periph_error_str(kUartOpWrite)));
+        evm_throw(e, evm_mk_string(e, iot_periph_error_str(kUartOpWrite)));
     }
 
     EVM_RETURN(EVM_UNDEFINED);
@@ -139,9 +147,9 @@ EVM_FUNCTION(uart_write_sync) {
 
 EVM_FUNCTION(uart_close) {
     EVM_EPCV;
-    uv_handle_t *uart_poll_handle = evm_object_get_user_data(e, p);
+    uv_handle_t *uart_poll_handle = evm_object_get_user_data(e, v[0]);
 
-    iot_periph_call_async(uart_poll_handle, v[0],
+    iot_periph_call_async(uart_poll_handle, v[1],
                             kUartOpClose, uart_worker);
 
     EVM_RETURN(EVM_UNDEFINED);
@@ -149,7 +157,7 @@ EVM_FUNCTION(uart_close) {
 
 EVM_FUNCTION(uart_close_sync) {
     EVM_EPCV;
-    uv_handle_t *uart_poll_handle = evm_object_get_user_data(e, p);
+    uv_handle_t *uart_poll_handle = evm_object_get_user_data(e, v[0]);
 
     iot_uv_handle_close(uart_poll_handle, iot_uart_handle_close_cb);
     EVM_RETURN(EVM_UNDEFINED);
@@ -157,12 +165,13 @@ EVM_FUNCTION(uart_close_sync) {
 
 void evm_module_uart(evm_t *e) {
     evm_val_t obj = evm_object_create(e);
-    evm_prop_set(e, obj, IOT_MAGIC_STRING_CREATE, evm_mk_native(e, uart_constructor, IOT_MAGIC_STRING_CREATE, 0));
+    evm_prop_set(e, obj, IOT_MAGIC_STRING_OPEN, evm_mk_native(e, uart_open, IOT_MAGIC_STRING_OPEN, 0));
     evm_prop_set(e, obj, IOT_MAGIC_STRING_CLOSE, evm_mk_native(e, uart_close, IOT_MAGIC_STRING_CLOSE, 0));
     evm_prop_set(e, obj, IOT_MAGIC_STRING_CLOSESYNC, evm_mk_native(e, uart_close_sync, IOT_MAGIC_STRING_CLOSESYNC, 0));
+    evm_prop_set(e, obj, IOT_MAGIC_STRING_READ, evm_mk_native(e, uart_read, IOT_MAGIC_STRING_READ, 0));
     evm_prop_set(e, obj, IOT_MAGIC_STRING_WRITE, evm_mk_native(e, uart_write, IOT_MAGIC_STRING_WRITE, 0));
     evm_prop_set(e, obj, IOT_MAGIC_STRING_WRITESYNC, evm_mk_native(e, uart_write_sync, IOT_MAGIC_STRING_WRITESYNC, 0));
 
-    evm_module_add(e, "uart", obj);
+    evm_module_add(e, "@native.uart", obj);
 }
 #endif

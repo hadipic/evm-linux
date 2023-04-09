@@ -4,7 +4,7 @@
 **  Git: https://gitee.com/scriptiot/evm
 **  Licence: 个人免费，企业授权
 ****************************************************************************/
-#ifdef CONFIG_EVM_MODULE_TCP
+#ifdef EVM_USE_MODULE_TCP
 
 #include "linux_uv.h"
 
@@ -42,7 +42,7 @@ EVM_FUNCTION(evm_module_tcp_connect) {
     EVM_EPCV;
     uv_tcp_t *tcp_handle = evm_object_get_user_data(e, p);
 
-    const char *address = evm_2_string(e, v[0]);
+    char *address = evm_2_string(e, v[0]);
     int port = evm_2_integer(e, v[1]);
     evm_val_t jcallback = v[2];
 
@@ -62,6 +62,7 @@ EVM_FUNCTION(evm_module_tcp_connect) {
           iot_uv_request_destroy(req_connect);
         }
     }
+    evm_string_free(e, address);
     EVM_RETURN(evm_mk_number(e, err));
 }
 
@@ -92,7 +93,7 @@ EVM_FUNCTION(evm_module_tcp_bind) {
     EVM_EPCV;
     uv_tcp_t *tcp_handle = evm_object_get_user_data(e, p);
 
-    const char * address = evm_2_string(e, v[0]);
+    char * address = evm_2_string(e, v[0]);
     int port = evm_2_integer(e, v[1]);
 
     struct sockaddr_in addr;
@@ -101,7 +102,7 @@ EVM_FUNCTION(evm_module_tcp_bind) {
     if (err == 0) {
         err = uv_tcp_bind(tcp_handle, (struct sockaddr*)(&addr), 0);
     }
-
+    evm_string_free(e, address);
     EVM_RETURN(evm_mk_number(e, err));
 }
 
@@ -346,6 +347,6 @@ EVM_FUNCTION(evm_module_tcp_create) {
 void evm_module_tcp(evm_t *e) {
   evm_val_t obj = evm_object_create(e);
   evm_prop_set(e, obj, "create", evm_mk_native(e, evm_module_tcp_create, "create", 0));
-  evm_module_add(e, "tcp", obj);
+  evm_module_add(e, "@native.tcp", obj);
 }
 #endif

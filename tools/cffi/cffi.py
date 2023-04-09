@@ -60,10 +60,7 @@ def compile(info):
                 if len(signature) > 1:
                     content = content[0: len(content) - 2]
             content = content + ');\n'
-        if signature[0] != 'v':
-            content = content + '  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "' + signature + '"))\n}\n\n'
-        else:
-            content = content + '  EVM_RETURN(EVM_UNDEFINED)\n}\n\n'
+        content = content + '  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "' + signature + '"))\n}\n\n'
 
     content = content + '\nvoid evm_module_' + module_name + '(evm_t *e) {\n'
     content = content + '  evm_val_t obj = evm_object_create(e);\n'

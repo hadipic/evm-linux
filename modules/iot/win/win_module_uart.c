@@ -8,6 +8,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <windows.h>
+#include <pthread.h>
 
 #include "evm_module_uart.h"
 
@@ -99,15 +100,14 @@ bool iot_uart_open(uv_handle_t* uart_poll_handle) {
     {
         return false;
     }
-    COMMTIMEOUTS timeouts = {0};
-    timeouts.ReadIntervalTimeout = 50;
-    timeouts.ReadTotalTimeoutConstant = 50;
-    timeouts.ReadTotalTimeoutMultiplier = 10;
-    timeouts.WriteTotalTimeoutConstant = 50;
-    timeouts.WriteTotalTimeoutMultiplier= 10;
-    if(SetCommTimeouts(fd, &timeouts) == FALSE){
-        return false;
-    }
+    COMMTIMEOUTS comTimeOut;
+    comTimeOut.ReadIntervalTimeout = MAXDWORD;
+    comTimeOut.ReadTotalTimeoutMultiplier = 0;
+    comTimeOut.ReadTotalTimeoutConstant = 0;
+
+    comTimeOut.WriteTotalTimeoutMultiplier = 0;
+    comTimeOut.WriteTotalTimeoutConstant = 0;
+    SetCommTimeouts(fd, &comTimeOut);
 
     if(SetCommMask(fd, EV_RXCHAR) == FALSE){
         return false;
@@ -115,7 +115,6 @@ bool iot_uart_open(uv_handle_t* uart_poll_handle) {
 
     uart->device_fd = (intptr_t)fd;
     serial_port_config(uart);
-    iot_uart_register_read_cb((uv_poll_t*)uart_poll_handle);
     return true;
 }
 
@@ -124,7 +123,7 @@ void iot_uart_read_cb(uv_poll_t* req, int status, int events) {
     iot_uart_t* uart = (iot_uart_t*)req->data;
     char buf[UART_WRITE_BUFFER_SIZE];
     int i;
-    BOOL Status = ReadFile(uart->device_fd, buf, UART_WRITE_BUFFER_SIZE - 1, (DWORD *)&i, NULL);
+    BOOL Status = ReadFile((HANDLE)uart->device_fd, buf, UART_WRITE_BUFFER_SIZE - 1, (DWORD *)&i, NULL);
     if(Status == FALSE){
         return;
     }
@@ -147,6 +146,37 @@ void iot_uart_read_cb(uv_poll_t* req, int status, int events) {
         evm_val_free(e, jbuf);
         evm_val_free(e, jemit);
     }
+}
+
+bool iot_uart_read(uv_handle_t* handle) {
+    iot_uart_t* uart = (iot_uart_t*)IOT_UV_HANDLE_EXTRA_DATA(handle);
+    evm_t *e = evm_runtime();
+    char buf[UART_WRITE_BUFFER_SIZE];
+    int i = 0;
+    BOOL Status = ReadFile((HANDLE)uart->device_fd, buf, UART_WRITE_BUFFER_SIZE - 1, (DWORD *)&i, NULL);
+    if(Status == FALSE){
+        return false;
+    }
+    if (i > 0) {
+        buf[i] = '\0';
+        DDDLOG("%s - read length: %d", __func__, i);
+        evm_val_t juart = IOT_UV_HANDLE_DATA(handle)->jobject;
+        evm_val_t jemit =
+            evm_prop_get(e, juart, IOT_MAGIC_STRING_EMIT);
+        EVM_ASSERT(evm_is_callable(e, jemit));
+
+        evm_val_t str = evm_mk_string(e, IOT_MAGIC_STRING_DATA);
+
+        evm_val_t jbuf = evm_buffer_create(e, buf, (size_t)i);
+        evm_val_t jargs[] = { str, jbuf };
+        evm_val_t jres = evm_call(e, jemit, IOT_UV_HANDLE_DATA(handle)->jobject, 2, jargs);
+
+        evm_val_free(e, jres);
+        evm_val_free(e, str);
+        evm_val_free(e, jbuf);
+        evm_val_free(e, jemit);
+    }
+    return true;
 }
 
 bool iot_uart_write(uv_handle_t* uart_poll_handle) {

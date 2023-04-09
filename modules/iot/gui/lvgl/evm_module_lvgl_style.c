@@ -9,7 +9,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_width) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_width(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_min_width) {
@@ -17,7 +17,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_min_width) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_min_width(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_max_width) {
@@ -25,7 +25,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_max_width) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_max_width(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_height) {
@@ -33,7 +33,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_height) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_height(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_min_height) {
@@ -41,7 +41,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_min_height) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_min_height(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_max_height) {
@@ -49,7 +49,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_max_height) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_max_height(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_x) {
@@ -57,7 +57,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_x) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_x(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_y) {
@@ -65,7 +65,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_y) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_y(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_align) {
@@ -73,7 +73,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_align) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_align(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_transform_width) {
@@ -81,7 +81,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_transform_width) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_transform_width(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_transform_height) {
@@ -89,7 +89,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_transform_height) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_transform_height(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_translate_x) {
@@ -97,7 +97,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_translate_x) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_translate_x(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_translate_y) {
@@ -105,7 +105,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_translate_y) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_translate_y(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_transform_zoom) {
@@ -113,7 +113,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_transform_zoom) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_transform_zoom(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_transform_pivot_x) {
@@ -121,7 +121,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_transform_pivot_x) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_transform_pivot_x(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_transform_pivot_y) {
@@ -129,7 +129,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_transform_pivot_y) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_transform_pivot_y(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_pad_all) {
@@ -137,7 +137,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_pad_all) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_pad_all(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_pad_top) {
@@ -145,7 +145,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_pad_top) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_pad_top(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_pad_bottom) {
@@ -153,7 +153,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_pad_bottom) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_pad_bottom(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_pad_left) {
@@ -161,7 +161,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_pad_left) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_pad_left(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_pad_right) {
@@ -169,7 +169,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_pad_right) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_pad_right(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_pad_row) {
@@ -177,7 +177,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_pad_row) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_pad_row(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_pad_column) {
@@ -185,7 +185,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_pad_column) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_pad_column(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_bg_color) {
@@ -195,7 +195,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_bg_color) {
   lv_color_t color;
   color.full = cffi_args[2].i32;
   set_style_bg_color(cffi_args[1].p, color);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_bg_opa) {
@@ -203,7 +203,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_bg_opa) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_bg_opa(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_bg_grad_color) {
@@ -213,7 +213,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_bg_grad_color) {
   lv_color_t color;
   color.full = cffi_args[2].i32;
   set_style_bg_grad_color(cffi_args[1].p, color);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_bg_grad_dir) {
@@ -221,7 +221,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_bg_grad_dir) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_bg_grad_dir(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_bg_main_stop) {
@@ -229,7 +229,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_bg_main_stop) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_bg_main_stop(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_bg_grad_stop) {
@@ -237,7 +237,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_bg_grad_stop) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_bg_grad_stop(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_bg_dither_mode) {
@@ -245,7 +245,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_bg_dither_mode) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_bg_dither_mode(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_border_color) {
@@ -255,7 +255,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_border_color) {
   lv_color_t color;
   color.full = cffi_args[2].i32;
   set_style_border_color(cffi_args[1].p, color);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_border_opa) {
@@ -263,7 +263,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_border_opa) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_border_opa(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_border_width) {
@@ -271,7 +271,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_border_width) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_border_width(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_border_side) {
@@ -279,7 +279,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_border_side) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_border_side(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_border_post) {
@@ -287,7 +287,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_border_post) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pb", argc, v);
   set_style_border_post(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpb"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_outline_width) {
@@ -295,7 +295,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_outline_width) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_outline_width(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_outline_color) {
@@ -305,7 +305,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_outline_color) {
   lv_color_t color;
   color.full = cffi_args[2].i32;
   set_style_outline_color(cffi_args[1].p, color);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_outline_opa) {
@@ -313,7 +313,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_outline_opa) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_outline_opa(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_outline_pad) {
@@ -321,7 +321,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_outline_pad) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_outline_pad(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_shadow_width) {
@@ -329,7 +329,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_shadow_width) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_shadow_width(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_shadow_ofs_x) {
@@ -337,7 +337,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_shadow_ofs_x) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_shadow_ofs_x(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_shadow_ofs_y) {
@@ -345,7 +345,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_shadow_ofs_y) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_shadow_ofs_y(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_shadow_spread) {
@@ -353,7 +353,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_shadow_spread) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_shadow_spread(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_shadow_color) {
@@ -363,7 +363,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_shadow_color) {
   lv_color_t color;
   color.full = cffi_args[2].i32;
   set_style_shadow_color(cffi_args[1].p, color);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_shadow_opa) {
@@ -371,7 +371,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_shadow_opa) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_shadow_opa(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_line_width) {
@@ -379,7 +379,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_line_width) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_line_width(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_line_dash_width) {
@@ -387,7 +387,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_line_dash_width) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_line_dash_width(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_line_dash_gap) {
@@ -395,7 +395,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_line_dash_gap) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_line_dash_gap(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_line_rounded) {
@@ -403,7 +403,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_line_rounded) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pb", argc, v);
   set_style_line_rounded(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpb"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_line_color) {
@@ -413,7 +413,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_line_color) {
   lv_color_t color;
   color.full = cffi_args[2].i32;
   set_style_line_color(cffi_args[1].p, color);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_line_opa) {
@@ -421,7 +421,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_line_opa) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_line_opa(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_arc_width) {
@@ -429,7 +429,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_arc_width) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_arc_width(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_arc_rounded) {
@@ -437,7 +437,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_arc_rounded) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pb", argc, v);
   set_style_arc_rounded(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpb"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_arc_color) {
@@ -447,7 +447,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_arc_color) {
   lv_color_t color;
   color.full = cffi_args[2].i32;
   set_style_arc_color(cffi_args[1].p, color);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_arc_opa) {
@@ -455,7 +455,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_arc_opa) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_arc_opa(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_arc_indic_opa) {
@@ -463,7 +463,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_arc_indic_opa) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_arc_indic_opa(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_arc_indic_width) {
@@ -471,7 +471,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_arc_indic_width) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_arc_indic_width(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_arc_indic_color) {
@@ -481,7 +481,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_arc_indic_color) {
   lv_color_t color;
   color.full = cffi_args[2].i32;
   set_style_arc_indic_color(cffi_args[1].p, color);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_text_color) {
@@ -491,7 +491,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_text_color) {
   lv_color_t color;
   color.full = cffi_args[2].i32;
   set_style_text_color(cffi_args[1].p, color);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_text_opa) {
@@ -499,7 +499,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_text_opa) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_text_opa(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_text_font) {
@@ -507,7 +507,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_text_font) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pp", argc, v);
   set_style_text_font(cffi_args[1].p, cffi_args[2].p);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpp"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_text_letter_space) {
@@ -515,7 +515,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_text_letter_space) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_text_letter_space(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_text_line_space) {
@@ -523,7 +523,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_text_line_space) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_text_line_space(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_text_decor) {
@@ -531,7 +531,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_text_decor) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_text_decor(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_text_align) {
@@ -539,7 +539,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_text_align) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_text_align(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_radius) {
@@ -547,7 +547,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_radius) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_radius(cffi_args[1].p, cffi_args[2].i32);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_indic_bg_color) {
@@ -557,7 +557,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_indic_bg_color) {
   lv_color_t color;
   color.full = cffi_args[2].i32;
   set_style_indic_bg_color(cffi_args[1].p, color);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_knob_bg_color) {
@@ -567,7 +567,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_knob_bg_color) {
   lv_color_t color;
   color.full = cffi_args[2].i32;
   set_style_knob_bg_color(cffi_args[1].p, color);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_checked_bg_color) {
@@ -577,7 +577,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_checked_bg_color) {
   lv_color_t color;
   color.full = cffi_args[2].i32;
   set_style_checked_bg_color(cffi_args[1].p, color);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 EVM_FUNCTION(evm_module_lvgl_style_set_style_selected_bg_color) {
@@ -587,7 +587,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_selected_bg_color) {
   lv_color_t color;
   color.full = cffi_args[2].i32;
   set_style_selected_bg_color(cffi_args[1].p, color);
-  EVM_RETURN(EVM_UNDEFINED)
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, argc, "vpi"))
 }
 
 

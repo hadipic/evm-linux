@@ -92,6 +92,13 @@ evm_val_t iot_uart_set_platform_config(evm_t *e, iot_uart_t* uart,
   return EVM_UNDEFINED;
 }
 
+void iot_uart_register_read_cb(uv_poll_t* uart_poll_handle) {
+    iot_uart_t* uart = (iot_uart_t*)IOT_UV_HANDLE_EXTRA_DATA(uart_poll_handle);
+    uv_loop_t* loop = system_get_uv_loop();
+    uv_poll_init(loop, uart_poll_handle, uart->device_fd);
+    uv_poll_start(uart_poll_handle, UV_READABLE, iot_uart_read_cb);
+}
+
 bool iot_uart_open(uv_handle_t* uart_poll_handle) {
     iot_uart_t* uart =
       (iot_uart_t*)IOT_UV_HANDLE_EXTRA_DATA(uart_poll_handle);

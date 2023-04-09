@@ -22,5 +22,6 @@ evm_val_t iot_uart_set_platform_config(evm_t *e, iot_uart_t* uart,
 bool iot_uart_open(uv_handle_t* uart_poll_handle);
 bool iot_uart_write(uv_handle_t* uart_poll_handle);
 void iot_uart_read_cb(uv_poll_t* req, int status, int events);
+bool iot_uart_read(uv_handle_t* handle);
 
 #endif

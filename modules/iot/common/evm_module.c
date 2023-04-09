@@ -116,19 +116,25 @@ void evm_module_event_emit (evm_t *e, evm_val_t pthis, const char *type, int arg
 
 EVM_FUNCTION( native_print ){
     EVM_EPCV
-    const char *s = evm_2_string(e, v[0]);
+    char *s = evm_2_string(e, v[0]);
     printf("%s\r\n", s);
+    evm_string_free(e, s);
     EVM_RETURN(evm_mk_undefined(e))
 }
 
 EVM_FUNCTION(native_require) {
-    EVM_EPCV
-    EVM_RETURN( evm_module_get(e, evm_2_string(e, v[0])) );
+    EVM_EPCV;
+    char *s = evm_2_string(e, v[0]);
+    evm_val_t res = evm_module_get(e, s);
+    evm_string_free(e, s);
+    EVM_RETURN( res );
 }
 
 EVM_FUNCTION(native_compile) {
-    EVM_EPCV
-    if( evm_run_file(e, v[0], evm_2_string(e, v[1])) ){
+    EVM_EPCV;
+    char *s = evm_2_string(e, v[1]);
+    if( evm_run_file(e, v[0], s) ){
+        evm_string_free(e, s);
         EVM_RETURN(  evm_mk_boolean(e, 1) )
     }
     EVM_RETURN(evm_mk_boolean(e, 0));
@@ -136,7 +142,7 @@ EVM_FUNCTION(native_compile) {
 
 static void evm_native_init(evm_t *e) {
     evm_global_set(e, "print", evm_mk_native(e, native_print, "print", 1));
-    evm_global_set(e, "__require__", evm_mk_native(e, native_require, "require", 1));
+    evm_global_set(e, "__require__", evm_mk_native(e, native_require, "__require__", 1));
     evm_global_set(e, "__compile__", evm_mk_native(e, native_compile, "__compile__", 2));
 }
 

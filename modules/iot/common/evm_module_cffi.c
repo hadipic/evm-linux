@@ -32,9 +32,10 @@ inline evm_val_t evm_cffi_exec_ret(evm_t *e, evm_cffi_val_t *cffi_vals, int argc
             evm_throw(e, evm_mk_string(e, "Unsupported cffi type"));
     }
 
-    for (int i = 0; i < argc; i++) {
-        switch (signature[i + 1]) {
-            case 's': evm_string_free(e, cffi_vals[i].s); break;
+    for (int i = 1; i < argc; i++) {
+        switch (signature[i]) {
+            case 's':
+                evm_string_free(e, cffi_vals[i].s); break;
         }
     }
     return ret;
