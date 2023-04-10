@@ -540,7 +540,7 @@ typedef union  {
     int64_t i64;
 } evm_cffi_val_t;
 extern void evm_cffi_exec_param(evm_t *e, evm_cffi_val_t *cffi_vals, const char *signature, int argc, evm_val_t *v);
-extern evm_val_t evm_cffi_exec_ret(evm_t *e, evm_cffi_val_t *cffi_vals, int argc, const char *signature);
+extern evm_val_t evm_cffi_exec_ret(evm_t *e, evm_cffi_val_t cffi_val, const char *signature);
 #endif
 
 #ifdef EVM_USE_MODULE_LIBC

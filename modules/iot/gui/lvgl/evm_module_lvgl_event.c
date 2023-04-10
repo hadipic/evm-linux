@@ -15,10 +15,9 @@ static void event_handler(lv_event_t * e)
     _event_info_t *info = lv_event_get_user_data(e);
     evm_val_t cb = info->cb;
     evm_val_t args[2];
-    args[0] = evm_val_duplicate(info->e, info->obj);
+    args[0] = info->obj;
     args[1] = evm_mk_number(info->e, code);
     evm_call_free(info->e, cb, EVM_UNDEFINED, 2, args);
-    evm_val_free(info->e, args[0]);
     evm_val_free(info->e, args[1]);
 }
 
