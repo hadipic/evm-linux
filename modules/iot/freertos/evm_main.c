@@ -26,8 +26,40 @@ void *evm_realloc(void * p, size_t size)
     return realloc(p, size);
 }
 
+uint8_t *evm_load_file(const char *filename, size_t *size) {
+    FILE *f;
+    uint8_t *buf;
+    size_t buf_len;
+    long lret;
+    f = fopen(filename, "rb");
+    if (!f)
+        return NULL;
+    if (fseek(f, 0, SEEK_END) < 0)
+        goto fail;
+    lret = ftell(f);
+    if (lret < 0)
+        goto fail;
+
+    buf_len = lret;
+    if (fseek(f, 0, SEEK_SET) < 0)
+        goto fail;
+    buf = evm_malloc(buf_len + 1);
+    if (!buf)
+        goto fail;
+    if (fread(buf, 1, buf_len, f) != buf_len) {
+        evm_free(buf);
+    fail:
+        fclose(f);
+        return NULL;
+    }
+    buf[buf_len] = '\0';
+    fclose(f);
+    *size = buf_len;
+    return buf;
+}
+
 void evm_main (char *filename) {
-    system_loop();
+    uv_init();
     evm_t *e = evm_init();
     evm_module_init(e);
 

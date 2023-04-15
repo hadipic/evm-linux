@@ -231,8 +231,12 @@ int evm_2_boolean(evm_t *e, evm_val_t v) {
     return ts_to_boolean(e, v);
 }
 
-const char *evm_2_string(evm_t *e, evm_val_t v) {
-    return ts_to_string(e, v);
+char *evm_2_string(evm_t *e, evm_val_t v) {
+    return (char*)ts_to_string(e, v);
+}
+
+void evm_string_free(evm_t *e, char *s) {
+
 }
 
 int evm_is_number(evm_t *e, evm_val_t v) {

@@ -13,14 +13,6 @@ unix{
 LIBS += -lpthread
 }
 
-contains(DEFINES, EVM_USE_TUV){
-include($$PWD/../pris/tuv.pri)
-}
-
-contains(DEFINES, EVM_USE_EUV){
-include($$PWD/../pris/euv.pri)
-}
-
 win32{
     INCLUDEPATH +=  $$PWD/../
 }
@@ -41,6 +33,10 @@ if( contains(DEFINES, EVM_USE_MUJS) ) {
 
 if( contains(DEFINES, EVM_USE_TINYSCRIPT) ) {
     include($$PWD/../pris/tinyscript.pri)
+}
+
+if( contains(DEFINES, EVM_USE_JERRYSCRIPT) ) {
+    include($$PWD/../pris/jerryscript.pri)
 }
 
 if( contains(DEFINES, EVM_USE_DUKTAPE) ) {

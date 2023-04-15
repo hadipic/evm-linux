@@ -15,9 +15,6 @@ extern "C" {
 
 #define PATH_MAX_LEN    256
 
-
-#ifdef EVM_USE_LIBUV
-
 #define IOT_DEFINE_PERIPH_CREATE_FUNCTION(name)                             \
   static iot_##name##_t* name##_create(evm_t *e, evm_val_t jobject) {       \
     iot_##name##_t* data = evm_malloc(sizeof(iot_##name##_t));                   \
@@ -444,8 +441,6 @@ extern "C" {
 #endif
 #if EVM_USE_MODULE_NAPI
 #define IOT_MAGIC_STRING_ERROR "Error"
-#endif
-
 #endif
 
 
