@@ -297,11 +297,13 @@ struct uv_dirent_s {
   uv_dirent_type_t type;
 };
 
+typedef void (*uv_after_work_cb)(uv_work_t* req, int status);
+
 struct uv_work_s {
   UV_HANDLE_FIELDS
   uv_async_t *async;
   uv_work_cb cb;
-  uv_work_cb done_cb;
+  uv_after_work_cb done_cb;
   uv_close_cb user_close_cb;
 };
 
@@ -312,6 +314,8 @@ typedef struct uv_buf_t {
 
 typedef struct uv_loop_s {
     void *queue;
+    void *work_queue;
+    void *done_queue;
 } uv_loop_s;
 
 struct uv_handle_s {
@@ -370,7 +374,7 @@ typedef void (*uv_alloc_cb)(uv_handle_t* handle,
 typedef void (*uv_read_cb)(uv_stream_t* stream,
                            ssize_t nread,
                            const uv_buf_t* buf);
-typedef void (*uv_after_work_cb)(uv_work_t* req, int status);
+
 typedef void (*uv_write_cb)(uv_write_t* req, int status);
 typedef void (*uv_connect_cb)(uv_connect_t* req, int status);
 typedef void (*uv_shutdown_cb)(uv_shutdown_t* req, int status);
@@ -429,18 +433,25 @@ struct uv_write_s {
     uv_async_t async;
 };
 
-uint32_t uv_queue_put(uv_handle_t *msg, size_t timeout);
-uint32_t uv_queue_get(uv_handle_t **msg, size_t timeout);
+int uv_async_send(uv_handle_t *msg);
 
 int uv_timer_init(uv_loop_t* loop, uv_timer_t* handle);
 int uv_timer_start(uv_timer_t* handle,
                    uv_timer_cb cb,
                    uint64_t timeout,
                    uint64_t repeat);
+int uv_timer_stop(uv_timer_t* handle);
 
 int uv_is_closing(const uv_handle_t* handle);
 void uv_close(uv_handle_t* handle, uv_close_cb close_cb);
 void uv_run(void);
 void uv_init(void);
+int uv_poll_init(uv_loop_t* loop, uv_poll_t* handle, int fd);
+int uv_poll_start(uv_poll_t* handle, int pevents, uv_poll_cb poll_cb);
+int uv_poll_stop(uv_poll_t* handle);
+int uv_queue_work(uv_loop_t* loop,
+                  uv_work_t* req,
+                  uv_work_cb work_cb,
+                  uv_after_work_cb after_work_cb);
 
 #endif

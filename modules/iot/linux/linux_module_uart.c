@@ -92,11 +92,31 @@ evm_val_t iot_uart_set_platform_config(evm_t *e, iot_uart_t* uart,
   return EVM_UNDEFINED;
 }
 
-void iot_uart_register_read_cb(uv_poll_t* uart_poll_handle) {
-    iot_uart_t* uart = (iot_uart_t*)IOT_UV_HANDLE_EXTRA_DATA(uart_poll_handle);
-    uv_loop_t* loop = system_get_uv_loop();
-    uv_poll_init(loop, uart_poll_handle, uart->device_fd);
-    uv_poll_start(uart_poll_handle, UV_READABLE, iot_uart_read_cb);
+bool iot_uart_read(uv_handle_t* handle) {
+    iot_uart_t* uart = (iot_uart_t*)IOT_UV_HANDLE_EXTRA_DATA(handle);
+    evm_t *e = evm_runtime();
+    char buf[UART_WRITE_BUFFER_SIZE];
+    int i = read(uart->device_fd, buf, UART_WRITE_BUFFER_SIZE - 1);
+    if (i > 0) {
+        buf[i] = '\0';
+        DDDLOG("%s - read length: %d", __func__, i);
+        evm_val_t juart = IOT_UV_HANDLE_DATA(handle)->jobject;
+        evm_val_t jemit =
+            evm_prop_get(e, juart, IOT_MAGIC_STRING_EMIT);
+        EVM_ASSERT(evm_is_callable(e, jemit));
+
+        evm_val_t str = evm_mk_string(e, IOT_MAGIC_STRING_DATA);
+
+        evm_val_t jbuf = evm_buffer_create(e, buf, (size_t)i);
+        evm_val_t jargs[] = { str, jbuf };
+        evm_val_t jres = evm_call(e, jemit, IOT_UV_HANDLE_DATA(handle)->jobject, 2, jargs);
+
+        evm_val_free(e, jres);
+        evm_val_free(e, str);
+        evm_val_free(e, jbuf);
+        evm_val_free(e, jemit);
+    }
+    return true;
 }
 
 bool iot_uart_open(uv_handle_t* uart_poll_handle) {

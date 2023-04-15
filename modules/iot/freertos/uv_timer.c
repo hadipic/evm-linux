@@ -11,7 +11,7 @@
 
 static void timer_callback(TimerHandle_t xTimer) {
     uv_handle_t *timer = (uv_handle_t*) pvTimerGetTimerID(xTimer);
-    uv_queue_put(timer, 0);
+    uv_async_send(timer);
 }
 
 int uv_timer_init(uv_loop_t* loop, uv_timer_t* handle) {
@@ -32,6 +32,7 @@ int uv_timer_start(uv_timer_t* handle,
     int re = xTimerStart(os_timer, 0);
     handle->cb = cb;
     handle->timer_data = os_timer;
+    handle->state = UV_STATE_RUNNING;
     return re == pdPASS ? 0 : -1;
 }
 
