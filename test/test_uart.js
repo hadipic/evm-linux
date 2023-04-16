@@ -8,10 +8,6 @@ function close(callback) {
     nuart.close(this, callback)
 }
 
-function close(callback) {
-    nuart.close(this, callback)
-}
-
 function closeSync() {
     nuart.closeSync(this)
 }

@@ -62,12 +62,7 @@ void evm_main (char *filename) {
     uv_init();
     evm_t *e = evm_init();
     evm_module_init(e);
-
-#ifdef CONFIG_EVM_MODULE_REPL
-    evm_run_shell(env);
-#else
     evm_run_file(e, EVM_UNDEFINED, filename);
-#endif
 }
 
 void evm_loop() {
