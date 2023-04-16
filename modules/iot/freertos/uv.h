@@ -14,6 +14,93 @@
 
 #include "evm.h"
 
+typedef void *QUEUE[2];
+
+/* Private macros. */
+#define QUEUE_NEXT(q)       (*(QUEUE **) &((*(q))[0]))
+#define QUEUE_PREV(q)       (*(QUEUE **) &((*(q))[1]))
+#define QUEUE_PREV_NEXT(q)  (QUEUE_NEXT(QUEUE_PREV(q)))
+#define QUEUE_NEXT_PREV(q)  (QUEUE_PREV(QUEUE_NEXT(q)))
+
+/* Public macros. */
+#define QUEUE_DATA(ptr, type, field)                                          \
+  ((type *) ((char *) (ptr) - offsetof(type, field)))
+
+/* Important note: mutating the list while QUEUE_FOREACH is
+ * iterating over its elements results in undefined behavior.
+ */
+#define QUEUE_FOREACH(q, h)                                                   \
+  for ((q) = QUEUE_NEXT(h); (q) != (h); (q) = QUEUE_NEXT(q))
+
+#define QUEUE_EMPTY(q)                                                        \
+  ((const QUEUE *) (q) == (const QUEUE *) QUEUE_NEXT(q))
+
+#define QUEUE_HEAD(q)                                                         \
+  (QUEUE_NEXT(q))
+
+#define QUEUE_INIT(q)                                                         \
+  do {                                                                        \
+    QUEUE_NEXT(q) = (q);                                                      \
+    QUEUE_PREV(q) = (q);                                                      \
+  }                                                                           \
+  while (0)
+
+#define QUEUE_ADD(h, n)                                                       \
+  do {                                                                        \
+    QUEUE_PREV_NEXT(h) = QUEUE_NEXT(n);                                       \
+    QUEUE_NEXT_PREV(n) = QUEUE_PREV(h);                                       \
+    QUEUE_PREV(h) = QUEUE_PREV(n);                                            \
+    QUEUE_PREV_NEXT(h) = (h);                                                 \
+  }                                                                           \
+  while (0)
+
+#define QUEUE_SPLIT(h, q, n)                                                  \
+  do {                                                                        \
+    QUEUE_PREV(n) = QUEUE_PREV(h);                                            \
+    QUEUE_PREV_NEXT(n) = (n);                                                 \
+    QUEUE_NEXT(n) = (q);                                                      \
+    QUEUE_PREV(h) = QUEUE_PREV(q);                                            \
+    QUEUE_PREV_NEXT(h) = (h);                                                 \
+    QUEUE_PREV(q) = (n);                                                      \
+  }                                                                           \
+  while (0)
+
+#define QUEUE_MOVE(h, n)                                                      \
+  do {                                                                        \
+    if (QUEUE_EMPTY(h))                                                       \
+      QUEUE_INIT(n);                                                          \
+    else {                                                                    \
+      QUEUE* q = QUEUE_HEAD(h);                                               \
+      QUEUE_SPLIT(h, q, n);                                                   \
+    }                                                                         \
+  }                                                                           \
+  while (0)
+
+#define QUEUE_INSERT_HEAD(h, q)                                               \
+  do {                                                                        \
+    QUEUE_NEXT(q) = QUEUE_NEXT(h);                                            \
+    QUEUE_PREV(q) = (h);                                                      \
+    QUEUE_NEXT_PREV(q) = (q);                                                 \
+    QUEUE_NEXT(h) = (q);                                                      \
+  }                                                                           \
+  while (0)
+
+#define QUEUE_INSERT_TAIL(h, q)                                               \
+  do {                                                                        \
+    QUEUE_NEXT(q) = (h);                                                      \
+    QUEUE_PREV(q) = QUEUE_PREV(h);                                            \
+    QUEUE_PREV_NEXT(q) = (q);                                                 \
+    QUEUE_PREV(h) = (q);                                                      \
+  }                                                                           \
+  while (0)
+
+#define QUEUE_REMOVE(q)                                                       \
+  do {                                                                        \
+    QUEUE_PREV_NEXT(q) = QUEUE_NEXT(q);                                       \
+    QUEUE_NEXT_PREV(q) = QUEUE_PREV(q);                                       \
+  }                                                                           \
+  while (0)
+
 #define IOV_MAX 32
 
 extern int uv_posix_open (const char *__file, int __oflag, int mode);
@@ -316,6 +403,7 @@ typedef struct uv_loop_s {
     void *queue;
     void *work_queue;
     void *done_queue;
+    QUEUE poll_queue;
 } uv_loop_s;
 
 struct uv_handle_s {
@@ -356,6 +444,7 @@ struct uv_async_s {
 
 struct uv_poll_s {
   UV_HANDLE_FIELDS
+  QUEUE node;
   uv_poll_cb poll_cb;
   int events;
 } ;
@@ -433,15 +522,14 @@ struct uv_write_s {
     uv_async_t async;
 };
 
+uv_loop_t *uv_default_loop(void);
 int uv_async_send(uv_handle_t *msg);
-
 int uv_timer_init(uv_loop_t* loop, uv_timer_t* handle);
 int uv_timer_start(uv_timer_t* handle,
                    uv_timer_cb cb,
                    uint64_t timeout,
                    uint64_t repeat);
 int uv_timer_stop(uv_timer_t* handle);
-
 int uv_is_closing(const uv_handle_t* handle);
 void uv_close(uv_handle_t* handle, uv_close_cb close_cb);
 void uv_run(void);

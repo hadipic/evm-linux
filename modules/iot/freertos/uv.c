@@ -15,11 +15,24 @@ static QueueHandle_t xQueue = {0};
 
 static uv_loop_t uv_loop = {0};
 
+static void uv_run_poll(uv_loop_t *loop) {
+    QUEUE *q;
+    uv_poll_t *t;
+    QUEUE_FOREACH(q, &loop->poll_queue) {
+        t = QUEUE_DATA(q, uv_poll_t, node);
+        if (t->state != UV_STATE_RUNNING) {
+            continue;
+        }
+        t->poll_cb(t, 0, t->events);
+    }
+}
+
 uv_loop_t *uv_default_loop(void) {
     return &uv_loop;
 }
 
 static void uv_queue_init(void) {
+    QUEUE_INIT(&uv_loop.poll_queue);
     if (!xQueue) {
         xQueue = xQueueCreate(QUEUE_SIZE, sizeof(intptr_t));
         uv_loop.queue = xQueue;
@@ -43,6 +56,9 @@ void uv_init(void) {
 
 void uv_run(void) {
     uv_handle_t *handle;
+
+    uv_run_poll(&uv_loop);
+
     int re = uv_queue_get(uv_loop.queue, &handle, 1);
     if( re ){
         switch (handle->type) {

@@ -14,8 +14,10 @@ int uv_poll_init(uv_loop_t* loop, uv_poll_t* handle, int fd) {
 }
 
 int uv_poll_start(uv_poll_t* handle, int pevents, uv_poll_cb poll_cb) {
+    uv_loop_t *loop = uv_default_loop();
     handle->poll_cb = poll_cb;
     handle->state = UV_STATE_RUNNING;
+    QUEUE_INSERT_TAIL(&loop->poll_queue, &handle->node);
     return 0;
 }
 

@@ -146,7 +146,7 @@ bool iot_uart_open(uv_handle_t* uart_poll_handle) {
 
 void iot_uart_read_cb(uv_poll_t* req, int status, int events) {
     evm_t *e = evm_runtime();
-    iot_uart_t* uart = (iot_uart_t*)req->data;
+    iot_uart_t* uart = (iot_uart_t*)IOT_UV_HANDLE_EXTRA_DATA(req);
     char buf[UART_WRITE_BUFFER_SIZE];
     int i = read(uart->device_fd, buf, UART_WRITE_BUFFER_SIZE - 1);
     if (i > 0) {
