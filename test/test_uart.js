@@ -38,7 +38,8 @@ Uart.prototype.on = on;
 
 function callback(type, data){
     print(type);
-    print(data);
+    print(new Uint8Array(data));
+    this.writeSync(data);
 }
 
 var uart = new Uart({
