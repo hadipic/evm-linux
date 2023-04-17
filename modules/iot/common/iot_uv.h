@@ -7,7 +7,6 @@
 #ifndef IOT_UV_H
 #define IOT_UV_H
 
-#include "uv.h"
 #include "iot_system.h"
 
 #ifndef EVM_MAX_READ_BUFFER_SIZE

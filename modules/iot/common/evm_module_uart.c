@@ -133,8 +133,14 @@ EVM_FUNCTION(uart_write_sync) {
     uv_handle_t *uart_poll_handle = evm_object_get_user_data(e, v[0]);
 
     iot_uart_t* uart = (iot_uart_t*)IOT_UV_HANDLE_EXTRA_DATA(uart_poll_handle);
-    uart->buf_data = evm_2_string(e, v[1]);
-    uart->buf_len = evm_string_len(e, v[1]);
+
+    if( evm_is_buffer(e, v[1])){
+        uart->buf_data = evm_buffer_addr(e, v[1]);
+        uart->buf_len = evm_buffer_len(e, v[1]);
+    } else {
+        uart->buf_data = evm_2_string(e, v[1]);
+        uart->buf_len = evm_string_len(e, v[1]);
+    }
 
     bool result = iot_uart_write(uart_poll_handle);
 

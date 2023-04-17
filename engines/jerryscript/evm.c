@@ -225,7 +225,7 @@ char *evm_2_string(evm_t *e, evm_val_t v) {
     return buf;
 }
 
-void evm_string_free(char *str){
+void evm_string_free(evm_t *e, char *str){
     evm_free(str);
 }
 

@@ -13,10 +13,8 @@ DEFINES += EVM_USE_MODULE_CFFI
 DEFINES += EVM_USE_MODULE_PROCESS
 DEFINES += EVM_USE_MODULE_TIMER
 
-unix {
 SOURCES += \
     $$PWD/../../../modules/iot/linux/evm_main.c
-}
 
 contains(DEFINES, CONFIG_EVM_MODULE_TLS) {
 LIBS += -lmbedtls -lmbedx509 -lmbedcrypto

@@ -23,7 +23,7 @@ int evm_string_len(evm_t *e, evm_val_t o) {
 }
 
 void evm_string_free(evm_t *e, char *str){
-    evm_free(e, str);
+    JS_FreeCString(e, str);
 }
 
 /*** 字节数组对象操作函数 ***/
@@ -270,7 +270,10 @@ JSModuleDef *js_module_loader(JSContext *ctx,
 }
 
 evm_val_t native_require(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
-    return evm_module_get(e, evm_2_string(e, v[0]));
+    char *str = evm_2_string(e, v[0]);
+    evm_val_t res = evm_module_get(e, str);
+    evm_string_free(e, str);
+    return res;
 }
 
 evm_t *evm_init(void) {
@@ -308,7 +311,7 @@ int evm_run_file(evm_t *e, evm_val_t this_obj, const char *path) {
     }
     evm_val_t ret;
     if( evm_is_undefined(e, this_obj) )
-        ret = JS_Eval(e, buf, buf_len, path, JS_EVAL_TYPE_MODULE);
+        ret = JS_Eval(e, buf, buf_len, path, JS_EVAL_TYPE_GLOBAL);
     else
         ret = JS_EvalThis(e, this_obj, buf, buf_len, path, JS_EVAL_TYPE_GLOBAL);
     js_free(e, (void *)buf);
@@ -370,9 +373,8 @@ int evm_2_boolean(evm_t *e, evm_val_t v) {
     return JS_ToBool(e, v);
 }
 
-const char *evm_2_string(evm_t *e, evm_val_t v) {
+char *evm_2_string(evm_t *e, evm_val_t v) {
     const char* ret = JS_ToCString(e, v);
-    JS_FreeCString(e, ret);
     return ret;
 }
 
