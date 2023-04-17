@@ -1,2 +1,0 @@
-/media/zhe/scriptiot/scriptiot/toolchain_gcc_t-head_linux/bin/riscv64-unknown-elf-ar qc /media/zhe/scriptiot/scriptiot/evm/bsp/bl616/build/build_out/lib/libquickjs.a CMakeFiles/quickjs.dir/quickjs/quickjs.c.obj CMakeFiles/quickjs.dir/quickjs/cutils.c.obj CMakeFiles/quickjs.dir/quickjs/libregexp.c.obj CMakeFiles/quickjs.dir/quickjs/libunicode.c.obj CMakeFiles/quickjs.dir/evm.c.obj
-/media/zhe/scriptiot/scriptiot/toolchain_gcc_t-head_linux/bin/riscv64-unknown-elf-ranlib /media/zhe/scriptiot/scriptiot/evm/bsp/bl616/build/build_out/lib/libquickjs.a

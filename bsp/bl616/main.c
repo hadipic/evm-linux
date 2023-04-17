@@ -10,7 +10,7 @@ static TaskHandle_t evm_handle;
 
 static void evm_task(void *pvParameters)
 {
-    evm_main("main.ts");
+    evm_main("main.js");
 
     while (1) {
         evm_loop();

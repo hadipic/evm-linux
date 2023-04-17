@@ -37,9 +37,11 @@ SOURCES += \
     $$PWD/../../../modules/iot/common/evm_module_periph_common.c \
     $$PWD/../../../modules/iot/common/evm_module_timer.c \
     $$PWD/../../../modules/iot/common/evm_module_uart.c \
+    $$PWD/../../../modules/iot/common/evm_module_console.c \
     $$PWD/../../../modules/iot/common/evm_module_process.c
 
 unix{
 SOURCES += \
+    $$PWD/../../../modules/iot/linux/iot_platform.c \
     $$PWD/../../../modules/iot/linux/linux_module_uart.c
 }

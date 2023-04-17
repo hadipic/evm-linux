@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-set(engine tinyscript)
+set(engine jerryscript)
 
 include(proj.conf)
 
@@ -10,9 +10,8 @@ add_definitions(-DCONFIG_EVM_MODULE_CFFI)
 add_definitions(-DCONFIG_EVM_MODULE_LVGL)
 add_definitions(-DCONFIG_EVM_MODULE_LVGL_STYLE)
 
-add_subdirectory(../../engines ../../engines)
-add_subdirectory(../../components ../../components)
-add_subdirectory(../../modules/iot ../../modules/iot)
+add_subdirectory(../../engines engines)
+add_subdirectory(../../modules/iot iot)
 
 sdk_add_include_directories(.)
 sdk_set_main_file(main.c)

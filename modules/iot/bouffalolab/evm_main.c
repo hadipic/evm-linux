@@ -6,10 +6,6 @@
 ****************************************************************************/
 #include "evm_module.h"
 
-#ifdef EVM_USE_LIBUV
-#include "iot_system.h"
-#endif
-
 void *evm_malloc(size_t size)
 {
     void * m = malloc(size);
@@ -30,9 +26,6 @@ void *evm_realloc(void * p, size_t size)
 }
 
 void evm_main (char *filename) {
-#ifdef EVM_USE_LIBUV
-    system_loop();
-#endif
     evm_t *e = evm_init();
     evm_module_init(e);
 
@@ -44,7 +37,5 @@ void evm_main (char *filename) {
 }
 
 void evm_loop() {
-#ifdef EVM_USE_LIBUV
     system_loop();
-#endif
 }

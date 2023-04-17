@@ -10,6 +10,11 @@
 
 static uv_loop_t *uv_loop = NULL;
 
+#ifdef __linux__
+#include <termios.h>
+#include <unistd.h>
+#endif
+
 void system_set_uv_loop(uv_loop_t *loop) {
     uv_loop = loop;
 }
