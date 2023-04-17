@@ -24,13 +24,13 @@ SOURCES += \
 
 SOURCES += \
     $$PWD/../../../modules/iot/freertos/iot_system.c \
-    $$PWD/../../../modules/iot/freertos/iot_uv.c \
     $$PWD/../../../modules/iot/freertos/uv.c \
     $$PWD/../../../modules/iot/freertos/uv_timer.c \
     $$PWD/../../../modules/iot/freertos/uv_poll.c \
     $$PWD/../../../modules/iot/freertos/evm_main.c
 
 SOURCES += \
+    $$PWD/../../../modules/iot/common/iot_uv.c \
     $$PWD/../../../modules/iot/common/evm_module.c \
     $$PWD/../../../modules/iot/common/evm_module_cffi.c \
     $$PWD/../../../modules/iot/common/evm_module_repl.c \
