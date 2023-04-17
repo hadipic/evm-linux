@@ -37,19 +37,19 @@ static void after_connect(uv_connect_t* req, int status) {
   iotjs_tcp_report_req_result((uv_req_t*)req, status);
 }
 
-//connect(address, port, callback)
+//connect(socket, address, port, callback)
 EVM_FUNCTION(evm_module_tcp_connect) {
     EVM_EPCV;
-    uv_tcp_t *tcp_handle = evm_object_get_user_data(e, p);
+    uv_tcp_t *tcp_handle = evm_object_get_user_data(e, v[0]);
 
-    char *address = evm_2_string(e, v[0]);
-    int port = evm_2_integer(e, v[1]);
-    evm_val_t jcallback = v[2];
+    char *address = evm_2_string(e, v[1]);
+    int port = evm_2_integer(e, v[2]);
 
     struct sockaddr_in addr;
     int err = uv_ip4_addr(address, port, &addr);
 
     if (err == 0) {
+        evm_val_t jcallback = evm_val_duplicate(e, v[3]);
         // Create connection request and configure request data.
         uv_req_t* req_connect =
             iot_uv_request_create(sizeof(uv_connect_t), jcallback, 0);
@@ -80,7 +80,7 @@ void after_close(uv_handle_t* handle) {
 
 EVM_FUNCTION(evm_module_tcp_close) {
     EVM_EPCV;
-    uv_handle_t *uv_handle = evm_object_get_user_data(e, p);
+    uv_handle_t *uv_handle = evm_object_get_user_data(e, v[0]);
     iot_uv_handle_close(uv_handle, after_close);
     EVM_RETURN(EVM_UNDEFINED);
 }
@@ -91,7 +91,7 @@ EVM_FUNCTION(evm_module_tcp_close) {
 // [1] port
 EVM_FUNCTION(evm_module_tcp_bind) {
     EVM_EPCV;
-    uv_tcp_t *tcp_handle = evm_object_get_user_data(e, p);
+    uv_tcp_t *tcp_handle = evm_object_get_user_data(e, v[0]);
 
     char * address = evm_2_string(e, v[0]);
     int port = evm_2_integer(e, v[1]);
@@ -150,8 +150,8 @@ static void on_connection(uv_stream_t* handle, int status) {
 
 EVM_FUNCTION(evm_module_tcp_listen) {
     EVM_EPCV;
-    uv_tcp_t *tcp_handle = evm_object_get_user_data(e, p);
-    int backlog = evm_2_integer(e, v[0]);
+    uv_tcp_t *tcp_handle = evm_object_get_user_data(e, v[0]);
+    int backlog = evm_2_integer(e, v[1]);
     int err = uv_listen((uv_stream_t*)tcp_handle, backlog, on_connection);
 
     EVM_RETURN(evm_mk_number(e, err));
@@ -163,8 +163,8 @@ void AfterWrite(uv_write_t* req, int status) {
 
 EVM_FUNCTION(evm_module_tcp_write) {
     EVM_EPCV;
-    uv_stream_t *tcp_handle = evm_object_get_user_data(e, p);
-    evm_val_t jbuffer = v[0];
+    uv_stream_t *tcp_handle = evm_object_get_user_data(e, v[0]);
+    evm_val_t jbuffer = v[1];
 
     uv_buf_t buf;
     buf.base = (char*)evm_buffer_addr(e, jbuffer);
@@ -234,7 +234,7 @@ static void on_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
 
 EVM_FUNCTION(evm_module_tcp_read_start) {
     EVM_EPCV;
-    uv_stream_t *tcp_handle = evm_object_get_user_data(e, p);
+    uv_stream_t *tcp_handle = evm_object_get_user_data(e, v[0]);
 
     int err = uv_read_start(tcp_handle, on_alloc, on_read);
 
@@ -247,9 +247,9 @@ static void AfterShutdown(uv_shutdown_t* req, int status) {
 
 EVM_FUNCTION(evm_module_tcp_shutdown) {
     EVM_EPCV;
-    uv_stream_t *tcp_handle = evm_object_get_user_data(e, p);
+    uv_stream_t *tcp_handle = evm_object_get_user_data(e, v[0]);
 
-    evm_val_t arg0 = v[0];
+    evm_val_t arg0 = v[1];
     uv_shutdown_t* req_shutdown =
       (uv_shutdown_t*)iot_uv_request_create(sizeof(uv_shutdown_t), arg0, 0);
 
@@ -264,10 +264,10 @@ EVM_FUNCTION(evm_module_tcp_shutdown) {
 
 EVM_FUNCTION(evm_module_tcp_set_keep_alive) {
     EVM_EPCV;
-    uv_tcp_t *tcp_handle = evm_object_get_user_data(e, p);
+    uv_tcp_t *tcp_handle = evm_object_get_user_data(e, v[0]);
 
-    int enable = evm_2_integer(e, v[0]);
-    unsigned delay = evm_2_integer(e, v[1]);
+    int enable = evm_2_integer(e, v[1]);
+    unsigned delay = evm_2_integer(e, v[2]);
 
     int err = uv_tcp_keepalive(tcp_handle, enable, delay);
 
@@ -317,36 +317,36 @@ void address_to_js(evm_val_t obj, struct sockaddr* addr) {
 
 EVM_FUNCTION(evm_module_tcp_get_socket_name) {
     EVM_EPCV;
-    uv_tcp_t *tcp_handle = evm_object_get_user_data(e, p);
+    uv_tcp_t *tcp_handle = evm_object_get_user_data(e, v[0]);
     struct sockaddr_storage storage;
     int addrlen = sizeof(storage);
     struct sockaddr* const addr = (struct sockaddr*)(&storage);
     int err = uv_tcp_getsockname(tcp_handle, addr, &addrlen);
     if (err == 0)
-    address_to_js(v[0], addr);
+    address_to_js(v[1], addr);
     EVM_RETURN(evm_mk_number(e, err));
 }
 
 EVM_FUNCTION(evm_module_tcp_create) {
     EVM_EPCV;
-    evm_val_t obj = evm_object_create(e);
+    evm_val_t obj = v[0];
     tcp_object_init(e, obj);
-    evm_prop_set(e, obj, "errname", evm_mk_native(e, evm_module_tcp_err_name, "errname", 0));
-    evm_prop_set(e, obj, "close", evm_mk_native(e, evm_module_tcp_close, "close", EVM_VARARGS));
-    evm_prop_set(e, obj, "connect", evm_mk_native(e, evm_module_tcp_connect, "connect", EVM_VARARGS));
-    evm_prop_set(e, obj, "bind", evm_mk_native(e, evm_module_tcp_bind, "bind", EVM_VARARGS));
-    evm_prop_set(e, obj, "listen", evm_mk_native(e, evm_module_tcp_listen, "listen", EVM_VARARGS));
-    evm_prop_set(e, obj, "write", evm_mk_native(e, evm_module_tcp_write, "write", EVM_VARARGS));
-    evm_prop_set(e, obj, "readStart", evm_mk_native(e, evm_module_tcp_read_start, "readStart", EVM_VARARGS));
-    evm_prop_set(e, obj, "shutdown", evm_mk_native(e, evm_module_tcp_shutdown, "shutdown", EVM_VARARGS));
-    evm_prop_set(e, obj, "setKeepAlive", evm_mk_native(e, evm_module_tcp_set_keep_alive, "setKeepAlive", 0));
-    evm_prop_set(e, obj, "getsockname", evm_mk_native(e, evm_module_tcp_get_socket_name, "getsockname", 0));
     EVM_RETURN(obj);
 }
 
 void evm_module_tcp(evm_t *e) {
   evm_val_t obj = evm_object_create(e);
-  evm_prop_set(e, obj, "create", evm_mk_native(e, evm_module_tcp_create, "create", 0));
+  evm_prop_set(e, obj, "create", evm_mk_native(e, evm_module_tcp_create, "create", EVM_VARARGS));
+  evm_prop_set(e, obj, "errname", evm_mk_native(e, evm_module_tcp_err_name, "errname", EVM_VARARGS));
+  evm_prop_set(e, obj, "close", evm_mk_native(e, evm_module_tcp_close, "close", EVM_VARARGS));
+  evm_prop_set(e, obj, "connect", evm_mk_native(e, evm_module_tcp_connect, "connect", EVM_VARARGS));
+  evm_prop_set(e, obj, "bind", evm_mk_native(e, evm_module_tcp_bind, "bind", EVM_VARARGS));
+  evm_prop_set(e, obj, "listen", evm_mk_native(e, evm_module_tcp_listen, "listen", EVM_VARARGS));
+  evm_prop_set(e, obj, "write", evm_mk_native(e, evm_module_tcp_write, "write", EVM_VARARGS));
+  evm_prop_set(e, obj, "readStart", evm_mk_native(e, evm_module_tcp_read_start, "readStart", EVM_VARARGS));
+  evm_prop_set(e, obj, "shutdown", evm_mk_native(e, evm_module_tcp_shutdown, "shutdown", EVM_VARARGS));
+  evm_prop_set(e, obj, "setKeepAlive", evm_mk_native(e, evm_module_tcp_set_keep_alive, "setKeepAlive", EVM_VARARGS));
+  evm_prop_set(e, obj, "getsockname", evm_mk_native(e, evm_module_tcp_get_socket_name, "getsockname", EVM_VARARGS));
   evm_module_add(e, "@native.tcp", obj);
 }
 #endif

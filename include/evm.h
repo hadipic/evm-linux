@@ -90,7 +90,7 @@ EVM_API evm_val_t evm_module_get(evm_t *e, const char* name);
 /*** 其它操作函数 ***/
 EVM_API void evm_heap_gc(evm_t *e);
 
-EVM_API void evm_throw(evm_t *e, evm_val_t v);
+EVM_API evm_val_t evm_throw(evm_t *e, evm_val_t v);
 EVM_API evm_val_t evm_mk_global(evm_t *e);
 
 /*** 虚拟机相关函数 ***/

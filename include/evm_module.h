@@ -519,7 +519,7 @@ extern int evm_eventbus_get(evm_eventbus_t *msg);
 #endif
 
 #ifdef EVM_USE_MODULE_DNS
-extern evm_err_t evm_module_dns(evm_t *e);
+extern void evm_module_dns(evm_t *e);
 #endif
 
 #ifdef EVM_USE_MODULE_BUFFER
