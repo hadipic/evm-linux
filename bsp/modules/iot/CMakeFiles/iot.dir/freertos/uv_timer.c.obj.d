@@ -1,0 +1,23 @@
+/media/zhe/scriptiot/scriptiot/evm/bsp/modules/iot/CMakeFiles/iot.dir/freertos/uv_timer.c.obj: \
+ /media/zhe/scriptiot/scriptiot/evm/modules/iot/freertos/uv_timer.c \
+ /media/zhe/scriptiot/scriptiot/evm/modules/iot/freertos/uv.h \
+ /media/zhe/scriptiot/ext_bouffalo_sdk/components/libc/./sys/types.h \
+ /media/zhe/scriptiot/scriptiot/evm/engines/jerryscript/../../include/evm.h \
+ /media/zhe/scriptiot/scriptiot/evm/engines/jerryscript/./evm_type.h \
+ /media/zhe/scriptiot/scriptiot/evm/engines/jerryscript/jerryscript/jerry-core/include/jerryscript.h \
+ /media/zhe/scriptiot/scriptiot/evm/engines/jerryscript/jerryscript/jerry-core/include/jerryscript-core.h \
+ /media/zhe/scriptiot/scriptiot/evm/engines/jerryscript/jerryscript/jerry-core/include/jerryscript-types.h \
+ /media/zhe/scriptiot/scriptiot/evm/engines/jerryscript/jerryscript/jerry-core/include/jerryscript-compiler.h \
+ /media/zhe/scriptiot/scriptiot/evm/engines/jerryscript/jerryscript/jerry-core/include/jerryscript-debugger.h \
+ /media/zhe/scriptiot/scriptiot/evm/engines/jerryscript/jerryscript/jerry-core/include/jerryscript-snapshot.h \
+ /media/zhe/scriptiot/ext_bouffalo_sdk/components/os/freertos/include/FreeRTOS.h \
+ /media/zhe/scriptiot/scriptiot/evm/bsp/bl616/./FreeRTOSConfig.h \
+ /media/zhe/scriptiot/ext_bouffalo_sdk/components/os/freertos/include/projdefs.h \
+ /media/zhe/scriptiot/ext_bouffalo_sdk/components/os/freertos/include/portable.h \
+ /media/zhe/scriptiot/ext_bouffalo_sdk/components/os/freertos/include/deprecated_definitions.h \
+ /media/zhe/scriptiot/ext_bouffalo_sdk/components/os/freertos/portable/GCC/RISC-V/common/portmacro.h \
+ /media/zhe/scriptiot/ext_bouffalo_sdk/components/os/freertos/include/mpu_wrappers.h \
+ /media/zhe/scriptiot/ext_bouffalo_sdk/components/os/freertos/include/task.h \
+ /media/zhe/scriptiot/ext_bouffalo_sdk/components/os/freertos/include/list.h \
+ /media/zhe/scriptiot/ext_bouffalo_sdk/components/os/freertos/include/timers.h \
+ /media/zhe/scriptiot/ext_bouffalo_sdk/components/os/freertos/include/task.h

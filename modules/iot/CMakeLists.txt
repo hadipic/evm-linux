@@ -1,10 +1,15 @@
 sdk_generate_library()
 sdk_add_include_directories(./common)
+sdk_add_include_directories(./freertos)
 sdk_library_add_sources(common/evm_module.c)
 sdk_library_add_sources(common/evm_module_cffi.c)
 sdk_library_add_sources(common/evm_module_process.c)
 
-sdk_library_add_sources(bouffalolab/evm_main.c)
+sdk_library_add_sources(freertos/evm_main.c)
+sdk_library_add_sources(freertos/iot_system.c)
+sdk_library_add_sources(freertos/uv.c)
+sdk_library_add_sources(freertos/uv_poll.c)
+sdk_library_add_sources(freertos/uv_timer.c)
 
 sdk_add_include_directories(./gui/lvgl)
 sdk_library_add_sources(gui/lvgl/evm_module_lvgl.c)

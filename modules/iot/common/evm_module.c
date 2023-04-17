@@ -151,6 +151,9 @@ void evm_module_init(evm_t *env)
     evm_module_registry_init(env);
     evm_native_init(env);
 
+    extern void evm_module_console(evm_t *e);
+    evm_module_console(env);
+
 #ifdef EVM_USE_MODULE_ADC
     evm_module_adc(env);
 #endif

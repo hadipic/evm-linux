@@ -22,7 +22,7 @@
     LCD_SPI_ST7796
     LCD_SPI_ST7789V
 */
-#define LCD_SPI_ST7796
+#define LCD_DPI_GC9503V
 
 /* dbi ili9488 config */
 #if defined LCD_DBI_ILI9488
@@ -340,6 +340,12 @@
     #define LCD_PEC_DPI_V_SYNC_SIN_POL 0
     #define LCD_PEC_DPI_H_SYNC_SIN_POL 0
     #define LCD_PEC_DPI_DE_SIN_POL     1
+
+    /* enabled DE(data enable) signal
+        0: disable DE signal output
+        1: enable DE signal output
+    */
+    #define LCD_PEC_DPI_DE_MODE 1
 
     /* Selecting pin
         The numbers of some pins must be consecutive, and cannot cross the 32 boundary.

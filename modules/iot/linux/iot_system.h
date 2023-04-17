@@ -28,5 +28,6 @@ int system_device_close(const char* export_path, uint32_t value);
 void system_set_uv_loop(uv_loop_t *loop);
 uv_loop_t *system_get_uv_loop();
 void system_loop();
+char system_getchar(void);
 #endif
 
