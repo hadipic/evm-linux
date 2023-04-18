@@ -3,6 +3,8 @@ var CRLF =   "\r\n";
 var RIGHT=   "\033[C";
 var LEFT =   "\010";
 var buf = "";
+console.log("Github: https://gitee.com/scriptiot/evm")
+console.log("Copyright (C) 2023")
 console.write(">>>");
 
 function repl_input_enter() {
