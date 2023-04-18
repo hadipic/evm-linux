@@ -143,7 +143,7 @@ void evm_heap_gc(evm_t *e) {
     JS_RunGC(JS_GetRuntime(e));
 }
 
-void evm_throw(evm_t *e, evm_val_t v) {
+evm_val_t evm_throw(evm_t *e, evm_val_t v) {
     JS_Throw(e, v);
 }
 

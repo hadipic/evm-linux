@@ -45,3 +45,9 @@ SOURCES += \
     $$PWD/../../../modules/iot/linux/iot_platform.c \
     $$PWD/../../../modules/iot/linux/linux_module_uart.c
 }
+
+win32{
+SOURCES += \
+    $$PWD/../../../modules/iot/linux/iot_platform.c \
+    $$PWD/../../../modules/iot/win/win_module_uart.c
+}

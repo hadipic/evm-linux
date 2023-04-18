@@ -4,7 +4,7 @@ extern char iot_platform_getchar(void);
 
 EVM_FUNCTION(console_log) {
     EVM_EPCV;
-    for (int i; i < argc; i++) {
+    for (int i = 0; i < argc; i++) {
         char *s = evm_2_string(e, v[i]);
         printf("%s", s);
         evm_string_free(e, s);

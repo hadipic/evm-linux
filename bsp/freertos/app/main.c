@@ -209,6 +209,8 @@ void vApplicationMallocFailedHook( void )
     information. */
     vAssertCalled( __LINE__, __FILE__ );
 }
+
+void vConfigureTimerForRunTimeStats(){}
 /*-----------------------------------------------------------*/
 
 
