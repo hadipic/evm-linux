@@ -11,8 +11,7 @@
 void *evm_malloc(size_t size)
 {
     void * m = malloc(size);
-    if( m )
-        memset(m, 0 ,size);
+    memset(m, 0, size);
     return m;
 }
 

@@ -130,7 +130,7 @@ void evm_heap_gc(evm_t *e) {
     jerry_heap_gc(JERRY_GC_PRESSURE_LOW);
 }
 
-void evm_throw(evm_t *e, evm_val_t v) {
+evm_val_t evm_throw(evm_t *e, evm_val_t v) {
     evm_val_t value = jerry_throw_value(v, true);
     jerry_value_free(value);
 }

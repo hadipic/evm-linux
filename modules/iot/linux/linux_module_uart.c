@@ -4,6 +4,7 @@
 **  Git: https://gitee.com/scriptiot/evm
 **  Licence: 个人免费，企业授权
 ****************************************************************************/
+#ifdef EVM_USE_MODULE_UART
 #include <errno.h>
 #include <fcntl.h>
 #include <termios.h>
@@ -213,3 +214,4 @@ void iot_uart_handle_close_cb(uv_handle_t* uart_poll_handle) {
     EVM_ASSERT(0);
   }
 }
+#endif

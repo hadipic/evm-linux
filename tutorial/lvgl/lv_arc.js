@@ -1,8 +1,12 @@
-var lv = require('lvgl');
-var arc = lv.lv_arc_create(lv.lv_scr_act());
-lv.lv_obj_set_size(arc, 150, 150);
-lv.lv_arc_set_rotation(arc, 135);
-lv.lv_arc_set_value(arc, 10);
-lv.lv_arc_set_mode(arc, 0)
-lv.lv_arc_set_bg_angles(arc, 0, 270);
-lv.lv_arc_set_angles(arc, 0, 270);
+print(clock())
+var lv = require('@native.lvgl');
+for(var i = 0; i < 50; i++){
+    var arc = lv.lv_arc_create(lv.lv_scr_act());
+    lv.lv_obj_set_size(arc, 150, 150);
+    lv.lv_arc_set_rotation(arc, 135);
+    lv.lv_arc_set_value(arc, 10);
+    lv.lv_arc_set_mode(arc, 0)
+    lv.lv_arc_set_bg_angles(arc, 0, 270);
+    lv.lv_arc_set_angles(arc, 0, 270);
+}
+print(clock())

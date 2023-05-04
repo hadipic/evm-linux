@@ -21,6 +21,7 @@ Makefile.*
 *.Release
 *.rc
 *.qbc
+*.bc
 
 debug
 release

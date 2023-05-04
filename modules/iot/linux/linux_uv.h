@@ -8,7 +8,7 @@
 #define _LINUX_UV_H
 
 #include "uv.h"
-#include "linux_system.h"
+#include "iot_system.h"
 
 #ifndef EVM_MAX_READ_BUFFER_SIZE
 #if defined(__NUTTX__) || defined(__TIZENRT__)

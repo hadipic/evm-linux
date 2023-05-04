@@ -1,7 +1,0 @@
-set(TINYSCRIPT_PATH $ENV{TINYSCRIPT_PATH})
-sdk_generate_library()
-sdk_add_include_directories(../../include)
-sdk_add_include_directories(.)
-sdk_add_include_directories(${TINYSCRIPT_PATH}/tinyscript)
-sdk_library_add_sources(${TINYSCRIPT_PATH}/tinyscript/tinyscript.c)
-sdk_library_add_sources(evm.c)
