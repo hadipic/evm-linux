@@ -7,6 +7,15 @@
     export default {
         data :{
             'result': 'Hello EVUE'
+        },
+
+        onclicked: function() {
+            print('hello')
+            this.result = 'good job'
+        },
+        
+        onShow: function() {
+            print('hello')
         }
     }
 </script>

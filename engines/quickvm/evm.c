@@ -6,6 +6,7 @@
 ****************************************************************************/
 #include "evm.h"
 #include "zmalloc.h"
+#include "ts_ecma.h"
 
 evm_val_t evm_string_create(evm_t *e, const char *str) {
     return ts_new_string(e, str);
@@ -174,6 +175,7 @@ ts_value_t native_require(evm_t *e, ts_value_t p, int argc, ts_value_t *v) {
 evm_t *evm_init(void) {
     evm_t *e = ts_malloc(sizeof (evm_t));
     ts_init(e, TS_STACK_SIZE);
+    //ts_ecma_init(e);
     evm_global_set(e, "@system", evm_object_create(e));
     ts_add_native(e, "show", native_show);
     ts_add_native(e, "require", native_require);
@@ -181,9 +183,7 @@ evm_t *evm_init(void) {
 }
 
 void evm_deinit(evm_t *e) {
-    if( e ) {
 
-    }
 }
 
 int evm_run_file(evm_t *e, evm_val_t this_obj, const char *path) {
@@ -194,6 +194,15 @@ int evm_run_file(evm_t *e, evm_val_t this_obj, const char *path) {
         return 0;
     evm_val_t obj = ts_parse_executable(e, buf, this_obj);
     ts_free(buf);
+
+    if (ts_try(e)) {
+        ts_value_t msg = ts_get_property(e, e->trybuf->exception, "message");
+        printf("Exception: %s\n at line %d\n", ts_to_string(e, msg), e->row);
+        ts_free_value(msg);
+        ts_free_value(e->trybuf->exception);
+        return 0;
+    }
+
     ts_call(e, obj, this_obj, 0, NULL);
     return 1;
 }

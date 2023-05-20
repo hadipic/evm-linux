@@ -8,40 +8,20 @@ DESTDIR = $$PWD/../build
 
 LIBS += -lpthread
 
+DEFINES += QVM_USE_QUICKJS_JS_BC_C_SOURCE
+DEFINES += EVM_USE_LUAT
+
 include($$PWD/../pris/common.pri)
 include($$PWD/../pris/lvgl.pri)
 include($$PWD/../pris/lv_png.pri)
 include($$PWD/../pris/lv_drivers.pri)
-
-unix{
-include($$PWD/../pris/tuv.pri)
-}
+include($$PWD/../pris/freertos.pri)
 
 win32{
     INCLUDEPATH +=  $$PWD/../
 }
 
-if( contains(DEFINES, EVM_USE_PIKASCRIPT) ) {
-    DEFINES += PIKASCRIPT=1
-    DEFINES += PIKA_CONFIG_ENABLE=1
-    include($$PWD/../pris/pikascript.pri)
-}
-
-if( contains(DEFINES, EVM_USE_QUICKJS) ) {
-    include($$PWD/../pris/quickjs.pri)
-}
-
-if( contains(DEFINES, EVM_USE_MUJS) ) {
-    include($$PWD/../pris/mujs.pri)
-}
-
-if( contains(DEFINES, EVM_USE_TINYSCRIPT) ) {
-    include($$PWD/../pris/tinyscript.pri)
-}
-
-if( contains(DEFINES, EVM_USE_DUKTAPE) ) {
-    include($$PWD/../pris/duktape.pri)
-}
+include($$PWD/../pris/quickjs.pri)
 
 SOURCES += \
         main.c

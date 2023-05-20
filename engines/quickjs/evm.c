@@ -10,6 +10,8 @@
 
 #define PATH_MAX 256
 
+int (*evm_print)(const char *fmt, ...) = printf;
+
 evm_val_t evm_string_create(evm_t *e, const char *str) {
     return JS_NewString(e, str);
 }
@@ -301,6 +303,94 @@ void evm_deinit(evm_t *e) {
     }
 }
 
+static void js_dump_obj(JSContext *ctx, FILE *f, JSValueConst val)
+{
+    const char *str;
+
+    str = JS_ToCString(ctx, val);
+    if (str) {
+        evm_print("%s\n", str);
+        JS_FreeCString(ctx, str);
+    } else {
+        evm_print("[exception]\n");
+    }
+}
+
+static void js_std_dump_error1(JSContext *ctx, JSValueConst exception_val)
+{
+    JSValue val;
+    BOOL is_error;
+
+    is_error = JS_IsError(ctx, exception_val);
+    js_dump_obj(ctx, stderr, exception_val);
+    if (is_error) {
+        val = JS_GetPropertyStr(ctx, exception_val, "stack");
+        if (!JS_IsUndefined(val)) {
+            js_dump_obj(ctx, stderr, val);
+        }
+        JS_FreeValue(ctx, val);
+    }
+}
+
+void js_std_dump_error(JSContext *ctx)
+{
+    JSValue exception_val;
+
+    exception_val = JS_GetException(ctx);
+    js_std_dump_error1(ctx, exception_val);
+    JS_FreeValue(ctx, exception_val);
+}
+
+evm_val_t evm_run_bytecode(evm_t *e, uint8_t *buf, size_t buf_len) {
+    JSValue obj, val;
+    obj = JS_ReadObject(e, buf, buf_len, JS_READ_OBJ_BYTECODE);
+    if (JS_IsException(obj))
+        goto exception;
+    if (JS_VALUE_GET_TAG(obj) == JS_TAG_MODULE) {
+        if (JS_ResolveModule(e, obj) < 0) {
+            JS_FreeValue(e, obj);
+            goto exception;
+        }
+        js_module_set_import_meta(e, obj, FALSE, TRUE);
+    }
+    val = JS_EvalFunction(e, obj);
+    if (JS_IsException(val)) {
+    exception:
+        js_std_dump_error(e);
+        evm_print("eval bytecode failed!\n");
+        return JS_UNDEFINED;
+    }
+    return val;
+}
+
+int evm_run_bytecode_file(evm_t *e, const char *path) {
+    JSValue obj, val;
+    size_t buf_len;
+    uint8_t *buf = js_load_file(e, &buf_len, path);
+    if (!buf) {
+        return 0;
+    }
+    obj = JS_ReadObject(e, buf, buf_len, JS_READ_OBJ_BYTECODE);
+    if (JS_IsException(obj))
+        goto exception;
+    if (JS_VALUE_GET_TAG(obj) == JS_TAG_MODULE) {
+        if (JS_ResolveModule(e, obj) < 0) {
+            JS_FreeValue(e, obj);
+            goto exception;
+        }
+        js_module_set_import_meta(e, obj, FALSE, TRUE);
+    }
+    val = JS_EvalFunction(e, obj);
+    if (JS_IsException(val)) {
+    exception:
+        js_std_dump_error(e);
+        evm_print("eval bytecode failed!\n");
+        return 0;
+    }
+    evm_val_free(e, val);
+    return 1;
+}
+
 int evm_run_file(evm_t *e, evm_val_t this_obj, const char *path) {
     uint8_t *buf;
     size_t buf_len;
@@ -316,6 +406,7 @@ int evm_run_file(evm_t *e, evm_val_t this_obj, const char *path) {
         ret = JS_EvalThis(e, this_obj, buf, buf_len, path, JS_EVAL_TYPE_GLOBAL);
     js_free(e, (void *)buf);
     if( JS_IsException(ret) ) {
+        js_std_dump_error(e);
         res = 0;
     }
     evm_val_free(e, ret);
@@ -339,6 +430,7 @@ void evm_run_shell(evm_t *e) {
 evm_val_t evm_call(evm_t *e, evm_val_t obj, evm_val_t pthis, int argc, evm_val_t *v) {
     evm_val_t ret =  JS_Call(e, obj, pthis, argc, v);
     if (JS_IsException(ret)){
+        js_std_dump_error(e);
         return JS_UNDEFINED;
     }
     return ret;
