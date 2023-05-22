@@ -96,6 +96,10 @@ EVM_FUNCTION(init_style){
     lv_style_set_line_opa(style, LV_OPA_COVER);
     lv_style_set_line_color(style, lv_color_make(0xf0, 0xf0, 0xf0));
     lv_style_set_line_width(style, 2);
+
+    lv_style_set_text_align(style, LV_TEXT_ALIGN_RIGHT);
+    lv_style_set_text_line_space(style, 2);
+    lv_style_set_text_letter_space(style, 2);
 }
 
 void evm_module_lvgl_misc(evm_t *e) {

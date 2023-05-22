@@ -9,20 +9,21 @@
 
 void *evm_malloc(size_t size)
 {
-    void * m = malloc(size);
-    memset(m, 0, size);
+    if( size == 0 )
+        return NULL;
+    void * m = zmalloc(size);
     return m;
 }
 
 void evm_free(void * p)
 {
     if(p)
-        free(p);
+        zfree(p);
 }
 
 void *evm_realloc(void * p, size_t size)
 {
-    return realloc(p, size);
+    return zrealloc(p, size);
 }
 
 evm_val_t native_clock(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {

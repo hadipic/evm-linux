@@ -45,9 +45,9 @@ static int used_memory_mutex = 0;
 #endif
 
 
-#define ZMALLOC evm_malloc
-#define ZREALLOC evm_realloc
-#define ZFREE evm_free
+#define ZMALLOC malloc
+#define ZREALLOC realloc
+#define ZFREE free
 
 #define PREFIX_SIZE sizeof(size_t)
 

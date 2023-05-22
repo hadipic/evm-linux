@@ -92,14 +92,10 @@ static lv_img_dsc_t *png_decode_data(const uint8_t * png_data, size_t png_data_s
 static evm_val_t png_decode(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
 {
     uint32_t error;                 /*For the return values of png decoder functions*/
-    const char *src = evm_2_string(e, v[0]);
-#if LV_PNG_USE_LV_FILESYSTEM
+    char *src = evm_2_string(e, v[0]);
     char fn[FILE_PATH_SIZE];
     sprintf(fn, "C:%s", src);
-#else
-    char fn[FILE_PATH_SIZE];
-    sprintf(fn, "%s", src);
-#endif
+    evm_string_free(e, src);
     /*Load the PNG file into buffer. It's still compressed (not decoded)*/
     unsigned char * png_data;      /*Pointer to the loaded data. Same as the original file just loaded into the RAM*/
     size_t png_data_size;          /*Size of `png_data` in bytes "C:/audio_calibration_record_file"*/
@@ -133,6 +129,6 @@ void evm_module_lvgl_image(evm_t *e) {
     evm_val_t obj = evm_object_create(e);
     evm_prop_set(e, obj, "png_decode", evm_mk_native(e, png_decode, "png_decode", 1));
     evm_prop_set(e, obj, "png_destroy", evm_mk_native(e, png_destroy, "png_destroy", 1));
-    evm_module_add(e, "image", obj);
+    evm_module_add(e, "@native.image", obj);
 }
 #endif

@@ -15,11 +15,13 @@ DEFINES += EVM_USE_MODULE_LVGL_STYLE
 DEFINES += EVM_USE_MODULE_CFFI
 DEFINES += EVM_USE_MODULE_PROCESS
 DEFINES += EVM_USE_MODULE_TIMER
+DEFINES += EVM_USE_MODULE_NET
+DEFINES += EVM_USE_MODULE_LVGL_IMAGE
 
 SOURCES += \
     $$PWD/../../../modules/linux/evm_main.c
 
-contains(DEFINES, CONFIG_EVM_MODULE_TLS) {
+contains(DEFINES, EVM_USE_MODULE_NET) {
 LIBS += -lmbedtls -lmbedx509 -lmbedcrypto
 }
 
@@ -42,6 +44,8 @@ SOURCES += \
 SOURCES += \
     $$PWD/../../../modules/linux/evm_port_platform.c \
     $$PWD/../../../modules/linux/evm_port_gpio.c \
+    $$PWD/../../../modules/linux/evm_port_fs.c \
+    $$PWD/../../../modules/linux/evm_port_wifi.c \
     $$PWD/../../../modules/linux/evm_port_uart.c
 
 SOURCES += \
@@ -51,11 +55,16 @@ SOURCES += \
     $$PWD/../../../modules/common/evm_module_uart.c \
     $$PWD/../../../modules/common/evm_module_console.c \
     $$PWD/../../../modules/common/evm_module_timer.c \
-    $$PWD/../../../modules/common/evm_module_fs.c
+    $$PWD/../../../modules/common/evm_module_fs.c \
+    $$PWD/../../../modules/common/evm_module_wifi.c \
+    $$PWD/../../../modules/common/evm_module_net.c \
     $$PWD/../../../modules/common/evm_module_process.c
 
 SOURCES += \
+    $$PWD/../../../modules/common/tls_client.c \
+    $$PWD/../../../modules/common/tls_certificate.c
+
+SOURCES += \
     $$PWD/../../../modules/freertos/evm_port_msgbus.c \
-    $$PWD/../../../modules/freertos/evm_port_fs.c \
     $$PWD/../../../modules/freertos/evm_port_timer.c
 

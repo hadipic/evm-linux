@@ -19,9 +19,10 @@ evm_val_t evm_string_create(evm_t *e, const char *str) {
 int evm_string_len(evm_t *e, evm_val_t o) {
     if( !evm_is_string(e, o) )
         return 0;
-    const char *s = JS_ToCString(e, o);
+    size_t size;
+    const char *s = JS_ToCStringLen(e, &size, o);
     JS_FreeCString(e, s);
-    return strlen(s);
+    return size;
 }
 
 void evm_string_free(evm_t *e, char *str){
@@ -278,10 +279,41 @@ evm_val_t native_require(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
     return res;
 }
 
+static void *js_trace_malloc(JSMallocState *s, size_t size)
+{
+    void *ptr;
+    ptr = evm_malloc(size);
+    if (ptr) {
+        s->malloc_count++;
+    }
+    return ptr;
+}
+
+static void js_trace_free(JSMallocState *s, void *ptr)
+{
+    if (!ptr)
+        return;
+    s->malloc_count--;
+    evm_free(ptr);
+}
+
+static void *js_trace_realloc(JSMallocState *s, void *ptr, size_t size)
+{
+    ptr = evm_realloc(ptr, size);
+    return ptr;
+}
+
+static const JSMallocFunctions trace_mf = {
+    js_trace_malloc,
+    js_trace_free,
+    js_trace_realloc,
+    NULL
+};
+
 evm_t *evm_init(void) {
     JSRuntime *rt;
     JSContext *ctx;
-    rt = JS_NewRuntime();
+    rt = JS_NewRuntime2(&trace_mf, NULL);
     ctx = JS_NewContext(rt);
     if (!ctx) {
         JS_FreeContext(ctx);
@@ -466,7 +498,7 @@ int evm_2_boolean(evm_t *e, evm_val_t v) {
 }
 
 char *evm_2_string(evm_t *e, evm_val_t v) {
-    const char* ret = JS_ToCString(e, v);
+    char* ret = JS_ToCString(e, v);
     return ret;
 }
 

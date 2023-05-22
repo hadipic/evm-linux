@@ -21,8 +21,6 @@ static void _timer_callback(TimerHandle_t xTimer) {
     evm_port_timer_t *timer = (evm_port_timer_t*) pvTimerGetTimerID(xTimer);
     msg.handler = timer->func;
     msg.ptr = timer;
-    msg.arg1 = 0;
-    msg.arg2 = 0;
     int re = evm_port_msgbus_put(&msg, 0);
 }
 

@@ -9,13 +9,12 @@
 #define MSG_UART_RX 3
 #define MSG_UART_TXDONE 4
 
-typedef int (*evm_msg_handler) (evm_t *e, void* ptr);
+typedef int (*evm_msg_handler) (evm_t *e, int type, void* ptr);
 
 typedef struct rtos_msg {
     evm_msg_handler handler;
     void* ptr;
-    int arg1;
-    int arg2;
+    int type;
 } rtos_msg_t;
 
 // 定义接口方法

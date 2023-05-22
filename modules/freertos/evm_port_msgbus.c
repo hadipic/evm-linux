@@ -1,4 +1,3 @@
-
 #include "evm_port_msgbus.h"
 
 #include "FreeRTOS.h"

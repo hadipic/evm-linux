@@ -61,15 +61,8 @@ def compile(info):
                     content = content[0: len(content) - 2]
             content = content + ');\n'
         i = 0
-        for s in signature:
-            if s == 's':
-                content = content + '  evm_string_free(e, cffi_args[%d].s);\n'%i
-            i += 1
 
-        if signature[0] != 'v':
-            content = content + '  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args[0], "' + signature + '"))\n}\n\n'
-        else:
-            content = content + '  EVM_RETURN(EVM_UNDEFINED)\n}\n\n'
+        content = content + '  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, "' + signature + '", argc))\n}\n\n'
 
     content = content + '\nvoid evm_module_' + module_name + '(evm_t *e) {\n'
     content = content + '  evm_val_t obj = evm_object_create(e);\n'

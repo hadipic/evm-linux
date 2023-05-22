@@ -39,7 +39,7 @@
  *=========================*/
 
 /*1: use custom malloc/free, 0: use the built-in `lv_mem_alloc()` and `lv_mem_free()`*/
-#define LV_MEM_CUSTOM      0
+#define LV_MEM_CUSTOM      1
 #if LV_MEM_CUSTOM == 0
 /*Size of the memory available for `lv_mem_alloc()` in bytes (>= 2kB)*/
 #  define LV_MEM_SIZE    (1024U * 1024U)          /*[bytes]*/
@@ -47,10 +47,10 @@
 /*Set an address for the memory pool instead of allocating it as a normal array. Can be in external SRAM too.*/
 #  define LV_MEM_ADR          0     /*0: unused*/
 #else       /*LV_MEM_CUSTOM*/
-#  define LV_MEM_CUSTOM_INCLUDE <stdlib.h>   /*Header for the dynamic memory function*/
-#  define LV_MEM_CUSTOM_ALLOC     malloc
-#  define LV_MEM_CUSTOM_FREE      free
-#  define LV_MEM_CUSTOM_REALLOC   realloc
+#  define LV_MEM_CUSTOM_INCLUDE   "zmalloc.h"  /*Header for the dynamic memory function*/
+#  define LV_MEM_CUSTOM_ALLOC     zmalloc
+#  define LV_MEM_CUSTOM_FREE      zfree
+#  define LV_MEM_CUSTOM_REALLOC   zrealloc
 #endif     /*LV_MEM_CUSTOM*/
 
 /*Use the standard `memcpy` and `memset` instead of LVGL's own functions. (Might or might not be faster).*/
@@ -505,6 +505,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_FS_STDIO_LETTER 'C'
 
 /*Enable the examples to be built with the library*/
+#define LV_USE_FS_STDIO 1
 #define LV_BUILD_EXAMPLES   1
 #define LV_USE_PNG 1
 #define LV_USE_GIF 1

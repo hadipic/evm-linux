@@ -2,8 +2,7 @@
     "name": "lvgl",
     "altname": "@native.lvgl",
     "includes": [
-        "lvgl.h",
-        "lv_gif.h"
+        "lvgl.h"
     ],
     "const": [
         {"name": "LV_OBJ_FLAG_HIDDEN", "value": "LV_OBJ_FLAG_HIDDEN", "type": "number" },
@@ -471,10 +470,6 @@
         {"name": "lv_textarea_cursor_left", "signature": "vp"},  
         {"name": "lv_textarea_cursor_down", "signature": "vp"},
         {"name": "lv_textarea_cursor_up", "signature": "vp"},
-        
-        {"name": "lv_gif_create", "signature":"pp"},
-        {"name": "lv_gif_set_src", "signature":"vps"},
-        {"name": "lv_gif_restart", "signature": "vp"},
 
         {"name": "lv_obj_fade_in", "signature": "vpii"},
         {"name": "lv_obj_fade_out", "signature": "vpii"},
