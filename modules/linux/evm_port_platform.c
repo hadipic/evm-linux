@@ -33,3 +33,7 @@ char platform_getchar(void)
     return getch();
 }
 #endif
+
+void platform_init() {
+
+}

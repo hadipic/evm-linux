@@ -10,18 +10,6 @@
 #include "bflb_uart.h"
 #include "bflb_romfs.h"
 
-static struct bflb_device_s *uartx;
-
-char iot_platform_getchar(void)
-{
-    int ch = bflb_uart_getchar(uartx);
-    while (ch == -1) {
-        ch = bflb_uart_getchar(uartx);
-        vTaskDelay(1);
-    }
-    return ch;
-}
-
 void *evm_malloc(size_t size)
 {
     void * m = malloc(size);
@@ -74,30 +62,10 @@ uint8_t *evm_load_file(const char *filename, size_t *size) {
 }
 
 void evm_main (char *filename) {
-    // romfs_mount(0xA0000000 - 0x1000 + 0x378000);
     romfs_mount(0xA0347000);
-
-    uartx = bflb_device_get_by_name("uart0");
-    struct bflb_uart_config_s cfg;
-    cfg.baudrate = 115200;
-    cfg.data_bits = UART_DATA_BITS_8;
-    cfg.stop_bits = UART_STOP_BITS_1;
-    cfg.parity = UART_PARITY_NONE;
-    cfg.flow_ctrl = 0;
-    cfg.tx_fifo_threshold = 7;
-    cfg.rx_fifo_threshold = 7;
-    bflb_uart_init(uartx, &cfg);
 
     evm_t *e = evm_init();
     evm_module_init(e);
 
-#ifdef CONFIG_EVM_MODULE_REPL
-    evm_run_shell(e);
-#else
-    evm_run_file(e, EVM_UNDEFINED, filename);
-#endif
-}
-
-void evm_loop() {
-    system_loop();
+    evm_run_bytecode_file(e, filename);
 }

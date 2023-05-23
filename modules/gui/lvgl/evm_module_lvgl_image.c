@@ -89,12 +89,14 @@ static lv_img_dsc_t *png_decode_data(const uint8_t * png_data, size_t png_data_s
     return png_dsc;
 }
 
-static evm_val_t png_decode(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(png_decode)
 {
+    EVM_EPCV;
     uint32_t error;                 /*For the return values of png decoder functions*/
     char *src = evm_2_string(e, v[0]);
     char fn[FILE_PATH_SIZE];
-    sprintf(fn, "C:%s", src);
+    const char *app_path = evm_get_app_path();
+    sprintf(fn, "C:%s/%s", app_path, src);
     evm_string_free(e, src);
     /*Load the PNG file into buffer. It's still compressed (not decoded)*/
     unsigned char * png_data;      /*Pointer to the loaded data. Same as the original file just loaded into the RAM*/
@@ -115,7 +117,8 @@ static evm_val_t png_decode(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
     return res;
 }
 
-static evm_val_t png_destroy(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(png_destroy) {
+    EVM_EPCV;
     lv_img_dsc_t *png_dsc = evm_object_get_user_data(e, v[0]);
     if( !png_dsc )
         return evm_mk_boolean(e, 0);
@@ -130,5 +133,6 @@ void evm_module_lvgl_image(evm_t *e) {
     evm_prop_set(e, obj, "png_decode", evm_mk_native(e, png_decode, "png_decode", 1));
     evm_prop_set(e, obj, "png_destroy", evm_mk_native(e, png_destroy, "png_destroy", 1));
     evm_module_add(e, "@native.image", obj);
+    evm_val_free(e, obj);
 }
 #endif

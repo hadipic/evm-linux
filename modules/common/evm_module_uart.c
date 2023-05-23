@@ -31,6 +31,7 @@ static void uart_setup(evm_t *e, evm_port_uart_t *info, evm_val_t obj) {
 }
 
 EVM_FUNCTION(write){
+    EVM_EPCV;
     evm_port_uart_t *info = evm_object_get_user_data(e, v[0]);
     if( argc > 0 && info ) {
         char *buf;
@@ -62,7 +63,7 @@ EVM_FUNCTION(write){
  * @return
  */
 EVM_FUNCTION(create){
-    EVM_UNUSED(e);
+    EVM_EPCV;
     evm_port_uart_t *info = evm_malloc(sizeof (evm_port_uart_t));
     EVM_ASSERT(info);
     evm_val_t obj = evm_object_create_user_data(e, info);

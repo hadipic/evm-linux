@@ -23,6 +23,7 @@ static void event_handler(lv_event_t * e)
 
 //lv_obj_add_event_cb(obj, function, code)
 EVM_FUNCTION(lvgl_event_lv_obj_add_event_cb) {
+    EVM_EPCV;
     lv_obj_t *obj = evm_2_invoke(e, v[0]);
     _event_info_t *info = lv_obj_get_user_data(obj);
     info = lv_mem_alloc(sizeof (_event_info_t));

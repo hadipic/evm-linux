@@ -394,7 +394,7 @@
  * Default value: 0
  */
 #ifndef JERRY_SNAPSHOT_EXEC
-#define JERRY_SNAPSHOT_EXEC 0
+#define JERRY_SNAPSHOT_EXEC 1
 #endif /* !defined (JERRY_SNAPSHOT_EXEC) */
 
 /**

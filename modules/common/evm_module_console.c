@@ -35,5 +35,6 @@ void evm_module_console(evm_t *e) {
     evm_prop_set(e, obj, "getc", evm_mk_native(e, console_getc, "getc", EVM_VARARGS));
     evm_prop_set(e, obj, "write", evm_mk_native(e, console_write, "write", EVM_VARARGS));
     evm_global_set(e, "console", obj);
+    evm_val_free(e, obj);
 }
 

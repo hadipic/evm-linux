@@ -3,6 +3,7 @@
 
 //start(timeout, repeat, callback)
 EVM_FUNCTION(start) {
+    EVM_EPCV;
     size_t timeout = (size_t)evm_2_integer(e, v[0]);
     int repeat = (size_t)evm_2_integer(e, v[1]);
     if (timeout < 1) {
@@ -25,6 +26,7 @@ EVM_FUNCTION(start) {
 
 //stop(obj)
 EVM_FUNCTION(stop) {
+    EVM_EPCV;
     evm_port_timer_t *timer = evm_object_get_user_data(e, v[0]);
     if (timer != NULL) {
         evm_port_timer_stop(timer);

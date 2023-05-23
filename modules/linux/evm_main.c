@@ -26,9 +26,42 @@ void *evm_realloc(void * p, size_t size)
     return zrealloc(p, size);
 }
 
-evm_val_t native_clock(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
+EVM_FUNCTION(native_clock) {
+    EVM_EPCV;
     double clk = clock();
-    return evm_mk_number(e,  clk / CLOCKS_PER_SEC);
+    EVM_RETURN_VAL(evm_mk_number(e,  clk / CLOCKS_PER_SEC));
+}
+
+uint8_t *evm_load_file(const char *filename, size_t *size) {
+    FILE *f;
+    uint8_t *buf;
+    size_t buf_len;
+    long lret;
+    f = fopen(filename, "rb");
+    if (!f)
+        return NULL;
+    if (fseek(f, 0, SEEK_END) < 0)
+        goto fail;
+    lret = ftell(f);
+    if (lret < 0)
+        goto fail;
+
+    buf_len = lret;
+    if (fseek(f, 0, SEEK_SET) < 0)
+        goto fail;
+    buf = evm_malloc(buf_len + 1);
+    if (!buf)
+        goto fail;
+    if (fread(buf, 1, buf_len, f) != buf_len) {
+        evm_free(buf);
+    fail:
+        fclose(f);
+        return NULL;
+    }
+    buf[buf_len] = '\0';
+    fclose(f);
+    *size = buf_len;
+    return buf;
 }
 
 void evm_main (char *filename) {
@@ -36,15 +69,7 @@ void evm_main (char *filename) {
     evm_module_init(e);
     evm_global_set(e, "clock", evm_mk_native(e, native_clock, "clock", 1));
 
-    extern const uint32_t common_js_bc_size;
-    extern const uint8_t common_js_bc[];
-    evm_run_bytecode(e, common_js_bc, common_js_bc_size);
-
-#ifdef CONFIG_EVM_MODULE_REPL
-    evm_run_shell(env);
-#else
-    evm_run_file(e, EVM_UNDEFINED, filename);
-#endif
+    evm_run_bytecode_file(e, filename);
 }
 
 void evm_loop() {

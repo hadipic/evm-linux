@@ -2345,5 +2345,6 @@ void evm_module_lvgl(evm_t *e) {
   evm_prop_set(e, obj, "LV_EVENT_DEFOCUSED", evm_mk_number(e, LV_EVENT_DEFOCUSED));
   evm_prop_set(e, obj, "LV_STATE_CHECKED", evm_mk_number(e, LV_STATE_CHECKED));
   evm_module_add(e, "@native.lvgl", obj);
+  evm_val_free(e, obj);
 }
 #endif

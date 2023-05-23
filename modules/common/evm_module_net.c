@@ -173,6 +173,7 @@ static void socket_tls_thread_entry(void *param) {
 
 //close(socket);
 EVM_FUNCTION(socket_close){
+    EVM_EPCV;
     _socket_client_t *client = (_socket_client_t *)evm_object_get_user_data(e, v[0]);
     if( !client )
         EVM_RETURN(EVM_UNDEFINED);
@@ -191,6 +192,7 @@ EVM_FUNCTION(socket_close){
 }
 //write(socket, buffer|string, len)
 EVM_FUNCTION(socket_write){
+    EVM_EPCV;
     ssize_t bytes = 0;
     int is_str = 0;
     _socket_client_t *client = (_socket_client_t *)evm_object_get_user_data(e, v[0]);
@@ -248,6 +250,7 @@ EVM_FUNCTION(socket_write){
 }
 //read(socket, size)
 EVM_FUNCTION(socket_read) {
+    EVM_EPCV;
     _socket_client_t *client = (_socket_client_t *)evm_object_get_user_data(e, v[0]);
     EVM_ASSERT(client);
 
@@ -269,6 +272,7 @@ EVM_FUNCTION(socket_read) {
 }
 //on(socket, event, callback)
 EVM_FUNCTION(socket_on) {
+    EVM_EPCV;
     _socket_client_t *client = (_socket_client_t *)evm_object_get_user_data(e, v[0]);
     EVM_ASSERT(client);
 
@@ -445,6 +449,7 @@ static void socket_thread_entry(void *param) {
 }
 //destroy(socket)
 EVM_FUNCTION(socket_destroy) {
+    EVM_EPCV;
     _socket_client_t *client = (_socket_client_t *)evm_object_get_user_data(e, v[0]);
     EVM_ASSERT(client);
     evm_val_free(e, client->obj);
@@ -459,6 +464,7 @@ EVM_FUNCTION(socket_destroy) {
 
 //connect(address, port, [rx_buf_size, tx_buf_size])
 EVM_FUNCTION(socket_connect) {
+    EVM_EPCV;
     if( argc < 1 || !evm_is_object(e, v[0]) )
         return EVM_UNDEFINED;
 
@@ -510,6 +516,7 @@ EVM_FUNCTION(socket_connect) {
 
 //lookup(host, opt)
 EVM_FUNCTION(socket_lookup) {
+    EVM_EPCV;
     struct addrinfo hints;
     struct addrinfo *result, *rp;
     int s;

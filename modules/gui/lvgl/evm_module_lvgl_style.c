@@ -664,5 +664,6 @@ void evm_module_lvgl_style(evm_t *e) {
   evm_prop_set(e, obj, "set_style_checked_bg_color", evm_mk_native(e, evm_module_lvgl_style_set_style_checked_bg_color, "set_style_checked_bg_color", 2));
   evm_prop_set(e, obj, "set_style_selected_bg_color", evm_mk_native(e, evm_module_lvgl_style_set_style_selected_bg_color, "set_style_selected_bg_color", 2));
   evm_module_add(e, "@native.lv_style", obj);
+  evm_val_free(e, obj);
 }
 #endif

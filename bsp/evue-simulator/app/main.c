@@ -114,8 +114,9 @@ int main(int argc, char** argv) {
     /*Initialize the HAL (display, input devices, tick) for LVGL*/
     hal_init();
 
-    xTaskCreate( _evm_main, "evm", 1024*16, NULL, 21, NULL );
-    vTaskStartScheduler();
+    _evm_main(filename);
+//    xTaskCreate( _evm_main, "evm", 1024*40, NULL, 21, NULL );
+//    vTaskStartScheduler();
 
     return 0;
 }

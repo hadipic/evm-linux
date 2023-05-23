@@ -35,6 +35,7 @@ EVM_FUNCTION(native_compile) {
         evm_string_free(e, s);
         EVM_RETURN(  evm_mk_boolean(e, 1) )
     }
+    evm_string_free(e, s);
     EVM_RETURN(evm_mk_boolean(e, 0));
 }
 

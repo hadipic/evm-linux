@@ -21,7 +21,13 @@ win32{
     INCLUDEPATH +=  $$PWD/../
 }
 
+contains(DEFINES, EVM_USE_QUICKJS) {
 include($$PWD/../pris/quickjs.pri)
+}
+
+contains(DEFINES, EVM_USE_JERRYSCRIPT) {
+include($$PWD/../pris/jerryscript.pri)
+}
 
 SOURCES += \
         main.c

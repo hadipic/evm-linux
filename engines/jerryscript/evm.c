@@ -151,6 +151,27 @@ void evm_deinit(evm_t *e) {
     jerry_cleanup ();
 }
 
+evm_val_t evm_run_bytecode(evm_t *e, uint8_t *buf, size_t buf_len) {
+    jerry_value_t func = jerry_exec_snapshot(buf, buf_len, 0, 0, NULL);
+    return func;
+}
+
+int evm_run_bytecode_file(evm_t *e, const char *path) {
+    uint8_t *buf;
+    size_t buf_len;
+    int res = 1;
+    buf = evm_load_file(path, &buf_len);
+    if (!buf) {
+        return 0;
+    }
+
+    jerry_value_t func = jerry_exec_snapshot(buf, buf_len, 0, JERRY_SNAPSHOT_EXEC_COPY_DATA, NULL);
+
+    jerry_value_free (func);
+    evm_free(buf);
+    return res;
+}
+
 int evm_run_file(evm_t *e, evm_val_t this_obj, const char *path) {
     uint8_t *buf;
     size_t buf_len;

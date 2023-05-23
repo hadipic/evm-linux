@@ -14,6 +14,7 @@ static int convert_fs_mode_to_oflag(const char *mode)
 }
 //sting = read(path, mode)
 EVM_FUNCTION(fs_read) {
+    EVM_EPCV;
     if( argc < 1 || evm_is_string(e, v[0]) )
         return EVM_UNDEFINED;
     evm_val_t res = EVM_UNDEFINED;
@@ -39,6 +40,7 @@ EVM_FUNCTION(fs_read) {
 //write(path, buffer|string)
 EVM_FUNCTION(fs_write)
 {
+    EVM_EPCV;
     int mode = O_WRONLY;
     if( argc < 2 )
         return EVM_UNDEFINED;

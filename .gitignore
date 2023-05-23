@@ -20,14 +20,16 @@ Makefile.*
 *.Debug
 *.Release
 *.rc
-*.qbc
-*.bc
 
 debug
 release
 build*
 distwin/
 build/
+tutorial/*.bc
+tutorial/*/*.bc
+test/*.bc
+test/*/*.bc
 .vscode/
 .vscode*
 .settings/
