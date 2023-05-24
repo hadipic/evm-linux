@@ -5,8 +5,8 @@ inline void evm_cffi_exec_param(evm_t *e, evm_cffi_val_t *cffi_vals, const char 
     for (int i = 0; i < argc; i++) {
         switch (signature[i]) {
             case 'b': cffi_vals[i].i32 = evm_2_boolean(e, v[i]);break;
-            case 'i': cffi_vals[i].i32 = evm_2_integer(e, v[i]);break;
-            case 'l': cffi_vals[i].i64 = evm_2_integer(e, v[i]);break;
+            case 'i': cffi_vals[i].i32 = (uint32_t)evm_2_double(e, v[i]);break;
+            case 'l': cffi_vals[i].i64 = evm_2_double(e, v[i]);break;
             case 'd': cffi_vals[i].f64 = evm_2_double(e, v[i]);break;
             case 'f': cffi_vals[i].f32 = evm_2_double(e, v[i]);break;
             case 's': cffi_vals[i].s = evm_2_string(e, v[i]);break;

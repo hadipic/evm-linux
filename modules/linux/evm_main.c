@@ -68,8 +68,9 @@ void evm_main (char *filename) {
     evm_t *e = evm_init();
     evm_module_init(e);
     evm_global_set(e, "clock", evm_mk_native(e, native_clock, "clock", 1));
-
+    printf("%f\n", (double)clock()/1000);
     evm_run_bytecode_file(e, filename);
+    printf("%f\n", (double)clock()/1000);
 }
 
 void evm_loop() {

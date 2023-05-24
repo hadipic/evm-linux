@@ -29,5 +29,9 @@ contains(DEFINES, EVM_USE_JERRYSCRIPT) {
 include($$PWD/../pris/jerryscript.pri)
 }
 
+contains(DEFINES, EVM_USE_QUICKVM) {
+include($$PWD/../../../../evm_commercial/quickvm.pri)
+}
+
 SOURCES += \
         main.c

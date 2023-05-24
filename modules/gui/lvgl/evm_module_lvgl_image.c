@@ -113,7 +113,7 @@ EVM_FUNCTION(png_decode)
         lv_mem_free(png_data);
     }
 
-    evm_val_t res = evm_object_create_user_data(e, png_dsc);
+    evm_val_t res = evm_mk_invoke(e, png_dsc);
     return res;
 }
 
