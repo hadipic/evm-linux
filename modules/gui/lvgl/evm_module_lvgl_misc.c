@@ -101,6 +101,7 @@ EVM_FUNCTION(init_style){
     lv_style_set_text_line_space(style, 2);
     lv_style_set_text_letter_space(style, 2);
     lv_style_set_text_font(style, &lv_font_montserrat_20);
+    EVM_RETURN(EVM_UNDEFINED);
 }
 
 EVM_FUNCTION(lvgl_style_get_font){
