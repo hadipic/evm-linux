@@ -61,11 +61,13 @@ void evm_module_init(evm_t *env)
     extern void evm_module_lvgl_misc(evm_t *e);
     extern void evm_module_lvgl_style(evm_t *e);
     extern void evm_module_lvgl_image(evm_t *e);
+    extern void evm_module_lvgl_timeout(evm_t *e);
     evm_module_lvgl(env);
     evm_module_lvgl_event(env);
     
     evm_module_lvgl_misc(env);
     evm_module_lvgl_style(env);
     evm_module_lvgl_image(env);
+    evm_module_lvgl_timeout(env);
 #endif
 }

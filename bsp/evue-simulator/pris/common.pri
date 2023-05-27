@@ -39,6 +39,7 @@ SOURCES += \
     $$PWD/../../../modules/gui/lvgl/evm_module_lvgl_style.c \
     $$PWD/../../../modules/gui/lvgl/evm_module_lvgl_event.c \
     $$PWD/../../../modules/gui/lvgl/evm_module_lvgl_misc.c \
+    $$PWD/../../../modules/gui/lvgl/evm_module_lvgl_timeout.c \
     $$PWD/../../../modules/gui/lvgl/evm_module_lvgl_image.c
 
 SOURCES += \
