@@ -17,6 +17,7 @@ DEFINES += EVM_USE_MODULE_PROCESS
 DEFINES += EVM_USE_MODULE_TIMER
 DEFINES += EVM_USE_MODULE_NET
 DEFINES += EVM_USE_MODULE_LVGL_IMAGE
+DEFINES += EVM_USE_MODULE_CJSON
 
 SOURCES += \
     $$PWD/../../../modules/linux/evm_main.c
@@ -68,4 +69,12 @@ SOURCES += \
 SOURCES += \
     $$PWD/../../../modules/freertos/evm_port_msgbus.c \
     $$PWD/../../../modules/freertos/evm_port_timer.c
+
+contains(DEFINES, EVM_USE_MODULE_CJSON) {
+INCLUDEPATH += $$PWD/../../../components/cjson
+SOURCES += \
+    $$PWD/../../../modules/common/evm_module_cjson.c
+SOURCES += \
+    $$PWD/../../../components/cjson/cJSON.c
+}
 

@@ -64,13 +64,21 @@ uint8_t *evm_load_file(const char *filename, size_t *size) {
     return buf;
 }
 
+int strEndswith(const char *str1, const char *str2)
+{
+    size_t l1 = strlen(str1), l2 = strlen(str2);
+    return (0 == strcmp(str2, str1 + (l1 - l2)));
+}
+
 void evm_main (char *filename) {
     evm_t *e = evm_init();
     evm_module_init(e);
     evm_global_set(e, "clock", evm_mk_native(e, native_clock, "clock", 1));
-    printf("%f\n", (double)clock()/1000);
-    evm_run_bytecode_file(e, filename);
-    printf("%f\n", (double)clock()/1000);
+    if (strEndswith(filename, "js")) {
+        evm_run_file(e, EVM_UNDEFINED, filename);
+    } else {
+        evm_run_bytecode_file(e, filename);
+    }
 }
 
 void evm_loop() {

@@ -20,7 +20,7 @@ EVM_FUNCTION( native_print ){
     EVM_RETURN(evm_mk_undefined(e))
 }
 
-EVM_FUNCTION(native_require) {
+EVM_FUNCTION(native_require_module) {
     EVM_EPCV;
     char *s = evm_2_string(e, v[0]);
     evm_val_t res = evm_module_get(e, s);
@@ -28,7 +28,18 @@ EVM_FUNCTION(native_require) {
     EVM_RETURN( res );
 }
 
-EVM_FUNCTION(native_compile) {
+EVM_FUNCTION(native_require_js) {
+    EVM_EPCV;
+    char *s = evm_2_string(e, v[1]);
+    if( evm_run_file(e, EVM_UNDEFINED, s) ){
+        evm_string_free(e, s);
+        EVM_RETURN(  evm_mk_boolean(e, 1) )
+    }
+    evm_string_free(e, s);
+    EVM_RETURN(evm_mk_boolean(e, 0));
+}
+
+EVM_FUNCTION(native_require_bc) {
     EVM_EPCV;
     char *s = evm_2_string(e, v[1]);
     if( evm_run_bytecode_file(e, s) ){
@@ -39,10 +50,18 @@ EVM_FUNCTION(native_compile) {
     EVM_RETURN(evm_mk_boolean(e, 0));
 }
 
+EVM_FUNCTION(native_gc) {
+    EVM_EPCV;
+    evm_heap_gc(e);
+    EVM_RETURN(evm_mk_boolean(e, 0));
+}
+
 static void evm_native_init(evm_t *e) {
     evm_global_set(e, "print", evm_mk_native(e, native_print, "print", 1));
-    evm_global_set(e, "__require__", evm_mk_native(e, native_require, "__require__", 1));
-    evm_global_set(e, "__compile__", evm_mk_native(e, native_compile, "__compile__", 2));
+    evm_global_set(e, "gc", evm_mk_native(e, native_gc, "gc", 0));
+    evm_global_set(e, "__require_module__", evm_mk_native(e, native_require_module, "__require__", EVM_VARARGS));
+    evm_global_set(e, "__require_js__", evm_mk_native(e, native_require_js, "__require_js__", EVM_VARARGS));
+    evm_global_set(e, "__require_bc__", evm_mk_native(e, native_require_bc, "__require_bc__", EVM_VARARGS));
 }
 
 void evm_module_init(evm_t *env)
@@ -54,6 +73,11 @@ void evm_module_init(evm_t *env)
 
     extern void evm_module_console(evm_t *e);
     evm_module_console(env);
+
+#ifdef EVM_USE_MODULE_CJSON
+    extern void evm_module_cjson(evm_t *e);
+    evm_module_cjson(env);
+#endif
 
 #ifdef EVM_USE_MODULE_LVGL
     extern void evm_module_lvgl_event(evm_t *e);
