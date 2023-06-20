@@ -81,6 +81,10 @@ void *evm_object_get_user_data(evm_t *e, evm_val_t o) {
     return jerry_object_get_native_ptr(o, NULL);
 }
 
+evm_val_t evm_object_keys(evm_t *e, evm_val_t o) {
+    return jerry_object_keys(o);
+}
+
 evm_val_t evm_global_get(evm_t *e, const char* key) {
     jerry_value_t global_object = jerry_current_realm ();
     jerry_value_t value = jerry_object_get_sz(global_object, key);

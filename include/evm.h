@@ -74,6 +74,7 @@ EVM_API evm_val_t evm_object_create(evm_t *e);
 EVM_API evm_val_t evm_object_create_user_data(evm_t *e, void *data);
 EVM_API void evm_object_set_user_data(evm_t *e, evm_val_t o, void *data);
 EVM_API void *evm_object_get_user_data(evm_t *e, evm_val_t o);
+EVM_API evm_val_t evm_object_keys(evm_t *e, evm_val_t o);
 EVM_API evm_val_t evm_global_get(evm_t *e, const char* key);
 EVM_API evm_err_t evm_global_set(evm_t *e, const char *key, evm_val_t v);
 EVM_API void evm_global_delete(evm_t *e, const char *key);

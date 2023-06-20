@@ -3,6 +3,8 @@
 
 static evm_val_t cjson_object_parse(evm_t *e, cJSON *item);
 static evm_val_t cjson_array_parse(evm_t *e, cJSON *item);
+static cJSON *cjson_object_build(evm_t *e, evm_val_t obj);
+static cJSON *cjson_array_build(evm_t *e, evm_val_t obj);
 
 static void cjson_object_parse_children(evm_t *e, cJSON *item, evm_val_t parent){
     while (item != NULL) {
@@ -69,7 +71,6 @@ static evm_val_t cjson_object_parse(evm_t *e, cJSON *item) {
     return obj;
 }
 
-
 //parse(string)
 EVM_FUNCTION(parse) {
     EVM_EPCV;
@@ -87,12 +88,95 @@ EVM_FUNCTION(parse) {
         cJSON_Delete(root);
         return obj;
     }
+    cJSON_Delete(root);
+    EVM_RETURN(EVM_UNDEFINED);
+}
+
+static cJSON *cjson_array_build(evm_t *e, evm_val_t obj) {
+    cJSON *parent = cJSON_CreateArray();
+    int size = evm_list_len(e, obj);
+    for(int i = 0; i < size; i++) {
+        evm_val_t val = evm_list_get(e, obj, i);
+        if( evm_is_null(e, val) ){
+            cJSON *item = cJSON_CreateNull();
+            cJSON_AddItemToArray(parent, item);
+        } else if( evm_is_string(e, val) ) {
+            char *str = evm_2_string(e, val);
+            cJSON *item = cJSON_CreateString(str);
+            cJSON_AddItemToArray(parent, item);
+            evm_string_free(e, str);
+        } else if( evm_is_number(e, val) ) {
+            cJSON *item = cJSON_CreateNumber(evm_2_double(e, val));
+            cJSON_AddItemToArray(parent, item);
+        } else if( evm_is_boolean(e, val) ) {
+            cJSON *item = cJSON_CreateBool(evm_2_boolean(e, val));
+            cJSON_AddItemToArray(parent, item);
+        } else if( evm_is_list(e, val) ) {
+            cJSON *item = cjson_array_build(e, val);
+            cJSON_AddItemToArray(parent, item);
+        } else if( evm_is_object(e, val) ) {
+            cJSON *item = cjson_object_build(e, val);
+            cJSON_AddItemToArray(parent, item);
+        }
+        evm_val_free(e, val);
+    }
+    return parent;
+}
+
+static cJSON *cjson_object_build(evm_t *e, evm_val_t obj) {
+     cJSON *parent = cJSON_CreateObject();
+     evm_val_t keys = evm_object_keys(e, obj);
+     int size = evm_list_len(e, keys);
+     for(int i = 0; i < size; i++) {
+         evm_val_t key = evm_list_get(e, keys, i);
+         char *key_s = evm_2_string(e, key);
+         evm_val_t val = evm_prop_get(e, obj, key_s);
+         if( evm_is_null(e, val) ){
+             cJSON *item = cJSON_CreateNull();
+             cJSON_AddItemToObject(parent, key_s, item);
+         } else if( evm_is_string(e, val) ) {
+             char *str = evm_2_string(e, val);
+             cJSON *item = cJSON_CreateString(str);
+             cJSON_AddItemToObject(parent, key_s, item);
+             evm_string_free(e, str);
+         } else if( evm_is_number(e, val) ) {
+             cJSON *item = cJSON_CreateNumber(evm_2_double(e, val));
+             cJSON_AddItemToObject(parent, key_s, item);
+         } else if( evm_is_boolean(e, val) ) {
+             cJSON *item = cJSON_CreateBool(evm_2_boolean(e, val));
+             cJSON_AddItemToObject(parent, key_s, item);
+         } else if( evm_is_list(e, val) ) {
+             cJSON *item = cjson_array_build(e, val);
+             cJSON_AddItemToObject(parent, key_s, item);
+         } else if( evm_is_object(e, val) ) {
+             cJSON *item = cjson_object_build(e, val);
+             cJSON_AddItemToObject(parent, key_s, item);
+         }
+         evm_val_free(e, val);
+         evm_string_free(e, key_s);
+     }
+     evm_val_free(e, keys);
+     return parent;
 }
 
 //stringify(object)
 EVM_FUNCTION(stringify) {
     EVM_EPCV;
-
+    if( evm_is_list(e, v[0]) ){
+        cJSON *root = cjson_array_build(e, v[0]);
+        char *str = cJSON_PrintUnformatted(root);
+        evm_val_t res = evm_string_create(e, str);
+        cJSON_free(str);
+        cJSON_Delete(root);
+        return res;
+    } else if( evm_is_object(e, v[0])) {
+        cJSON *root = cjson_object_build(e, v[0]);
+        char *str = cJSON_PrintUnformatted(root);
+        evm_val_t res = evm_string_create(e, str);
+        cJSON_free(str);
+        cJSON_Delete(root);
+        return res;
+    }
     EVM_RETURN(EVM_UNDEFINED);
 }
 
