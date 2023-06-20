@@ -1,3 +1,5 @@
+#ifdef EVM_USE_MODULE_NET
+
 #include "evm_module.h"
 #include "evm_port_msgbus.h"
 
@@ -561,3 +563,4 @@ void evue_module_net(evm_t *e) {
     evm_module_add(e, "@native.net", obj);
     evm_val_free(e, obj);
 }
+#endif

@@ -18,6 +18,8 @@ DEFINES += EVM_USE_MODULE_TIMER
 DEFINES += EVM_USE_MODULE_NET
 DEFINES += EVM_USE_MODULE_LVGL_IMAGE
 DEFINES += EVM_USE_MODULE_CJSON
+DEFINES += EVM_USE_MODULE_HEATSHRINK
+DEFINES += EVM_USE_MODULE_BASE64
 
 SOURCES += \
     $$PWD/../../../modules/linux/evm_main.c
@@ -76,5 +78,21 @@ SOURCES += \
     $$PWD/../../../modules/common/evm_module_cjson.c
 SOURCES += \
     $$PWD/../../../components/cjson/cJSON.c
+}
+
+contains(DEFINES, EVM_USE_MODULE_HEATSHRINK) {
+INCLUDEPATH += $$PWD/../../../components/heatshrink
+SOURCES += \
+    $$PWD/../../../modules/common/compress_heatshrink.c \
+    $$PWD/../../../modules/common/evm_module_heatshrink.c
+
+SOURCES += \
+    $$PWD/../../../components/heatshrink/heatshrink_decoder.c \
+    $$PWD/../../../components/heatshrink/heatshrink_encoder.c
+}
+
+contains(DEFINES, EVM_USE_MODULE_BASE64) {
+SOURCES += \
+    $$PWD/../../../modules/common/evm_module_base64.c
 }
 

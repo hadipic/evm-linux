@@ -1,3 +1,4 @@
+#ifdef EVM_USE_MODULE_FS
 #include "evm_port_fs.h"
 #include <sys/fcntl.h>
 
@@ -82,3 +83,4 @@ void evm_module_fs(evm_t *e) {
     evm_module_add(e, "@native.fs", obj);
     evm_val_free(e, obj);
 }
+#endif

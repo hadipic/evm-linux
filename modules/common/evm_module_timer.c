@@ -1,6 +1,4 @@
 #include "evm_port_timer.h"
-
-
 //start(timeout, repeat, callback)
 EVM_FUNCTION(start) {
     EVM_EPCV;

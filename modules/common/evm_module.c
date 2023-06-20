@@ -79,6 +79,16 @@ void evm_module_init(evm_t *env)
     evm_module_cjson(env);
 #endif
 
+#ifdef EVM_USE_MODULE_HEATSHRINK
+    extern void evm_module_heatshrink(evm_t *e);
+    evm_module_heatshrink(env);
+#endif
+
+#ifdef EVM_USE_MODULE_BASE64
+    extern void evm_module_base64(evm_t *e);
+    evm_module_base64(env);
+#endif
+
 #ifdef EVM_USE_MODULE_LVGL
     extern void evm_module_lvgl_event(evm_t *e);
     extern void evm_module_lvgl(evm_t *e);
