@@ -175,8 +175,14 @@ EVM_FUNCTION(lvgl_style_get_font){
     return evm_mk_invoke(e, &lv_font_montserrat_20);
 }
 
+EVM_FUNCTION(null_obj){
+    EVM_EPCV;
+    EVM_RETURN(evm_mk_invoke(e, NULL));
+}
+
 void evm_module_lvgl_misc(evm_t *e) {
     evm_val_t obj = evm_module_get(e, "@native.lvgl");
+    evm_prop_set(e, obj, "null_obj", evm_mk_native(e, null_obj, "null_obj", EVM_VARARGS));
     evm_prop_set(e, obj, "init_style", evm_mk_native(e, init_style, "init_style", EVM_VARARGS));
     evm_prop_set(e, obj, "destroy_obj", evm_mk_native(e, destroy_obj, "destroy_obj", EVM_VARARGS));
     evm_prop_set(e, obj, "get_screen_width", evm_mk_native(e, get_screen_width, "get_screen_width", EVM_VARARGS));

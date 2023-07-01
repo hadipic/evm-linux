@@ -26,7 +26,7 @@ typedef jerry_external_handler_t evm_native_t;
                             const jerry_value_t v[], \
                             const jerry_length_t argc)
 
-#define EVM_EPCV evm_t *e = NULL; const evm_val_t *p = &call_info_p->this_value;
+#define EVM_EPCV evm_t *e = NULL; const evm_val_t p = call_info_p->this_value;
 #define EVM_RETURN(x)   return x;
 #define EVM_RETURN_VAL(x)   return x;
 #define EVM_VARARGS 0

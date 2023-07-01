@@ -27,6 +27,7 @@ extern evm_val_t evm_cffi_exec_ret(evm_t *e, evm_cffi_val_t *cffi_val, const cha
 
 extern void evm_main(char *filename);
 extern void evm_module_init(evm_t *env);
+evm_t *evm_runtime(void);
 extern const char *evm_get_app_path(void);
 
 #ifdef __cplusplus

@@ -55,14 +55,15 @@ static void evm_native_init(evm_t *e) {
     evm_global_set(e, "__require_bc__", evm_mk_native(e, native_require_bc, "__require_bc__", EVM_VARARGS));
 }
 
+
+extern void evm_module_console(evm_t *e);
+
 void evm_module_init(evm_t *env)
 {
+    _runtime = env;
     evm_native_init(env);
-
     extern void evm_module_process(evm_t *e);
     evm_module_process(env);
-
-    extern void evm_module_console(evm_t *e);
     evm_module_console(env);
 
 #ifdef EVM_USE_MODULE_CJSON
@@ -80,19 +81,9 @@ void evm_module_init(evm_t *env)
     evm_module_base64(env);
 #endif
 
-#ifdef EVM_USE_MODULE_LVGL
-    extern void evm_module_lvgl_event(evm_t *e);
-    extern void evm_module_lvgl(evm_t *e);
-    extern void evm_module_lvgl_misc(evm_t *e);
-    extern void evm_module_lvgl_style(evm_t *e);
-    extern void evm_module_lvgl_image(evm_t *e);
-    extern void evm_module_lvgl_timeout(evm_t *e);
-    evm_module_lvgl(env);
-    evm_module_lvgl_event(env);
-    
-    evm_module_lvgl_misc(env);
-    evm_module_lvgl_style(env);
-    evm_module_lvgl_image(env);
-    evm_module_lvgl_timeout(env);
+#ifdef EVM_USE_MODULE_TIMER
+    extern void evm_module_timer(evm_t *e);
+    evm_module_timer(env);
 #endif
 }
+

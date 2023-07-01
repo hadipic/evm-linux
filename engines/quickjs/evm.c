@@ -13,7 +13,7 @@
 int (*evm_print)(const char *fmt, ...) = printf;
 
 evm_val_t evm_string_create(evm_t *e, const char *str) {
-    return JS_NewString(e, str);
+    return evm_val_duplicate(e, JS_NewString(e, str));
 }
 
 int evm_string_len(evm_t *e, evm_val_t o) {
@@ -31,7 +31,7 @@ void evm_string_free(evm_t *e, char *str){
 
 /*** 字节数组对象操作函数 ***/
 evm_val_t evm_buffer_create(evm_t *e, uint8_t *buf, int len) {
-    return JS_NewArrayBufferCopy(e, buf, len);
+    return evm_val_duplicate(e, JS_NewArrayBufferCopy(e, buf, len));
 }
 
 uint8_t *evm_buffer_addr(evm_t *e, evm_val_t o) {
@@ -47,7 +47,7 @@ int evm_buffer_len(evm_t *e, evm_val_t o) {
 
 /*** 列表对象操作函数 ***/
 evm_val_t evm_list_create(evm_t *e) {
-    return JS_NewArray(e);
+    return evm_val_duplicate(e, JS_NewArray(e));
 }
 
 int evm_list_len(evm_t *e, evm_val_t o) {
@@ -78,7 +78,7 @@ evm_val_t evm_list_get(evm_t *e, evm_val_t o, int i) {
 
 /*** 对象操作函数 ***/
 evm_val_t evm_object_create(evm_t *e) {
-    return JS_NewObject(e);
+    return evm_val_duplicate(e, JS_NewObject(e));
 }
 
 evm_val_t evm_object_create_user_data(evm_t *e, void *data) {
@@ -93,6 +93,23 @@ void evm_object_set_user_data(evm_t *e, evm_val_t o, void *data) {
 
 void *evm_object_get_user_data(evm_t *e, evm_val_t o) {
     return JS_GetOpaque(o, 1);
+}
+
+evm_val_t evm_object_keys(evm_t *e, evm_val_t o) {
+    JSPropertyEnum *tab;
+    uint32_t len, i;
+    if (JS_GetOwnPropertyNames(e, &tab, &len, o, JS_GPN_STRING_MASK | JS_GPN_ENUM_ONLY) < 0)
+        return EVM_UNDEFINED;
+    const char *key;
+    evm_val_t list = evm_list_create(e);
+    for(i = 0; i < len; i++) {
+        key = JS_AtomToCString(e, tab[i].atom);
+        evm_val_t val = evm_string_create(e, key);
+        evm_list_set(e, list, i, val);
+        evm_string_free(e, key);
+        evm_val_free(e, val);
+    }
+    return list;
 }
 
 evm_val_t evm_global_get(evm_t *e, const char* key) {
@@ -310,6 +327,17 @@ static const JSMallocFunctions trace_mf = {
     NULL
 };
 
+EVM_FUNCTION( native_print ){
+    EVM_EPCV;
+    for(int i = 0; i < argc;i++ ){
+       char *s = evm_2_string(e, v[i]);
+       printf("%s ", s);
+       evm_string_free(e, s);
+    }
+    printf("\r\n");
+    EVM_RETURN(evm_mk_undefined(e))
+}
+
 evm_t *evm_init(void) {
     JSRuntime *rt;
     JSContext *ctx;
@@ -321,8 +349,11 @@ evm_t *evm_init(void) {
         return NULL;
     }
     JS_SetModuleLoaderFunc(rt, NULL, js_module_loader, NULL);
-    evm_global_set(ctx, "@system", evm_object_create(ctx));
+    evm_val_t val = evm_object_create(ctx);
+    evm_global_set(ctx, "@system", val);
+    evm_val_free(ctx, val);
     evm_global_set(ctx, "require", evm_mk_native(ctx, native_require, "require", 1));
+    evm_global_set(ctx, "print", evm_mk_native(ctx, native_print, "print", 1));
     return ctx;
 }
 
@@ -570,13 +601,13 @@ evm_val_t evm_mk_number(evm_t *e, double d){
 evm_val_t evm_mk_string(evm_t *e, const char *s){
     evm_val_t res;
     res = JS_NewString(e, s);
-    return res;
+    return evm_val_duplicate(e, res);
 }
 
 evm_val_t evm_mk_lstring(evm_t *e, const char *s, int len) {
     evm_val_t res;
     res = JS_NewStringLen(e, s, len);
-    return res;
+    return evm_val_duplicate(e, res);;
 }
 
 evm_val_t evm_mk_boolean(evm_t *e, int v){

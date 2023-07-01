@@ -144,10 +144,22 @@ EVM_FUNCTION(native_require) {
     return evm_module_get(e, evm_2_string(e, v[0]));
 }
 
+EVM_FUNCTION( native_print ){
+    EVM_EPCV;
+    for(int i = 0; i < argc;i++ ){
+        char *s = evm_2_string(e, v[i]);
+        printf("%s ", s);
+        evm_string_free(e, s);
+    }
+    printf("\r\n");
+    EVM_RETURN(evm_mk_undefined(e))
+}
+
 evm_t *evm_init(void) {
     jerry_init (JERRY_INIT_EMPTY);
     evm_global_set(&JERRY_CONTEXT_STRUCT, "@system", evm_object_create(&JERRY_CONTEXT_STRUCT));
     evm_global_set(&JERRY_CONTEXT_STRUCT, "require", evm_mk_native(&JERRY_CONTEXT_STRUCT, native_require, "require", 1));
+    evm_global_set(&JERRY_CONTEXT_STRUCT, "print", evm_mk_native(&JERRY_CONTEXT_STRUCT, native_print, "print", EVM_VARARGS));
     return &JERRY_CONTEXT_STRUCT;
 }
 
@@ -195,7 +207,15 @@ int evm_run_file(evm_t *e, evm_val_t this_obj, const char *path) {
     if (!jerry_value_is_exception (parsed_code))
     {
         evm_print("parse: ok\r\n");
-        jerry_value_free (jerry_run (parsed_code));
+        jerry_value_t res = jerry_run (parsed_code);
+        if (jerry_value_is_exception (res))
+        {
+            jerry_value_t jsres = jerry_exception_value (res, false);
+            char *msg= evm_2_string(e, jsres);
+            evm_print("Exception: %s\r\n", msg);
+            evm_string_free(e, msg);
+        }
+        jerry_value_free (res);
     } else {
         evm_print("parse: exception\r\n");
     }
@@ -223,6 +243,13 @@ evm_val_t evm_call(evm_t *e, evm_val_t obj, evm_val_t pthis, int argc, evm_val_t
 
 evm_val_t evm_call_free(evm_t *e, evm_val_t obj, evm_val_t pthis, int argc, evm_val_t *v) {
     evm_val_t ret =  jerry_call(obj, pthis, v, (jerry_size_t)argc);
+    if (jerry_value_is_exception (ret))
+    {
+        jerry_value_t jsres = jerry_exception_value (ret, false);
+        char *msg= evm_2_string(e, jsres);
+        evm_print("Exception: %s\r\n", msg);
+        evm_string_free(e, msg);
+    }
     jerry_value_free(ret);
     return ret;
 }
