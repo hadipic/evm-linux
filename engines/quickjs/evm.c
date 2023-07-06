@@ -69,6 +69,12 @@ evm_err_t evm_list_set(evm_t *e, evm_val_t o, int i, evm_val_t v) {
     return ec_ok;
 }
 
+evm_err_t evm_list_set_with_free(evm_t *e, evm_val_t o, int i, evm_val_t v) {
+    JS_SetPropertyUint32(e, o, i, v);
+    evm_val_free(e, v);
+    return ec_ok;
+}
+
 evm_val_t evm_list_get(evm_t *e, evm_val_t o, int i) {
     if( !evm_is_list(e, o) ) {
         return JS_UNDEFINED;
@@ -130,6 +136,16 @@ evm_err_t evm_global_set(evm_t *e, const char *key, evm_val_t v) {
     return ec_ok;
 }
 
+evm_err_t evm_global_set_with_free(evm_t *e, const char *key, evm_val_t v) {
+    JSContext *ctx = e;
+    JSValue global_obj;
+    global_obj = JS_GetGlobalObject(ctx);
+    JS_SetPropertyStr(ctx, global_obj, key, v);
+    evm_val_free(e, global_obj);
+    evm_val_free(e, v);
+    return ec_ok;
+}
+
 void evm_global_delete(evm_t *e, const char *key) {
 
 }
@@ -141,6 +157,12 @@ evm_val_t evm_prop_get(evm_t *e, evm_val_t o, const char* key) {
 
 evm_err_t evm_prop_set(evm_t *e, evm_val_t o, const char *key, evm_val_t v) {
     JS_SetPropertyStr(e, o, key, v);
+    return ec_ok;
+}
+
+evm_err_t evm_prop_set_with_free(evm_t *e, evm_val_t o, const char *key, evm_val_t v) {
+    JS_SetPropertyStr(e, o, key, v);
+    evm_val_free(e, v);
     return ec_ok;
 }
 

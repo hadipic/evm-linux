@@ -67,6 +67,7 @@ EVM_API int evm_buffer_len(evm_t *e, evm_val_t o);
 EVM_API evm_val_t evm_list_create(evm_t *e);
 EVM_API int evm_list_len(evm_t *e, evm_val_t o);
 EVM_API evm_err_t evm_list_set(evm_t *e, evm_val_t o, int index, evm_val_t v);
+EVM_API evm_err_t evm_list_set_with_free(evm_t *e, evm_val_t o, int i, evm_val_t v);
 EVM_API evm_val_t evm_list_get(evm_t *e, evm_val_t o, int index);
 
 /*** 对象操作函数 ***/
@@ -77,11 +78,13 @@ EVM_API void *evm_object_get_user_data(evm_t *e, evm_val_t o);
 EVM_API evm_val_t evm_object_keys(evm_t *e, evm_val_t o);
 EVM_API evm_val_t evm_global_get(evm_t *e, const char* key);
 EVM_API evm_err_t evm_global_set(evm_t *e, const char *key, evm_val_t v);
+EVM_API evm_err_t evm_global_set_with_free(evm_t *e, const char *key, evm_val_t v);
 EVM_API void evm_global_delete(evm_t *e, const char *key);
 
 /*** 成员操作函数 ***/
 EVM_API evm_val_t evm_prop_get(evm_t *e, evm_val_t o, const char* key);
 EVM_API evm_err_t evm_prop_set(evm_t *e, evm_val_t o, const char *key, evm_val_t v);
+EVM_API evm_err_t evm_prop_set_with_free(evm_t *e, evm_val_t o, const char *key, evm_val_t v);
 EVM_API void evm_prop_delete(evm_t *e, evm_val_t o, const char *key);
 
 /*** 模块操作函数 ***/
