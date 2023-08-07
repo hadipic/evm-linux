@@ -301,3 +301,10 @@
 2022-12-29 20:28:52,917     INFO [               quickbc.py             compile    63] start compile......
 2022-12-29 20:28:53,376     INFO [               quickbc.py             compile    68] /media/zhe/scriptiot/scriptiot/evm/tutorial/evue/text.evue.js
 2022-12-29 20:28:53,405     INFO [               quickbc.py             compile    71] compile [../../tutorial/evue/text.evue]-->[/media/zhe/scriptiot/scriptiot/evm/tutorial/evue/text.evue.js] successfully!
+2023-07-12 15:14:14,711     INFO [               quickbc.py                main    87] Please input the correct file [../../../evm_commercial/projects/86panel/demo/app.js]: ['File is not support!']
+2023-07-12 15:15:09,058     INFO [               quickbc.py             compile    63] start compile......
+2023-07-12 15:15:10,342     INFO [               quickbc.py             compile    73] Internal Server Error
+2023-07-12 15:15:10,343    ERROR [               quickbc.py             compile    74] compile [../../../evm_commercial/projects/86panel/demo/app.js] failed!
+2023-07-12 15:16:30,870     INFO [               quickbc.py             compile    63] start compile......
+2023-07-12 15:16:33,198     INFO [               quickbc.py             compile    73] Internal Server Error
+2023-07-12 15:16:33,198    ERROR [               quickbc.py             compile    74] compile [../../../evm_commercial/tests/panelB/page0.evue] failed!

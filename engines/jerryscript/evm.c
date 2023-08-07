@@ -178,11 +178,21 @@ int evm_run_bytecode_file(evm_t *e, const char *path) {
     int res = 1;
     buf = evm_load_file(path, &buf_len);
     if (!buf) {
+        printf("Failed to load bytecode file\n");
         return 0;
     }
-
+    printf("%s\n", buf);
+    printf("size = %i\n", buf_len);
     jerry_value_t func = jerry_exec_snapshot(buf, buf_len, 0, JERRY_SNAPSHOT_EXEC_COPY_DATA, NULL);
 
+    if (jerry_value_is_exception (func))
+    {
+        printf("ok to run bytecode file\n");
+        jerry_value_t jsres = jerry_exception_value (func, false);
+        char *msg= evm_2_string(e, jsres);
+        evm_print("Exception: %s\r\n", msg);
+        evm_string_free(e, msg);
+    } 
     jerry_value_free (func);
     evm_free(buf);
     return res;

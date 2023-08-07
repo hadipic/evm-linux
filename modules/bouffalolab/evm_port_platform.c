@@ -20,7 +20,7 @@ void platform_init(void) {
 
     struct bflb_uart_config_s cfg;
 
-    cfg.baudrate = 115200;
+    cfg.baudrate = 2000000;
     cfg.data_bits = UART_DATA_BITS_8;
     cfg.stop_bits = UART_STOP_BITS_1;
     cfg.parity = UART_PARITY_NONE;

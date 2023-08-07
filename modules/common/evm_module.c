@@ -58,24 +58,28 @@ static void evm_native_init(evm_t *e) {
 void evm_module_init(evm_t *env)
 {
     evm_native_init(env);
-
+    EVM_LOG("module process init\r\n");
     extern void evm_module_process(evm_t *e);
     evm_module_process(env);
 
+    EVM_LOG("module console init\r\n");
     extern void evm_module_console(evm_t *e);
     evm_module_console(env);
 
 #ifdef EVM_USE_MODULE_CJSON
+    EVM_LOG("module cjson init\r\n");
     extern void evm_module_cjson(evm_t *e);
     evm_module_cjson(env);
 #endif
 
 #ifdef EVM_USE_MODULE_HEATSHRINK
+    EVM_LOG("module heatshrink init\r\n");
     extern void evm_module_heatshrink(evm_t *e);
     evm_module_heatshrink(env);
 #endif
 
 #ifdef EVM_USE_MODULE_BASE64
+    EVM_LOG("module base64 init\r\n");
     extern void evm_module_base64(evm_t *e);
     evm_module_base64(env);
 #endif
@@ -87,12 +91,18 @@ void evm_module_init(evm_t *env)
     extern void evm_module_lvgl_style(evm_t *e);
     extern void evm_module_lvgl_image(evm_t *e);
     extern void evm_module_lvgl_timeout(evm_t *e);
+    EVM_LOG("module lvgl init\r\n");
     evm_module_lvgl(env);
+    EVM_LOG("module lvgl event init\r\n");
     evm_module_lvgl_event(env);
     
+    EVM_LOG("module lvgl misc init\r\n");
     evm_module_lvgl_misc(env);
+    EVM_LOG("module lvgl style init\r\n");
     evm_module_lvgl_style(env);
+    EVM_LOG("module lvgl image init\r\n");
     evm_module_lvgl_image(env);
+    EVM_LOG("module lvgl timeout init\r\n");
     evm_module_lvgl_timeout(env);
 #endif
 }

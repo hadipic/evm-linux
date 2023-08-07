@@ -30,6 +30,12 @@ extern void evm_module_init(evm_t *env);
 evm_t *evm_runtime(void);
 extern const char *evm_get_app_path(void);
 
+#ifdef EVM_USE_LOG
+#define EVM_LOG(...) printf("[%s][%s][%d]:%s,%d\n", __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+#define EVM_LOG(...)
+#endif
+
 #ifdef __cplusplus
 }
 #endif

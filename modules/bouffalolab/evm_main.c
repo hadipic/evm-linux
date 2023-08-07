@@ -8,7 +8,6 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "bflb_uart.h"
-#include "bflb_romfs.h"
 
 void *evm_malloc(size_t size)
 {
@@ -61,11 +60,21 @@ uint8_t *evm_load_file(const char *filename, size_t *size) {
     return buf;
 }
 
+static int strEndswith(const char *str1, const char *str2)
+{
+    size_t l1 = strlen(str1), l2 = strlen(str2);
+    return (0 == strcmp(str2, str1 + (l1 - l2)));
+}
+
 void evm_main (char *filename) {
-    romfs_mount(0xA0347000);
-
+    EVM_LOG("evm init\r\n");
     evm_t *e = evm_init();
+    EVM_LOG("evm module init\r\n");
     evm_module_init(e);
-
-    evm_run_bytecode_file(e, filename);
+    EVM_LOG("evm load file %s\r\n", filename);
+    if (strEndswith(filename, "js")) {
+        evm_run_file(e, EVM_UNDEFINED, filename);
+    } else {
+        evm_run_bytecode_file(e, filename);
+    }
 }
