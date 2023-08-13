@@ -34,9 +34,8 @@ EVM_FUNCTION(rgba_to_color){
     double g = evm_2_double(e, v[1]);
     double b = evm_2_double(e, v[2]);
     double a = evm_2_double(e, v[3]);
-    color.ch.red = r * 255;
-    color.ch.green = g * 255;
-    color.ch.blue = b * 255;
+
+    color = lv_color_make(r*255,g*255,b*255);
 #if LV_COLOR_DEPTH == 32
     color.ch.alpha = a * 255;
 #endif

@@ -16,34 +16,34 @@ static void timer_callback(lv_timer_t *timer) {
     }
 }
 
-//setTimeout(period, callback)
+//setTimeout(callback, period)
 EVM_FUNCTION(setTimeout) {
     EVM_EPCV;
     if( argc < 2 )
         return EVM_UNDEFINED;
-    uint32_t period = (uint32_t)evm_2_double(e, v[0]);
+    uint32_t period = (uint32_t)evm_2_double(e, v[1]);
     timer_data_t *timer_data = evm_malloc(sizeof (timer_data_t));
     EVM_ASSERT(timer_data);
     lv_timer_t *timer = lv_timer_create(timer_callback, period, timer_data);
     lv_timer_set_repeat_count(timer, 1);
     timer_data->e = e;
-    timer_data->cb = evm_val_duplicate(e, v[1]);
+    timer_data->cb = evm_val_duplicate(e, v[0]);
     timer_data->timer = timer;
     EVM_RETURN(evm_mk_invoke(e, timer_data));
 }
 
-//setInterval(period, callback)
+//setInterval(callback, period)
 EVM_FUNCTION(setInterval) {
     EVM_EPCV;
     if( argc < 2 )
         return EVM_UNDEFINED;
-    uint32_t period = (uint32_t)evm_2_double(e, v[0]);
+    uint32_t period = (uint32_t)evm_2_double(e, v[1]);
     timer_data_t *timer_data = evm_malloc(sizeof (timer_data_t));
     EVM_ASSERT(timer_data);
     lv_timer_t *timer = lv_timer_create(timer_callback, period, timer_data);
     lv_timer_set_repeat_count(timer, -1);
     timer_data->e = e;
-    timer_data->cb = evm_val_duplicate(e, v[1]);
+    timer_data->cb = evm_val_duplicate(e, v[0]);
     timer_data->timer = timer;
     EVM_RETURN(evm_mk_invoke(e, timer_data));
 }

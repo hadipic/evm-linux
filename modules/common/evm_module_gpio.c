@@ -1,3 +1,4 @@
+#ifdef EVM_USE_MODULE_GPIO
 #include "evm_module.h"
 #include "evm_port_gpio.h"
 
@@ -59,9 +60,10 @@ static void gpio_setup(evm_t *e, evm_port_gpio_t *gpio, evm_val_t obj) {
     evm_port_gpio_setup(gpio);
 }
 
-//setup(obj, config)
-static evm_val_t module_gpio_setup(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+//open(obj, config)
+EVM_FUNCTION(open)
 {
+    EVM_EPCV;
     evm_port_gpio_t *gpio = evm_object_get_user_data(e, v[0]);
     if( !gpio )
         return EVM_UNDEFINED;
@@ -70,8 +72,9 @@ static evm_val_t module_gpio_setup(evm_t *e, evm_val_t p, int argc, evm_val_t *v
     return EVM_UNDEFINED;
 }
 
-static evm_val_t module_gpio_read(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(read)
 {
+    EVM_EPCV;
     evm_port_gpio_t *info = evm_object_get_user_data(e, v[0]);
     if( !info )
         return EVM_UNDEFINED;
@@ -80,8 +83,9 @@ static evm_val_t module_gpio_read(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
     return evm_mk_number(e, level);
 }
 
-static evm_val_t module_gpio_write(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(write)
 {
+    EVM_EPCV;
     evm_port_gpio_t *info = evm_object_get_user_data(e, v[0]);
     if( !info )
         return EVM_UNDEFINED;
@@ -105,8 +109,9 @@ static evm_val_t module_gpio_write(evm_t *e, evm_val_t p, int argc, evm_val_t *v
  * })
  * @return
  */
-static evm_val_t module_gpio_create(evm_t *e, evm_val_t p, int argc, evm_val_t *v)
+EVM_FUNCTION(create)
 {
+    EVM_EPCV;
     evm_port_gpio_t *gpio = (evm_port_gpio_t *)evm_malloc(sizeof(evm_port_gpio_t));
     EVM_ASSERT(gpio);
     memset(gpio, 0, sizeof (evm_port_gpio_t));
@@ -117,10 +122,11 @@ static evm_val_t module_gpio_create(evm_t *e, evm_val_t p, int argc, evm_val_t *
 
 void evm_module_gpio(evm_t * e) {
     evm_val_t obj = evm_object_create(e);
-    evm_prop_set(e, obj, "create", evm_mk_native(e, module_gpio_create, "create", EVM_VARARGS));
-    evm_prop_set(e, obj, "setup", evm_mk_native(e, module_gpio_setup, "setup", EVM_VARARGS));
-    evm_prop_set(e, obj, "read", evm_mk_native(e, module_gpio_read, "read", EVM_VARARGS));
-    evm_prop_set(e, obj, "write", evm_mk_native(e, module_gpio_write, "write", EVM_VARARGS));
+    evm_prop_set(e, obj, "create", evm_mk_native(e, create, "create", EVM_VARARGS));
+    evm_prop_set(e, obj, "open", evm_mk_native(e, open, "open", EVM_VARARGS));
+    evm_prop_set(e, obj, "read", evm_mk_native(e, read, "read", EVM_VARARGS));
+    evm_prop_set(e, obj, "write", evm_mk_native(e, write, "write", EVM_VARARGS));
     evm_module_add(e, "@native.gpio", obj);
     evm_val_free(e, obj);
 }
+#endif

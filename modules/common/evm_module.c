@@ -66,6 +66,18 @@ void evm_module_init(evm_t *env)
     extern void evm_module_console(evm_t *e);
     evm_module_console(env);
 
+#ifdef EVM_USE_MODULE_GPIO
+    EVM_LOG("module gpio init\r\n");
+    extern void evm_module_gpio(evm_t *e);
+    evm_module_gpio(env);
+#endif
+
+#ifdef EVM_USE_MODULE_ADC
+    EVM_LOG("module adc init\r\n");
+    extern void evm_module_adc(evm_t *e);
+    evm_module_adc(env);
+#endif
+
 #ifdef EVM_USE_MODULE_CJSON
     EVM_LOG("module cjson init\r\n");
     extern void evm_module_cjson(evm_t *e);
@@ -104,5 +116,9 @@ void evm_module_init(evm_t *env)
     evm_module_lvgl_image(env);
     EVM_LOG("module lvgl timeout init\r\n");
     evm_module_lvgl_timeout(env);
+#endif
+
+#ifdef EVM_USE_MODULE_EX
+    evm_module_init_ex(env);
 #endif
 }

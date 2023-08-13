@@ -11,6 +11,8 @@ LIBS += -lpthread
 DEFINES += QVM_USE_QUICKJS_JS_BC_C_SOURCE
 DEFINES += EVM_USE_LUAT
 
+INCLUDEPATH += $$PWD/../../../components/zmalloc
+
 include($$PWD/../pris/common.pri)
 include($$PWD/../pris/lvgl.pri)
 include($$PWD/../pris/lv_png.pri)

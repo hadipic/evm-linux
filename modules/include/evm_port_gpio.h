@@ -24,6 +24,7 @@ typedef struct evm_port_gpio_t {
     int pull;
     int irq;
     evm_val_t cb;
+    void *device;
 } evm_port_gpio_t;
 
 int evm_port_gpio_setup(evm_port_gpio_t *info);

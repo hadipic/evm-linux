@@ -41,7 +41,9 @@ SOURCES += \
     $$PWD/../../../modules/gui/lvgl/evm_module_lvgl.c \
     $$PWD/../../../modules/gui/lvgl/evm_module_lvgl_style.c \
     $$PWD/../../../modules/gui/lvgl/evm_module_lvgl_event.c \
-    $$PWD/../../../modules/gui/lvgl/evm_module_lvgl_misc.c \
+#    $$PWD/../../../modules/gui/lvgl/evm_module_lvgl_misc.c \
+    /media/zhe/scriptiot/scriptiot/evm_commercial/projects/controller/evm_module_lvgl_misc.c\
+    /media/zhe/scriptiot/scriptiot/evm_commercial/projects/controller/pingfang.c\
     $$PWD/../../../modules/gui/lvgl/evm_module_lvgl_timeout.c \
     $$PWD/../../../modules/gui/lvgl/evm_module_lvgl_image.c
 
