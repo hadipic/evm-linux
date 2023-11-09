@@ -133,6 +133,11 @@ void evm_module_lvgl_image(evm_t *e) {
     evm_prop_set(e, obj, "png_decode", evm_mk_native(e, png_decode, "png_decode", 1));
     evm_prop_set(e, obj, "png_destroy", evm_mk_native(e, png_destroy, "png_destroy", 1));
     evm_module_add(e, "@native.image", obj);
+
+    evm_val_t cache = evm_object_create(e);
+    evm_prop_set(e, obj, "cache", cache);
+    evm_val_free(e, cache);
+
     evm_val_free(e, obj);
 }
 #endif

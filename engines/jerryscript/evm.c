@@ -7,6 +7,7 @@
 #include "evm.h"
 #include "jcontext.h"
 
+
 int (*evm_print)(const char *fmt, ...) = printf;
 
 void evm_register_print(int (*fn)(const char *fmt, ...)) {

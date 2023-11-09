@@ -5,7 +5,8 @@ inline void evm_cffi_exec_param(evm_t *e, evm_cffi_val_t *cffi_vals, const char 
     for (int i = 0; i < argc; i++) {
         switch (signature[i]) {
             case 'b': cffi_vals[i].i32 = evm_2_boolean(e, v[i]);break;
-            case 'i': cffi_vals[i].i32 = (uint32_t)evm_2_double(e, v[i]);break;
+            case 'i': cffi_vals[i].i32 = evm_2_double(e, v[i]);break;
+            case 'u': cffi_vals[i].i32 = (uint32_t)evm_2_double(e, v[i]);break;
             case 'l': cffi_vals[i].i64 = evm_2_double(e, v[i]);break;
             case 'd': cffi_vals[i].f64 = evm_2_double(e, v[i]);break;
             case 'f': cffi_vals[i].f32 = evm_2_double(e, v[i]);break;
@@ -22,6 +23,7 @@ inline evm_val_t evm_cffi_exec_ret(evm_t *e, evm_cffi_val_t* cffi_vals, const ch
     switch (signature[0]) {
         case 'b': res = evm_mk_boolean(e, cffi_vals[0].i32);break;
         case 'i': res = evm_mk_number(e, cffi_vals[0].i32);break;
+        case 'u': res = evm_mk_number(e, cffi_vals[0].i32);break;
         case 'l': res = evm_mk_number(e, cffi_vals[0].i64);break;
         case 'd': res = evm_mk_number(e, cffi_vals[0].f64);break;
         case 'f': res = evm_mk_number(e, cffi_vals[0].f32);break;

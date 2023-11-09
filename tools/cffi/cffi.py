@@ -11,6 +11,8 @@ def checkParam(index, signature):
         return 'cffi_args[' + str(index) +'].i32'
     elif signature[index] == 'i':
         return 'cffi_args[' + str(index) +'].i32'
+    elif signature[index] == 'u':
+        return 'cffi_args[' + str(index) +'].i32'
     elif signature[index] == 'l':
         return 'cffi_args[' + str(index) +'].i64'
     elif signature[index] == 'd':

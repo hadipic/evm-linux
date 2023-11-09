@@ -27,13 +27,13 @@ static void gpio_setup(evm_t *e, evm_port_gpio_t *gpio, evm_val_t obj) {
     if( evm_is_string(e, val) ) {
         char *name = evm_2_string(e, val);
         if( !strcmp(name, "output") ) {
-            gpio->pull = EVM_PORT_GPIO_OUTPUT;
+            gpio->mode = EVM_PORT_GPIO_OUTPUT;
         } else if( !strcmp(name, "input") ) {
-            gpio->pull = EVM_PORT_GPIO_INPUT;
+            gpio->mode = EVM_PORT_GPIO_INPUT;
         } else if( !strcmp(name, "irq") ) {
-            gpio->pull = EVM_PORT_GPIO_IRQ;
+            gpio->mode = EVM_PORT_GPIO_IRQ;
         } else {
-            gpio->pull = EVM_PORT_GPIO_OUTPUT;
+            gpio->mode = EVM_PORT_GPIO_OUTPUT;
         }
         evm_string_free(e, name);
     }
@@ -43,13 +43,13 @@ static void gpio_setup(evm_t *e, evm_port_gpio_t *gpio, evm_val_t obj) {
     if( evm_is_string(e, val) ) {
         char *name = evm_2_string(e, val);
         if( !strcmp(name, "rising") ) {
-            gpio->pull = EVM_PORT_GPIO_RISING;
+            gpio->irq = EVM_PORT_GPIO_RISING;
         } else if( !strcmp(name, "falling") ) {
-            gpio->pull = EVM_PORT_GPIO_FALLING;
+            gpio->irq = EVM_PORT_GPIO_FALLING;
         } else if( !strcmp(name, "both") ) {
-            gpio->pull = EVM_PORT_GPIO_BOTH;
+            gpio->irq = EVM_PORT_GPIO_BOTH;
         } else {
-            gpio->pull = EVM_PORT_GPIO_FALLING;
+            gpio->irq = EVM_PORT_GPIO_FALLING;
         }
         evm_string_free(e, name);
     }
@@ -116,6 +116,7 @@ EVM_FUNCTION(create)
     EVM_ASSERT(gpio);
     memset(gpio, 0, sizeof (evm_port_gpio_t));
     evm_val_t obj = evm_object_create_user_data(e, gpio);
+    
     gpio_setup(e, gpio, v[0]);
     return obj;
 }

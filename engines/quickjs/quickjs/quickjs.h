@@ -203,7 +203,7 @@ typedef union JSValueUnion {
 typedef struct JSValue {
     JSValueUnion u;
     int64_t tag;
-} JSValue;
+} JSValue __attribute__ ((aligned (4)));
 
 #define JSValueConst JSValue
 

@@ -14,6 +14,7 @@ INCLUDEPATH += $$PWD/../../../engines/jerryscript/jerryscript/jerry-core/lit
 INCLUDEPATH += $$PWD/../../../engines/jerryscript/jerryscript/jerry-core/parser/js
 INCLUDEPATH += $$PWD/../../../engines/jerryscript/jerryscript/jerry-core/parser/regexp
 INCLUDEPATH += $$PWD/../../../engines/jerryscript/jerryscript/jerry-core/vm
+INCLUDEPATH += $$PWD/../../../engines/jerryscript/jerryscript/jerry-ext/include
 
 HEADERS += \
     $$PWD/../../../engines/jerryscript/jerryscript/jerry-core/config.h \
@@ -225,7 +226,8 @@ SOURCES += \
     $$PWD/../../../engines/jerryscript/jerryscript/jerry-core/vm/vm-utils.c \
     $$PWD/../../../engines/jerryscript/jerryscript/jerry-core/vm/vm.c
 
-
+#SOURCES += \
+#       $$PWD/../../../engines/jerryscript/jerryscript/jerry-ext/util/print.c
 
 
 

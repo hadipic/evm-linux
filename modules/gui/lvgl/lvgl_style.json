@@ -34,7 +34,7 @@
         {"name": "set_style_pad_column", "signature": "vpi"},
         {
             "name": "set_style_bg_color", 
-            "signature": "vpi",
+            "signature": "vpu",
             "how":[
                 "lv_color_t color;",
                 "color.full = <2>;",
@@ -47,7 +47,7 @@
         },
         {
             "name": "set_style_bg_grad_color", 
-            "signature": "vpi",
+            "signature": "vpu",
             "how":[
                 "lv_color_t color;",
                 "color.full = <2>;",
@@ -60,7 +60,7 @@
         {"name": "set_style_bg_dither_mode", "signature": "vpi"},
         {
             "name": "set_style_border_color", 
-            "signature": "vpi",
+            "signature": "vpu",
             "how":[
                 "lv_color_t color;",
                 "color.full = <2>;",
@@ -74,7 +74,7 @@
         {"name": "set_style_outline_width", "signature": "vpi"},
         {
             "name": "set_style_outline_color", 
-            "signature": "vpi",
+            "signature": "vpu",
             "how":[
                 "lv_color_t color;",
                 "color.full = <2>;",
@@ -89,7 +89,7 @@
         {"name": "set_style_shadow_spread", "signature": "vpi"},
         {
             "name": "set_style_shadow_color", 
-            "signature": "vpi",
+            "signature": "vpu",
             "how":[
                 "lv_color_t color;",
                 "color.full = <2>;",
@@ -103,7 +103,7 @@
         {"name": "set_style_line_rounded", "signature": "vpb"},
         {
             "name": "set_style_line_color", 
-            "signature": "vpi",
+            "signature": "vpu",
             "how":[
                 "lv_color_t color;",
                 "color.full = <2>;",
@@ -115,7 +115,7 @@
         {"name": "set_style_arc_rounded", "signature": "vpb"},
         {
             "name": "set_style_arc_color", 
-            "signature": "vpi",
+            "signature": "vpu",
             "how":[
                 "lv_color_t color;",
                 "color.full = <2>;",
@@ -127,7 +127,7 @@
         {"name": "set_style_arc_indic_width", "signature": "vpi"},
         {
             "name": "set_style_arc_indic_color", 
-            "signature": "vpi",
+            "signature": "vpu",
             "how":[
                 "lv_color_t color;",
                 "color.full = <2>;",
@@ -136,7 +136,7 @@
         },
         {
             "name": "set_style_text_color", 
-            "signature": "vpi",
+            "signature": "vpu",
             "how":[
                 "lv_color_t color;",
                 "color.full = <2>;",
@@ -152,7 +152,7 @@
         {"name": "set_style_radius", "signature": "vpi"},
         {
             "name": "set_style_indic_bg_color", 
-            "signature": "vpi",
+            "signature": "vpu",
             "how":[
                 "lv_color_t color;",
                 "color.full = <2>;",
@@ -161,7 +161,7 @@
         },
         {
             "name": "set_style_knob_bg_color", 
-            "signature": "vpi",
+            "signature": "vpu",
             "how":[
                 "lv_color_t color;",
                 "color.full = <2>;",
@@ -170,7 +170,7 @@
         },
         {
             "name": "set_style_checked_bg_color", 
-            "signature": "vpi",
+            "signature": "vpu",
             "how":[
                 "lv_color_t color;",
                 "color.full = <2>;",
@@ -179,7 +179,7 @@
         },
         {
             "name": "set_style_selected_bg_color", 
-            "signature": "vpi",
+            "signature": "vpu",
             "how":[
                 "lv_color_t color;",
                 "color.full = <2>;",
