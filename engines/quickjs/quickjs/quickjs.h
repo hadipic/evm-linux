@@ -308,6 +308,7 @@ static inline JS_BOOL JS_VALUE_IS_NAN(JSValue v)
 /* don't include the stack frames before this eval in the Error() backtraces */
 #define JS_EVAL_FLAG_BACKTRACE_BARRIER (1 << 6)
 
+typedef JSValue JSCFunctionFunc(JSContext *ctx, JSValueConst func_val, JSValueConst this_val, int argc, JSValueConst *argv);
 typedef JSValue JSCFunction(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv);
 typedef JSValue JSCFunctionMagic(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv, int magic);
 typedef JSValue JSCFunctionData(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv, int magic, JSValue *func_data);
@@ -920,6 +921,7 @@ typedef enum JSCFunctionEnum {  /* XXX: should rename for namespace isolation */
     JS_CFUNC_getter_magic,
     JS_CFUNC_setter_magic,
     JS_CFUNC_iterator_next,
+    JS_CFUNC_generic_func,
 } JSCFunctionEnum;
 
 typedef union JSCFunctionType {
@@ -949,6 +951,12 @@ static inline JSValue JS_NewCFunction(JSContext *ctx, JSCFunction *func, const c
                                       int length)
 {
     return JS_NewCFunction2(ctx, func, name, length, JS_CFUNC_generic, 0);
+}
+
+static inline JSValue JS_NewCFunctionFunc(JSContext *ctx, JSCFunctionFunc *func, const char *name,
+                                      int length)
+{
+    return JS_NewCFunction2(ctx, func, name, length, JS_CFUNC_generic_func, 0);
 }
 
 static inline JSValue JS_NewCFunctionMagic(JSContext *ctx, JSCFunctionMagic *func,

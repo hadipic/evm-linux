@@ -6,7 +6,7 @@
 ****************************************************************************/
 #include "evm_module.h"
 
-#if defined(__linux__) || defined(win32)
+#if defined(__linux__) || defined(WIN32)
 #include <unistd.h>
 #endif
 
@@ -21,7 +21,7 @@ const char *evm_get_app_path(void) {
 static void setup_env(evm_t *e, evm_val_t process) {
     const char *evm_path = "", *extra_module_path = "";
 
-#if defined(__linux__) || defined(win32)
+#if defined(__linux__) || defined(WIN32)
     evm_path = getenv("EVM_PATH");
     extra_module_path = getenv("EVM_MODULE_PATH");
     getcwd(app_path, 256);

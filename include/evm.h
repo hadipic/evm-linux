@@ -55,7 +55,9 @@ enum Errcode
 typedef int     evm_err_t;
 
 /*** 字符串对象操作函数 ***/
-EVM_API evm_val_t evm_string_create(evm_t *e, const char *str);
+EVM_API evm_val_t evm_string_create(evm_t *e, char *str);
+EVM_API evm_val_t evm_lstring_create(evm_t *e, char *str, int len);
+EVM_API evm_val_t evm_cstring_create(evm_t *e, const char *str);
 EVM_API int evm_string_len(evm_t *e, evm_val_t o);
 
 /*** 字节数组对象操作函数 ***/
@@ -98,7 +100,7 @@ EVM_API evm_val_t evm_throw(evm_t *e, evm_val_t v);
 EVM_API evm_val_t evm_mk_global(evm_t *e);
 
 /*** 虚拟机相关函数 ***/
-EVM_API evm_t *evm_init(void);
+EVM_API evm_t *evm_init(int stack_size);
 EVM_API void evm_deinit(evm_t *e);
 EVM_API int evm_run_file(evm_t *e, evm_val_t this_obj, const char *path);
 EVM_API evm_val_t evm_run_string(evm_t *e, evm_val_t this_obj, const char *source);
@@ -113,7 +115,7 @@ EVM_API void evm_register_print(int (*fn)(const char *fmt, ...));
 EVM_API double evm_2_double(evm_t *e, evm_val_t v);
 EVM_API int32_t evm_2_integer(evm_t *e, evm_val_t v);
 EVM_API int evm_2_boolean(evm_t *e, evm_val_t v);
-EVM_API char *evm_2_string(evm_t *e, evm_val_t v);
+EVM_API const char *evm_2_string(evm_t *e, evm_val_t v);
 EVM_API void evm_string_free(evm_t *e, char *str);
 EVM_API int evm_is_number(evm_t *e, evm_val_t v);
 EVM_API int evm_is_integer(evm_t *e, evm_val_t v);
@@ -128,14 +130,17 @@ EVM_API int evm_is_null(evm_t *e, evm_val_t v);
 EVM_API int evm_is_object(evm_t *e, evm_val_t v);
 EVM_API int evm_is_invoke(evm_t *e, evm_val_t v);
 EVM_API evm_val_t evm_mk_number(evm_t *e, double d);
-EVM_API evm_val_t evm_mk_string(evm_t *e, const char *s);
-EVM_API evm_val_t evm_mk_lstring(evm_t *e, const char *s, int len);
 EVM_API evm_val_t evm_mk_boolean(evm_t *e, int v);
 EVM_API evm_val_t evm_mk_native(evm_t *e, evm_native_t v, const char *name, int len);
 EVM_API evm_val_t evm_mk_null(evm_t *e);
 EVM_API evm_val_t evm_mk_undefined(evm_t *e);
 EVM_API evm_val_t evm_mk_invoke(evm_t *e, void *user_data);
-EVM_API void *evm_2_invoke(evm_t *e, evm_val_t o);
+EVM_API evm_val_t evm_mk_buffer(evm_t *e, void *v);
+EVM_API evm_val_t evm_mk_list(evm_t *e, void *v);
+EVM_API evm_val_t evm_mk_object(evm_t *e, void *v);
+EVM_API evm_val_t evm_mk_string(evm_t *e, void *v);
+EVM_API evm_val_t evm_mk_function(evm_t *e, void *v);
+EVM_API void *evm_2_ptr(evm_t *e, evm_val_t o);
 EVM_API void evm_val_free(evm_t *e, evm_val_t v);
 EVM_API evm_val_t evm_val_duplicate(evm_t *e, evm_val_t v);
 

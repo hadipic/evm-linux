@@ -16076,6 +16076,9 @@ static JSValue js_call_c_function(JSContext *ctx, JSValueConst func_obj,
     case JS_CFUNC_generic:
         ret_val = func.generic(ctx, this_obj, argc, arg_buf);
         break;
+    case JS_CFUNC_generic_func:
+        ret_val = ((JSCFunctionFunc*)func.generic)(ctx, func_obj, this_obj, argc, arg_buf);
+        break;
     case JS_CFUNC_constructor_magic:
     case JS_CFUNC_constructor_or_func_magic:
         if (!(flags & JS_CALL_FLAG_CONSTRUCTOR)) {

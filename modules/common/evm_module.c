@@ -50,13 +50,14 @@ EVM_FUNCTION(native_gc) {
 
 static void evm_native_init(evm_t *e) {
     evm_global_set(e, "gc", evm_mk_native(e, native_gc, "gc", 0));
-    evm_global_set(e, "__require_module__", evm_mk_native(e, native_require_module, "__require__", EVM_VARARGS));
+    evm_global_set(e, "__require_module__", evm_mk_native(e, native_require_module, "__require_module__", EVM_VARARGS));
     evm_global_set(e, "__require_js__", evm_mk_native(e, native_require_js, "__require_js__", EVM_VARARGS));
     evm_global_set(e, "__require_bc__", evm_mk_native(e, native_require_bc, "__require_bc__", EVM_VARARGS));
 }
 
 void evm_module_init(evm_t *env)
 {
+    _runtime = env;
     evm_native_init(env);
     EVM_LOG("module process init\r\n");
     extern void evm_module_process(evm_t *e);
@@ -65,6 +66,10 @@ void evm_module_init(evm_t *env)
     EVM_LOG("module console init\r\n");
     extern void evm_module_console(evm_t *e);
     evm_module_console(env);
+
+    EVM_LOG("module fs init\r\n");
+    extern void evm_module_fs(evm_t *e);
+    evm_module_fs(env);
 
 #ifdef EVM_USE_MODULE_GPIO
     EVM_LOG("module gpio init\r\n");
