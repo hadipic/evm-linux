@@ -1,9 +1,30 @@
-/****************************************************************************
-**  Copyright (C) 2022
-**  QQ Group: 399011436
-**  Git: https://gitee.com/scriptiot/evm
-**  Licence: 个人免费，企业授权
-****************************************************************************/
+/*
+ * This file is part of the EVM project.
+ * QQ Group: 399011436
+ * Git: https://gitee.com/scriptiot/evm
+ *
+ * MIT License
+ *
+ * Copyright (c) 2023 Zhe Wang
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
 #ifndef EVM_MODULE_H
 #define EVM_MODULE_H
 
@@ -30,6 +51,7 @@ extern void evm_module_init(evm_t *env);
 extern void evm_module_init_ex(evm_t *env);
 evm_t *evm_runtime(void);
 extern const char *evm_get_app_path(void);
+extern char* evm_buffer_allocate_from_number_array(evm_t *e, size_t size, evm_val_t array);
 
 #ifdef EVM_USE_LOG
 #define EVM_LOG(...) printf("[%s][%s][%d]:%s,%d\n", __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__);

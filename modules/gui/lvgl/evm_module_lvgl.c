@@ -2013,9 +2013,17 @@ EVM_FUNCTION(evm_module_lvgl_lv_anim_del_all) {
   EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, "v", argc))
 }
 
+EVM_FUNCTION(evm_module_lv_obj_set_style_img_opa) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[1];
+  evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
+  lv_obj_set_style_img_opa(cffi_args[1].p, cffi_args[2].i32, LV_PART_MAIN);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, "v", argc))
+}
 
 void evm_module_lvgl(evm_t *e) {
   evm_val_t obj = evm_object_create(e);
+  evm_prop_set(e, obj, "lv_obj_set_style_img_opa", evm_mk_native(e, evm_module_lv_obj_set_style_img_opa, "lv_obj_set_style_img_opa", 2));
   evm_prop_set(e, obj, "lv_obj_move_background", evm_mk_native(e, evm_module_lvgl_lv_obj_move_background, "lv_obj_move_background", 1));
   evm_prop_set(e, obj, "lv_obj_move_foreground", evm_mk_native(e, evm_module_lvgl_lv_obj_move_foreground, "lv_obj_move_foreground", 1));
   evm_prop_set(e, obj, "lv_scr_act", evm_mk_native(e, evm_module_lvgl_lv_scr_act, "lv_scr_act", 0));

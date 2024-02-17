@@ -1,34 +1,93 @@
-#include "evm_port_timer.h"
-//start(timeout, repeat, callback)
-EVM_FUNCTION(start) {
-    EVM_EPCV;
-    size_t timeout = (size_t)evm_2_integer(e, v[0]);
-    int repeat = (size_t)evm_2_integer(e, v[1]);
-    if (timeout < 1) {
-        return evm_mk_boolean(e, 0);
-    }
-    evm_port_timer_t *timer = (evm_port_timer_t*)evm_malloc(sizeof(evm_port_timer_t));
-    EVM_ASSERT(timer);
-    timer->timeout = timeout;
-    timer->repeat = repeat;
-    timer->callback = v[2];
+/*
+ * This file is part of the EVM project.
+ * QQ Group: 399011436
+ * Git: https://gitee.com/scriptiot/evm
+ *
+ * MIT License
+ *
+ * Copyright (c) 2023 Zhe Wang
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+#ifdef EVM_USE_MODULE_TIMER
 
-    int re = evm_port_timer_start(timer);
-    if (re == 0) {
-        return evm_object_create_user_data(e, timer);
-    }
-    else {
-        return evm_mk_boolean(e, 0);
-    }
+#include "iot_uv.h"
+
+void iot_timer_object_init(evm_t *e, evm_val_t jtimer) {
+    uv_handle_t* handle = iot_uv_handle_create(sizeof(uv_timer_t), jtimer, 0);
+    uv_timer_init(system_get_uv_loop(), (uv_timer_t*)handle);
+    evm_object_set_user_data(e, jtimer, handle);
 }
 
-//stop(obj)
-EVM_FUNCTION(stop) {
-    EVM_EPCV;
-    evm_port_timer_t *timer = evm_object_get_user_data(e, v[0]);
-    if (timer != NULL) {
-        evm_port_timer_stop(timer);
-        evm_free(timer);
-    }
-    return EVM_UNDEFINED;
+
+static void timeout_handler(uv_timer_t* handle) {
+    EVM_ASSERT(handle != NULL);
+
+    evm_val_t jobject = IOT_UV_HANDLE_DATA(handle)->jobject;
+    evm_val_t jcallback = evm_prop_get(evm_runtime(), jobject, IOT_MAGIC_STRING_HANDLETIMEOUT);
+    evm_call_free(evm_runtime(), jcallback, EVM_UNDEFINED, 0, NULL);
+    evm_val_free(evm_runtime(), jcallback);
 }
+
+
+EVM_FUNCTION(timer_start) {
+    EVM_EPCV;
+    // Check parameters.
+    uv_timer_t *timer_handle = evm_object_get_user_data(e, v[0]);
+
+    // parameters.
+    uint64_t timeout = evm_2_double(e, v[1]);
+    uint64_t repeat = evm_2_double(e, v[2]);
+
+    // Start timer.
+    int res = uv_timer_start(timer_handle, timeout_handler, timeout, timeout);
+
+    EVM_RETURN(evm_mk_number(e, res));
+}
+
+
+EVM_FUNCTION(timer_stop) {
+    EVM_EPCV;
+    uv_handle_t *timer_handle = evm_object_get_user_data(e, v[0]);
+    // Stop timer.
+
+    if (!uv_is_closing(timer_handle)) {
+        iot_uv_handle_close(timer_handle, NULL);
+    }
+
+    EVM_RETURN(evm_mk_number(e, 0));
+}
+
+
+EVM_FUNCTION(timer_constructor) {
+    EVM_EPCV;
+    const evm_val_t jtimer = evm_object_create(e);
+    iot_timer_object_init(e, jtimer);
+    EVM_RETURN(jtimer);
+}
+
+void evm_module_timer(evm_t *e) {
+    evm_val_t obj = evm_object_create(e);
+    evm_prop_set(e, obj, IOT_MAGIC_STRING_CREATE, evm_mk_native(e, timer_constructor, IOT_MAGIC_STRING_CREATE, 0));
+    evm_prop_set(e, obj, IOT_MAGIC_STRING_START, evm_mk_native(e, timer_start, IOT_MAGIC_STRING_START, 2));
+    evm_prop_set(e, obj, IOT_MAGIC_STRING_STOP, evm_mk_native(e, timer_stop, IOT_MAGIC_STRING_STOP, 0));
+
+    evm_module_add(e, "@native.timer", obj);
+}
+#endif
