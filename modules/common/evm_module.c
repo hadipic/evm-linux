@@ -1,9 +1,30 @@
-/****************************************************************************
-**  Copyright (C) 2023
-**  QQ Group: 399011436
-**  Git: https://gitee.com/scriptiot/evm
-**  Licence: 个人免费，企业授权
-****************************************************************************/
+/*
+ * This file is part of the EVM project.
+ * QQ Group: 399011436
+ * Git: https://gitee.com/scriptiot/evm
+ *
+ * MIT License
+ *
+ * Copyright (c) 2023 Zhe Wang
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
 #include "evm_module.h"
 
 static evm_t *_runtime;
@@ -121,4 +142,14 @@ void evm_module_init(evm_t *env)
 #ifdef EVM_USE_MODULE_EX
     evm_module_init_ex(env);
 #endif
+}
+
+char* evm_buffer_allocate_from_number_array(evm_t *e, size_t size, evm_val_t array) {
+  char* buffer = evm_malloc(size);
+  for (size_t i = 0; i < size; i++) {
+    jerry_value_t jdata = evm_list_get(e, array, i);
+    buffer[i] = evm_2_integer(e, jdata);
+    evm_val_free(e, jdata);
+  }
+  return buffer;
 }

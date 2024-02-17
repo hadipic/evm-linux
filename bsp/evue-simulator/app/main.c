@@ -17,8 +17,8 @@
 static void hal_init(void);
 static int tick_thread(void* data);
 
-char __platfrom_getChar(void){
-    return (char)getchar();
+void evm_module_init_ex(evm_t *e){
+
 }
 
 char* getdir(const char* filepath) {
@@ -114,9 +114,6 @@ int main(int argc, char** argv) {
     hal_init();
 
     _evm_main(filename);
-//    xTaskCreate( _evm_main, "evm", 1024*40, NULL, 21, NULL );
-//    vTaskStartScheduler();
-
     return 0;
 }
 
@@ -124,7 +121,6 @@ int main(int argc, char** argv) {
 /**********************
  *   STATIC FUNCTIONS
  **********************/
-
 /**
  * Initialize the Hardware Abstraction Layer (HAL) for the LVGL graphics
  * library

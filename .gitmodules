@@ -1,7 +1,3 @@
-
-[submodule "engines/pikascript/pikascript"]
-	path = engines/pikascript/pikascript
-	url = https://gitee.com/Lyon1998/pikascript.git
 [submodule "components/lvgl/lvgl"]
 	path = components/lvgl/lvgl
 	url = https://gitee.com/scriptiot/lvgl.git
@@ -10,4 +6,5 @@
 	url = https://gitee.com/scriptiot/lv_drivers.git
 [submodule "components/libtuv"]
 	path = components/libtuv
-	url = https://gitee.com/edmund_wz/libtuv.git
+	url = https://gitee.com/scriptiot/libtuv.git
+	

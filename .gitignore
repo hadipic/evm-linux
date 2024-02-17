@@ -3,6 +3,7 @@
 *.lo
 *.o
 *.obj
+*.bc
 
 # Compiled Dynamic libraries
 *.so
@@ -26,10 +27,6 @@ release
 build*
 distwin/
 build/
-tutorial/*.bc
-tutorial/*/*.bc
-test/*.bc
-test/*/*.bc
 .vscode/
 .vscode*
 .settings/

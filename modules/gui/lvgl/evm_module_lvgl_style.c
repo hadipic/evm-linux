@@ -587,6 +587,7 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_selected_bg_color) {
   lv_color_t color;
   color.full = cffi_args[2].i32;
   set_style_selected_bg_color(cffi_args[1].p, color);
+
   EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, "vpu", argc))
 }
 
