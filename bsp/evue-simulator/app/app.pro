@@ -18,13 +18,17 @@ include($$PWD/../../../qmake/lv_png.pri)
 include($$PWD/../../../qmake/lv_drivers.pri)
 include($$PWD/../../../qmake/freertos.pri)
 include($$PWD/../../../qmake/tuv.pri)
-
+include($$PWD/../../../qmake/iotjs.pri)
 win32{
     INCLUDEPATH +=  $$PWD/../
 }
 
 contains(DEFINES, EVM_USE_JERRYSCRIPT) {
 include($$PWD/../../../qmake/jerryscript.pri)
+}
+
+contains(DEFINES, EVM_USE_QUICKJS) {
+include($$PWD/../../../qmake/quickjs.pri)
 }
 
 SOURCES += \

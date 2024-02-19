@@ -144,12 +144,12 @@ void evm_module_init(evm_t *env)
 #endif
 }
 
-char* evm_buffer_allocate_from_number_array(evm_t *e, size_t size, evm_val_t array) {
-  char* buffer = evm_malloc(size);
-  for (size_t i = 0; i < size; i++) {
-    jerry_value_t jdata = evm_list_get(e, array, i);
-    buffer[i] = evm_2_integer(e, jdata);
-    evm_val_free(e, jdata);
-  }
-  return buffer;
-}
+//char* evm_buffer_allocate_from_number_array(evm_t *e, size_t size, evm_val_t array) {
+//  char* buffer = evm_malloc(size);
+//  for (size_t i = 0; i < size; i++) {
+//    jerry_value_t jdata = evm_list_get(e, array, i);
+//    buffer[i] = evm_2_integer(e, jdata);
+//    evm_val_free(e, jdata);
+//  }
+//  return buffer;
+//}
