@@ -25,8 +25,8 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-#ifndef JERRYSCRIPT_H
-#define JERRYSCRIPT_H
+#ifndef JERRYSCRIPT_WRAP_H
+#define JERRYSCRIPT_WRAP_H
 
 /*
  * Jerryscript head at 8ba0d1b6
@@ -34,6 +34,7 @@
 
 #include "evm.h"
 
+#ifndef EVM_USE_JERRYSCRIPT
 typedef enum
 {
   JERRY_INIT_EMPTY = (0u), /**< empty flag set */
@@ -41,6 +42,7 @@ typedef enum
   JERRY_INIT_SHOW_REGEXP_OPCODES = (1u << 1), /**< dump regexp byte-code to log after compilation */
   JERRY_INIT_MEM_STATS = (1u << 2), /**< dump memory statistics */
 } jerry_init_flag_t;
+#endif
 
 
 /**
@@ -59,13 +61,9 @@ typedef uint32_t jerry_size_t;
 typedef uint32_t jerry_length_t;
 
 /**
- * Description of a JerryScript value.
- */
-typedef evm_val_t jerry_value_t;
-
-/**
  * JerryScript API Error object types.
  */
+#ifndef EVM_USE_JERRYSCRIPT
 typedef enum
 {
   JERRY_ERROR_NONE = 0,  /**< No Error */
@@ -78,16 +76,19 @@ typedef enum
   JERRY_ERROR_TYPE,      /**< TypeError */
   JERRY_ERROR_URI        /**< URIError */
 } jerry_error_t;
+#endif
 
 /**
  * Option flags for jerry_parse and jerry_parse_function functions.
  */
+#ifndef EVM_USE_JERRYSCRIPT
 typedef enum
 {
   JERRY_PARSE_NO_OPTS = 0, /**< no options passed */
   JERRY_PARSE_STRICT_MODE = (1 << 0), /**< enable strict mode */
   JERRY_PARSE_MODULE = (1 << 1) /**< parse source as an ECMAScript module */
 } jerry_parse_opts_t;
+#endif
 
 /**
  * Native free callback of an object.
@@ -97,10 +98,12 @@ typedef void (*jerry_object_native_free_callback_t) (void *native_p);
 /**
  * Type information of a native pointer.
  */
+#ifndef EVM_USE_JERRYSCRIPT
 typedef struct
 {
   jerry_object_native_free_callback_t free_cb; /**< the free callback of the native pointer */
 } jerry_object_native_info_t;
+#endif
 
 /**
  * Type of an external function handler.
@@ -112,14 +115,17 @@ evm_t *global_runtime;
 static inline void jerry_set_runtime (evm_t *e) {
     global_runtime = e;
 }
-
+#ifndef EVM_USE_JERRYSCRIPT
 static inline void jerry_init (jerry_init_flag_t flags) {
     global_runtime = evm_init();
 }
+#endif
 
+#ifndef EVM_USE_JERRYSCRIPT
 static inline void jerry_cleanup (void) {
     evm_deinit(global_runtime);
 }
+#endif
 
 static inline void jerry_release_value (jerry_value_t value) {
     evm_val_free(global_runtime, value);
@@ -135,9 +141,80 @@ static inline void jerry_set_object_native_pointer (const jerry_value_t obj_val,
     evm_object_set_user_data(global_runtime, obj_val, native_pointer_p);
 }
 
+
+#ifndef EVM_USE_JERRYSCRIPT
+static inline jerry_length_t jerry_arraybuffer_read (const jerry_value_t value,
+                                       jerry_length_t offset,
+                                       uint8_t *buf_p,
+                                       jerry_length_t buf_size) {
+
+}
+
+static inline int jerry_value_is_constructor (const jerry_value_t value) {
+    return evm_is_constructor(global_runtime, value);
+}
+
+static inline int  jerry_value_is_boolean (const jerry_value_t value) {
+    return evm_is_boolean(global_runtime, value);
+}
+static inline jerry_value_t jerry_parse (const jerry_char_t *resource_name_p, size_t resource_name_length,
+                           const jerry_char_t *source_p, size_t source_size, uint32_t parse_opts) {
+
+}
+
+static inline int jerry_value_is_null (const jerry_value_t value) {
+    return evm_is_null(global_runtime, value);
+}
+
+static inline int jerry_value_to_boolean (const jerry_value_t value) {
+    return evm_2_boolean(global_runtime, value);
+}
+
+static inline jerry_value_t jerry_value_to_number (const jerry_value_t value) {
+    double d = evm_2_double(global_runtime, value);
+    return evm_mk_number(global_runtime, d);
+}
+
 static inline int jerry_value_is_error (const jerry_value_t value) {
     return evm_is_exception(global_runtime, value);
 }
+
+static inline int jerry_value_is_object (const jerry_value_t value) {
+    return evm_is_object(global_runtime, value);
+}
+
+static inline int jerry_value_is_array (const jerry_value_t value) {
+    return evm_is_list(global_runtime, value);
+}
+
+static inline int jerry_value_is_function (const jerry_value_t value) {
+    return evm_is_callable(global_runtime, value);
+}
+
+static inline int jerry_value_is_undefined (const jerry_value_t value) {
+    return evm_is_undefined(global_runtime, value);
+}
+
+static inline int jerry_value_is_string (const jerry_value_t value) {
+    return evm_is_string(global_runtime, value);
+}
+
+static inline int jerry_value_is_arraybuffer (const jerry_value_t value) {
+    return evm_is_buffer(global_runtime, value);
+}
+
+static inline jerry_value_t jerry_value_to_string (const jerry_value_t value) {
+    char *str = evm_2_string(global_runtime, value);
+    jerry_value_t res = evm_string_create(global_runtime, str);
+    evm_string_free(global_runtime, str);
+    return res;
+}
+
+static inline int jerry_value_is_number (const jerry_value_t value) {
+    return evm_is_number(global_runtime, value);
+}
+
+#endif
 
 static inline int jerry_is_valid_utf8_string (const jerry_char_t *utf8_buf_p, jerry_size_t buf_size) {
     return 1;
@@ -169,25 +246,7 @@ static inline jerry_value_t jerry_create_external_function (jerry_external_handl
     return evm_mk_native(global_runtime, handler_p, "", EVM_VARARGS);
 }
 
-static inline int jerry_value_is_object (const jerry_value_t value) {
-    return evm_is_object(global_runtime, value);
-}
 
-static inline int jerry_value_is_array (const jerry_value_t value) {
-    return evm_is_list(global_runtime, value);
-}
-
-static inline int jerry_value_is_function (const jerry_value_t value) {
-    return evm_is_callable(global_runtime, value);
-}
-
-static inline int jerry_value_is_undefined (const jerry_value_t value) {
-    return evm_is_undefined(global_runtime, value);
-}
-
-static inline int jerry_value_is_string (const jerry_value_t value) {
-    return evm_is_string(global_runtime, value);
-}
 
 static inline jerry_size_t jerry_get_utf8_string_size (const jerry_value_t value) {
     return evm_string_len(global_runtime, value);
@@ -246,10 +305,7 @@ static inline jerry_value_t jerry_get_property_by_index (const jerry_value_t obj
     return evm_list_get(global_runtime, obj_val, index);
 }
 
-static inline jerry_value_t jerry_parse (const jerry_char_t *resource_name_p, size_t resource_name_length,
-                           const jerry_char_t *source_p, size_t source_size, uint32_t parse_opts) {
 
-}
 
 static inline jerry_value_t jerry_call_function (const jerry_value_t func_obj_val, const jerry_value_t this_val,
                                    const jerry_value_t args_p[], jerry_size_t args_count) {
@@ -260,14 +316,7 @@ static inline jerry_value_t jerry_get_value_from_error (jerry_value_t value, int
     return EVM_UNDEFINED;
 }
 
-static inline int jerry_value_to_boolean (const jerry_value_t value) {
-    return evm_2_boolean(global_runtime, value);
-}
 
-static inline jerry_value_t jerry_value_to_number (const jerry_value_t value) {
-    double d = evm_2_double(global_runtime, value);
-    return evm_mk_number(global_runtime, d);
-}
 
 static inline jerry_value_t jerry_acquire_value (jerry_value_t value) {
     return evm_val_duplicate(global_runtime, value);
@@ -275,10 +324,6 @@ static inline jerry_value_t jerry_acquire_value (jerry_value_t value) {
 
 static inline jerry_value_t jerry_create_string_sz (const jerry_char_t *str_p, jerry_size_t str_size) {
     return evm_mk_lstring(global_runtime, str_p, str_size);
-}
-
-static inline int jerry_value_is_null (const jerry_value_t value) {
-    return evm_is_null(global_runtime, value);
 }
 
 static inline int jerry_get_object_native_pointer (const jerry_value_t obj_val,
@@ -291,13 +336,6 @@ static inline int jerry_get_object_native_pointer (const jerry_value_t obj_val,
     return 1;
 }
 
-static inline jerry_value_t jerry_value_to_string (const jerry_value_t value) {
-    char *str = evm_2_string(global_runtime, value);
-    jerry_value_t res = evm_string_create(global_runtime, str);
-    evm_string_free(global_runtime, str);
-    return res;
-}
-
 static inline jerry_value_t jerry_create_string_from_utf8 (const jerry_char_t *str_p) {
     return evm_string_create(global_runtime, str_p);
 }
@@ -306,27 +344,8 @@ static inline jerry_value_t jerry_create_error_from_value (jerry_value_t value, 
     return evm_throw(global_runtime, value);
 }
 
-static inline int jerry_value_is_number (const jerry_value_t value) {
-    return evm_is_number(global_runtime, value);
-}
-
 static inline double jerry_get_number_value (const jerry_value_t value) {
     return evm_2_double(global_runtime, value);
-}
-
-static inline jerry_length_t jerry_arraybuffer_read (const jerry_value_t value,
-                                       jerry_length_t offset,
-                                       uint8_t *buf_p,
-                                       jerry_length_t buf_size) {
-
-}
-
-static inline int jerry_value_is_constructor (const jerry_value_t value) {
-    return evm_is_constructor(global_runtime, value);
-}
-
-static inline int  jerry_value_is_boolean (const jerry_value_t value) {
-    return evm_is_boolean(global_runtime, value);
 }
 
 static inline jerry_size_t jerry_get_string_size (const jerry_value_t value) {
@@ -343,10 +362,6 @@ static inline jerry_size_t jerry_string_to_char_buffer (const jerry_value_t valu
     int cpy_size = buffer_size >= size ? size : buffer_size;
     memcpy(buffer_p, str, cpy_size);
     return cpy_size;
-}
-
-static inline int jerry_value_is_arraybuffer (const jerry_value_t value) {
-    return evm_is_buffer(global_runtime, value);
 }
 
 static inline jerry_length_t jerry_get_arraybuffer_byte_length (const jerry_value_t value) {
