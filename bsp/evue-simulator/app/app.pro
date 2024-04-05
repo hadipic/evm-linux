@@ -9,6 +9,7 @@ DESTDIR = $$PWD/../build
 LIBS += -lpthread
 
 DEFINES += EVM_USE_MODULE_EX
+DEFINES += EVM_USE_JERRYSCRIPT
 
 INCLUDEPATH += $$PWD/../../../components/zmalloc
 
@@ -19,16 +20,9 @@ include($$PWD/../../../qmake/lv_drivers.pri)
 include($$PWD/../../../qmake/freertos.pri)
 include($$PWD/../../../qmake/tuv.pri)
 include($$PWD/../../../qmake/iotjs.pri)
+include($$PWD/../../../qmake/jerryscript.pri)
 win32{
     INCLUDEPATH +=  $$PWD/../
-}
-
-contains(DEFINES, EVM_USE_JERRYSCRIPT) {
-include($$PWD/../../../qmake/jerryscript.pri)
-}
-
-contains(DEFINES, EVM_USE_QUICKJS) {
-include($$PWD/../../../qmake/quickjs.pri)
 }
 
 SOURCES += \

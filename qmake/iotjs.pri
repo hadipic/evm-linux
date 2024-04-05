@@ -20,7 +20,6 @@ INCLUDEPATH +=  $$PWD/../components/jerry-wrapper
 INCLUDEPATH +=  $$PWD/../components/http-parser
 
 SOURCES += \
-    $$PWD/../components/jerry-wrapper/jerryscript.c \
     $$PWD/../components/http-parser/http_parser.c
 
 

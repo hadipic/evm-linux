@@ -424,6 +424,10 @@ evm_val_t evm_mk_global(evm_t *e) {
     return jerry_current_realm();
 }
 
+void evm_set_prototype(evm_t *e, evm_val_t obj, evm_val_t proto) {
+    jerry_object_set_proto(obj, proto);
+}
+
 jerry_char_t *JERRY_ATTR_WEAK
 jerry_port_path_normalize (const jerry_char_t *path_p, /**< input path */
                            jerry_size_t path_size) /**< size of the path */
