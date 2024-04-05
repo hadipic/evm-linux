@@ -26,6 +26,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 #include "evm_module.h"
+#include "iotjs.h"
+#include "jerryscript.h"
 
 static evm_t *_runtime;
 
@@ -71,14 +73,17 @@ EVM_FUNCTION(native_gc) {
 
 static void evm_native_init(evm_t *e) {
     evm_global_set(e, "gc", evm_mk_native(e, native_gc, "gc", 0));
-    evm_global_set(e, "__require_module__", evm_mk_native(e, native_require_module, "__require__", EVM_VARARGS));
+    evm_global_set(e, "__require_module__", evm_mk_native(e, native_require_module, "__require_module__", EVM_VARARGS));
     evm_global_set(e, "__require_js__", evm_mk_native(e, native_require_js, "__require_js__", EVM_VARARGS));
     evm_global_set(e, "__require_bc__", evm_mk_native(e, native_require_bc, "__require_bc__", EVM_VARARGS));
 }
 
 void evm_module_init(evm_t *env)
 {
+    jerry_value_t res;
+    jerry_set_runtime(env);
     evm_native_init(env);
+
     EVM_LOG("module process init\r\n");
     extern void evm_module_process(evm_t *e);
     evm_module_process(env);
@@ -87,16 +92,33 @@ void evm_module_init(evm_t *env)
     extern void evm_module_console(evm_t *e);
     evm_module_console(env);
 
-#ifdef EVM_USE_MODULE_GPIO
-    EVM_LOG("module gpio init\r\n");
-    extern void evm_module_gpio(evm_t *e);
-    evm_module_gpio(env);
-#endif
+    extern jerry_value_t iotjs_init_buffer(void);
+    res = iotjs_init_buffer();
+    evm_global_set(env, "@native.buffer", res);
+    evm_val_free(env, res);
 
 #ifdef EVM_USE_MODULE_ADC
     EVM_LOG("module adc init\r\n");
-    extern void evm_module_adc(evm_t *e);
-    evm_module_adc(env);
+    extern jerry_value_t iotjs_init_adc(void);
+    res = iotjs_init_adc();
+    evm_global_set(env, "@native.adc", res);
+    evm_val_free(env, res);
+#endif
+
+#ifdef EVM_USE_MODULE_GPIO
+    EVM_LOG("module gpio init\r\n");
+    extern jerry_value_t iotjs_init_gpio(void);
+    res = iotjs_init_gpio();
+    evm_global_set(env, "@native.gpio", res);
+    evm_val_free(env, res);
+#endif
+
+#ifdef EVM_USE_MODULE_FS
+    EVM_LOG("module fs init\r\n");
+    extern jerry_value_t iotjs_init_fs(void);
+    res = iotjs_init_fs();
+    evm_global_set(env, "@native.fs", res);
+    evm_val_free(env, res);
 #endif
 
 #ifdef EVM_USE_MODULE_CJSON

@@ -666,7 +666,7 @@ evm_val_t evm_mk_boolean(evm_t *e, int v){
 evm_val_t evm_mk_native(evm_t *e, evm_native_t v, const char *name, int len) {
     JSContext *ctx = e;
     JSValue nfunc = JS_NewCFunction(ctx, v, name, len);
-    return nfunc;
+    return evm_val_duplicate(e, nfunc);
 }
 
 evm_val_t evm_mk_null(evm_t *e){

@@ -27,6 +27,7 @@
  */
 #include "evm_module.h"
 #include <time.h>
+#include "iotjs.h"
 
 int platform_getchar(void) {
     return getchar();

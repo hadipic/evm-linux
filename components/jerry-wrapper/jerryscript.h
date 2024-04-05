@@ -109,6 +109,10 @@ typedef evm_native_t jerry_external_handler_t;
 
 evm_t *global_runtime;
 
+static inline void jerry_set_runtime (evm_t *e) {
+    global_runtime = e;
+}
+
 static inline void jerry_init (jerry_init_flag_t flags) {
     global_runtime = evm_init();
 }
