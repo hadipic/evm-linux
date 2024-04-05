@@ -18,12 +18,12 @@ DEFINES += EVM_USE_MODULE_CJSON
 DEFINES += EVM_USE_MODULE_HEATSHRINK
 DEFINES += EVM_USE_MODULE_BASE64
 DEFINES += EVM_USE_MODULE_ADC
-DEFINES += EVM_USE_MODULE_PWM
-DEFINES += EVM_USE_MODULE_UART
+#DEFINES += EVM_USE_MODULE_PWM
+#DEFINES += EVM_USE_MODULE_UART
 DEFINES += EVM_USE_MODULE_GPIO
-DEFINES += EVM_USE_MODULE_I2C
-DEFINES += EVM_USE_MODULE_TIMER
-DEFINES += EVM_USE_MODULE_TCP
+#DEFINES += EVM_USE_MODULE_I2C
+#DEFINES += EVM_USE_MODULE_TIMER
+#DEFINES += EVM_USE_MODULE_TCP
 
 SOURCES += \
     $$PWD/../modules/linux/evm_main.c
@@ -81,24 +81,24 @@ SOURCES += \
     $$PWD/../modules/common/evm_module_base64.c
 }
 
-SOURCES += \
-    $$PWD/../modules/common/evm_module_adc.c \
-    $$PWD/../modules/common/evm_module_gpio.c \
-    $$PWD/../modules/common/evm_module_i2c.c \
-    $$PWD/../modules/common/evm_module_periph_common.c \
-    $$PWD/../modules/common/evm_module_pwm.c \
-    $$PWD/../modules/common/evm_module_timer.c \
-    $$PWD/../modules/common/evm_module_tcp.c \
-    $$PWD/../modules/common/evm_module_tls.c \
-    $$PWD/../modules/common/evm_module_uart.c
+#SOURCES += \
+#    $$PWD/../modules/common/evm_module_adc.c \
+#    $$PWD/../modules/common/evm_module_gpio.c \
+#    $$PWD/../modules/common/evm_module_i2c.c \
+#    $$PWD/../modules/common/evm_module_periph_common.c \
+#    $$PWD/../modules/common/evm_module_pwm.c \
+#    $$PWD/../modules/common/evm_module_timer.c \
+#    $$PWD/../modules/common/evm_module_tcp.c \
+#    $$PWD/../modules/common/evm_module_tls.c \
+#    $$PWD/../modules/common/evm_module_uart.c
 
-unix {
-SOURCES += \
-    $$PWD/../modules/linux/iot_system.c \
-    $$PWD/../modules/linux/iot_uv.c \
-    $$PWD/../modules/linux/linux_module_adc.c \
-    $$PWD/../modules/linux/linux_module_gpio.c \
-    $$PWD/../modules/linux/linux_module_i2c.c \
-    $$PWD/../modules/linux/linux_module_pwm.c \
-    $$PWD/../modules/linux/linux_module_uart.c
-}
+#unix {
+#SOURCES += \
+#    $$PWD/../modules/linux/iot_system.c \
+#    $$PWD/../modules/linux/iot_uv.c \
+#    $$PWD/../modules/linux/linux_module_adc.c \
+#    $$PWD/../modules/linux/linux_module_gpio.c \
+#    $$PWD/../modules/linux/linux_module_i2c.c \
+#    $$PWD/../modules/linux/linux_module_pwm.c \
+#    $$PWD/../modules/linux/linux_module_uart.c
+#}

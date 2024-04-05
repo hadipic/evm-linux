@@ -306,6 +306,11 @@ function push(options) {
     }
 }
 
+function getCurrentPage() {
+    return currentPage;
+}
+
 module.exports = {
-    "push": push,
+    push: push,
+    getCurrentPage: getCurrentPage
 }

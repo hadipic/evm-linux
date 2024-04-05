@@ -263,7 +263,7 @@ static char *parse_stringLiteral(evm_parser_t *p)
     len = parse_check_str_len(p);
     if( len == -1 )
         return NULL;
-    char *str = (char*)evm_malloc(len);
+    char *str = (char*)grm_malloc(len);
     if( !str ) {
         return NULL;
     }
@@ -303,7 +303,7 @@ static char *parse_stringLiteral(evm_parser_t *p)
                     input += 2;
                     if( escape == 'x') {
                         if( !parse_is_hex(input[0]) || !parse_is_hex(input[1]) ) {
-                            evm_free(str);
+                            grm_free(str);
                             return NULL;
                         }
                         escape = parse_hex_to_char(input[0]);
@@ -324,7 +324,7 @@ static char *parse_stringLiteral(evm_parser_t *p)
             }
 
             if( ch == 0x0D || ch == 0x0A ){
-                evm_free(str);
+                grm_free(str);
                 return NULL;
             }
 
@@ -335,6 +335,7 @@ static char *parse_stringLiteral(evm_parser_t *p)
                 flag = 0;
         } while( flag );
         str[len - 1] = 0;
+        p->str_len = len;
         return str;
     }
     return NULL;
@@ -465,109 +466,98 @@ static int grammar_LT_NL(evm_parser_t *e)
     return 0;
 }
 
-static void parse_init(evm_parser_t *p, evm_t *e, char *content){
+static void parse_init(evm_parser_t *p, char *content){
     memset(p, 0, sizeof(evm_parser_t));
-    p->e = e;
     p->input = content;
     p->input_len = strlen(p->input);
     p->row = 1;
     p->index = 0;
+    p->str = NULL;
     p->multi_comment_pattern = NULL;
     p->multi_comment_start = NULL;
     p->single_comment_pattern = NULL;
     p->single_comment_start = NULL;
+    p->arg_sp_base = p->arg_sp = grm_malloc(sizeof (evm_grm_t) * EVM_GRM_ARG_STACK_SIZE);
+    p->arg_stack_size = EVM_GRM_ARG_STACK_SIZE;
 }
 
 #define LT_NT   while(grammar_LT_NL(p))
 
-static int run_rule(evm_parser_t *p, evm_grm_rule_t *rule);
+static evm_grm_ret_t run_rule(evm_parser_t *p, const evm_grm_rule_t *rule, evm_grm_arg_t *args, evm_grm_ret_t *prev_ret);
 
-static void run_action(evm_parser_t *e, evm_grm_elem_t *action) {
-    printf("run action\r\n");
-}
-
-static int run_element(evm_parser_t *p, evm_grm_elem_t *elem) {
+static evm_grm_ret_t run_element(evm_parser_t *p, const evm_grm_elem_t *elem, evm_grm_arg_t *args, evm_grm_ret_t last_ret) {
     LT_NT;
     int tk = elem->token;
-    int row = elem->row;
+    evm_grm_ret_t ret = last_ret;
     switch (tk) {
     case TOKEN_CFUNC: {
-        if( !elem->u.cfunc(p) ) {
-            return TOKEN_FAIL;
+        elem->u.cfunc(p, args, &ret);
+        if( !ret.token ) {
+            return ret;
         }
-        if( elem->action )
-            run_action(p, elem->action);
-        return TOKEN_OK;
+        return ret;
     }break;
     case TOKEN_ID: {
-        evm_grm_rule_t *rule = elem->u.rule;
+        const evm_grm_rule_t *rule = elem->u.rule;
         int suffix = elem->suffix;
         if( suffix == TOKEN_STAR ) {
             while( 1 ) {
-                if( !run_rule(p, rule) )
+                evm_grm_ret_t local_ret = run_rule(p, rule, args, &ret);
+                if( !local_ret.token )
                     break;
-                if( rule->action )
-                    run_action(p, rule->action);
+                ret = local_ret;
             }
-            return TOKEN_OK;
+            return ret;
         } else if( suffix == TOKEN_PLUS ) {
-            if( !run_rule(p, rule) ) {
-                return TOKEN_FAIL;
+            evm_grm_ret_t local_ret = run_rule(p, rule, args, &ret);
+            if( !local_ret.token ) {
+                return local_ret;
             }
-            if( rule->action )
-                run_action(p, rule->action);
+            ret = local_ret;
             while( 1 ) {
-                if( !run_rule(p, rule) )
+                local_ret = run_rule(p, rule, args, &ret);
+                if( !local_ret.token )
                     break;
-                if( rule->action )
-                    run_action(p, rule->action);
+                ret = local_ret;
             }
-            return TOKEN_OK;
+            return ret;
         } else if( suffix == TOKEN_QM ) {
-            if( run_rule(p, rule) ){
-                if( rule->action )
-                    run_action(p, rule->action);
+            evm_grm_ret_t local_ret = run_rule(p, rule, args, &ret);
+            if( local_ret.token ){
+                 ret = local_ret;
             }
-            return TOKEN_OK;
+            return ret;
         }
-        int token = run_rule(p, rule);
-        if( token ) {
-            if( rule->action )
-                run_action(p, rule->action);
-        }
-        return token;
+        ret = run_rule(p, rule, NULL, &ret);
+        return ret;
     } break;
     case TOKEN_STRING: {
         if( !parse_token_with_eat(p, elem->u.text, strlen(elem->u.text)) ) {
             break;
         }
-        if( elem->action )
-            run_action(p, elem->action);
-        return TOKEN_OK;
+        return ret;
     }break;
     case TOKEN_LEX_EOF: {
         if( !parse_EOF(p) )
             break;
-        if( elem->action )
-            run_action(p, elem->action);
-        return TOKEN_OK;
+        ret.token = TOKEN_LEX_EOF;
+        return ret;
     } break;
     case TOKEN_LEX_NUMBER: {
         if( !parse_numericLiteral(p) )
             break;
-        if( elem->action )
-            run_action(p, elem->action);
-        return TOKEN_OK;
+        ret.token = TOKEN_LEX_NUMBER;
+        return ret;
     } break;
     case TOKEN_LEX_STRING: {
         char *str = parse_stringLiteral(p);
         if( !str )
             break;
-        p->atom_str = evm_str_insert(p->e, str, 1);
-        if( elem->action )
-            run_action(p, elem->action);
-        evm_free(str);
-        return TOKEN_OK;
+        if( p->str )
+            grm_free(p->str);
+        p->str = str;
+        ret.token = TOKEN_LEX_STRING;
+        return ret;
     } break;
     case TOKEN_LEX_NEWLINE:{
         int index = p->index;
@@ -576,129 +566,138 @@ static int run_element(evm_parser_t *p, evm_grm_elem_t *elem) {
             if( parse_iswhite(p->input[index]) )
                 continue;
             else if( parse_isnewline(p->input[index]) )
-                return TOKEN_OK;
-            else
-                return TOKEN_FAIL;
+                return ret;
+            else{
+                ret.token = TOKEN_FAIL;
+                return ret;
+            }
         }
-        return TOKEN_FAIL;
+        ret.token = TOKEN_FAIL;
+        return ret;
     }
     case TOKEN_LEX_ID: {
         if( !parse_ident(p, p->name) )
             break;
-        if( elem->action )
-            run_action(p, elem->action);
-        return TOKEN_OK;
+        ret.token = TOKEN_LEX_ID;
+        return ret;
     } break;
     case TOKEN_BLOCK: {
         int suffix = elem->suffix;
         if( suffix == TOKEN_STAR ) {
-            while( run_rule(p, elem->u.rule) );
-            if( elem->action )
-                run_action(p, elem->action);
-            return TOKEN_OK;
+            while(1) {
+                evm_grm_ret_t local_ret = run_rule(p, elem->u.rule, args, &ret);
+                if( !local_ret.token )
+                    break;
+                ret = local_ret;
+            }
+            return ret;
         } else if( suffix == TOKEN_PLUS ) {
-            if( !run_rule(p, elem->u.rule) ){
-                return TOKEN_FAIL;
+            ret = run_rule(p, elem->u.rule, args, &ret);
+            if( !ret.token ){
+                return ret;
             }
-            while( run_rule(p, elem->action) );
-            if( elem->action )
-                run_action(p, elem->action);
-            return TOKEN_OK;
+            while(1) {
+                evm_grm_ret_t local_ret = run_rule(p, elem->u.rule, args, &ret);
+                if( !local_ret.token )
+                    break;
+                ret = local_ret;
+            }
+            return ret;
         } else if( suffix == TOKEN_QM ) {
-            if( run_rule(p, elem->u.rule) ){
-                if( elem->action )
-                    run_action(p, elem->action);
+            evm_grm_ret_t local_ret = run_rule(p, elem->u.rule, args, &ret);
+            if( local_ret.token ){
+                ret = local_ret;
             }
-            return TOKEN_OK;
+            return ret;
         } else {
-            int token = run_rule(p, elem->u.rule);
-            if( token ) {
-                if( elem->action )
-                    run_action(p, elem->action);
-            }
-            return token;
+            ret = run_rule(p, elem->u.rule, args, &ret);
+            return ret;
         }
     }break;
-    case TOKEN_ACTION: {
-        run_action(p, elem);
-        return TOKEN_OK;
-    } break;
-//    case TOKEN_REGEX: {
-//        const char *pattern = qvm_to_string(e, qvm_get_property(e, element, "regex"));
-//        regex_t reg;
-//        regmatch_t pmatch;
-//        int index = e->index;
-//        int z = regcomp(&reg, pattern, REG_EXTENDED);
-//        if (z != 0) {
-//          return TOKEN_INVALID;
-//        }
-//        int err = regexec(&reg, e->input + e->index,1, &pmatch, 0);
-//        if(err == REG_NOMATCH || pmatch.rm_so != 0)
-//        {
-//            regfree(&reg);
-//            return TOKEN_INVALID;
-//        }
-//        e->index += pmatch.rm_eo;
-//        regfree(&reg);
-//        char buf[pmatch.rm_eo + 1];
-//        memcpy(buf, e->input + index, pmatch.rm_eo);
-//        buf[pmatch.rm_eo] = 0;
-//        node_add_text(e, parent, buf);
-//        grammar_value_t node = new_node(e, e->row, e->input + index, pmatch.rm_eo, parent);
-//        add_node(e, parent, node);
-
-//        qvm_value_t action = get_action(e, element);
-//        if( !qvm_is_undefined(action) ) {
-//            if( run_action(e, action, node, row) == -1 ){
-//                return TOKEN_INVALID;
-//            }
-//        }
-//        return TOKEN_OK;
-//    }
     }
-    return TOKEN_FAIL;
+    ret.token = TOKEN_FAIL;
+    return ret;
 }
 
-static int run_alternative(evm_parser_t *p, evm_grm_alt_t *alt) {
+static evm_grm_ret_t run_alternative(evm_parser_t *p, const evm_grm_alt_t *alt, evm_grm_arg_t *args, evm_grm_ret_t *prev_ret) {
+    evm_grm_ret_t ret = {.token = TOKEN_OK};
+    if( prev_ret )
+        ret = *prev_ret;
     for(int i = 0; i < alt->size; i++) {
-        evm_grm_elem_t *elem = alt->elems + i;
-        if( !run_element(p, elem) )
-            return TOKEN_FAIL;
+        const evm_grm_elem_t *elem = alt->elems + i;
+        ret = run_element(p, elem, args, ret);
+        if( !ret.token )
+            return ret;
     }
-    return TOKEN_OK;
+    return ret;
 }
 
-static int run_rule(evm_parser_t *p, evm_grm_rule_t *rule) {
+static evm_grm_ret_t run_rule(evm_parser_t *p, const evm_grm_rule_t *rule, evm_grm_arg_t *args, evm_grm_ret_t *prev_ret) {
+    evm_grm_ret_t ret = {.token = TOKEN_FAIL};
     for(int i = 0; i < rule->size; i++) {
         int index = p->index;
         int save_row = p->row;
-        evm_grm_alt_t *alt = rule->alts[i];
-        if( run_alternative(p, alt) )
-            return TOKEN_OK;
+        const evm_grm_alt_t *alt = rule->alts[i];
+        if( !args ) {
+            evm_grm_arg_t local_args[EVM_GRM_ARG_LEN];
+            ret = run_alternative(p, alt, local_args, prev_ret);
+            if( ret.token )
+                return ret;
+        } else {
+            ret = run_alternative(p, alt, args, prev_ret);
+            if( ret.token )
+                return ret;
+        }
         p->row = save_row;
         p->index = index;
     }
-    return TOKEN_FAIL;
+    return ret;
 }
 
 static int run_grammar(evm_parser_t *p) {
-    evm_grm_rule_t *rule = p->grammar->rules;
-    return run_rule(p, rule);
+    const evm_grm_rule_t *rule = p->grammar->rules;
+    return run_rule(p, rule, NULL, NULL).token;
+}
+
+static void check_arg_stack(evm_parser_t *p) {
+    if( p->arg_sp - p->arg_sp_base >= p->arg_stack_size ) {
+        int new_size = p->arg_stack_size + EVM_GRM_ARG_STACK_SIZE;
+        evm_grm_arg_t *old_args = p->arg_sp_base;
+        p->arg_sp_base = grm_malloc(sizeof (evm_grm_t) * new_size);
+        memcpy(p->arg_sp_base, old_args, sizeof (evm_grm_t) * p->arg_stack_size);
+        p->arg_sp = p->arg_sp_base + p->arg_stack_size;
+        p->arg_stack_size += EVM_GRM_ARG_STACK_SIZE;
+        grm_free(old_args);
+    }
+}
+
+void evm_push_arg(evm_parser_t *p, evm_grm_arg_t arg) {
+    check_arg_stack(p);
+    *(p->arg_sp++) = arg;
+}
+
+evm_grm_arg_t evm_get_arg(evm_parser_t *p, int idx) {
+    return *(p->arg_sp + idx - 1);
+}
+
+evm_grm_arg_t evm_pop_arg(evm_parser_t *p) {
+    if( p->arg_sp > p->arg_sp_base )
+        return *(--p->arg_sp);
+    evm_grm_arg_t ret;
+    ret.u.ptr = NULL;
+    return ret;
 }
 
 extern const evm_grm_t evm_grammar;
 
-int evm_parse(evm_t *e, char *file) {
+int evm_parse(char *content) {
     evm_parser_t p;
-    size_t size;
-    char *content = (char*)evm_load_file(file, &size);
-    if( !content ) {
-        return ec_no_file;
-    }
-    parse_init(&p, e, content);
+    parse_init(&p, content);
     p.grammar = &evm_grammar;
     int tok = run_grammar(&p);
-    evm_free(content);
+    if(p.str)
+        grm_free(p.str);
+    grm_free(p.arg_sp_base);
     return tok;
 }
 

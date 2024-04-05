@@ -10,8 +10,7 @@ HEADERS += \
     $$PWD/../engines/quickjs/evm_type.h
 
 SOURCES += \
-    $$PWD/../engines/quickjs/evm.c \
-    $$PWD/../engines/quickjs/common.js.bc.c
+    $$PWD/../engines/quickjs/evm.c
 
 SOURCES += \
     $$PWD/../engines/quickjs/quickjs/quickjs.c \

@@ -26,6 +26,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 #include "evm_module.h"
+#include "iotjs.h"
+#include "jerryscript.h"
 
 static evm_t *_runtime;
 
@@ -78,8 +80,10 @@ static void evm_native_init(evm_t *e) {
 
 void evm_module_init(evm_t *env)
 {
-    _runtime = env;
+    jerry_value_t res;
+    jerry_set_runtime(env);
     evm_native_init(env);
+
     EVM_LOG("module process init\r\n");
     extern void evm_module_process(evm_t *e);
     evm_module_process(env);
@@ -88,20 +92,33 @@ void evm_module_init(evm_t *env)
     extern void evm_module_console(evm_t *e);
     evm_module_console(env);
 
-    EVM_LOG("module fs init\r\n");
-    extern void evm_module_fs(evm_t *e);
-    evm_module_fs(env);
-
-#ifdef EVM_USE_MODULE_GPIO
-    EVM_LOG("module gpio init\r\n");
-    extern void evm_module_gpio(evm_t *e);
-    evm_module_gpio(env);
-#endif
+    extern jerry_value_t iotjs_init_buffer(void);
+    res = iotjs_init_buffer();
+    evm_global_set(env, "@native.buffer", res);
+    evm_val_free(env, res);
 
 #ifdef EVM_USE_MODULE_ADC
     EVM_LOG("module adc init\r\n");
-    extern void evm_module_adc(evm_t *e);
-    evm_module_adc(env);
+    extern jerry_value_t iotjs_init_adc(void);
+    res = iotjs_init_adc();
+    evm_global_set(env, "@native.adc", res);
+    evm_val_free(env, res);
+#endif
+
+#ifdef EVM_USE_MODULE_GPIO
+    EVM_LOG("module gpio init\r\n");
+    extern jerry_value_t iotjs_init_gpio(void);
+    res = iotjs_init_gpio();
+    evm_global_set(env, "@native.gpio", res);
+    evm_val_free(env, res);
+#endif
+
+#ifdef EVM_USE_MODULE_FS
+    EVM_LOG("module fs init\r\n");
+    extern jerry_value_t iotjs_init_fs(void);
+    res = iotjs_init_fs();
+    evm_global_set(env, "@native.fs", res);
+    evm_val_free(env, res);
 #endif
 
 #ifdef EVM_USE_MODULE_CJSON
@@ -149,12 +166,3 @@ void evm_module_init(evm_t *env)
 #endif
 }
 
-char* evm_buffer_allocate_from_number_array(evm_t *e, size_t size, evm_val_t array) {
-  char* buffer = evm_malloc(size);
-  for (size_t i = 0; i < size; i++) {
-    jerry_value_t jdata = evm_list_get(e, array, i);
-    buffer[i] = evm_2_integer(e, jdata);
-    evm_val_free(e, jdata);
-  }
-  return buffer;
-}

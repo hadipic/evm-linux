@@ -1,9 +1,18 @@
 #ifndef EVM_GRAMMAR_H
 #define EVM_GRAMMAR_H
 
-#include "evm.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <ctype.h>
+
+#define grm_malloc  malloc
+#define grm_free    free
 
 #define EVM_VARNAME_LEN         128
+#define EVM_GRM_ARG_LEN         8
+#define EVM_GRM_ARG_STACK_SIZE  32
 
 enum TOKEN {
     TOKEN_FAIL = 0,
@@ -29,13 +38,27 @@ enum TOKEN {
 
 struct evm_parser_t;
 
-typedef int (*grammar_cfunc_t)(struct evm_parser_t *p);
+typedef struct evm_grm_arg_t {
+    union {
+        int64_t int64;
+        double number;
+        char *str;
+        void *ptr;
+    }u;
+} evm_grm_arg_t;
+
+typedef struct evm_grm_ret_t {
+    int token;
+    evm_grm_arg_t arg1;
+    evm_grm_arg_t arg2;
+} evm_grm_ret_t;
+
+typedef void (*grammar_cfunc_t)(struct evm_parser_t *p, evm_grm_arg_t *args, evm_grm_ret_t *ret);
 
 #define ELEMENT_SECTION\
     uint8_t token;\
     uint8_t suffix;\
     int row;\
-    void *action;\
 
 typedef struct evm_grm_elem_t {
     ELEMENT_SECTION;
@@ -64,10 +87,10 @@ typedef struct evm_grm_t {
 } evm_grm_t;
 
 typedef struct evm_parser_t {
-    evm_t *e;
     double num;
     char name[EVM_VARNAME_LEN];
-    evm_atom_t atom_str;
+    char *str;
+    int str_len;
     char *input;
     int input_len;
     int index;
@@ -78,14 +101,16 @@ typedef struct evm_parser_t {
     const char *single_comment_pattern;
     const char *single_comment_start;
     grammar_cfunc_t *cfuncs;
+    evm_grm_arg_t *arg_sp_base;
+    evm_grm_arg_t *arg_sp;
+    int arg_stack_size;
 } evm_parser_t;
 
-EVM_API evm_val_t evm_function_create(evm_t *e);
-EVM_API evm_atom_t evm_str_insert(evm_t *e, const char *str, int alloc);
-EVM_API const char *evm_atom_to_string(evm_t * e, evm_atom_t key);
-EVM_API evm_grm_t *evm_load_grammar(evm_t *e, const char *file, grammar_cfunc_t *cfuncs);
-EVM_API int evm_parse(evm_t *e, char *file);
-EVM_API evm_val_t evm_atom_get(evm_t * e, evm_atom_t key);
+extern void evm_push_arg(evm_parser_t *p, evm_grm_arg_t arg);
+extern evm_grm_arg_t evm_get_arg(evm_parser_t *p, int idx);
+extern evm_grm_arg_t evm_pop_arg(evm_parser_t *p);
+extern evm_grm_t *evm_load_grammar(const char *file, grammar_cfunc_t *cfuncs);
+extern int evm_parse(char *content);
 
 #endif
 

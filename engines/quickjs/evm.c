@@ -207,7 +207,7 @@ void evm_heap_gc(evm_t *e) {
 }
 
 evm_val_t evm_throw(evm_t *e, evm_val_t v) {
-    JS_Throw(e, v);
+    return JS_Throw(e, v);
 }
 
 /*** 虚拟机相关函数 ***/
@@ -637,6 +637,10 @@ int evm_is_object(evm_t *e, evm_val_t v) {
     return JS_IsObject(v);
 }
 
+int evm_is_exception(evm_t *e, evm_val_t v) {
+    JS_IsException(v);
+}
+
 evm_val_t evm_mk_number(evm_t *e, double d){
     return JS_NewFloat64(e, d);
 }
@@ -662,7 +666,7 @@ evm_val_t evm_mk_boolean(evm_t *e, int v){
 evm_val_t evm_mk_native(evm_t *e, evm_native_t v, const char *name, int len) {
     JSContext *ctx = e;
     JSValue nfunc = JS_NewCFunction(ctx, v, name, len);
-    return nfunc;
+    return evm_val_duplicate(e, nfunc);
 }
 
 evm_val_t evm_mk_null(evm_t *e){
@@ -692,4 +696,16 @@ evm_val_t evm_val_duplicate(evm_t *e, evm_val_t v) {
 evm_val_t evm_mk_global(evm_t *e) {
     JSContext *ctx = e;
     return JS_GetGlobalObject(ctx);
+}
+
+void evm_set_prototype(evm_t *e, evm_val_t obj, evm_val_t proto) {
+    JS_SetPrototype(e, obj, proto);
+}
+
+int evm_is_constructor(evm_t *e, evm_val_t obj) {
+    return JS_IsConstructor(e, obj);
+}
+
+evm_val_t evm_parse(evm_t *e) {
+
 }
