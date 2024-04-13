@@ -87,7 +87,7 @@ EVM_FUNCTION(init_style){
     lv_style_set_border_opa(style,  LV_OPA_COVER);
     lv_style_set_outline_width(style, 0);
 
-    lv_style_set_bg_opa(style, LV_OPA_TRANSP);
+    lv_style_set_bg_opa(style, LV_OPA_COVER);
     lv_style_set_bg_color(style, lv_color_make(0x55, 0x96, 0xd8));
     lv_style_set_bg_grad_color(style, lv_color_make(0x55, 0x96, 0xd8));
     lv_style_set_img_opa(style, LV_OPA_COVER);

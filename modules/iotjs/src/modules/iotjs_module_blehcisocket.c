@@ -147,7 +147,7 @@ JS_FUNCTION(stop) {
 }
 
 
-JS_FUNCTION(write) {
+JS_FUNCTION(ble_write) {
   JS_DECLARE_THIS_PTR(blehcisocket, blehcisocket);
   DJS_CHECK_ARGS(1, object);
 
@@ -192,7 +192,7 @@ jerry_value_t iotjs_init_blehcisocket(void) {
   iotjs_jval_set_method(prototype, IOTJS_MAGIC_STRING_ISDEVUP, is_dev_up);
   iotjs_jval_set_method(prototype, IOTJS_MAGIC_STRING_SETFILTER, set_filter);
   iotjs_jval_set_method(prototype, IOTJS_MAGIC_STRING_STOP, stop);
-  iotjs_jval_set_method(prototype, IOTJS_MAGIC_STRING_WRITE, write);
+  iotjs_jval_set_method(prototype, IOTJS_MAGIC_STRING_WRITE, ble_write);
 
   iotjs_jval_set_property_jval(jblehcisocketCons, IOTJS_MAGIC_STRING_PROTOTYPE,
                                prototype);

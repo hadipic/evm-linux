@@ -953,12 +953,6 @@ static inline JSValue JS_NewCFunction(JSContext *ctx, JSCFunction *func, const c
     return JS_NewCFunction2(ctx, func, name, length, JS_CFUNC_generic, 0);
 }
 
-static inline JSValue JS_NewCFunctionFunc(JSContext *ctx, JSCFunctionFunc *func, const char *name,
-                                      int length)
-{
-    return JS_NewCFunction2(ctx, func, name, length, JS_CFUNC_generic_func, 0);
-}
-
 static inline JSValue JS_NewCFunctionMagic(JSContext *ctx, JSCFunctionMagic *func,
                                            const char *name,
                                            int length, JSCFunctionEnum cproto, int magic)

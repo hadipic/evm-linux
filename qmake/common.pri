@@ -10,10 +10,10 @@ INCLUDEPATH += $$PWD/../components/zmalloc
 
 DEFINES += EVM_USE_LIBUV
 DEFINES += EVM_USE_MODULE_FS
-DEFINES += EVM_USE_MODULE_LVGL
-DEFINES += EVM_USE_MODULE_LVGL_STYLE
+#DEFINES += EVM_USE_MODULE_LVGL
+#DEFINES += EVM_USE_MODULE_LVGL_STYLE
 DEFINES += EVM_USE_MODULE_CFFI
-DEFINES += EVM_USE_MODULE_LVGL_IMAGE
+#DEFINES += EVM_USE_MODULE_LVGL_IMAGE
 DEFINES += EVM_USE_MODULE_CJSON
 DEFINES += EVM_USE_MODULE_HEATSHRINK
 DEFINES += EVM_USE_MODULE_BASE64
@@ -41,6 +41,7 @@ SOURCES += \
 SOURCES += \
     $$PWD/../components/zmalloc/zmalloc.c
 
+contains(DEFINES, EVM_USE_MODULE_LVGL){
 SOURCES += \
     $$PWD/../modules/gui/lvgl/evm_module_lvgl.c \
     $$PWD/../modules/gui/lvgl/evm_module_lvgl_style.c \
@@ -48,6 +49,7 @@ SOURCES += \
     $$PWD/../modules/gui/lvgl/evm_module_lvgl_misc.c \
     $$PWD/../modules/gui/lvgl/evm_module_lvgl_timeout.c \
     $$PWD/../modules/gui/lvgl/evm_module_lvgl_image.c
+}
 
 
 SOURCES += \

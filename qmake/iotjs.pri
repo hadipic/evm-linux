@@ -41,6 +41,11 @@ SOURCES += \
     $$PWD/../modules/iotjs/src/iotjs_uv_handle.c \
     $$PWD/../modules/iotjs/src/iotjs_uv_request.c
 
+unix {
+SOURCES += \
+    $$PWD/../modules/iotjs/src/modules/iotjs_module_dns.c
+}
+
 SOURCES += \
     $$PWD/../modules/iotjs/src/modules/iotjs_module_adc.c \
     $$PWD/../modules/iotjs/src/modules/iotjs_module_blehcisocket.c \
@@ -49,7 +54,6 @@ SOURCES += \
     $$PWD/../modules/iotjs/src/modules/iotjs_module_console.c \
     $$PWD/../modules/iotjs/src/modules/iotjs_module_constants.c \
     $$PWD/../modules/iotjs/src/modules/iotjs_module_crypto.c \
-    $$PWD/../modules/iotjs/src/modules/iotjs_module_dns.c \
     $$PWD/../modules/iotjs/src/modules/iotjs_module_fs.c \
     $$PWD/../modules/iotjs/src/modules/iotjs_module_gpio.c \
     $$PWD/../modules/iotjs/src/modules/iotjs_module_http_parser.c \

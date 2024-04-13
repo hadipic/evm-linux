@@ -6,9 +6,6 @@ INCLUDEPATH +=  $$PWD/../components/lvgl
 unix{
 LIBS += -lSDL2 -lm
 }
-win32{
-LIBS += -L$$PWD/../SDL2 -lSDL2 -lm
-}
 
 SOURCES += \
         $$PWD/../components/lvgl/lv_drivers/sdl/sdl.c \

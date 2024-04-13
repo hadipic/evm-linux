@@ -27,7 +27,10 @@
  */
 #include "evm_module.h"
 #include <time.h>
+
+#if defined (__linux__)
 #include "iotjs.h"
+#endif
 
 int platform_getchar(void) {
     return getchar();
@@ -53,6 +56,7 @@ void evm_free(void * p)
 
 void *evm_realloc(void * p, size_t size)
 {
+
     return zrealloc(p, size);
 }
 
@@ -61,7 +65,7 @@ uint8_t *evm_load_file(const char *filename, size_t *size) {
     uint8_t *buf;
     size_t buf_len;
     long lret;
-    f = fopen(filename, "r");
+    f = fopen(filename, "rb");
     if (!f)
         return NULL;
     if (fseek(f, 0, SEEK_END) < 0)
@@ -76,7 +80,7 @@ uint8_t *evm_load_file(const char *filename, size_t *size) {
     buf = evm_malloc(buf_len + 1);
     if (!buf)
         goto fail;
-    if (fread(buf, 1, buf_len, f) != buf_len) {
+    if (fread(buf, 1, buf_len, f) == 0) {
         evm_free(buf);
     fail:
         fclose(f);
@@ -100,6 +104,5 @@ void evm_main (char *filename) {
     extern void evm_module_console(evm_t *e);
     evm_module_console(e);
     evm_run_file(e, EVM_UNDEFINED, filename);
-    printf("finished");
 }
 

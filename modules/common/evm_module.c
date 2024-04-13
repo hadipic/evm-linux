@@ -26,8 +26,11 @@
  * DEALINGS IN THE SOFTWARE.
  */
 #include "evm_module.h"
+
+#ifdef EVM_USE_IOTJS
 #include "iotjs.h"
-#include "jerryscript.h"
+#include "jerryscript-wrap.h"
+#endif
 
 static evm_t *_runtime;
 
@@ -80,8 +83,10 @@ static void evm_native_init(evm_t *e) {
 
 void evm_module_init(evm_t *env)
 {
+#ifdef EVM_USE_IOTJS
     jerry_value_t res;
     jerry_set_runtime(env);
+#endif
     evm_native_init(env);
 
     EVM_LOG("module process init\r\n");
@@ -91,6 +96,8 @@ void evm_module_init(evm_t *env)
     EVM_LOG("module console init\r\n");
     extern void evm_module_console(evm_t *e);
     evm_module_console(env);
+
+#ifdef EVM_USE_IOTJS
 
     extern jerry_value_t iotjs_init_buffer(void);
     res = iotjs_init_buffer();
@@ -119,6 +126,8 @@ void evm_module_init(evm_t *env)
     res = iotjs_init_fs();
     evm_global_set(env, "@native.fs", res);
     evm_val_free(env, res);
+#endif
+
 #endif
 
 #ifdef EVM_USE_MODULE_CJSON

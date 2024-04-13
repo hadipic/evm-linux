@@ -194,6 +194,158 @@ evm_val_t evm_run_bytecode(evm_t *e, uint8_t *buf, size_t buf_len) {
     return func;
 }
 
+#define JERRYX_PRINT_BUFFER_SIZE 64
+#define JERRYX_SYNTAX_ERROR_MAX_LINE_LENGTH 256
+
+static void
+jerryx_print_unhandled_exception (jerry_value_t exception) /**< exception value */
+{
+  EVM_ASSERT(jerry_value_is_exception (exception));
+  jerry_value_t value = jerry_exception_value (exception, true);
+
+  JERRY_VLA (jerry_char_t, buffer_p, JERRYX_PRINT_BUFFER_SIZE);
+
+  jerry_value_t string = jerry_value_to_string (value);
+
+  jerry_size_t copied = jerry_string_to_buffer (string, JERRY_ENCODING_UTF8, buffer_p, JERRYX_PRINT_BUFFER_SIZE - 1);
+  buffer_p[copied] = '\0';
+
+  if (jerry_feature_enabled (JERRY_FEATURE_ERROR_MESSAGES) && jerry_error_type (value) == JERRY_ERROR_SYNTAX)
+  {
+    jerry_char_t *string_end_p = buffer_p + copied;
+    jerry_size_t err_line = 0;
+    jerry_size_t err_col = 0;
+    char *path_str_p = NULL;
+    char *path_str_end_p = NULL;
+
+    /* 1. parse column and line information */
+    for (jerry_char_t *current_p = buffer_p; current_p < string_end_p; current_p++)
+    {
+      if (*current_p == '[')
+      {
+        current_p++;
+
+        if (*current_p == '<')
+        {
+          break;
+        }
+
+        path_str_p = (char *) current_p;
+        while (current_p < string_end_p && *current_p != ':')
+        {
+          current_p++;
+        }
+
+        path_str_end_p = (char *) current_p;
+
+        if (current_p == string_end_p)
+        {
+          break;
+        }
+
+        err_line = (unsigned int) strtol ((char *) current_p + 1, (char **) &current_p, 10);
+
+        if (current_p == string_end_p)
+        {
+          break;
+        }
+
+        err_col = (unsigned int) strtol ((char *) current_p + 1, NULL, 10);
+        break;
+      }
+    } /* for */
+
+    if (err_line > 0 && err_col > 0 && err_col < JERRYX_SYNTAX_ERROR_MAX_LINE_LENGTH)
+    {
+      /* Temporarily modify the error message, so we can use the path. */
+      *path_str_end_p = '\0';
+
+      jerry_size_t source_size;
+      jerry_char_t *source_p = jerry_port_source_read (path_str_p, &source_size);
+
+      /* Revert the error message. */
+      *path_str_end_p = ':';
+
+      if (source_p != NULL)
+      {
+        uint32_t curr_line = 1;
+        jerry_size_t pos = 0;
+
+        /* 2. seek and print */
+        while (pos < source_size && curr_line < err_line)
+        {
+          if (source_p[pos] == '\n')
+          {
+            curr_line++;
+          }
+
+          pos++;
+        }
+
+        /* Print character if:
+         * - The max line length is not reached.
+         * - The current position is valid (it is not the end of the source).
+         * - The current character is not a newline.
+         **/
+        for (uint32_t char_count = 0;
+             (char_count < JERRYX_SYNTAX_ERROR_MAX_LINE_LENGTH) && (pos < source_size) && (source_p[pos] != '\n');
+             char_count++, pos++)
+        {
+          jerry_log (JERRY_LOG_LEVEL_ERROR, "%c", source_p[pos]);
+        }
+
+        jerry_log (JERRY_LOG_LEVEL_ERROR, "\n");
+        jerry_port_source_free (source_p);
+
+        while (--err_col)
+        {
+          jerry_log (JERRY_LOG_LEVEL_ERROR, "~");
+        }
+
+        jerry_log (JERRY_LOG_LEVEL_ERROR, "^\n\n");
+      }
+    }
+  }
+
+  jerry_log (JERRY_LOG_LEVEL_ERROR, "Unhandled exception: %s\n", buffer_p);
+  jerry_value_free (string);
+
+  if (jerry_value_is_object (value))
+  {
+    jerry_value_t backtrace_val = jerry_object_get_sz (value, "stack");
+
+    if (jerry_value_is_array (backtrace_val))
+    {
+      uint32_t length = jerry_array_length (backtrace_val);
+
+      /* This length should be enough. */
+      if (length > 32)
+      {
+        length = 32;
+      }
+
+      for (unsigned i = 0; i < length; i++)
+      {
+        jerry_value_t item_val = jerry_object_get_index (backtrace_val, i);
+
+        if (jerry_value_is_string (item_val))
+        {
+          copied = jerry_string_to_buffer (item_val, JERRY_ENCODING_UTF8, buffer_p, JERRYX_PRINT_BUFFER_SIZE - 1);
+          buffer_p[copied] = '\0';
+
+          jerry_log (JERRY_LOG_LEVEL_ERROR, " %u: %s\n", i, buffer_p);
+        }
+
+        jerry_value_free (item_val);
+      }
+    }
+
+    jerry_value_free (backtrace_val);
+  }
+
+  jerry_value_free (value);
+}
+
 int evm_run_bytecode_file(evm_t *e, const char *path) {
     uint8_t *buf;
     size_t buf_len;
@@ -229,6 +381,8 @@ int evm_run_file(evm_t *e, evm_val_t this_obj, const char *path) {
         return 0;
     }
 
+
+
     jerry_parse_options_t parse_options;
     parse_options.options = JERRY_PARSE_HAS_SOURCE_NAME | JERRY_PARSE_HAS_START;
     parse_options.source_name = jerry_string_sz (path);
@@ -242,12 +396,13 @@ int evm_run_file(evm_t *e, evm_val_t this_obj, const char *path) {
         jerry_value_t res = jerry_run (parsed_code);
         if (jerry_value_is_exception (res))
         {
-            jerry_value_t jsres = jerry_exception_value (res, false);
-            char *msg= evm_2_string(e, jsres);
-            evm_print("Exception: %s\r\n", msg);
-            evm_string_free(e, msg);
+            jerryx_print_unhandled_exception(res);
+//            jerry_value_t jsres = jerry_exception_value (res, false);
+//            char *msg= evm_2_string(e, jsres);
+//            evm_print("Exception: %s\r\n", msg);
+//            evm_string_free(e, msg);
         }
-        jerry_value_free (res);
+//        jerry_value_free (res);
     } else {
         evm_print("parse: exception\r\n");
     }
@@ -428,7 +583,7 @@ void evm_set_prototype(evm_t *e, evm_val_t obj, evm_val_t proto) {
     jerry_object_set_proto(obj, proto);
 }
 
-jerry_char_t *JERRY_ATTR_WEAK
+jerry_char_t *
 jerry_port_path_normalize (const jerry_char_t *path_p, /**< input path */
                            jerry_size_t path_size) /**< size of the path */
 {
@@ -451,7 +606,7 @@ jerry_port_path_free (jerry_char_t *path_p)
   evm_free (path_p);
 } /* jerry_port_path_free */
 
-jerry_size_t JERRY_ATTR_WEAK
+jerry_size_t
 jerry_port_path_base (const jerry_char_t *path_p) /**< path */
 {
   const jerry_char_t *basename_p = (jerry_char_t *) strrchr ((char *) path_p, '/') + 1;
@@ -482,7 +637,7 @@ jerry_port_get_file_size (FILE *file_p) /**< opened file */
  * Opens file with the given path and reads its source.
  * @return the source of the file
  */
-jerry_char_t *JERRY_ATTR_WEAK
+jerry_char_t *
 jerry_port_source_read (const char *file_name_p, /**< file name */
                         jerry_size_t *out_size_p) /**< [out] read bytes */
 {
@@ -520,7 +675,7 @@ jerry_port_source_read (const char *file_name_p, /**< file name */
 /**
  * Release the previously opened file's content.
  */
-void JERRY_ATTR_WEAK
+void
 jerry_port_source_free (uint8_t *buffer_p) /**< buffer to free */
 {
   evm_free (buffer_p);

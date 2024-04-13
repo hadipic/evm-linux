@@ -63,7 +63,7 @@ function require(path) {
     if( res ) {
         cached[path] = module;
         globalThis.module = prevModule;
-        return module.exports;
+        return cached[path].exports;
     }
 
     var module_path = process.EVM_MODULE_PATH;
@@ -73,8 +73,9 @@ function require(path) {
 
     if( res ) {
         cached[path] = module;
+        
         globalThis.module = prevModule;
-        return module.exports;
+        return cached[path].exports;
     }
     return undefined;
 }
