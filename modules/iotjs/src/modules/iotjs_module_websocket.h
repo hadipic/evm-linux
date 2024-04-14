@@ -15,7 +15,7 @@
 #ifndef IOTJS_MODULE_WEBSOCKET_H
 #define IOTJS_MODULE_WEBSOCKET_H
 
-#include "jerryscript.h"
+#include "jerryscript-wrap.h"
 
 enum {
   WS_OP_CONTINUE = 0x00,

@@ -155,6 +155,7 @@ EVM_API evm_val_t evm_mk_string(evm_t *e, const char *s);
 EVM_API evm_val_t evm_mk_lstring(evm_t *e, const char *s, int len);
 EVM_API evm_val_t evm_mk_boolean(evm_t *e, int v);
 EVM_API evm_val_t evm_mk_native(evm_t *e, evm_native_t v, const char *name, int len);
+EVM_API evm_val_t evm_mk_constructor(evm_t *e, evm_native_t v, const char *name, int len);
 EVM_API evm_val_t evm_mk_null(evm_t *e);
 EVM_API evm_val_t evm_mk_undefined(evm_t *e);
 EVM_API evm_val_t evm_mk_invoke(evm_t *e, void *user_data);

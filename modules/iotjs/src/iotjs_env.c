@@ -96,7 +96,7 @@ static void initialize(iotjs_environment_t* env) {
 /**
  * Parse command line arguments
  */
-bool iotjs_environment_parse_command_line_arguments(iotjs_environment_t* env,
+int iotjs_environment_parse_command_line_arguments(iotjs_environment_t* env,
                                                     uint32_t argc,
                                                     char** argv) {
   // declare options
@@ -354,6 +354,6 @@ void iotjs_environment_set_state(iotjs_environment_t* env, State s) {
   env->state = s;
 }
 
-bool iotjs_environment_is_exiting(iotjs_environment_t* env) {
+int iotjs_environment_is_exiting(iotjs_environment_t* env) {
   return env->state == kExiting;
 }

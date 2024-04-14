@@ -29,10 +29,13 @@
 
 #ifdef EVM_USE_IOTJS
 #include "iotjs.h"
+#include "iotjs_env.h"
 #include "jerryscript-wrap.h"
+static uv_loop_t *uv_loop = NULL;
 #endif
 
 static evm_t *_runtime;
+
 
 evm_t *evm_runtime(void) {
    return  _runtime;
@@ -86,6 +89,8 @@ void evm_module_init(evm_t *env)
 #ifdef EVM_USE_IOTJS
     jerry_value_t res;
     jerry_set_runtime(env);
+    iotjs_environment_t *iot_env = iotjs_environment_get();
+    iotjs_environment_set_loop(iot_env, uv_default_loop());
 #endif
     evm_native_init(env);
 
@@ -102,6 +107,11 @@ void evm_module_init(evm_t *env)
     extern jerry_value_t iotjs_init_buffer(void);
     res = iotjs_init_buffer();
     evm_global_set(env, "@native.buffer", res);
+    evm_val_free(env, res);
+
+    extern jerry_value_t iotjs_init_timer(void);
+    res = iotjs_init_timer();
+    evm_global_set(env, "@native.timer", res);
     evm_val_free(env, res);
 
 #ifdef EVM_USE_MODULE_ADC
@@ -172,6 +182,18 @@ void evm_module_init(evm_t *env)
 
 #ifdef EVM_USE_MODULE_EX
     evm_module_init_ex(env);
+#endif
+}
+
+void evm_loop()
+{
+#ifdef EVM_USE_IOTJS
+    uv_loop = uv_default_loop();
+    int  more;
+    more = uv_run(uv_loop, UV_RUN_NOWAIT);
+    if (more == 0) {
+        more = uv_loop_alive(uv_loop);
+    }
 #endif
 }
 

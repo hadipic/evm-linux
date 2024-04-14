@@ -16,7 +16,7 @@
 #ifndef IOTJS_MODULE_BUFFER_H
 #define IOTJS_MODULE_BUFFER_H
 
-#include "jerryscript.h"
+#include "jerryscript-wrap.h"
 
 typedef struct {
   void* free_hint;

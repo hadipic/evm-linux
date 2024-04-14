@@ -1,3 +1,19 @@
+
+win32{
+DEFINES += ENABLE_MODULE_IOTJS_BASIC_MODULES
+DEFINES += ENABLE_MODULE_IOTJS_CORE_MODULES
+DEFINES += ENABLE_MODULE_CRYPTO
+DEFINES += ENABLE_MODULE_DGRAM
+DEFINES += ENABLE_MODULE_HTTP_SIGNATURE
+DEFINES += ENABLE_MODULE_HTTPS
+DEFINES += ENABLE_MODULE_I2C
+DEFINES += ENABLE_MODULE_MQTT
+DEFINES += ENABLE_MODULE_WEBSOCKET
+
+DEFINES += ENABLE_MODULE_UDP
+}
+
+unix{
 DEFINES += ENABLE_MODULE_IOTJS_BASIC_MODULES
 DEFINES += ENABLE_MODULE_IOTJS_CORE_MODULES
 DEFINES += ENABLE_MODULE_ADC
@@ -15,6 +31,8 @@ DEFINES += ENABLE_MODULE_UART
 DEFINES += ENABLE_MODULE_WEBSOCKET
 #DEFINES += ENABLE_MODULE_TLS
 DEFINES += ENABLE_MODULE_UDP
+}
+
 
 INCLUDEPATH +=  $$PWD/../components/jerry-wrapper
 INCLUDEPATH +=  $$PWD/../components/http-parser
@@ -44,7 +62,6 @@ SOURCES += \
 unix {
 SOURCES += \
     $$PWD/../modules/iotjs/src/modules/iotjs_module_dns.c
-}
 
 SOURCES += \
     $$PWD/../modules/iotjs/src/modules/iotjs_module_adc.c \
@@ -68,6 +85,23 @@ SOURCES += \
     $$PWD/../modules/iotjs/src/modules/iotjs_module_uart.c \
     $$PWD/../modules/iotjs/src/modules/iotjs_module_udp.c \
     $$PWD/../modules/iotjs/src/modules/iotjs_module_websocket.c
+}
+
+win32 {
+SOURCES += \
+    $$PWD/../modules/iotjs/src/modules/iotjs_module_buffer.c \
+    $$PWD/../modules/iotjs/src/modules/iotjs_module_console.c \
+    $$PWD/../modules/iotjs/src/modules/iotjs_module_constants.c \
+    $$PWD/../modules/iotjs/src/modules/iotjs_module_crypto.c \
+    $$PWD/../modules/iotjs/src/modules/iotjs_module_fs.c \
+    $$PWD/../modules/iotjs/src/modules/iotjs_module_http_parser.c \
+    $$PWD/../modules/iotjs/src/modules/iotjs_module_mqtt.c \
+    $$PWD/../modules/iotjs/src/modules/iotjs_module_periph_common.c \
+    $$PWD/../modules/iotjs/src/modules/iotjs_module_tcp.c \
+    $$PWD/../modules/iotjs/src/modules/iotjs_module_timer.c \
+    $$PWD/../modules/iotjs/src/modules/iotjs_module_udp.c \
+    $$PWD/../modules/iotjs/src/modules/iotjs_module_websocket.c
+}
 
 contains(DEFINES, ENABLE_MODULE_TLS) {
 SOURCES += \

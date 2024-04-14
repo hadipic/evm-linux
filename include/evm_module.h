@@ -46,12 +46,11 @@ typedef union  {
 extern void evm_cffi_exec_param(evm_t *e, evm_cffi_val_t *cffi_vals, const char *signature, int argc, evm_val_t *v);
 extern evm_val_t evm_cffi_exec_ret(evm_t *e, evm_cffi_val_t *cffi_val, const char *signature, int argc);
 
-extern void evm_main(char *filename);
-extern void evm_module_init(evm_t *env);
-extern void evm_module_init_ex(evm_t *env);
-evm_t *evm_runtime(void);
-extern const char *evm_get_app_path(void);
-extern char* evm_buffer_allocate_from_number_array(evm_t *e, size_t size, evm_val_t array);
+EVM_API void evm_module_init(evm_t *env);
+EVM_API void evm_module_init_ex(evm_t *env);
+EVM_API evm_t *evm_runtime(void);
+EVM_API const char *evm_get_app_path(void);
+EVM_API void evm_loop();
 
 #ifdef EVM_USE_LOG
 #define EVM_LOG(...) printf("[%s][%s][%d]:%s,%d\n", __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__);

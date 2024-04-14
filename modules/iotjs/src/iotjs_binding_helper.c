@@ -126,7 +126,7 @@ jerry_value_t iotjs_invoke_callback_with_result(jerry_value_t jfunc,
   }
 
   // Calls the next tick callbacks.
-  iotjs_process_next_tick();
+  //iotjs_process_next_tick();
 
   // Return value.
   return jres;

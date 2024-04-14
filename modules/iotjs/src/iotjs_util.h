@@ -18,7 +18,7 @@
 
 
 #include "iotjs_string.h"
-#include "jerryscript.h"
+#include "jerryscript-wrap.h"
 
 // Return value should be released with iotjs_string_destroy()
 iotjs_string_t iotjs_file_read(const char* path);

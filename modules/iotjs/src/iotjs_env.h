@@ -69,7 +69,7 @@ typedef struct {
 iotjs_environment_t* iotjs_environment_get(void);
 void iotjs_environment_release(void);
 
-bool iotjs_environment_parse_command_line_arguments(iotjs_environment_t* env,
+int iotjs_environment_parse_command_line_arguments(iotjs_environment_t* env,
                                                     uint32_t argc, char** argv);
 
 uint32_t iotjs_environment_argc(const iotjs_environment_t* env);
@@ -85,6 +85,6 @@ const DebuggerConfig* iotjs_environment_dconfig(const iotjs_environment_t* env);
 #endif
 
 void iotjs_environment_set_state(iotjs_environment_t* env, State s);
-bool iotjs_environment_is_exiting(iotjs_environment_t* env);
+int iotjs_environment_is_exiting(iotjs_environment_t* env);
 
 #endif /* IOTJS_ENV_H */

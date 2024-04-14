@@ -669,6 +669,12 @@ evm_val_t evm_mk_native(evm_t *e, evm_native_t v, const char *name, int len) {
     return evm_val_duplicate(e, nfunc);
 }
 
+evm_val_t evm_mk_constructor(evm_t *e, evm_native_t v, const char *name, int len) {
+    JSContext *ctx = e;
+    JSValue nfunc = JS_NewCFunctionMagic(ctx, v, name, len, JS_CFUNC_constructor_or_func, 0);
+    return evm_val_duplicate(e, nfunc);
+}
+
 evm_val_t evm_mk_null(evm_t *e){
     return JS_NULL;
 }

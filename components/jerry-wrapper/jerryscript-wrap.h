@@ -60,6 +60,10 @@ typedef uint32_t jerry_size_t;
  */
 typedef uint32_t jerry_length_t;
 
+#ifndef EVM_USE_JERRYSCRIPT
+typedef evm_val_t jerry_value_t;
+#endif
+
 /**
  * JerryScript API Error object types.
  */
