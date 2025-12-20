@@ -1,38 +1,136 @@
-###准备
+این یک راهنمای جامع برای **کامپایل و اجرای EVM Simulator** روی **ویندوز** است. در زیر تمام مراحل به زبان فارسی به صورت واضح و گام‌به‌گام توضیح داده شده است:
 
-下载qt5：
+---
 
-	http://mirrors.ustc.edu.cn/qtproject/archive/qt/5.14/5.14.2/qt-opensource-windows-x86-5.14.2.exe
+## 🛠️ **مرحله ۱: آماده‌سازی - دانلود ابزارها**
 
-下载qtcreator：
+ابتدا Qt و QtCreator را دانلود و نصب کنید:
 
-    http://mirrors.ustc.edu.cn/qtproject/archive/qtcreator/4.11/4.11.2/qt-creator-opensource-windows-x86_64-4.11.2.exe
+1.  **دانلود Qt 5.14.2:**
+    - آدرس: [http://mirrors.ustc.edu.cn/qtproject/archive/qt/5.14/5.14.2/qt-opensource-windows-x86-5.14.2.exe](http://mirrors.ustc.edu.cn/qtproject/archive/qt/5.14/5.14.2/qt-opensource-windows-x86-5.14.2.exe)
+    - **نکته:** حتماً **MSVC 2017 64-bit** و **MinGW 7.3.0 64-bit** را در حین نصب انتخاب کنید.
 
+2.  **دانلود QtCreator 4.11.2:**
+    - آدرس: [http://mirrors.ustc.edu.cn/qtproject/archive/qtcreator/4.11/4.11.2/qt-creator-opensource-windows-x86_64-4.11.2.exe](http://mirrors.ustc.edu.cn/qtproject/archive/qt/5.14/5.14.2/qt-opensource-windows-x86-5.14.2.exe)
+    - آن را نصب کنید و بعد از نصب، کیت (Kit) کامپایلر MSVC یا MinGW را در `Tools > Options > Kits` تنظیم کنید.
 
-###编译
+---
 
-使用qtcreator打开bsp/evue-simulator/app/app.pro，在pro文件中选择对应引擎，例如：
+## 🔨 **مرحله ۲: کامپایل با QtCreator (راحت‌ترین روش)**
 
-	DEFINES += EVM_USE_PIKASCRIPT
+1.  **پروژه را باز کنید:**
+    - QtCreator را اجرا کنید.
+    - روی `Open Project` کلیک کنید.
+    - فایل پروژه را انتخاب کنید: `bsp/evue-simulator/app/app.pro`
 
+2.  **موتور اسکریپت مورد نظر را انتخاب کنید:**
+    - فایل `app.pro` را در ویرایشگر باز کنید.
+    - خط مربوط به موتور مورد نظر را از حالت کامنت خارج کنید (علامت `#` ابتدای خط را حذف کنید). مثلاً برای **PikaScript**:
+      ```cpp
+      DEFINES += EVM_USE_PIKASCRIPT
+      ```
+    - خطوط سایر موتورها را کامنت کنید (با `#`).
 
-###makefile编译
+3.  **کامپایل و اجرا:**
+    - در پایین سمت چپ، کیت (`Kit`) مناسب (مثلاً `Desktop Qt 5.14.2 MSVC2017 64bit`) را انتخاب کنید.
+    - روی دکمه سبز **Run** (یا کلید `Ctrl+R`) کلیک کنید.
 
-+ 编译quickjs版本： make quickjs
-+ 编译mujs版本： make mujs
-+ 编译pikascript版本： make pika
+---
 
-编译完成后，evue-simulator/build目录下生成执行文件app
+## ⚙️ **مرحله ۳: کامپایل با Makefile (برای خط فرمان)**
 
-###编译pikascript
+اگر **QtCreator** ندارید، می‌توانید از **Terminal** (مثل PowerShell یا CMD با MinGW) استفاده کنید:
 
-进入bsp/evue-simulator/pikascript，运行before-build.bat。然后打开app工程，选择EVM_USE_PIKASCRIPT
+1.  **ترمینال را در مسیر پروژه باز کنید:**
+    ```bash
+    cd /path/to/evm/bsp/evue-simulator
+    ```
 
+2.  **بر اساس موتور مورد نظر کامپایل کنید:**
+    - برای **QuickJS:**
+      ```bash
+      make quickjs
+      ```
+    - برای **mujs:**
+      ```bash
+      make mujs
+      ```
+    - برای **PikaScript:**
+      ```bash
+      make pika
+      ```
 
-###运行pikascript文件
+3.  **خروجی:**
+    - فایل اجرایی `app.exe` در مسیر `build/` ساخته می‌شود.
+    - می‌توانید مستقیم آن را اجرا کنید.
 
-进入bsp/evue-simulator/pikascript，编辑main.py文件。完成后运行rust-msc-lastest-win10.exe。
-在qtcreator -> 项目 -> Run -> Command line arguments中输入main.py路径作为运行参数，并点击运行。
+---
 
-如果要运行字节码文件，在pikascript-api目录中找打main.py.o文件，并输入到运行参数中。
+## 🐍 **مرحله ۴: آماده‌سازی PikaScript (ویژگی خاص)**
 
+اگر **PikaScript** را انتخاب کرده‌اید، یک مرحله اضافی نیاز است:
+
+1.  **اجرای اسکریپت آماده‌سازی:**
+    - در ترمینال به مسیر زیر بروید:
+      ```bash
+      cd bsp/evue-simulator/pikascript
+      ```
+    - فایل `before-build.bat` را **اجرا کنید** (روی آن دابل‌کلیک کنید یا در ترمینال نامش را تایپ کنید). این کار فایل‌های ضروری را تولید می‌کند.
+
+2.  **بازگشت به QtCreator و کامپایل:**
+    - مطمئن شوید در `app.pro` خط `DEFINES += EVM_USE_PIKASCRIPT` فعال است.
+    - پروژه را کامپایل و اجرا کنید.
+
+---
+
+## 🎯 **مرحله ۵: اجرای فایل‌های اسکریپت**
+
+برای **اجرای یک فایل اسکریپت پایتون (`main.py`)** در شبیه‌ساز:
+
+### روش ۱: اجرا از طریق QtCreator (توصیه شده)
+1.  فایل `main.py` خود را در پوشه `pikascript` ویرایش کنید.
+2.  در QtCreator، به مسیر **Projects > Run** بروید.
+3.  در بخش **Command line arguments**، مسیر کامل فایل `main.py` خود را وارد کنید (مثلاً):
+    ```
+    C:/evm/bsp/evue-simulator/pikascript/main.py
+    ```
+4.  برنامه را اجرا (`Ctrl+R`) کنید. اسکریپت شما لود و اجرا می‌شود.
+
+### روش ۲: اجرای فایل بایت‌کد (سریع‌تر)
+اگر می‌خواهید از فایل **کامپایل‌شده بایت‌کد** (با پسوند `.py.o`) استفاده کنید:
+1.  ابتدا فایل `main.py` را با ابزار `rust-msc-latest-win10.exe` (موجود در پوشه `pikascript`) به بایت‌کد تبدیل کنید.
+2.  سپس در QtCreator، در **Command line arguments**، مسیر فایل `main.py.o` را وارد کنید (مثلاً):
+    ```
+    C:/evm/bsp/evue-simulator/pikascript/api/main.py.o
+    ```
+3.  برنامه را اجرا کنید.
+
+### روش ۳: اجرا از خط فرمان
+پس از ساخت برنامه (`app.exe`)، می‌توانید از ترمینال آن را با آرگومان اجرا کنید:
+```bash
+cd bsp/evue-simulator/build
+./app.exe ../pikascript/main.py
+```
+
+---
+
+## ❌ **عیب‌یابی مشکلات رایج**
+
+| مشکل | راه‌حل احتمالی |
+|------|----------------|
+| **خطا: `make` پیدا نشد** | مطمئن شوید **MinGW** را نصب کرده‌اید و مسیر آن (مثلاً `C:\Qt\Tools\mingw730_64\bin`) به `PATH` سیستم اضافه شده است. |
+| **QtCreator کیت (Kit) را نمی‌شناسد** | به `Tools > Options > Kits` بروید و کامپایلر (مثلاً MSVC) و نسخه Qt را دستی تنظیم کنید. |
+| **خطا در کامپایل PikaScript** | حتماً `before-build.bat` را اجرا کرده باشید. از فعال بودن `EVM_USE_PIKASCRIPT` در `app.pro` مطمئن شوید. |
+| **برنامه اجرا می‌شود ولی اسکریپت لود نمی‌شود** | مسیر فایل اسکریپت در **Command line arguments** را به درستی (با استفاده از `/` یا دو برابر `\\`) وارد کنید. |
+
+---
+
+## ✅ **خلاصه مسیرهای کلیدی**
+
+- **پروژه اصلی:** `bsp/evue-simulator/app/app.pro`
+- **خروجی اجرایی:** `bsp/evue-simulator/build/app.exe`
+- **پوشه PikaScript:** `bsp/evue-simulator/pikascript/`
+- **فایل اسکریپت مثال:** `bsp/evue-simulator/pikascript/main.py`
+- **فایل بایت‌کد:** `bsp/evue-simulator/pikascript/api/main.py.o`
+
+اگر در هر مرحله به مشکل برخوردید، موتور اسکریپت مورد نظر و خطای دقیق را بنویسید تا بتوانم کمک کنم. موفق باشید! 🚀
