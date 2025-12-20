@@ -1,4 +1,4 @@
-var lv = require('lvgl');
+var lv = require('@native.lvgl');
 var btn1 = lv.lv_btn_create(lv.lv_scr_act());
 lv.lv_obj_align(btn1, lv.LV_ALIGN_CENTER, 0, -40);
 

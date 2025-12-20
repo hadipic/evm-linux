@@ -31,7 +31,7 @@ print(data_B.length);
 
 var request = http.get({
     port: 7777,
-    host: "http://192.168.31.20",
+    host: "http://192.168.1.31",
     path: "/",
     method: "GET",
     headers: {},

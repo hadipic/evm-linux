@@ -1,0 +1,6 @@
+<div style="background-color: black;text-align: center;width: 454px;height: 454px;border-width: 0px;color: white;">
+    <text style="left: 110px;top: 50px;width: 200px;height: 60px;text-align: center;font-size: 30px;font-family:simsun;"> EVM QQ 群 </text>
+    <image src="./common/images/evm-qq.bin" style="fade-in-time: 200;fade-in-delay: 2200;left: 120px;"></image>
+
+    <image src="./common/images/appbar.return.bin" style="top: 180px;left: 10px;" onclick="onReturn"></image>
+</div>

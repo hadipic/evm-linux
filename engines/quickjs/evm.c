@@ -339,6 +339,82 @@ evm_val_t native_require(evm_t *e, evm_val_t p, int argc, evm_val_t *v) {
     return res;
 }
 
+// این تابع رو جایگزین native_require کن
+static evm_val_t real_require(evm_t *e, evm_val_t this, int argc, evm_val_t *v) {
+    if (argc < 1 || !evm_is_string(e, v[0])) {
+        return JS_UNDEFINED;
+    }
+
+    const char *req = evm_2_string(e, v[0]);
+    if (!req) return JS_UNDEFINED;
+
+    // اگر @native باشه → از سیستم ماژول C استفاده کن
+    if (strncmp(req, "@native.", 8) == 0) {
+        evm_val_t mod = evm_module_get(e, req);
+        JS_FreeCString(e, req);  // مهم: باید با JS_FreeCString آزاد بشه
+        return mod;
+    }
+
+    char full_path[512];
+    if (req[0] == '/' || strstr(req, ":/")) {
+        snprintf(full_path, sizeof(full_path), "%s", req);
+    } else {
+        snprintf(full_path, sizeof(full_path), "/sdcard/apps/%s", req);
+    }
+
+    // اضافه کردن .js
+    if (!strstr(full_path, ".js")) {
+        strcat(full_path, ".js");
+    }
+
+    printf("require: loading %s\n", full_path);
+
+    size_t len;
+    uint8_t *buf = js_load_file(e, &len, full_path);
+    if (!buf) {
+        printf("require: file not found: %s\n", full_path);
+        JS_FreeCString(e, req);
+        return JS_UNDEFINED;
+    }
+
+    // شبیه‌سازی module.exports
+    JSValue old_module = JS_GetGlobalObject(e);
+    JSValue old_exports = JS_GetPropertyStr(e, old_module, "exports");
+
+    JSValue module = JS_NewObject(e);
+    JSValue exports = JS_NewObject(e);
+    JS_SetPropertyStr(e, module, "exports", exports);
+
+    JS_SetPropertyStr(e, old_module, "module", module);
+    JS_SetPropertyStr(e, old_module, "exports", exports);
+
+    // اجرای فایل
+    JSValue ret = JS_Eval(e, (const char*)buf, len, full_path, JS_EVAL_TYPE_GLOBAL);
+    js_free(e, buf);
+
+    JSValue result = JS_GetPropertyStr(e, module, "exports");
+
+    // بازگرداندن حالت قبلی
+    JS_SetPropertyStr(e, old_module, "exports", old_exports);
+    JS_SetPropertyStr(e, old_module, "module", JS_UNDEFINED);
+
+    JS_FreeValue(e, old_module);
+    JS_FreeValue(e, old_exports);
+    JS_FreeValue(e, module);
+
+    JS_FreeCString(e, req);
+
+    if (JS_IsException(ret)) {
+        js_std_dump_error(e);
+        JS_FreeValue(e, ret);
+        return JS_EXCEPTION;
+    }
+
+    JS_FreeValue(e, ret);
+    return result;
+}
+
+
 static void *js_trace_malloc(JSMallocState *s, size_t size)
 {
     void *ptr;
@@ -395,7 +471,8 @@ evm_t *evm_init(void) {
     evm_val_t val = evm_object_create(ctx);
     evm_global_set(ctx, "@system", val);
     evm_val_free(ctx, val);
-    evm_global_set(ctx, "require", evm_mk_native(ctx, native_require, "require", 1));
+   // evm_global_set(ctx, "require", evm_mk_native(ctx, native_require, "require", 1));
+    evm_global_set(ctx, "require", evm_mk_native(ctx, (evm_native_t)real_require, "require", 1));
     evm_global_set(ctx, "print", evm_mk_native(ctx, native_print, "print", 1));
     return ctx;
 }

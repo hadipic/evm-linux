@@ -34,6 +34,7 @@
 static uv_loop_t *uv_loop = NULL;
 #endif
 
+#include "evm_module_lvgl.h"
 static evm_t *_runtime;
 
 
@@ -181,7 +182,7 @@ void evm_module_init(evm_t *env)
 #endif
 
 #ifdef EVM_USE_MODULE_EX
-    evm_module_init_ex(env);
+//    evm_module_init_ex(env);
 #endif
 }
 

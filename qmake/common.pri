@@ -4,19 +4,26 @@ INCLUDEPATH += $$PWD/../include
 # iot modules
 INCLUDEPATH += $$PWD/../modules/common
 INCLUDEPATH += $$PWD/../modules/linux
+INCLUDEPATH += $$PWD/../modules/gui/lvgl
+
 
 # components
 INCLUDEPATH += $$PWD/../components/zmalloc
 
+DEFINES += EVM_USE_MODULE_LVGL=1
 DEFINES += EVM_USE_LIBUV
 DEFINES += EVM_USE_MODULE_FS
 DEFINES += EVM_USE_MODULE_CFFI
 DEFINES += EVM_USE_MODULE_CJSON
 DEFINES += EVM_USE_MODULE_HEATSHRINK
 DEFINES += EVM_USE_MODULE_BASE64
-
+DEFINES += EVM_USE_MODULE_LVGL
+DEFINES += EVM_USE_MODULE_LVGL_STYLE
+#DEFINES += EVM_USE_MODULE_LVGL_IMAGE
+DEFINES += CONFIG_EVM_MODULE_HTTP_PARSER
 
 SOURCES += \
+    $$PWD/../modules/common/evm_module_libc.c \
     $$PWD/../modules/linux/evm_main.c
 
 contains(DEFINES, EVM_USE_MODULE_NET) {
@@ -74,24 +81,28 @@ SOURCES += \
     $$PWD/../modules/common/evm_module_base64.c
 }
 
-#SOURCES += \
-#    $$PWD/../modules/common/evm_module_adc.c \
-#    $$PWD/../modules/common/evm_module_gpio.c \
-#    $$PWD/../modules/common/evm_module_i2c.c \
-#    $$PWD/../modules/common/evm_module_periph_common.c \
-#    $$PWD/../modules/common/evm_module_pwm.c \
-#    $$PWD/../modules/common/evm_module_timer.c \
-#    $$PWD/../modules/common/evm_module_tcp.c \
-#    $$PWD/../modules/common/evm_module_tls.c \
-#    $$PWD/../modules/common/evm_module_uart.c
+SOURCES += \
+    $$PWD/../modules/common/evm_module_adc.c \
+    $$PWD/../modules/common/evm_module_gpio.c \
+    $$PWD/../modules/common/evm_module_i2c.c \
+    $$PWD/../modules/common/evm_module_periph_common.c \
+    $$PWD/../modules/common/evm_module_pwm.c \
+    $$PWD/../modules/common/evm_module_timer.c \
+    $$PWD/../modules/common/evm_module_tcp.c \
+    $$PWD/../modules/common/evm_module_tls.c \
+    $$PWD/../modules/common/evm_module_uart.c
 
-#unix {
-#SOURCES += \
-#    $$PWD/../modules/linux/iot_system.c \
-#    $$PWD/../modules/linux/iot_uv.c \
-#    $$PWD/../modules/linux/linux_module_adc.c \
-#    $$PWD/../modules/linux/linux_module_gpio.c \
-#    $$PWD/../modules/linux/linux_module_i2c.c \
-#    $$PWD/../modules/linux/linux_module_pwm.c \
-#    $$PWD/../modules/linux/linux_module_uart.c
-#}
+unix {
+SOURCES += \
+    $$PWD/../modules/linux/iot_system.c \
+    $$PWD/../modules/linux/iot_uv.c \
+    $$PWD/../modules/linux/linux_module_adc.c \
+    $$PWD/../modules/linux/linux_module_gpio.c \
+    $$PWD/../modules/linux/linux_module_i2c.c \
+    $$PWD/../modules/linux/linux_module_pwm.c \
+    $$PWD/../modules/linux/linux_module_uart.c
+}
+
+DISTFILES += \
+    $$PWD/../modules/common/libc.json \
+    $$PWD/lv_truetype.pri

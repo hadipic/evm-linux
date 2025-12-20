@@ -1,0 +1,6 @@
+<div style="background-color: black;text-align: center;width: 454px;height: 454px;border-width: 0px;">
+    <text style="left: 10px;top: 50px;width: 300px;height: 60px;text-align: center;font-size: 30px;font-family:simsun;color: white;"> EVM微信公众号 </text>
+    <image src="./common/images/evm-gzh.bin" style="fade-in-time: 200;fade-in-delay: 2400;left: 76px;"></image>
+
+    <image src="./common/images/appbar.return.bin" style="top: 180px;left: 10px;" onclick="onReturn"></image>
+</div>

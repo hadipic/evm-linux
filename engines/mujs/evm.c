@@ -221,7 +221,8 @@ void evm_heap_gc(evm_t *e) {
     js_gc(e, 0);
 }
 
-void evm_throw(evm_t *e, evm_val_t v) {
+// وید بود من تغیر دادم
+evm_val_t evm_throw(evm_t *e, evm_val_t v) {
     js_pushvalue(e, v);
     js_throw(e);
 }
@@ -319,7 +320,7 @@ int evm_2_boolean(evm_t *e, evm_val_t v) {
     return jsV_toboolean(e, &v);
 }
 
-const char *evm_2_string(evm_t *e, evm_val_t v) {
+const char *evm_2_string1(evm_t *e, evm_val_t v) {
     const char *s = jsV_tostring(e, &v);
     if( v.type == JS_TSHRSTR ) {
         static char buf[15];
@@ -329,6 +330,47 @@ const char *evm_2_string(evm_t *e, evm_val_t v) {
         return s;
     }
 }
+
+
+#define BUFFER_SIZE 256 // اندازه بافر برای رشته
+
+char* evm_2_string(evm_t *e, evm_val_t v) {
+    static char buf[BUFFER_SIZE]; // بافر ثابت برای ذخیره رشته
+
+    const char *s = jsV_tostring(e, &v); // تبدیل v به رشته
+
+    if (v.type == JS_TSHRSTR) {
+        // کپی کردن حداکثر 127 کاراکتر از رشته ورودی به buf
+        strncpy(buf, v.u.shrstr, BUFFER_SIZE - 1);
+        buf[BUFFER_SIZE - 1] = '\0'; // اطمینان از اینکه buf رشته را به درستی پایان می‌دهد
+    } else {
+        // اگر نوع v متناسب نیست، از رشته s استفاده کنید
+        strncpy(buf, s, BUFFER_SIZE - 1);
+        buf[BUFFER_SIZE - 1] = '\0'; // اطمینان از اینکه buf رشته را به درستی پایان می‌دهد
+    }
+
+    return buf; // بازگشت به buf به عنوان یک آرایه از کاراکترها
+}
+
+
+int evm_run_bytecode_file(evm_t *e, const char *path) {
+    uint8_t *buf;
+    size_t buf_len;
+    int res = 1;
+
+    return res;
+}
+
+evm_val_t evm_object_keys(evm_t *e, evm_val_t o) {
+    return o;
+}
+
+
+
+void evm_string_free(evm_t *e, char *str){
+    evm_free(str);
+}
+
 
 int evm_is_number(evm_t *e, evm_val_t v) {
     (void)e;

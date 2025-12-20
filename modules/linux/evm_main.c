@@ -29,7 +29,7 @@
 #include <time.h>
 
 #if defined (__linux__)
-#include "iotjs.h"
+//#include "iotjs.h"
 #endif
 
 int platform_getchar(void) {

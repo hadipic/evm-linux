@@ -1,5 +1,5 @@
 //This is auto-generated file
-#ifdef EVM_USE_MODULE_LVGL_STYLE
+#ifdef EVM_USE_MODULE_LVGL
 
 #include "evm_module_lvgl.h"
 #include "evm_module.h"
@@ -9,6 +9,8 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_width) {
   evm_cffi_val_t cffi_args[3];
   evm_cffi_exec_param(e, cffi_args + 1, "pi", argc, v);
   set_style_width(cffi_args[1].p, cffi_args[2].i32);
+
+ 
   EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, "vpi", argc))
 }
 
@@ -592,8 +594,118 @@ EVM_FUNCTION(evm_module_lvgl_style_set_style_selected_bg_color) {
 }
 
 
+// 🔥 اضافه کردن توابع حذف - اینها وجود ندارن!
+
+EVM_FUNCTION(evm_module_lvgl_lv_obj_del) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_obj_del(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, "vp", argc))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_obj_del_async) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_obj_del_async(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, "vp", argc))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_obj_clean) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_obj_clean(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, "vp", argc))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_style_destroy) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_mem_free(cffi_args[1].p); // آزاد کردن حافظه استایل
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, "vp", argc))
+}
+
+EVM_FUNCTION(evm_module_lvgl_lv_obj_delete_all_children) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  
+  lv_obj_t* parent = cffi_args[1].p;
+  lv_obj_t* child;
+  
+  // حذف تمام children به صورت معکوس (از آخر به اول)
+  while ((child = lv_obj_get_child(parent, 0)) != NULL) {
+    lv_obj_del(child);
+  }
+  
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, "vp", argc))
+}
+
+
+// حذف استایل از یک part خاص (مثل حذف ناب)
+EVM_FUNCTION(evm_module_lvgl_lv_obj_remove_style) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[4];
+  evm_cffi_exec_param(e, cffi_args + 1, "ppi", argc, v);
+  lv_obj_remove_style(cffi_args[1].p, cffi_args[2].p, cffi_args[3].i32);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, "vppi", argc))
+}
+
+// حذف تمام استایل‌های یک آبجکت
+EVM_FUNCTION(evm_module_lvgl_lv_obj_remove_style_all) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_obj_remove_style_all(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, "vp", argc))
+}
+
+// ریست استایل (بازگشت به حالت پیش‌فرض)
+EVM_FUNCTION(evm_module_lvgl_lv_style_reset) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_style_reset(cffi_args[1].p);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, "vp", argc))
+}
+
+// حذف ناب (knob) به صورت مستقیم
+EVM_FUNCTION(evm_module_lvgl_lv_arc_hide_knob) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[2];
+  evm_cffi_exec_param(e, cffi_args + 1, "p", argc, v);
+  lv_obj_remove_style(cffi_args[1].p, NULL, LV_PART_KNOB);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, "vp", argc))
+}
+
+// تنظیم فونت (اگر فونت‌های سفارشی داریم)
+EVM_FUNCTION(evm_module_lvgl_lv_obj_set_style_text_font) {
+  EVM_EPCV;
+  evm_cffi_val_t cffi_args[4];
+  evm_cffi_exec_param(e, cffi_args + 1, "ppi", argc, v);
+  lv_obj_set_style_text_font(cffi_args[1].p, cffi_args[2].p, cffi_args[3].i32);
+  EVM_RETURN(evm_cffi_exec_ret(e, cffi_args, "vppi", argc))
+}
+
+
 void evm_module_lvgl_style(evm_t *e) {
   evm_val_t obj = evm_object_create(e);
+ 
+   // 🔥 اضافه کردن توابع حذف جدید
+  evm_prop_set(e, obj, "lv_obj_del", evm_mk_native(e, evm_module_lvgl_lv_obj_del, "lv_obj_del", 1));
+  evm_prop_set(e, obj, "lv_obj_del_async", evm_mk_native(e, evm_module_lvgl_lv_obj_del_async, "lv_obj_del_async", 1));
+  evm_prop_set(e, obj, "lv_obj_clean", evm_mk_native(e, evm_module_lvgl_lv_obj_clean, "lv_obj_clean", 1));
+  evm_prop_set(e, obj, "lv_style_destroy", evm_mk_native(e, evm_module_lvgl_lv_style_destroy, "lv_style_destroy", 1));
+  evm_prop_set(e, obj, "lv_obj_delete_all_children", evm_mk_native(e, evm_module_lvgl_lv_obj_delete_all_children, "lv_obj_delete_all_children", 1));
+  
+  evm_prop_set(e, obj, "lv_obj_remove_style", evm_mk_native(e, evm_module_lvgl_lv_obj_remove_style, "lv_obj_remove_style", 3));
+  evm_prop_set(e, obj, "lv_obj_remove_style_all", evm_mk_native(e, evm_module_lvgl_lv_obj_remove_style_all, "lv_obj_remove_style_all", 1));
+  evm_prop_set(e, obj, "lv_style_reset", evm_mk_native(e, evm_module_lvgl_lv_style_reset, "lv_style_reset", 1));
+  evm_prop_set(e, obj, "lv_arc_hide_knob", evm_mk_native(e, evm_module_lvgl_lv_arc_hide_knob, "lv_arc_hide_knob ", 1));
+
   evm_prop_set(e, obj, "set_style_width", evm_mk_native(e, evm_module_lvgl_style_set_style_width, "set_style_width", 2));
   evm_prop_set(e, obj, "set_style_min_width", evm_mk_native(e, evm_module_lvgl_style_set_style_min_width, "set_style_min_width", 2));
   evm_prop_set(e, obj, "set_style_max_width", evm_mk_native(e, evm_module_lvgl_style_set_style_max_width, "set_style_max_width", 2));
