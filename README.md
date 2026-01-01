@@ -142,32 +142,32 @@ https://aparat.com/v/ejyt63u
 ---# 🏗️ **ساختار پروژه EVM-ESP32 - راهنمای کامل**
 🔗 معرفی ماشین مجازی EVM در شاپ الکترونیک
 
-https://shop-electronic.ir/ماشین-مجازی-جاوا-برای-امبد-بردها-evm-embedded-virtual-machi/
+# LVGL GUI Builder for EVM-ESP32
 
-ساخت و تولید انواع مدارات الکترونیک @shop_electronic_bot
-گروه esp32 
-https://t.me/+oi9QrKR1qdozZTc0
-سایت شاپ الکترونیک
-https://shop-electronic.ir
-گروه امبدد و کیوت
-https://t.me/Embedded_Qt
+## 🔗 لینک‌های مهم
 
-🔗 کانال تلگرام EVM:
-https://t.me/esp32_evm
+### 🌐 اپلیکیشن آنلاین
+- **وب‌سایت**: https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/
 
+### 📸 دموها
+| | پیش‌نمایش | لینک |
+|-|-----------|------|
+| 1 | <img src="./docs/preview.png" width="300"> | [دمو ۱](https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/demo1) |
+| 2 | <img src="./docs/preview2.png" width="300"> | [ویرایشگر ویجت](https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/widget) |
 
-🔗 مخزن گیت‌هاب ESP32 EVM:
+### 👥 شبکه‌ها
+- **گروه ESP32**: https://t.me/+oi9QrKR1qdozZTc0
+- **کانال EVM**: https://t.me/esp32_evm
+- **ربات**: @shop_electronic_bot
+- **وبسایت**: https://shop-electronic.ir
 
-https://github.com/hadipic/evm-linux?tab=readme-ov-file
-https://github.com/hadipic/esp32-evm-bin?tab=readme-ov-file
-https://github.com/hadipic/evm_java/tree/main
-<table>
-<tr>
-    <td><a href="https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/demo1">"https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/demo1"</a></td>
-    <td><a href="https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/widget"></a></td>
-</tr>
-</table>
+### 💾 مخازن
+- **EVM Linux**: https://github.com/hadipic/evm-linux
+- **ESP32 EVM Bin**: https://github.com/hadipic/esp32-evm-bin  
+- **EVM Java**: https://github.com/hadipic/evm_java
 
+### 📚 مقالات
+- **معرفی EVM**: https://shop-electronic.ir/ماشین-مجازی-جاوا-برای-امبد-بردها-evm-embedded-virtual-machi/
 ```markdown
 # LVGL GUI Builder for EVM-ESP32 🎨
 
@@ -6433,6 +6433,7 @@ button.onPress(function() {
 **نگارش:** 1.1  
 **تاریخ:** دی ماه ۱۴۰۴ 
 **توسعه‌دهنده:** EVM-ESP32 Team
+
 
 
 
