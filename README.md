@@ -8,7 +8,6 @@ D**فرآیند نصب SDL (یک کتابخانه گرافیکی برای باز
 ---
 
 **+ آدرس گیت‌هاب:** https://github.com/hadipic/evm-linux 
-🌐 https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/
 
 برای اجرای  شبیه ساز به شاخه bsp بروید و در انجا به شاخه سیمولیشن بروید  ردمی رو بخوانید این یک راهنمای جامع برای کامپایل و اجرای EVM Simulator روی ویندوز است. در زیر تمام مراحل به زبان فارسی به صورت واضح و گام‌به‌گام توضیح داده شده است :
 
@@ -64,7 +63,7 @@ D**فرآیند نصب SDL (یک کتابخانه گرافیکی برای باز
 
 
 *   [راهنمای آنلاین EVM در شاپ الکترونیک (www.shpelectronic.ir)](https://shop-electronic.ir/%d9%85%d8%a7%d8%b4%db%8c%d9%86-%d9%85%d8%ac%d8%a7%d8%b2%db%8c-%d8%ac%d8%a7%d9%88%d8%a7-%d8%a8%d8%b1%d8%a7%db%8c-%d8%a7%d9%85%d8%a8%d8%af-%d8%a8%d8%b1%d8%af%d9%87%d8%a7-evm-embedded-virtual-machi/)
-🌐 https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/
+
 
 ## 7. مشارکت در کد
 
@@ -162,7 +161,15 @@ https://t.me/esp32_evm
 https://github.com/hadipic/evm-linux?tab=readme-ov-file
 https://github.com/hadipic/esp32-evm-bin?tab=readme-ov-file
 https://github.com/hadipic/evm_java/tree/main
+<table>
+<tr>
+    <td><a href="https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/demo1"><img src="./docs/preview.png" title="LV Builder Preview" /></a></td>
+    <td><a href="https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/widget"><img src="./docs/preview2.png" title="LV Builder Preview" /></a></td>
+</tr>
+</table>
 
+```markdown
+# LVGL GUI Builder for EVM-ESP32 🎨
 
 
 
@@ -6426,6 +6433,7 @@ button.onPress(function() {
 **نگارش:** 1.1  
 **تاریخ:** دی ماه ۱۴۰۴ 
 **توسعه‌دهنده:** EVM-ESP32 Team
+
 
 
 
