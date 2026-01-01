@@ -163,8 +163,8 @@ https://github.com/hadipic/esp32-evm-bin?tab=readme-ov-file
 https://github.com/hadipic/evm_java/tree/main
 <table>
 <tr>
-    <td><a href="https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/demo1"><img src="./docs/preview.png" title="LV Builder Preview" /></a></td>
-    <td><a href="https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/widget"><img src="./docs/preview2.png" title="LV Builder Preview" /></a></td>
+    <td><a href="https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/demo1">"https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/demo1"</a></td>
+    <td><a href="https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/widget"></a></td>
 </tr>
 </table>
 
@@ -6433,6 +6433,7 @@ button.onPress(function() {
 **نگارش:** 1.1  
 **تاریخ:** دی ماه ۱۴۰۴ 
 **توسعه‌دهنده:** EVM-ESP32 Team
+
 
 
 
