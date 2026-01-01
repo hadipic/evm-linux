@@ -145,27 +145,70 @@ https://aparat.com/v/ejyt63u
 # LVGL GUI Builder for EVM-ESP32
 
 ## 🔗 لینک‌های مهم
+# 🎨 LVGL GUI Builder for EVM-ESP32
 
-### 🌐 اپلیکیشن آنلاین
-- **وب‌سایت**: https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/
+<div dir="rtl" align="right">
 
-### 📸 دموها
-| | پیش‌نمایش | لینک |
-|-|-----------|------|
-| 1 | <img src="./docs/preview.png" width="300"> | [دمو ۱](https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/demo1) |
-| 2 | <img src="./docs/preview2.png" width="300"> | [ویرایشگر ویجت](https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/widget) |
+## 🇮🇷 بیلدر گرافیکی LVGL برای پروژه EVM-ESP32
 
-### 👥 شبکه‌ها
-- **گروه ESP32**: https://t.me/+oi9QrKR1qdozZTc0
-- **کانال EVM**: https://t.me/esp32_evm
-- **ربات**: @shop_electronic_bot
-- **وبسایت**: https://shop-electronic.ir
+ابزار طراحی رابط کاربری با قابلیت کشیدن و رها کردن برای پروژه‌های ESP32 با LVGL و EVM Runtime
+</div>
 
-### 💾 مخازن
-- **EVM Linux**: https://github.com/hadipic/evm-linux
-- **ESP32 EVM Bin**: https://github.com/hadipic/esp32-evm-bin  
-- **EVM Java**: https://github.com/hadipic/evm_java
+---
 
+## 📸 پیش‌نمایش و دموها
+
+| # | تصویر | دمو | لینک |
+|---|--------|-----|------|
+| 1 | <img src="https://raw.githubusercontent.com/hadipic/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/main/docs/preview.png" width="300" alt="دمو ۱"> | **دمو ۱** | [hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/demo1](https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/demo1) |
+| 2 | <img src="https://raw.githubusercontent.com/hadipic/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/main/docs/preview2.png" width="300" alt="ویرایشگر ویجت"> | **ویرایشگر ویجت** | [hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/widget](https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/widget) |
+| 3 | <img src="https://raw.githubusercontent.com/hadipic/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/main/docs/preview3.png" width="300" alt="دمو ۳"> | **دمو ۳** | [hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/demo3](https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/#/lv/builder/demo3) |
+
+---
+
+## 🌐 اپلیکیشن آنلاین
+
+**🔗 لینک اصلی**: [https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/](https://hadipic.github.io/-home-shop-electronic-project-esp32-evm-esp32-gui-builder/)
+
+---
+
+## 📚 منابع و مستندات
+
+### 🔗 مخازن GitHub مرتبط
+
+| پروژه | توضیحات | لینک GitHub |
+|-------|---------|-------------|
+| **EVM Linux** | ماشین مجازی برای لینوکس | [github.com/hadipic/evm-linux](https://github.com/hadipic/evm-linux) |
+| **ESP32 EVM Bin** | فایل‌های باینری ESP32 | [github.com/hadipic/esp32-evm-bin](https://github.com/hadipic/esp32-evm-bin) |
+| **EVM Java** | پیاده‌سازی جاوا | [github.com/hadipic/evm_java](https://github.com/hadipic/evm_java) |
+| **LVGL GUI Builder** | همین پروژه | [github.com/hadipic/-home-shop-electronic-project-esp32-evm-esp32-gui-builder](https://github.com/hadipic/-home-shop-electronic-project-esp32-evm-esp32-gui-builder) |
+
+### 📖 مقالات و آموزش‌ها
+- **معرفی کامل EVM**: [shop-electronic.ir/ماشین-مجازی-جاوا-برای-امبد-بردها-evm-embedded-virtual-machi/](https://shop-electronic.ir/ماشین-مجازی-جاوا-برای-امبد-بردها-evm-embedded-virtual-machi/)
+- **مستندات EVM**: [github.com/hadipic/evm-linux/wiki](https://github.com/hadipic/evm-linux/wiki)
+
+---
+
+## 👥 شبکه‌های اجتماعی و ارتباطی
+
+### 💬 تلگرام
+| نوع | نام | لینک |
+|-----|-----|------|
+| **گروه** | ESP32 Community | [t.me/+oi9QrKR1qdozZTc0](https://t.me/hadipic) |
+| **گروه** | Embedded & Qt | [t.me/Embedded_Qt](https://t.me/Embedded_Qt) |
+| **کانال** | ESP32 EVM | [t.me/esp32_evm](https://t.me/esp32_evm) |
+| **ربات** | Shop Electronic | [@shop_electronic_bot](https://t.me/shop_electronic_bot) |
+
+### 🌐 وبسایت‌ها
+- **فروشگاه الکترونیک**: [shop-electronic.ir](https://shop-electronic.ir)
+- **گیت‌هاب**: [github.com/hadipic](https://github.com/hadipic)
+
+### 📧 مخازن کد
+```text
+EVM Linux:       github.com/hadipic/evm-linux
+ESP32 EVM Bin:   github.com/hadipic/esp32-evm-bin  
+EVM Java:        github.com/hadipic/evm_java
+GUI Builder:     github.com/hadipic/-home-shop-electronic-project-esp32-evm-esp32-gui-builder
 ### 📚 مقالات
 - **معرفی EVM**: https://shop-electronic.ir/ماشین-مجازی-جاوا-برای-امبد-بردها-evm-embedded-virtual-machi/
 ```markdown
@@ -6433,6 +6476,7 @@ button.onPress(function() {
 **نگارش:** 1.1  
 **تاریخ:** دی ماه ۱۴۰۴ 
 **توسعه‌دهنده:** EVM-ESP32 Team
+
 
 
 
